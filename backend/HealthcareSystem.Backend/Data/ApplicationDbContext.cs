@@ -108,8 +108,8 @@ namespace HealthcareSystem.Backend.Data
 
             modelBuilder.Entity<RefundDetail>()
                 .HasOne(rd => rd.InsurancePolicy)
-                .WithOne(ip => ip.RefundDetail)
-                .HasForeignKey<RefundDetail>(rd => rd.PolicyId);
+                .WithMany(ip => ip.RefundDetails)
+                .HasForeignKey(rd => rd.PolicyId);
         }
     }
 }

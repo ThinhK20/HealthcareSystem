@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HealthcareSystem.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb : Migration
+    public partial class InitialDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -378,8 +378,7 @@ namespace HealthcareSystem.Backend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_RefundDetails_PolicyId",
                 table: "RefundDetails",
-                column: "PolicyId",
-                unique: true);
+                column: "PolicyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefundDetails_RefundID",

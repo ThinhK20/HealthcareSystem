@@ -34,10 +34,8 @@
 
   <ItemGroup>
     <Folder Include="Models\DTO\" />
-    <Folder Include="Models\Domain\" />
     <Folder Include="Enums\" />
     <Folder Include="Services\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>

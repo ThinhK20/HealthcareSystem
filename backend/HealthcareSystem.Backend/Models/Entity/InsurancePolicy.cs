@@ -14,6 +14,6 @@ namespace HealthcareSystem.Backend.Models.Entity
         public double MaxRefund { get; set; }
 
         public virtual ICollection<PackageDetail> PackageDetails { get; set; }
-        public virtual RefundDetail RefundDetail { get; set; }
+        public virtual ICollection<RefundDetail> RefundDetails { get; set; }
     }
 }

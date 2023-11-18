@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthcareSystem.Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231118144319_InitialDb")]
-    partial class InitialDb
+    [Migration("20231118153216_InitialDB")]
+    partial class InitialDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -338,8 +338,7 @@ namespace HealthcareSystem.Backend.Migrations
 
                     b.HasKey("RefundDetailID");
 
-                    b.HasIndex("PolicyId")
-                        .IsUnique();
+                    b.HasIndex("PolicyId");
 
                     b.HasIndex("RefundID");
 
@@ -571,8 +570,8 @@ namespace HealthcareSystem.Backend.Migrations
             modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.RefundDetail", b =>
                 {
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.InsurancePolicy", "InsurancePolicy")
-                        .WithOne("RefundDetail")
-                        .HasForeignKey("HealthcareSystem.Backend.Models.Entity.RefundDetail", "PolicyId")
+                        .WithMany("RefundDetails")
+                        .HasForeignKey("PolicyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -613,8 +612,7 @@ namespace HealthcareSystem.Backend.Migrations
                 {
                     b.Navigation("PackageDetails");
 
-                    b.Navigation("RefundDetail")
-                        .IsRequired();
+                    b.Navigation("RefundDetails");
                 });
 
             modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.Payment", b =>
