@@ -9,7 +9,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL")!);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMSSQL")!);
 });
 
 builder.Services.AddControllers().AddNewtonsoftJson();
