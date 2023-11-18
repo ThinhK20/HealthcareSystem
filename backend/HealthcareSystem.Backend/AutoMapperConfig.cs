@@ -6,7 +6,7 @@ namespace HealthcareSystem.Backend
     {
         public AutoMapperConfig()
         {
-
+            CreateMap<Models.Domain.CustomerRequest, Models.Entity.CustomerRequest>().ReverseMap();
         }
     }
 }

@@ -1,5 +1,7 @@
 using HealthcareSystem.Backend;
 using HealthcareSystem.Backend.Data;
+using HealthcareSystem.Backend.Repositories.UserRepository;
+using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +11,15 @@ builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMSSQL")!);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CloudDb")!);
 });
+
+// Add repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Add services
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 
