@@ -1,5 +1,6 @@
 ﻿using HealthcareSystem.Backend.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace HealthcareSystem.Backend.Repositories.GenericRepository
@@ -48,13 +49,13 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
         public async Task CreateAsync(T entity)
         {
             await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await SaveAsync();
         }
 
         public async Task AddRangeAsync(List<T> entities)
         {
             await _context.AddRangeAsync(entities);
-            await _context.SaveChangesAsync();
+            await SaveAsync();
         }
 
         public async Task RemoveAsync(T entity)
@@ -77,6 +78,10 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
         {
             _context.Update(entity);
             await _context.SaveChangesAsync();
+        }
+        public async Task<int> GetLength()
+        {
+            return _dbSet.Count();
         }
     }
 }

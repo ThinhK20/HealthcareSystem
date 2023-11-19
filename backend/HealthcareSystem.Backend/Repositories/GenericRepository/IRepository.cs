@@ -15,5 +15,7 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
         public Task RemoveAsync(T entity);
         public Task SaveAsync();
         public ApplicationDbContext UnitOfWork();
+        Task<int> GetLength();
+
     }
 }

@@ -3,20 +3,18 @@ using HealthcareSystem.Backend.Repositories.IInsuarancePolicyRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using HealthcareSystem.Backend.Models.DTO;
-using Azure;
-using System.Net;
-
+using HealthcareSystem.Backend.Models.Entity;
 namespace HealthcareSystem.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InsuarancePolicy : ControllerBase
+    public class InsuarancePolicyController : ControllerBase
     {
         private readonly IInsuarancePolicyRepository _dbIP;
         private readonly IMapper _mapper;
 
 
-        public InsuarancePolicy(IInsuarancePolicyRepository dbIP, IMapper mapper)
+        public InsuarancePolicyController(IInsuarancePolicyRepository dbIP, IMapper mapper)
         {
             _dbIP = dbIP;
             _mapper = mapper;
@@ -56,6 +54,44 @@ namespace HealthcareSystem.Backend.Controllers
             }
             catch (Exception e)
             {
+                return BadRequest(e.Message);
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult<InsuarancePolicyCreateDTO>> CreatePolicy([FromBody] InsuarancePolicyCreateDTO data)
+        {
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                if (data == null)
+                {
+                    return BadRequest();
+                }
+
+                var idNew = await _dbIP.GetLength() + 1;
+
+                Models.Entity.InsurancePolicy model = new()
+                {
+                    PayoutPercentage = data.PayoutPercentage,
+                    Description = data.Description,
+                    Name = data.Name,
+                    MaxRefund = data.MaxRefund
+                };
+               
+                await _dbIP.CreateAsync(model);
+
+
+                var api = _mapper.Map<InsuarancePolicyCreateDTO>(model);
+               
+                return Ok(api);
+            }
+            catch (Exception e)
+            {
+
                 return BadRequest(e.Message);
             }
         }
