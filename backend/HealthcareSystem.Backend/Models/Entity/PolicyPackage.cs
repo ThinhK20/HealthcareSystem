@@ -10,8 +10,8 @@ namespace HealthcareSystem.Backend.Models.Entity
         public int Packageid { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public virtual ICollection<InsuranceDetail> InsuranceDetails { get; set; }
-        public virtual ICollection<CustomerRequest> CustomerRequests { get; set; }
-        public virtual ICollection<PackageDetail> PackageDetails { get; set; }
+        public virtual ICollection<InsuranceDetail>? InsuranceDetails { get; set; }
+        public virtual ICollection<CustomerRequest>? CustomerRequests { get; set; }
+        public virtual ICollection<PackageDetail>? PackageDetails { get; set; }
     }
 }

@@ -9,11 +9,11 @@ namespace HealthcareSystem.Backend.Models.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PolicyID { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public double PayoutPercentage { get; set; }
         public double MaxRefund { get; set; }
 
-        public virtual ICollection<PackageDetail> PackageDetails { get; set; }
-        public virtual ICollection<RefundDetail> RefundDetails { get; set; }
+        public virtual ICollection<PackageDetail>? PackageDetails { get; set; }
+        public virtual ICollection<RefundDetail>? RefundDetails { get; set; }
     }
 }

@@ -13,6 +13,6 @@ namespace HealthcareSystem.Backend.Models.Entity
         public DateTime? UpdatedDate { get; set; }
         public double? Price { get; set; }
         public bool? Status { get; set; }
-        public virtual CustomerRequest CustomerRequest { get; set; }
+        public virtual CustomerRequest? CustomerRequest { get; set; }
     }
 }

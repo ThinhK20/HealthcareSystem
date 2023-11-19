@@ -15,6 +15,6 @@ public class Insurance
     public string UserID { get; set; }
 
     public virtual Account Account { get; set; }
-    public virtual ICollection<InsuranceDetail> InsuranceDetails { get; set; }
-    public virtual ICollection<RefundRequest> RefundRequests { get; set; }
+    public virtual ICollection<InsuranceDetail>? InsuranceDetails { get; set; }
+    public virtual ICollection<RefundRequest>? RefundRequests { get; set; }
 }

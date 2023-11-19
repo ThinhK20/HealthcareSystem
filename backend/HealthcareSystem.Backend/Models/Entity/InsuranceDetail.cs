@@ -14,7 +14,7 @@ namespace HealthcareSystem.Backend.Models.Entity
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
 
-        public virtual Insurance Insurance { get; set; }
-        public virtual PolicyPackage PolicyPackage { get; set; }
+        public virtual Insurance? Insurance { get; set; }
+        public virtual PolicyPackage? PolicyPackage { get; set; }
     }
 }

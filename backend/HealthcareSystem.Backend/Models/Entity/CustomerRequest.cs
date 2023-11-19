@@ -16,9 +16,9 @@ namespace HealthcareSystem.Backend.Models.Entity
         public DateTime? DateAccept { get; set; }
         public string? Periodic { get; set; }
         public float? Price { get; set; }
-        public virtual Account Account { get; set; }
-        public virtual Account Staff { get; set; }
-        public virtual Payment Payment { get; set; }
-        public virtual PolicyPackage PolicyPackage { get; set; }
+        public virtual Account? Account { get; set; }
+        public virtual  Account? Staff { get; set; }
+        public virtual  Payment? Payment { get; set; }
+        public virtual PolicyPackage? PolicyPackage { get; set; }
     }
 }
