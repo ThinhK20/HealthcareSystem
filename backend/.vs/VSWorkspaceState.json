@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\HealthcareSystem.Backend",
+    "\\HealthcareSystem.Backend\\Repositories",
+    "\\HealthcareSystem.Backend\\Repositories\\GenericRepository"
+  ],
+  "SelectedNode": "\\HealthcareSystem.Backend\\Repositories\\GenericRepository\\Repository.cs",
+  "PreviewInSolutionExplorer": false
+}
