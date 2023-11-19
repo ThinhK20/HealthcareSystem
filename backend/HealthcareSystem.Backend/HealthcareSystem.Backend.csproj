@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\DTO\" />
     <Folder Include="Enums\" />
   </ItemGroup>
 
