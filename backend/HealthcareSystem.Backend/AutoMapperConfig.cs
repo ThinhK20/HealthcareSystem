@@ -31,6 +31,7 @@ namespace HealthcareSystem.Backend
 
             CreateMap<InsuarancePolicyCreateDTO, InsurancePolicy>();
 
+            CreateMap<InsuarancePolicyUpdateDTO, InsurancePolicy>().ReverseMap();
 
 
 

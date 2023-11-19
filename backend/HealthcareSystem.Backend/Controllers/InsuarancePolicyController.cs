@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
+using Azure;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
+using System.Net;
+
 namespace HealthcareSystem.Backend.Controllers
 {
     [Route("api/[controller]")]
@@ -92,6 +97,60 @@ namespace HealthcareSystem.Backend.Controllers
             catch (Exception e)
             {
 
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeletePolicy(int id)
+        {
+            try
+            {
+                if (id == null || id == 0)
+                {
+                    return BadRequest();
+                }
+                var findPolicy = await _dbIP.GetAsync(u => u.PolicyID == id);
+                if (findPolicy == null)
+                {
+                    return NotFound();
+                }
+                await _dbIP.RemoveAsync(findPolicy);
+                return Ok(findPolicy);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
+        [HttpPut]
+        public async Task<ActionResult<InsuarancePolicyUpdateDTO>> UpdatePolicy([FromBody] InsuarancePolicyUpdateDTO data)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                if (data == null)
+                {
+                    return BadRequest();
+                }
+                var policyFind = await _dbIP.GetAsync(u => u.PolicyID == data.PolicyID, false);
+                if (policyFind == null)
+                {
+                    return NotFound();
+                }
+                var model = _mapper.Map<InsurancePolicy>(data);
+                await _dbIP.UpdateAsync(model);
+
+            
+                return Ok(model);
+            }
+            catch (Exception e)
+            {
                 return BadRequest(e.Message);
             }
         }
