@@ -1,10 +1,6 @@
-﻿using HealthcareSystem.Backend.Models.Domain;
-using HealthcareSystem.Backend.Repositories.GenericRepository;
-
-namespace HealthcareSystem.Backend.Repositories.UserRepository
+﻿namespace HealthcareSystem.Backend.Repositories.UserRepository
 {
-    public interface IUserRepository : IRepository<Models.Entity.CustomerRequest>
+    public interface IUserRepository
     {
-        public Task<CustomerRequest> CreateCustomerRequestAsync(CustomerRequest customerRequest);
     }
 }

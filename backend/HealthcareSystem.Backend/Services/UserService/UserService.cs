@@ -1,22 +1,35 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
-using HealthcareSystem.Backend.Repositories.UserRepository;
+using HealthcareSystem.Backend.Repositories;
 
 namespace HealthcareSystem.Backend.Services.UserService
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository userRepository;
+        private readonly ICustomerRequestRepository _customerRequestRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(ICustomerRequestRepository customerRequestRepository)
         {
-            this.userRepository = userRepository;
+            _customerRequestRepository = customerRequestRepository;
         }
 
         public async Task<CustomerRequest> CreateCustomerRequestAsync(CustomerRequest customerRequest)
         {
-            CustomerRequest createdRequest = await userRepository.CreateCustomerRequestAsync(customerRequest);
-            if (createdRequest == null) throw new Exception("Failed to create customer request. Please try again !");
-            return createdRequest;
+            return await _customerRequestRepository.CreateCustomerRequest(customerRequest);
+        }
+
+        public async Task<bool> DeleteCustomerRequestByIdAsync(int requestId)
+        {
+            return await _customerRequestRepository.DeleteCustomerRequestByIdAsync(requestId);
+        }
+
+        public async Task<List<CustomerRequest>> GetAllCustomerRequestsAsync()
+        {
+            return await _customerRequestRepository.GetAllCustomerRequestsAsync();
+        }
+
+        public async Task<CustomerRequest> GetCustomerRequestByIdAsync(int requestId)
+        {
+            return await _customerRequestRepository.GetCustomerRequestByIdAsync(requestId);
         }
     }
 }

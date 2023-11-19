@@ -1,10 +1,8 @@
-﻿using HealthcareSystem.Backend.Repositories.GenericRepository;
-using HealthcareSystem.Backend.Models.Entity;
-namespace HealthcareSystem.Backend.Repositories.IInsuarancePolicyRepository
+﻿using HealthcareSystem.Backend.Models.Entity;
+using HealthcareSystem.Backend.Repositories.GenericRepository;
+namespace HealthcareSystem.Backend.Repositories
 {
-    public interface IInsuarancePolicyRepository :  IRepository<InsurancePolicy>
+    public interface IInsuarancePolicyRepository : IRepository<InsurancePolicy>
     {
-
-
     }
 }

@@ -1,7 +1,6 @@
 using HealthcareSystem.Backend;
 using HealthcareSystem.Backend.Data;
-using HealthcareSystem.Backend.Repositories.IInsuarancePolicyRepository;
-using HealthcareSystem.Backend.Repositories.UserRepository;
+using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,16 +14,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMSSQL")!);
 });
 
+
+
 // Add repositories
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICustomerRequestRepository, CustomerRequestRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInsuarancePolicyRepository, InsuarancePolicyRepository>();
 
 // Add services
-
 builder.Services.AddScoped<IUserService, UserService>();
 
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
+
 
 builder.Services.AddCors(options =>
 {

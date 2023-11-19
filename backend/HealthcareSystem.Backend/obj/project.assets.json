@@ -4405,19 +4405,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Mr Minh\\.nuget\\packages\\": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\PTHTTTHĐ\\Project\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj",
+      "projectUniqueName": "D:\\Coding\\School\\DevelopModernIS\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj",
       "projectName": "HealthcareSystem.Backend",
-      "projectPath": "D:\\PTHTTTHĐ\\Project\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj",
-      "packagesPath": "C:\\Users\\Mr Minh\\.nuget\\packages\\",
-      "outputPath": "D:\\PTHTTTHĐ\\Project\\backend\\HealthcareSystem.Backend\\obj\\",
+      "projectPath": "D:\\Coding\\School\\DevelopModernIS\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "D:\\Coding\\School\\DevelopModernIS\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Mr Minh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4519,7 +4519,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -15,17 +15,55 @@ namespace HealthcareSystem.Backend.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("createCustomerRequest")]
         public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequest customerRequest)
         {
             try
             {
-                CustomerRequest createdRequest = await _userService.CreateCustomerRequestAsync(customerRequest);
-                return Ok(createdRequest);
+                return Ok(await _userService.CreateCustomerRequestAsync(customerRequest));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("customerRequests")]
+        public async Task<IActionResult> GetAllCustomerRequests()
+        {
+            try
+            {
+                return Ok(await _userService.GetAllCustomerRequestsAsync());
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("customerRequests/{id:int}")]
+        public async Task<IActionResult> GetCustomerRequestsById([FromRoute(Name = "id")] int requestId)
+        {
+            try
+            {
+                return Ok(_userService.GetCustomerRequestByIdAsync(requestId));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpDelete("customerRequests/{id:int}")]
+        public async Task<IActionResult> DeleteCustomerRequestById([FromRoute(Name = "id")] int requestId)
+        {
+            try
+            {
+                return Ok(_userService.DeleteCustomerRequestByIdAsync(requestId));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
             }
         }
     }

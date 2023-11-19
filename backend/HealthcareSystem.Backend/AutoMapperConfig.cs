@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HealthcareSystem.Backend.Controllers;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 
@@ -9,10 +8,12 @@ namespace HealthcareSystem.Backend
     {
         public AutoMapperConfig()
         {
-            CreateMap<Models.Domain.CustomerRequest, Models.Entity.CustomerRequest>().ReverseMap();
+            CreateMap<Models.Domain.CustomerRequest, Models.Entity.CustomerRequest>()
+                .ForMember(dest => dest.Account, opt => opt.Ignore())
+                .ForMember(dest => dest.Staff, opt => opt.Ignore())
+                .ForMember(dest => dest.Payment, opt => opt.Ignore());
 
-
-
+            CreateMap<Models.Entity.CustomerRequest, Models.Domain.CustomerRequest>();
 
             CreateMap<InsurancePolicy, InsuarancePolicyDTO>()
                 .ForMember(dest => dest.PayoutPercentage, opt => opt.MapFrom(src => src.PayoutPercentage))

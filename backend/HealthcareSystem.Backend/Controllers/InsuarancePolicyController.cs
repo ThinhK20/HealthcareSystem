@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
-using HealthcareSystem.Backend.Repositories.IInsuarancePolicyRepository;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
-using Azure;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using System.Net;
+using HealthcareSystem.Backend.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
 {
@@ -34,7 +29,8 @@ namespace HealthcareSystem.Backend.Controllers
                 var mapper_data = _mapper.Map<List<InsuarancePolicyDTO>>(List);
                 return Ok(mapper_data);
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 return BadRequest(e.Message);
             }
         }
@@ -86,12 +82,12 @@ namespace HealthcareSystem.Backend.Controllers
                     Name = data.Name,
                     MaxRefund = data.MaxRefund
                 };
-               
+
                 await _dbIP.CreateAsync(model);
 
 
                 var api = _mapper.Map<InsuarancePolicyCreateDTO>(model);
-               
+
                 return Ok(api);
             }
             catch (Exception e)
@@ -146,7 +142,7 @@ namespace HealthcareSystem.Backend.Controllers
                 var model = _mapper.Map<InsurancePolicy>(data);
                 await _dbIP.UpdateAsync(model);
 
-            
+
                 return Ok(model);
             }
             catch (Exception e)
