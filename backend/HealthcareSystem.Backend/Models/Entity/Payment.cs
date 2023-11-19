@@ -8,11 +8,11 @@ namespace HealthcareSystem.Backend.Models.Entity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PaymentId { get; set; }
-        public int RequestId { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
-        public double Price { get; set; }
-        public bool Status { get; set; }
+        public int? RequestId { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public double? Price { get; set; }
+        public bool? Status { get; set; }
         public virtual CustomerRequest CustomerRequest { get; set; }
     }
 }
