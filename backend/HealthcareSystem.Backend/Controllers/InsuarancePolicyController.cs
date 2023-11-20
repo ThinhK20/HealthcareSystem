@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+ 
     public class InsuarancePolicyController : ControllerBase
     {
         private readonly IInsuarancePolicyRepository _dbIP;

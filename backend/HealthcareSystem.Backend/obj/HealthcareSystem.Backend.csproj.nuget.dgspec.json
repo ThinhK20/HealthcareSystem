@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Coding\\School\\DevelopModernIS\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj": {}
+    "C:\\Users\\dangm\\OneDrive\\Documents\\GitHub\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj": {}
   },
   "projects": {
-    "D:\\Coding\\School\\DevelopModernIS\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj": {
+    "C:\\Users\\dangm\\OneDrive\\Documents\\GitHub\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Coding\\School\\DevelopModernIS\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj",
+        "projectUniqueName": "C:\\Users\\dangm\\OneDrive\\Documents\\GitHub\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj",
         "projectName": "HealthcareSystem.Backend",
-        "projectPath": "D:\\Coding\\School\\DevelopModernIS\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\Coding\\School\\DevelopModernIS\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\obj\\",
+        "projectPath": "C:\\Users\\dangm\\OneDrive\\Documents\\GitHub\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\HealthcareSystem.Backend.csproj",
+        "packagesPath": "C:\\Users\\dangm\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dangm\\OneDrive\\Documents\\GitHub\\HealthcareSystem\\backend\\HealthcareSystem.Backend\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dangm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

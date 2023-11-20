@@ -20,7 +20,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<ICustomerRequestRepository, CustomerRequestRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInsuarancePolicyRepository, InsuarancePolicyRepository>();
-
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 // Add services
 builder.Services.AddScoped<IUserService, UserService>();
 

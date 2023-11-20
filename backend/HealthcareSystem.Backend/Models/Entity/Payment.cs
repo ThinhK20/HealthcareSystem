@@ -14,5 +14,6 @@ namespace HealthcareSystem.Backend.Models.Entity
         public double? Price { get; set; }
         public bool? Status { get; set; }
         public virtual CustomerRequest? CustomerRequest { get; set; }
+
     }
 }
