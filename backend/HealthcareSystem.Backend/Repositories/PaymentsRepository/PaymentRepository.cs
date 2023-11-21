@@ -15,7 +15,7 @@ namespace HealthcareSystem.Backend.Repositories
         public PaymentRepository(ApplicationDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
-            _applicationContext = context;
+            _applicationContext = context;  
         }
 
         public async Task<bool> CreatePayment(PaymentCreateDTO payment)
@@ -49,26 +49,26 @@ namespace HealthcareSystem.Backend.Repositories
             return true; ;
         }
 
-        public async Task<List<Payment>> GetAllPaymentRequestsAsync()
+        public async Task<List<PaymentDomain>> GetAllPaymentRequestsAsync()
         {
             var query = await GetAllAsync();
-            var paymentQuery =  query.Select(u => _mapper.Map<Payment>(u)).ToList();
+            var paymentQuery =  query.Select(u => _mapper.Map<PaymentDomain>(u)).ToList();
             return paymentQuery;
         }
-        public async Task<List<Payment>> GetPendingTransferPaymentRequestsAsync()
+        public async Task<List<PaymentDomain>> GetPendingTransferPaymentRequestsAsync()
         {
             var payments = await GetAsync(x => x.Status == false);
-            return _mapper.Map<List<Payment>>(new List<Payment> { payments });
+            return _mapper.Map<List<PaymentDomain>>(new List<Payment> { payments });
         }
 
-        public async Task<List<Payment>> GetPaymentedAsync()
+        public async Task<List<PaymentDomain>> GetPaymentedAsync()
         {
             var payments = await GetAsync(x => x.Status == true);
-            return _mapper.Map<List<Payment>>(new List<Payment> { payments });
+            return _mapper.Map<List<PaymentDomain>>(new List<Payment> { payments });
         }
-        public async Task<Payment> GetPaymentIdAsync(int PaymentId)
+        public async Task<PaymentDomain> GetPaymentIdAsync(int PaymentId)
         {
-            return _mapper.Map<Payment>(await GetAsync(x => x.PaymentId == PaymentId));
+            return _mapper.Map<PaymentDomain>(await GetAsync(x => x.PaymentId == PaymentId));
         }
     }
 }

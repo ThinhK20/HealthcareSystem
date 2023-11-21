@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 
@@ -35,6 +36,7 @@ namespace HealthcareSystem.Backend
             CreateMap<InsuarancePolicyUpdateDTO, InsurancePolicy>().ReverseMap();
 
 
+            CreateMap<Payment, PaymentDomain>();
 
 
 
