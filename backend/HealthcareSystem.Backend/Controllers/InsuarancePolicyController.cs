@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
 {
- 
+    [Route("api/[controller]")]
+    [ApiController]
     public class InsuarancePolicyController : ControllerBase
     {
         private readonly IInsuarancePolicyRepository _dbIP;
@@ -76,10 +77,9 @@ namespace HealthcareSystem.Backend.Controllers
 
                 Models.Entity.InsurancePolicy model = new()
                 {
-                    PayoutPercentage = data.PayoutPercentage,
+                    
                     Description = data.Description,
                     Name = data.Name,
-                    MaxRefund = data.MaxRefund
                 };
 
                 await _dbIP.CreateAsync(model);

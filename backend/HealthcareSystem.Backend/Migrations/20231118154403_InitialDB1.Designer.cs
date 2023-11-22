@@ -4,6 +4,7 @@ using HealthcareSystem.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthcareSystem.Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231118154403_InitialDB1")]
+    partial class InitialDB1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,62 +69,36 @@ namespace HealthcareSystem.Backend.Migrations
 
             modelBuilder.Entity("HealthRecord", b =>
                 {
-                    b.Property<int>("UserID")
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
-
                     b.Property<int>("RecordId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecordId"));
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FeeAffectID")
+                    b.Property<string>("Role")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Phase")
-                        .HasColumnType("int");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("RecordDate")
-                        .HasColumnType("datetime2");
+                    b.HasKey("RecordId");
 
-                    b.HasKey("UserID", "RecordId");
-
-                    b.HasIndex("FeeAffectID");
+                    b.HasIndex("UserID");
 
                     b.ToTable("HealthRecords");
-                });
-
-            modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.BasicPrice", b =>
-                {
-                    b.Property<int>("PackageID")
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    b.Property<int>("IndexId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
-
-                    b.Property<int?>("FromAge")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("ToAge")
-                        .HasColumnType("float");
-
-                    b.HasKey("PackageID", "IndexId");
-
-                    b.ToTable("BasicPrice");
                 });
 
             modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.CustomerInquiry", b =>
@@ -132,29 +109,31 @@ namespace HealthcareSystem.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InquiryID"));
 
-                    b.Property<int?>("AccountId")
-                        .IsRequired()
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<string>("Answer")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateAnwser")
+                    b.Property<DateTime>("DateAnwser")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateQuestion")
+                    b.Property<DateTime>("DateQuestion")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Question")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Questioner")
+                    b.Property<int>("Questioner")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Respondent")
+                    b.Property<int>("Respondent")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("InquiryID");
@@ -172,32 +151,30 @@ namespace HealthcareSystem.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestID"));
 
-                    b.Property<int?>("AccountId")
+                    b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DateAccept")
+                    b.Property<DateTime>("DateAccept")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateRequest")
+                    b.Property<DateTime>("DateRequest")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PackageId")
+                    b.Property<int>("PackageId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PaymentId")
+                    b.Property<int>("PaymentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Periodic")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("Price")
+                    b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int?>("StaffId")
+                    b.Property<int>("StaffId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RequestID");
 
@@ -206,37 +183,11 @@ namespace HealthcareSystem.Backend.Migrations
                     b.HasIndex("PackageId");
 
                     b.HasIndex("PaymentId")
-                        .IsUnique()
-                        .HasFilter("[PaymentId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("StaffId");
 
                     b.ToTable("CustomerRequests");
-                });
-
-            modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.FeeAffect", b =>
-                {
-                    b.Property<int>("FeeAffectId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeeAffectId"));
-
-                    b.Property<string>("FeeAffectName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("MaxPercentIncrease")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("PercentIncreaseInFirst")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("PercentIncreaseInNext")
-                        .HasColumnType("float");
-
-                    b.HasKey("FeeAffectId");
-
-                    b.ToTable("FeeAffect");
                 });
 
             modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.InsuranceDetail", b =>
@@ -255,7 +206,7 @@ namespace HealthcareSystem.Backend.Migrations
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("InsuranceID")
+                    b.Property<int>("InsuranceID")
                         .HasColumnType("int");
 
                     b.HasKey("PackageID", "InsureID");
@@ -274,10 +225,18 @@ namespace HealthcareSystem.Backend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PolicyID"));
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("MaxRefund")
+                        .HasColumnType("float");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("PayoutPercentage")
+                        .HasColumnType("float");
 
                     b.HasKey("PolicyID");
 
@@ -294,17 +253,11 @@ namespace HealthcareSystem.Backend.Migrations
                         .HasColumnType("int")
                         .HasColumnOrder(0);
 
-                    b.Property<double?>("MaxRefundPeYear")
-                        .HasColumnType("float");
+                    b.Property<DateTime>("DateEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<double?>("MaxRefundPerDay")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("MaxRefundPerExamination")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("PayoutPrice")
-                        .HasColumnType("float");
+                    b.Property<DateTime>("DateStart")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("PolicyID", "PackageID");
 
@@ -321,19 +274,19 @@ namespace HealthcareSystem.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("Price")
+                    b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int?>("RequestId")
+                    b.Property<int>("RequestId")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("Status")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("UpdatedDate")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("PaymentId");
@@ -400,31 +353,36 @@ namespace HealthcareSystem.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RefundID"));
 
-                    b.Property<DateTime?>("DateRefund")
+                    b.Property<DateTime>("DateRefund")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateSend")
+                    b.Property<DateTime>("DateSend")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HoptitalDescription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HoptitalName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("InsureId")
+                    b.Property<int>("InsureId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("TotalRefundFee")
+                    b.Property<double>("TotalRefundFee")
                         .HasColumnType("float");
 
                     b.HasKey("RefundID");
@@ -459,10 +417,6 @@ namespace HealthcareSystem.Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Fullname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -520,12 +474,6 @@ namespace HealthcareSystem.Backend.Migrations
 
             modelBuilder.Entity("HealthRecord", b =>
                 {
-                    b.HasOne("HealthcareSystem.Backend.Models.Entity.FeeAffect", "FeeAffects")
-                        .WithMany("HealthRecords")
-                        .HasForeignKey("FeeAffectID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Account", "Account")
                         .WithMany("HealthRecords")
                         .HasForeignKey("UserID")
@@ -533,19 +481,6 @@ namespace HealthcareSystem.Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Account");
-
-                    b.Navigation("FeeAffects");
-                });
-
-            modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.BasicPrice", b =>
-                {
-                    b.HasOne("HealthcareSystem.Backend.Models.Entity.PolicyPackage", "PolicyPackage")
-                        .WithMany("BasicPrices")
-                        .HasForeignKey("PackageID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PolicyPackage");
                 });
 
             modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.CustomerInquiry", b =>
@@ -563,20 +498,27 @@ namespace HealthcareSystem.Backend.Migrations
                 {
                     b.HasOne("Account", "Account")
                         .WithMany("CustomerRequests")
-                        .HasForeignKey("AccountId");
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.PolicyPackage", "PolicyPackage")
                         .WithMany("CustomerRequests")
-                        .HasForeignKey("PackageId");
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.Payment", "Payment")
                         .WithOne("CustomerRequest")
-                        .HasForeignKey("HealthcareSystem.Backend.Models.Entity.CustomerRequest", "PaymentId");
+                        .HasForeignKey("HealthcareSystem.Backend.Models.Entity.CustomerRequest", "PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Account", "Staff")
                         .WithMany("ApproverRequests")
                         .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Account");
 
@@ -591,7 +533,9 @@ namespace HealthcareSystem.Backend.Migrations
                 {
                     b.HasOne("Insurance", "Insurance")
                         .WithMany("InsuranceDetails")
-                        .HasForeignKey("InsuranceID");
+                        .HasForeignKey("InsuranceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.PolicyPackage", "PolicyPackage")
                         .WithMany("InsuranceDetails")
@@ -646,7 +590,9 @@ namespace HealthcareSystem.Backend.Migrations
                 {
                     b.HasOne("Insurance", "Insurance")
                         .WithMany("RefundRequests")
-                        .HasForeignKey("InsureId");
+                        .HasForeignKey("InsureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Insurance");
                 });
@@ -662,11 +608,6 @@ namespace HealthcareSystem.Backend.Migrations
                     b.Navigation("HealthRecords");
                 });
 
-            modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.FeeAffect", b =>
-                {
-                    b.Navigation("HealthRecords");
-                });
-
             modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.InsurancePolicy", b =>
                 {
                     b.Navigation("PackageDetails");
@@ -676,13 +617,12 @@ namespace HealthcareSystem.Backend.Migrations
 
             modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.Payment", b =>
                 {
-                    b.Navigation("CustomerRequest");
+                    b.Navigation("CustomerRequest")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.PolicyPackage", b =>
                 {
-                    b.Navigation("BasicPrices");
-
                     b.Navigation("CustomerRequests");
 
                     b.Navigation("InsuranceDetails");

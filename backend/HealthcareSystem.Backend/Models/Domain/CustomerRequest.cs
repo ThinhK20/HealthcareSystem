@@ -11,5 +11,6 @@
         public DateTime DateAccept { get; set; }
         public string Periodic { get; set; }
         public float Price { get; set; }
+
     }
 }

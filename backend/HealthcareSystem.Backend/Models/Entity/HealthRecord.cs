@@ -1,22 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HealthcareSystem.Backend.Models.Entity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 public class HealthRecord
 {
     [Key]
+    [Column(Order = 0)]
+    public int UserID { get; set; }
+    [Key]
+    [Column(Order = 1)]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int RecordId { get; set; }
-    public int UserID { get; set; }
 
-    public string Username { get; set; }
+    public string? Description { get; set; }
 
-    public string Password { get; set; }
+    public DateTime? RecordDate { get; set; }
+    public int? Phase {  get; set; }
 
-    public string Status { get; set; }
-
-    public string Role { get; set; }
-
+    public int FeeAffectID {  get; set; }
 
     public virtual Account Account { get; set; }
+
+    public virtual FeeAffect FeeAffects { get; set; }
 }
 

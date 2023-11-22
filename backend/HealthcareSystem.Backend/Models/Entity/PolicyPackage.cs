@@ -13,5 +13,6 @@ namespace HealthcareSystem.Backend.Models.Entity
         public virtual ICollection<InsuranceDetail>? InsuranceDetails { get; set; }
         public virtual ICollection<CustomerRequest>? CustomerRequests { get; set; }
         public virtual ICollection<PackageDetail>? PackageDetails { get; set; }
+        public virtual ICollection<BasicPrice>? BasicPrices { get; set; }
     }
 }

@@ -17,16 +17,12 @@ namespace HealthcareSystem.Backend
             CreateMap<Models.Entity.CustomerRequest, Models.Domain.CustomerRequest>();
 
             CreateMap<InsurancePolicy, InsuarancePolicyDTO>()
-                .ForMember(dest => dest.PayoutPercentage, opt => opt.MapFrom(src => src.PayoutPercentage))
-                .ForMember(dest => dest.MaxRefund, opt => opt.MapFrom(src => src.MaxRefund))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.PolicyID, opt => opt.MapFrom(src => src.PolicyID))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
 
 
             CreateMap<InsurancePolicy, InsuarancePolicyCreateDTO>()
-                .ForMember(dest => dest.PayoutPercentage, opt => opt.MapFrom(src => src.PayoutPercentage))
-                .ForMember(dest => dest.MaxRefund, opt => opt.MapFrom(src => src.MaxRefund))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
 

@@ -11,8 +11,12 @@ namespace HealthcareSystem.Backend.Models.Entity
         [Key]
         [Column(Order = 1)]
         public int PolicyID { get; set; }
-        public DateTime DateStart { get; set; }
-        public DateTime DateEnd { get; set; }
+        public double? PayoutPrice { get; set; }
+        public double? MaxRefundPerExamination { get; set; }
+        
+        public double? MaxRefundPerDay { get; set; }
+
+        public double? MaxRefundPeYear { get; set; }
         public virtual PolicyPackage PolicyPackage { get; set; }
         public virtual InsurancePolicy InsurancePolicy { get; set; }
     }

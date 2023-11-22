@@ -28,6 +28,13 @@ namespace HealthcareSystem.Backend.Data
             modelBuilder.Entity<PackageDetail>()
                 .HasKey(x => new { x.PolicyID, x.PackageID });
 
+            modelBuilder.Entity<HealthRecord>()
+                .HasKey(x => new { x.UserID,x.RecordId});
+
+            modelBuilder.Entity<BasicPrice>()
+                .HasKey(x => new { x.PackageID, x.IndexId });
+
+
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Account)
                 .WithOne(a => a.User)
@@ -44,6 +51,10 @@ namespace HealthcareSystem.Backend.Data
                 .WithOne(h => h.Account)
                 .HasForeignKey(h => h.UserID);
 
+            modelBuilder.Entity<FeeAffect>()
+                .HasMany(f => f.HealthRecords)
+                .WithOne(h => h.FeeAffects)
+                .HasForeignKey(h => h.FeeAffectID);
 
             modelBuilder.Entity<CustomerRequest>()
                .HasOne(a => a.Payment)
@@ -82,9 +93,9 @@ namespace HealthcareSystem.Backend.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<RefundRequest>()
-           .HasMany(a => a.RefundDetails)
-           .WithOne(c => c.RefundRequest)
-           .HasForeignKey(c => c.RefundID);
+               .HasMany(a => a.RefundDetails)
+               .WithOne(c => c.RefundRequest)
+               .HasForeignKey(c => c.RefundID);
 
             modelBuilder.Entity<PackageDetail>() //to PackageID
                 .HasOne(pd => pd.PolicyPackage)
