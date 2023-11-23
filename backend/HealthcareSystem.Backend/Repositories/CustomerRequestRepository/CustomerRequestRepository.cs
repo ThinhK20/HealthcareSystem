@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 
 namespace HealthcareSystem.Backend.Repositories
@@ -15,7 +16,7 @@ namespace HealthcareSystem.Backend.Repositories
             _applicationContext = context;
         }
 
-        public async Task<CustomerRequestDomain> CreateCustomerRequest(CustomerRequestDomain customerRequest)
+        public async Task<CustomerRequestCreateDTO> CreateCustomerRequest(CustomerRequestCreateDTO customerRequest)
         {
             if (customerRequest == null) throw new Exception("Customer request not found.");
             Models.Entity.CustomerRequest entity = _mapper.Map<Models.Entity.CustomerRequest>(customerRequest);
@@ -33,7 +34,7 @@ namespace HealthcareSystem.Backend.Repositories
 
         public async Task<List<CustomerRequestDomain>> GetAllCustomerRequestsAsync()
         {
-            var entityRequests = await GetAllAsync();
+            var entityRequests = await GetAllAsync(null, true, "Account,Staff,Payment,PolicyPackage");
             var customerRequests = entityRequests.Select(t => _mapper.Map<CustomerRequestDomain>(t)).ToList();
             return customerRequests;
         }
