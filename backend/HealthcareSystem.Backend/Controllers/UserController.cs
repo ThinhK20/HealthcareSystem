@@ -24,7 +24,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
-                return Ok(await _userService.CreateCustomerRequestAsync(_mapper.Map<CustomerRequestDomain>(customerRequest)));
+                return Ok(await _userService.CreateCustomerRequestAsync(customerRequest));
             }
             catch (Exception ex)
             {

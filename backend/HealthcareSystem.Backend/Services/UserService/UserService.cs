@@ -1,4 +1,5 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories;
 
 namespace HealthcareSystem.Backend.Services.UserService
@@ -18,10 +19,11 @@ namespace HealthcareSystem.Backend.Services.UserService
             _feeAffectRepository = feeAffectRepository;
         }
 
-        public async Task<CustomerRequestDomain> CreateCustomerRequestAsync(CustomerRequestDomain customerRequest)
+        public async Task<CustomerRequestCreateDTO> CreateCustomerRequestAsync(CustomerRequestCreateDTO customerRequest)
         {
             return await _customerRequestRepository.CreateCustomerRequest(customerRequest);
         }
+
 
         public async Task<bool> DeleteCustomerRequestByIdAsync(int requestId)
         {

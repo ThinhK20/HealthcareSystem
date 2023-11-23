@@ -1,10 +1,11 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
 
 namespace HealthcareSystem.Backend.Services.UserService
 {
     public interface IUserService
     {
-        public Task<CustomerRequestDomain> CreateCustomerRequestAsync(CustomerRequestDomain customerRequest);
+        public Task<CustomerRequestCreateDTO> CreateCustomerRequestAsync(CustomerRequestCreateDTO customerRequest);
         public Task<bool> DeleteCustomerRequestByIdAsync(int requestId);
         public Task<List<CustomerRequestDomain>> GetAllCustomerRequestsAsync();
         public Task<CustomerRequestDomain> GetCustomerRequestByIdAsync(int requestId);

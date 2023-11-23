@@ -8,7 +8,15 @@ namespace HealthcareSystem.Backend
     {
         public AutoMapperConfig()
         {
-            CreateMap<Models.Domain.CustomerRequestDomain, Models.Entity.CustomerRequest>().ReverseMap();
+            CreateMap<Models.Domain.CustomerRequestDomain, Models.Entity.CustomerRequest>()
+                 .ForMember(dest => dest.Account, opt => opt.Ignore())
+                 .ForMember(dest => dest.Staff, opt => opt.Ignore())
+                 .ForMember(dest => dest.Payment, opt => opt.Ignore())
+                 .ForMember(dest => dest.PolicyPackage, opt => opt.Ignore());
+
+            CreateMap<Models.Entity.CustomerRequest, Models.Domain.CustomerRequestDomain>();
+            CreateMap<Models.DTO.CustomerRequestCreateDTO, Models.Entity.CustomerRequest>().ReverseMap();
+            CreateMap<Payment, PaymentDomain>().ReverseMap();
 
             CreateMap<Models.Domain.CustomerRequestDomain, Models.DTO.CustomerRequestCreateDTO>().ReverseMap();
             CreateMap<Models.Domain.CustomerRequestDomain, Models.DTO.CustomerRequestCreateDTO>().ReverseMap();
