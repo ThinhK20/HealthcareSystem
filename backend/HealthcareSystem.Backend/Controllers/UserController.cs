@@ -16,7 +16,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpPost("createCustomerRequest")]
-        public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequest customerRequest)
+        public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequestDomain customerRequest)
         {
             try
             {

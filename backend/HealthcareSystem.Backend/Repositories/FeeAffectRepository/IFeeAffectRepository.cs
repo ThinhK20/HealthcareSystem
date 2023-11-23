@@ -4,8 +4,8 @@ using HealthcareSystem.Backend.Repositories.GenericRepository;
 
 namespace HealthcareSystem.Backend.Repositories
 {
-    public interface IUserRepository: IRepository<Models.Entity.User>
+    public interface IFeeAffectRepository: IRepository<FeeAffect>
     {
-        public Task<UserPriceDomain> GetUserInfoForPriceByIdAsync(int UserID);
+        public Task<List<FeeAffectDomain>> GetAll();
     }
 }

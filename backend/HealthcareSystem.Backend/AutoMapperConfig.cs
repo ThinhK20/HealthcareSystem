@@ -9,12 +9,12 @@ namespace HealthcareSystem.Backend
     {
         public AutoMapperConfig()
         {
-            CreateMap<Models.Domain.CustomerRequest, Models.Entity.CustomerRequest>()
+            CreateMap<Models.Domain.CustomerRequestDomain, Models.Entity.CustomerRequest>()
                 .ForMember(dest => dest.Account, opt => opt.Ignore())
                 .ForMember(dest => dest.Staff, opt => opt.Ignore())
                 .ForMember(dest => dest.Payment, opt => opt.Ignore());
 
-            CreateMap<Models.Entity.CustomerRequest, Models.Domain.CustomerRequest>();
+            CreateMap<Models.Entity.CustomerRequest, Models.Domain.CustomerRequestDomain>();
 
             CreateMap<InsurancePolicy, InsuarancePolicyDTO>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
@@ -33,6 +33,13 @@ namespace HealthcareSystem.Backend
 
 
             CreateMap<Payment, PaymentDomain>();
+
+            CreateMap<User, UserPriceDomain>();
+
+            CreateMap<BasicPrice, BasicPriceDomain>();
+
+            CreateMap<FeeAffect, FeeAffectDomain>();
+
 
 
 

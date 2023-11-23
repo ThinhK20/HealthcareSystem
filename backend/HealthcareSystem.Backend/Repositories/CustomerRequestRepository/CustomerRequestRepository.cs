@@ -15,7 +15,7 @@ namespace HealthcareSystem.Backend.Repositories
             _applicationContext = context;
         }
 
-        public async Task<CustomerRequest> CreateCustomerRequest(CustomerRequest customerRequest)
+        public async Task<CustomerRequestDomain> CreateCustomerRequest(CustomerRequestDomain customerRequest)
         {
             if (customerRequest == null) throw new Exception("Customer request not found.");
             Models.Entity.CustomerRequest entity = _mapper.Map<Models.Entity.CustomerRequest>(customerRequest);
@@ -31,16 +31,16 @@ namespace HealthcareSystem.Backend.Repositories
             return true; ;
         }
 
-        public async Task<List<CustomerRequest>> GetAllCustomerRequestsAsync()
+        public async Task<List<CustomerRequestDomain>> GetAllCustomerRequestsAsync()
         {
             var entityRequests = await GetAllAsync();
-            var customerRequests = entityRequests.Select(t => _mapper.Map<CustomerRequest>(t)).ToList();
+            var customerRequests = entityRequests.Select(t => _mapper.Map<CustomerRequestDomain>(t)).ToList();
             return customerRequests;
         }
 
-        public async Task<CustomerRequest> GetCustomerRequestByIdAsync(int requestId)
+        public async Task<CustomerRequestDomain> GetCustomerRequestByIdAsync(int requestId)
         {
-            return _mapper.Map<CustomerRequest>(await GetAsync(x => x.RequestID == requestId));
+            return _mapper.Map<CustomerRequestDomain>(await GetAsync(x => x.RequestID == requestId));
         }
     }
 }

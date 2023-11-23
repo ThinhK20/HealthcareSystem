@@ -4,6 +4,7 @@ using HealthcareSystem.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthcareSystem.Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231122133629_fixDb4")]
+    partial class fixDb4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,10 +73,6 @@ namespace HealthcareSystem.Backend.Migrations
                         .HasColumnType("int")
                         .HasColumnOrder(0);
 
-                    b.Property<int>("IndexRecord")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -86,7 +85,7 @@ namespace HealthcareSystem.Backend.Migrations
                     b.Property<DateTime?>("RecordDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("UserID", "IndexRecord");
+                    b.HasKey("UserID");
 
                     b.HasIndex("FeeAffectID");
 

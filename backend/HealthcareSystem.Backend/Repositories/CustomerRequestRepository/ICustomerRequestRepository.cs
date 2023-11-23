@@ -5,9 +5,9 @@ namespace HealthcareSystem.Backend.Repositories
 {
     public interface ICustomerRequestRepository : IRepository<Models.Entity.CustomerRequest>
     {
-        public Task<CustomerRequest> CreateCustomerRequest(CustomerRequest customerRequest);
+        public Task<CustomerRequestDomain> CreateCustomerRequest(CustomerRequestDomain customerRequest);
         public Task<bool> DeleteCustomerRequestByIdAsync(int requestId);
-        public Task<List<CustomerRequest>> GetAllCustomerRequestsAsync();
-        public Task<CustomerRequest> GetCustomerRequestByIdAsync(int requestId);
+        public Task<List<CustomerRequestDomain>> GetAllCustomerRequestsAsync();
+        public Task<CustomerRequestDomain> GetCustomerRequestByIdAsync(int requestId);
     }
 }

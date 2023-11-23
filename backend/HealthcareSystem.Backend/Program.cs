@@ -1,6 +1,7 @@
 using HealthcareSystem.Backend;
 using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Repositories;
+using HealthcareSystem.Backend.Services.PackagePoliceService;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,8 +22,19 @@ builder.Services.AddScoped<ICustomerRequestRepository, CustomerRequestRepository
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IInsuarancePolicyRepository, InsuarancePolicyRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IHealthRecordRepository, HealRecordRepository>();
+builder.Services.AddScoped<IFeeAffectRepository, FeeAffectRopsitory>();
+
+
+
+builder.Services.AddScoped<IBasicPriceRepository, BasicPriceRepository>();
+
+
 // Add services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPackagePoliceService, PackagePoliceService>();
+
 
 
 

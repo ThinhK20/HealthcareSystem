@@ -1,6 +1,6 @@
 ﻿namespace HealthcareSystem.Backend.Models.Domain
 {
-    public class CustomerRequest
+    public class CustomerRequestDomain
     {
         public int RequestID { get; set; }
         public int AccountId { get; set; }
