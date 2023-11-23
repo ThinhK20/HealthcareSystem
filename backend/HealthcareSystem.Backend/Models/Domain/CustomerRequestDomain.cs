@@ -1,4 +1,6 @@
-﻿namespace HealthcareSystem.Backend.Models.Domain
+﻿using HealthcareSystem.Backend.Models.DTO;
+
+namespace HealthcareSystem.Backend.Models.Domain
 {
     public class CustomerRequestDomain
     {
@@ -11,6 +13,11 @@
         public DateTime DateAccept { get; set; }
         public string Periodic { get; set; }
         public float Price { get; set; }
+
+        public AccountDTO? Account { get; set; } = new();
+        public AccountDTO? Staff { get; set; } = new();
+        public PaymentDomain? Payment { get; set; } = new();
+        public PolicyPackageDomain? PolicyPackage { get; set; } = new();
 
     }
 }

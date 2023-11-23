@@ -330,3 +330,4 @@ D:\In-School\nam4-hk1\PTUDHTTTHD\Project\HealthcareSystem\backend\HealthcareSyst
 D:\In-School\nam4-hk1\PTUDHTTTHD\Project\HealthcareSystem\backend\HealthcareSystem.Backend\obj\Debug\net7.0\HealthcareSystem.Backend.csproj.CopyComplete
 D:\In-School\nam4-hk1\PTUDHTTTHD\Project\HealthcareSystem\backend\HealthcareSystem.Backend\obj\Debug\net7.0\HealthcareSystem.Backend.genruntimeconfig.cache
 D:\In-School\nam4-hk1\PTUDHTTTHD\Project\HealthcareSystem\backend\HealthcareSystem.Backend\obj\Debug\net7.0\ref\HealthcareSystem.Backend.dll
+D:\Coding\School\DevelopModernIS\HealthcareSystem\backend\HealthcareSystem.Backend\obj\Debug\net7.0\HealthcareSystem.Backend.sourcelink.json

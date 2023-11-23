@@ -1,6 +1,5 @@
 ﻿using HealthcareSystem.Backend.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace HealthcareSystem.Backend.Repositories.GenericRepository
@@ -16,10 +15,11 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
             _dbSet = _context.Set<T>();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperites = null)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includeProperites = null)
         {
             IQueryable<T> query = _dbSet;
             if (filter != null) query = query.Where(filter);
+            if (!tracked) query = query.AsNoTracking();
 
             if (includeProperites != null)
                 foreach (var includeProp in includeProperites.Split(new[] { ',' },

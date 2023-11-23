@@ -1,4 +1,6 @@
-﻿using HealthcareSystem.Backend.Models.Domain;
+﻿using AutoMapper;
+using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,18 +11,20 @@ namespace HealthcareSystem.Backend.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpPost("createCustomerRequest")]
-        public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequestDomain customerRequest)
+        public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequestCreateDTO customerRequest)
         {
             try
             {
-                return Ok(await _userService.CreateCustomerRequestAsync(customerRequest));
+                return Ok(await _userService.CreateCustomerRequestAsync(_mapper.Map<CustomerRequestDomain>(customerRequest)));
             }
             catch (Exception ex)
             {
@@ -46,7 +50,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
-                return Ok(_userService.GetCustomerRequestByIdAsync(requestId));
+                return Ok(await _userService.GetCustomerRequestByIdAsync(requestId));
             }
             catch (Exception ex)
             {
@@ -59,7 +63,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
-                return Ok(_userService.DeleteCustomerRequestByIdAsync(requestId));
+                return Ok(await _userService.DeleteCustomerRequestByIdAsync(requestId));
             }
             catch (Exception ex)
             {
