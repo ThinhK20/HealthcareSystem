@@ -18,7 +18,7 @@ namespace HealthcareSystem.Backend.Repositories
             _applicationContext = context;  
         }
 
-        public async Task<bool> CreatePayment(PaymentCreateDTO payment)
+        public async Task<int> CreatePayment(PaymentCreateDTO payment)
         {
             if (payment == null) throw new Exception("Customer request not found.");
             Payment pay = new Payment
@@ -30,7 +30,8 @@ namespace HealthcareSystem.Backend.Repositories
             };
             Models.Entity.Payment entity = _mapper.Map<Models.Entity.Payment>(pay);
             await CreateAsync(entity);
-            return true;
+            var request = await GetAsync(filter => filter.RequestId == payment.RequestId && pay.CreatedDate== filter.CreatedDate);
+            return request.PaymentId;
         }
         public async Task<bool> UpdateStatus(int PaymentID)
         {

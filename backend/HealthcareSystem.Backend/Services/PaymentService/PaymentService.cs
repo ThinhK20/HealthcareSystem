@@ -10,7 +10,7 @@ namespace HealthcareSystem.Backend.Services.PaymentService
     {
         private readonly IPaymentRepository _services;
 
-        public async Task<bool> CreatePayment(PaymentCreateDTO payment)
+        public async Task<int> CreatePayment(PaymentCreateDTO payment)
         {
             return await _services.CreatePayment(payment);
         }
