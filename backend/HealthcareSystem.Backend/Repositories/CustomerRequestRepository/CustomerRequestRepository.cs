@@ -33,14 +33,14 @@ namespace HealthcareSystem.Backend.Repositories
 
         public async Task<List<CustomerRequest>> GetAllCustomerRequestsAsync()
         {
-            var entityRequests = await GetAllAsync();
+            var entityRequests = await GetAllAsync(null, true, "Account,Staff,Payment,PolicyPackage");
             var customerRequests = entityRequests.Select(t => _mapper.Map<CustomerRequest>(t)).ToList();
             return customerRequests;
         }
 
         public async Task<CustomerRequest> GetCustomerRequestByIdAsync(int requestId)
         {
-            return _mapper.Map<CustomerRequest>(await GetAsync(x => x.RequestID == requestId));
+            return _mapper.Map<CustomerRequest>(await GetAsync(x => x.RequestID == requestId, true, "Account,Staff,Payment,PolicyPackage"));
         }
     }
 }
