@@ -9,7 +9,11 @@ namespace HealthcareSystem.Backend.Services.PaymentService
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository _services;
+        public PaymentService(IPaymentRepository services)
+        {
+            _services = services;
 
+        }
         public async Task<int> CreatePayment(PaymentCreateDTO payment)
         {
             return await _services.CreatePayment(payment);
@@ -40,9 +44,5 @@ namespace HealthcareSystem.Backend.Services.PaymentService
             return await _services.GetPendingTransferPaymentRequestsAsync();
         }
 
-        public Task<bool> UpdateStatus(int PaymentID)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

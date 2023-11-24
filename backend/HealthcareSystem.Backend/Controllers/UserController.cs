@@ -45,6 +45,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
 
+
         [HttpGet("customerRequests/{id:int}")]
         public async Task<IActionResult> GetCustomerRequestsById([FromRoute(Name = "id")] int requestId)
         {
@@ -57,7 +58,42 @@ namespace HealthcareSystem.Backend.Controllers
                 return NotFound(ex.Message);
             }
         }
-
+        [HttpPost("AcceptRequest/{id:int}")]
+        public async Task<IActionResult> AcceptRequest([FromRoute(Name = "id")] int requestID ) 
+        {
+            try
+            {
+                return Ok(await _userService.AcceptCustomerRequest(requestID));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+        [HttpPost("RefusedRequest/{id:int}")]
+        public async Task<IActionResult> RefusedRequest([FromRoute(Name = "id")] int requestID)
+        {
+            try
+            {
+                return Ok(await _userService.RefusedCustomerRequest(requestID));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+        [HttpPost("CompleteRequest/{id:int}")]
+        public async Task<IActionResult> Test([FromRoute(Name = "id")] int requestID)
+        {
+            try
+            {
+                return Ok(await _userService.CompleteCustomerRequest(requestID));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
         [HttpDelete("customerRequests/{id:int}")]
         public async Task<IActionResult> DeleteCustomerRequestById([FromRoute(Name = "id")] int requestId)
         {

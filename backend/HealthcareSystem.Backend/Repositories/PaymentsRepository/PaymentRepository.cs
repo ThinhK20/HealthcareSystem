@@ -58,14 +58,14 @@ namespace HealthcareSystem.Backend.Repositories
         }
         public async Task<List<PaymentDomain>> GetPendingTransferPaymentRequestsAsync()
         {
-            var payments = await GetAsync(x => x.Status == false);
-            return _mapper.Map<List<PaymentDomain>>(new List<Payment> { payments });
+            var payments = await GetAllAsync(x => x.Status == false);
+            return _mapper.Map<List<PaymentDomain>>(payments);
         }
 
         public async Task<List<PaymentDomain>> GetPaymentedAsync()
         {
-            var payments = await GetAsync(x => x.Status == true);
-            return _mapper.Map<List<PaymentDomain>>(new List<Payment> { payments });
+            var payments = await GetAllAsync(x => x.Status == true);
+            return _mapper.Map<List<PaymentDomain>>(payments);
         }
         public async Task<PaymentDomain> GetPaymentIdAsync(int PaymentId)
         {

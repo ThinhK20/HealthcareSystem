@@ -22,7 +22,7 @@ namespace HealthcareSystem.Backend.Controllers
             try
             {
                 var result = await _paymentRepository.CreatePayment(payment);
-                if (result)
+                if (result != null)
                 {
                     return Ok("Payment created successfully.");
                 }

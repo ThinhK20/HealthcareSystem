@@ -2,6 +2,7 @@ using HealthcareSystem.Backend;
 using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Services.PackagePoliceService;
+using HealthcareSystem.Backend.Services.PaymentService;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,7 @@ builder.Services.AddScoped<IBasicPriceRepository, BasicPriceRepository>();
 
 // Add services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPackagePoliceService, PackagePoliceService>();
 
 

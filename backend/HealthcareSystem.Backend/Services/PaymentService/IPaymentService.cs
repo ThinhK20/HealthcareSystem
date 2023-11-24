@@ -7,7 +7,6 @@ namespace HealthcareSystem.Backend.Services.PaymentService
     public interface IPaymentService
     {
         Task<int> CreatePayment(PaymentCreateDTO payment);
-        Task<bool> UpdateStatus(int PaymentID);
         Task<bool> DeletePaymentByIdAsync(int PaymentID);
         Task<List<PaymentDomain>> GetAllPaymentRequestsAsync();
         Task<List<PaymentDomain>> GetPendingTransferPaymentRequestsAsync();

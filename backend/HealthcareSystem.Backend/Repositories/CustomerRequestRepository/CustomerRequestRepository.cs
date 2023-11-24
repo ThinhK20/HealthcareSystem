@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
+using HealthcareSystem.Backend.Services.PaymentService;
+using Microsoft.OpenApi.Validations;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HealthcareSystem.Backend.Repositories
 {
@@ -10,16 +14,19 @@ namespace HealthcareSystem.Backend.Repositories
     {
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _applicationContext;
-        public CustomerRequestRepository(ApplicationDbContext context, IMapper mapper) : base(context)
+        private readonly IPaymentService _paymentService;
+        public CustomerRequestRepository(ApplicationDbContext context, IMapper mapper, IPaymentService paymentService) : base(context)
         {
             _mapper = mapper;
             _applicationContext = context;
+            _paymentService = paymentService;
         }
 
         public async Task<CustomerRequestCreateDTO> CreateCustomerRequest(CustomerRequestCreateDTO customerRequest)
         {
             if (customerRequest == null) throw new Exception("Customer request not found.");
             Models.Entity.CustomerRequest entity = _mapper.Map<Models.Entity.CustomerRequest>(customerRequest);
+            entity.Status = "Pending Confirmation" ;
             await CreateAsync(entity);
             return customerRequest;
         }
@@ -42,6 +49,38 @@ namespace HealthcareSystem.Backend.Repositories
         public async Task<CustomerRequestDomain> GetCustomerRequestByIdAsync(int requestId)
         {
             return _mapper.Map<CustomerRequestDomain>(await GetAsync(x => x.RequestID == requestId, true, "Account,Staff,Payment,PolicyPackage"));
+        }
+        public async Task<PaymentDomain> AcceptCustomerRequest(int Accept)
+        {
+            var ctm_request =  await GetAsync(x => x.RequestID == Accept);
+            PaymentCreateDTO temp = new PaymentCreateDTO
+            {
+                RequestId = ctm_request.RequestID,
+                Price = (float)ctm_request.Price,
+            };
+            ctm_request.Status = "Pending Transfer";
+            int Payment_id = await _paymentService.CreatePayment(temp);
+            ctm_request.PaymentId = Payment_id;
+            var recept = await _paymentService.GetPaymentIdAsync(Payment_id);
+            await UpdateAsync(ctm_request);
+            return recept;
+        }
+        public async Task<bool> RefusedCustomerRequest(int id)
+        {
+            var ctm_request = await GetAsync(x => x.RequestID == id);
+            if (ctm_request == null) throw new Exception("Not Found Request ID");
+            ctm_request.Status = "Refused";
+            await UpdateAsync(ctm_request);
+            return true;
+
+        }
+        public async Task<bool> CompleteCustomerRequest(int id)
+        {
+            var ctm_request = await GetAsync(x => x.RequestID == id);
+            if (ctm_request == null) throw new Exception("Not Found Request ID");
+            ctm_request.Status = "Complete";
+            await UpdateAsync(ctm_request);
+            return true;
         }
     }
 }
