@@ -17,7 +17,7 @@ const routes = [
     icon: HomeIcon, // assuming HomeIcon is an imported React component
   },
   {
-    name: 'Login',
+    name: 'Contact',
     path: '/login',
     icon: HomeIcon,
   },
@@ -94,7 +94,7 @@ export function Navbar({ brandName, action }) {
             target="_blank"
           >
             <Button variant="text" size="sm" color="white" fullWidth className="hover:bg-[#545455]">
-              pro version
+              Login
             </Button>
           </a>
           {React.cloneElement(action, {
@@ -127,7 +127,7 @@ export function Navbar({ brandName, action }) {
             className="mb-2 block"
           >
             <Button variant="text" size="sm" fullWidth>
-              pro version
+              Login
             </Button>
           </a>
           {React.cloneElement(action, {
@@ -140,14 +140,14 @@ export function Navbar({ brandName, action }) {
 }
 
 Navbar.defaultProps = {
-  brandName: "Material Tailwind React",
+  brandName: "Health Care System",
   action: (
     <a
       href="https://www.creative-tim.com/product/material-tailwind-kit-react"
       target="_blank"
     >
       <Button variant="gradient" size="sm" fullWidth className="hover:bg-[#545455]">
-        free download
+        Register
       </Button>
     </a>
   ),
