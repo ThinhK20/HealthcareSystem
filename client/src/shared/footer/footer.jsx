@@ -79,7 +79,7 @@ export function Footer({ title, description, socials, menus, copyright }) {
 }
 
 Footer.defaultProps = {
-  title: "Health Care System",
+  title: "Material Tailwind",
   description:
     "Easy to use React components for Tailwind CSS and Material Design.",
   socials: [
@@ -144,7 +144,7 @@ Footer.defaultProps = {
   ],
   copyright: (
     <>
-      Copyright © {year} Health Care System by{" "}
+      Copyright © {year} Material Tailwind by{" "}
       <a
         href="https://www.creative-tim.com?ref=mtk"
         target="_blank"
