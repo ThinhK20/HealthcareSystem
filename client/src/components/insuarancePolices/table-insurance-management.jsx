@@ -4,6 +4,7 @@ import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import {faPlus} from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 
  
 function TableInsuranceManagement() {
@@ -31,9 +32,10 @@ function TableInsuranceManagement() {
         <>
 
         <div className="container my-12 py-12 mx-auto px-4 md:px-6 lg:px-12">
-        <button type="button" className=" text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+        <Link type="button" to={`/insuarancePolices/form`} 
+                               state={{ status: 'create'}} className=" text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
         <FontAwesomeIcon icon={faPlus}/> New
-        </button>
+        </Link>
 
         <section className="mb-20 text-gray-800">
             <div className="block rounded-lg shadow-lg bg-white">
@@ -59,9 +61,13 @@ function TableInsuranceManagement() {
                             <td className="text-sm font-normal px-6 py-4 whitespace-nowrap text-left text-gray-500">{item.name}</td>
                             <td className="text-sm font-normal px-6 py-4 whitespace-nowrap text-left text-gray-500">{item.description}</td>
                             <td className="text-large font-normal px-6 py-4 whitespace-nowrap text-right">
-                            <a href="#!" className="font-large text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 transition duration-300 ease-in-out">
+                            <Link
+                               to={`/insuarancePolices/form`} 
+                               state={{ status: 'update', id : item.policyID, name: item.name,  description : item.description }}
+                                className="font-large text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 transition duration-300 ease-in-out"
+                            >
                                 <FontAwesomeIcon icon={faEdit} />
-                            </a>
+                            </Link>
                             <a onClick={() => handleDelete(item.policyID)} href="#!" className="font-large ml-4 text-red-600 hover:text-red-700 focus:text-red-700 active:text-red-800 transition duration-300 ease-in-out">
                              <FontAwesomeIcon icon={faTrash} />
                             </a>

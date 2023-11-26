@@ -2,10 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Login from "../components/login/login";
 import LayoutRoute from "../shared/layout/layout";
-import TableInsuranceManagement from "../components/table-insurance-management/table-insurance-management";
-import EditForm from  "../components/table-insurance-management/edit-form";
-import ConfirmNotification from "../components/table-insurance-management/delete-confirmation"
-import AddForm from "../components/table-insurance-management/add-form"
+import TableInsuranceManagement from "../components/insuarancePolices/table-insurance-management";
+import ConfirmNotification from "../components/insuarancePolices/delete-confirmation"
+import Form from "../components/insuarancePolices/form"
 import RegisterInsurance from "../components/register-insurance/register-insurance";
 
 
@@ -26,7 +25,7 @@ export const router = createBrowserRouter([
 
    {
       path: "/edit-form",
-      element: <LayoutRoute element={<EditForm />}></LayoutRoute>,
+      // element: <LayoutRoute element={<EditForm />}></LayoutRoute>,
    },
 
    {
@@ -35,8 +34,8 @@ export const router = createBrowserRouter([
    },
 
    {
-      path: "/add-form",
-      element: <LayoutRoute element={<AddForm />}></LayoutRoute>,
+      path: "/insuarancePolices/form",
+      element: <LayoutRoute element={<Form />}></LayoutRoute>,
    },
 
    {
