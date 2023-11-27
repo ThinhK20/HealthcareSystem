@@ -4,9 +4,9 @@ using HealthcareSystem.Backend.Repositories.GenericRepository;
 
 namespace HealthcareSystem.Backend.Repositories
 {
-    public class InsuarancePolicyRepository : Repository<InsurancePolicy>, IInsuarancePolicyRepository
+    public class InsurancePolicyRepository : Repository<InsurancePolicy>, IInsurancePolicyRepository
     {
-        public InsuarancePolicyRepository(ApplicationDbContext context) : base(context)
+        public InsurancePolicyRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

@@ -1,6 +1,9 @@
 using HealthcareSystem.Backend;
 using HealthcareSystem.Backend.Data;
+using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
+using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
+using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using HealthcareSystem.Backend.Services.PackagePoliceService;
 using HealthcareSystem.Backend.Services.PaymentService;
 using HealthcareSystem.Backend.Services.UserService;
@@ -21,12 +24,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Add repositories
 builder.Services.AddScoped<ICustomerRequestRepository, CustomerRequestRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IInsuarancePolicyRepository, InsuarancePolicyRepository>();
+builder.Services.AddScoped<IInsurancePolicyRepository, InsurancePolicyRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHealthRecordRepository, HealRecordRepository>();
 builder.Services.AddScoped<IFeeAffectRepository, FeeAffectRopsitory>();
-
+builder.Services.AddScoped<IInsuranceDetailRepository, InsuranceDetailRepository>();
 
 
 builder.Services.AddScoped<IBasicPriceRepository, BasicPriceRepository>();
@@ -36,6 +39,7 @@ builder.Services.AddScoped<IBasicPriceRepository, BasicPriceRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPackagePoliceService, PackagePoliceService>();
+builder.Services.AddScoped<IInsuranceDetailService, InsuranceDetailService>();
 
 
 

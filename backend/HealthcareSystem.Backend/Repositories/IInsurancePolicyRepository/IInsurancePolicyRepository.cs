@@ -2,7 +2,7 @@
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 namespace HealthcareSystem.Backend.Repositories
 {
-    public interface IInsuarancePolicyRepository : IRepository<InsurancePolicy>
+    public interface IInsurancePolicyRepository : IRepository<InsurancePolicy>
     {
     }
 }
