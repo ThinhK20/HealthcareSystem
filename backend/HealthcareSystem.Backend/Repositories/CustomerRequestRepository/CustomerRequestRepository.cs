@@ -78,7 +78,8 @@ namespace HealthcareSystem.Backend.Repositories
         {
             var ctm_request = await GetAsync(x => x.RequestID == id);
             if (ctm_request == null) throw new Exception("Not Found Request ID");
-            ctm_request.Status = "Complete";
+            await _paymentService.UpdateStatus((int)ctm_request.PackageId);
+            ctm_request.Status = "Completed";
             await UpdateAsync(ctm_request);
             return true;
         }

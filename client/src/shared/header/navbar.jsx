@@ -140,7 +140,7 @@ export function Navbar({ brandName, action }) {
 }
 
 Navbar.defaultProps = {
-  brandName: "Material Tailwind React",
+  brandName: "Healthcare System",
   action: (
     <a
       href="https://www.creative-tim.com/product/material-tailwind-kit-react"
