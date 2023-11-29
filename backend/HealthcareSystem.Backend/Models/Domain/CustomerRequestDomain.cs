@@ -13,7 +13,7 @@ namespace HealthcareSystem.Backend.Models.Domain
         public DateTime DateAccept { get; set; }
         public string Periodic { get; set; }
         public float Price { get; set; }
-
+        public string Status {  get; set; }
         public AccountDTO? Account { get; set; } = new();
         public AccountDTO? Staff { get; set; } = new();
         public PaymentDomain? Payment { get; set; } = new();

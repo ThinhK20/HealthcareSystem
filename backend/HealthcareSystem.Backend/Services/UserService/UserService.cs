@@ -1,6 +1,8 @@
-﻿using HealthcareSystem.Backend.Models.Domain;
+﻿using Azure.Core;
+using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HealthcareSystem.Backend.Services.UserService
 {
@@ -11,12 +13,14 @@ namespace HealthcareSystem.Backend.Services.UserService
         private readonly IHealthRecordRepository _healthRecordRepository;
         private readonly IFeeAffectRepository _feeAffectRepository;
 
+
         public UserService(ICustomerRequestRepository customerRequestRepository, IUserRepository userRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository)
         {
             _customerRequestRepository = customerRequestRepository;
             _userRepository = userRepository;
             _healthRecordRepository = healthRecordRepository;
             _feeAffectRepository = feeAffectRepository;
+
         }
 
         public async Task<CustomerRequestCreateDTO> CreateCustomerRequestAsync(CustomerRequestCreateDTO customerRequest)
@@ -67,6 +71,17 @@ namespace HealthcareSystem.Backend.Services.UserService
         //    //int PhaseRecordUser = _hel
         //}
 
-
+        public async Task<PaymentDomain> AcceptCustomerRequest(int Accept)
+        {
+            return await _customerRequestRepository.AcceptCustomerRequest(Accept);
+        }
+        public async Task<bool> RefusedCustomerRequest(int id)
+        {
+            return await _customerRequestRepository.RefusedCustomerRequest(id);
+        }
+        public async Task<bool> CompleteCustomerRequest(int id)
+        {
+            return await _customerRequestRepository.CompleteCustomerRequest(id);
+        }
     }
 }

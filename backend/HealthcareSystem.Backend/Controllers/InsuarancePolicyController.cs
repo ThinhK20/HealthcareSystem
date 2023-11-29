@@ -2,6 +2,8 @@
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
+using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
+using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
@@ -10,11 +12,11 @@ namespace HealthcareSystem.Backend.Controllers
     [ApiController]
     public class InsuarancePolicyController : ControllerBase
     {
-        private readonly IInsuarancePolicyRepository _dbIP;
+        private readonly IInsurancePolicyRepository _dbIP;
         private readonly IMapper _mapper;
 
 
-        public InsuarancePolicyController(IInsuarancePolicyRepository dbIP, IMapper mapper)
+        public InsuarancePolicyController(IInsurancePolicyRepository dbIP, IMapper mapper)
         {
             _dbIP = dbIP;
             _mapper = mapper;

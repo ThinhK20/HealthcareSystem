@@ -18,7 +18,7 @@ namespace HealthcareSystem.Backend.Repositories
             _applicationContext = context;  
         }
 
-        public async Task<bool> CreatePayment(PaymentCreateDTO payment)
+        public async Task<int> CreatePayment(PaymentCreateDTO payment)
         {
             if (payment == null) throw new Exception("Customer request not found.");
             Payment pay = new Payment
@@ -30,7 +30,8 @@ namespace HealthcareSystem.Backend.Repositories
             };
             Models.Entity.Payment entity = _mapper.Map<Models.Entity.Payment>(pay);
             await CreateAsync(entity);
-            return true;
+            var request = await GetAsync(filter => filter.RequestId == payment.RequestId && pay.CreatedDate== filter.CreatedDate);
+            return request.PaymentId;
         }
         public async Task<bool> UpdateStatus(int PaymentID)
         {
@@ -57,14 +58,14 @@ namespace HealthcareSystem.Backend.Repositories
         }
         public async Task<List<PaymentDomain>> GetPendingTransferPaymentRequestsAsync()
         {
-            var payments = await GetAsync(x => x.Status == false);
-            return _mapper.Map<List<PaymentDomain>>(new List<Payment> { payments });
+            var payments = await GetAllAsync(x => x.Status == false);
+            return _mapper.Map<List<PaymentDomain>>(payments);
         }
 
         public async Task<List<PaymentDomain>> GetPaymentedAsync()
         {
-            var payments = await GetAsync(x => x.Status == true);
-            return _mapper.Map<List<PaymentDomain>>(new List<Payment> { payments });
+            var payments = await GetAllAsync(x => x.Status == true);
+            return _mapper.Map<List<PaymentDomain>>(payments);
         }
         public async Task<PaymentDomain> GetPaymentIdAsync(int PaymentId)
         {
