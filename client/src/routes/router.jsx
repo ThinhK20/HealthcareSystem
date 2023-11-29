@@ -6,6 +6,7 @@ import TableInsuranceManagement from "../components/insuarancePolices/table-insu
 import ConfirmNotification from "../components/insuarancePolices/delete-confirmation"
 import Form from "../components/insuarancePolices/form"
 import RegisterInsurance from "../components/register-insurance/register-insurance";
+import StaffsPayment from "../pages/staffs/payment";
 
 
 export const router = createBrowserRouter([
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
    {
       path: "/register-insurance",
       element: <LayoutRoute element={<RegisterInsurance />}></LayoutRoute>,
+   },
+   {
+      path: "staff/payment",
+      element: <LayoutRoute element={<StaffsPayment />}></LayoutRoute>,
    },
 
 ]);

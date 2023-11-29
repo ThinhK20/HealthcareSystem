@@ -5,9 +5,9 @@ const year = new Date().getFullYear();
 
 export function Footer({ title, description, socials, menus, copyright }) {
    return (
-      <footer className="relative px-4 pt-8 pb-6">
+      <footer className="relative px-4 pt-8 pb-6  ">
          <div className="container mx-auto">
-            <div className="flex flex-wrap pt-6 text-center lg:text-left">
+            <div className="flex flex-wrap pt-6 text-center lg:text-left border-t-[1px] border-gray-300">
                <div className="w-full px-4 lg:w-6/12">
                   <Typography variant="h4" className="mb-4" color="blue-gray">
                      {title}
@@ -82,7 +82,7 @@ export function Footer({ title, description, socials, menus, copyright }) {
 }
 
 Footer.defaultProps = {
-   title: "Material Tailwind",
+   title: "Healthcare System",
    description:
       "Easy to use React components for Tailwind CSS and Material Design.",
    socials: [
@@ -150,7 +150,7 @@ Footer.defaultProps = {
    ],
    copyright: (
       <>
-         Copyright © {year} Material Tailwind by{" "}
+         Copyright © {year} Healthcare System by{" "}
          <a
             href="https://www.creative-tim.com?ref=mtk"
             target="_blank"
@@ -171,6 +171,6 @@ Footer.propTypes = {
    copyright: PropTypes.node,
 };
 
-Footer.displayName = "/src/widgets/layout/footer.jsx";
+
 
 export default Footer;

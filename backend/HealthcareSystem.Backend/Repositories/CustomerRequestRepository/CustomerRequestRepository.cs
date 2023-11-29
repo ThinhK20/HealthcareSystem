@@ -4,6 +4,7 @@ using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
+using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using HealthcareSystem.Backend.Services.PaymentService;
 using Microsoft.OpenApi.Validations;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -15,11 +16,13 @@ namespace HealthcareSystem.Backend.Repositories
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _applicationContext;
         private readonly IPaymentService _paymentService;
-        public CustomerRequestRepository(ApplicationDbContext context, IMapper mapper, IPaymentService paymentService) : base(context)
+        private readonly IInsuranceDetailService _invoiceDetailService;
+        public CustomerRequestRepository(ApplicationDbContext context, IMapper mapper, IPaymentService paymentService, IInsuranceDetailService insuranceDetailService) : base(context)
         {
             _mapper = mapper;
             _applicationContext = context;
             _paymentService = paymentService;
+            _invoiceDetailService = insuranceDetailService;
         }
 
         public async Task<CustomerRequestCreateDTO> CreateCustomerRequest(CustomerRequestCreateDTO customerRequest)
@@ -78,8 +81,17 @@ namespace HealthcareSystem.Backend.Repositories
         {
             var ctm_request = await GetAsync(x => x.RequestID == id);
             if (ctm_request == null) throw new Exception("Not Found Request ID");
-            ctm_request.Status = "Complete";
+            await _paymentService.UpdateStatus((int)ctm_request.PackageId);
+            ctm_request.Status = "Completed";
             await UpdateAsync(ctm_request);
+            InsuranceDetailDomain Insuran_form = new InsuranceDetailDomain
+            {
+                InsureID = 1,
+                PackagedID = ctm_request.PackageId,
+                DateStart = DateTime.Now,
+                DateEnd = DateTime.Now,
+            };
+            _invoiceDetailService.AddInsuranceDatail(Insuran_form);
             return true;
         }
     }

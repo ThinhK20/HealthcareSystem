@@ -6,15 +6,15 @@ import {
   Typography,
   Button,
   IconButton,
-  MobileNav
+  Collapse, // Thêm import cho Collapse
 } from "@material-tailwind/react";
-import { Bars3Icon, XMarkIcon,HomeIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon, HomeIcon } from "@heroicons/react/24/outline";
 
 const routes = [
   {
     name: 'Home',
     path: '/',
-    icon: HomeIcon, // assuming HomeIcon is an imported React component
+    icon: HomeIcon,
   },
   {
     name: 'Login',
@@ -31,46 +31,34 @@ const routes = [
 
 export function Navbar({ brandName, action }) {
   const [openNav, setOpenNav] = React.useState(false);
+
   const navList = (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {routes.map(({ name, path, icon, href, target }) => (
+    <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 p-[5px]">
+      {routes.map(({ name, path, icon }) => (
         <Typography
           key={name}
           as="li"
           variant="small"
           color="inherit"
           className="capitalize hover:bg-[#545455] p-[2px] rounded-md"
-          
         >
-          {href ? (
-            <Link
-              href={href}
-              target={target}
-              className="flex items-center gap-1 p-1 font-bold"
-            >
-              {icon &&
-                React.createElement(icon, {
-                  className: "w-[18px] h-[18px] opacity-75 mr-1",
-                })}
-              {name}
-            </Link>
-          ) : (
-            <Link
-              to={path}
-              target={target}
-              className="flex items-center gap-1 p-1 font-bold"
-            >
-              {icon &&
-                React.createElement(icon, {
-                  className: "w-[18px] h-[18px] opacity-75 mr-1",
-                })}
-              {name}
-            </Link>
-          )}
+          <Link
+            to={path}
+
+            className="flex items-center gap-1 p-1 font-bold"
+          >
+            {icon &&
+              React.createElement(icon, {
+                className: "w-[18px] h-[18px] opacity-75 mr-1",
+              })}
+            {name}
+          </Link>
+
         </Typography>
       ))}
     </ul>
   );
+
   React.useEffect(() => {
     window.addEventListener(
       "resize",
@@ -78,10 +66,9 @@ export function Navbar({ brandName, action }) {
     );
   }, []);
 
-  
   return (
     <MTNavbar color="transparent" className="p-5 w-[100%]">
-      <div className="container mx-auto flex items-center justify-between text-white bg-[black] p-[10px] rounded-lg">
+      <div className="container mx-auto flex items-center justify-between text-white bg-[#000000] p-[10px] rounded-lg">
         <Link to="/">
           <Typography className="ml-2 cursor-pointer font-bold">
             {brandName}
@@ -115,12 +102,9 @@ export function Navbar({ brandName, action }) {
           )}
         </IconButton>
       </div>
-      <MobileNav
-        className="rounded-xl px-4 pt-2 pb-4 text-blue-gray-900 bg-[black]"
-        open={openNav}
-      >
-        <div className="container mx-auto">
-        {navList}
+      <Collapse open={openNav} className=" rounded-lg ">
+        <div className="container mx-auto bg-[black] rounded-xl">
+          {navList}
           <a
             href="https://www.material-tailwind.com/blocks/react?ref=mtkr"
             target="_blank"
@@ -134,16 +118,16 @@ export function Navbar({ brandName, action }) {
             className: "w-full block",
           })}
         </div>
-      </MobileNav>
+      </Collapse>
     </MTNavbar>
   );
 }
 
 Navbar.defaultProps = {
-  brandName: "Material Tailwind React",
+  brandName: "Healthcare System",
   action: (
     <a
-      href="https://www.creative-tim.com/product/material-tailwind-kit-react"
+      href=""
       target="_blank"
     >
       <Button variant="gradient" size="sm" fullWidth className="hover:bg-[#545455]">
@@ -153,12 +137,6 @@ Navbar.defaultProps = {
   ),
 };
 
-Navbar.propTypes = {
-  brandName: PropTypes.string,
-  routes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  action: PropTypes.node,
-};
 
-Navbar.displayName = "/src/widgets/layout/navbar.jsx";
 
 export default Navbar;

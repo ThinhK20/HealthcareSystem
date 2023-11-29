@@ -23,7 +23,10 @@ namespace HealthcareSystem.Backend.Services.PaymentService
         {
             return await _services.DeletePaymentByIdAsync(PaymentID);
         }
-
+        public async Task<bool> UpdateStatus(int PaymentID)
+        {
+            return await _services.UpdateStatus(PaymentID);
+        }
         public async Task<List<PaymentDomain>> GetAllPaymentRequestsAsync()
         {
             return await _services.GetAllPaymentRequestsAsync();
