@@ -7,6 +7,7 @@ import ConfirmNotification from "../components/insuarancePolices/delete-confirma
 import Form from "../components/insuarancePolices/form"
 import RegisterInsurance from "../components/register-insurance/register-insurance";
 import StaffsPayment from "../pages/staffs/payment";
+import CheckOut from "../components/payment/checkout";
 
 
 export const router = createBrowserRouter([
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
    {
       path: "staff/payment",
       element: <LayoutRoute element={<StaffsPayment />}></LayoutRoute>,
+   },
+   {
+      path: "/payment/checkout",
+      element: <LayoutRoute element={<CheckOut />}></LayoutRoute>,
    },
 
 ]);
