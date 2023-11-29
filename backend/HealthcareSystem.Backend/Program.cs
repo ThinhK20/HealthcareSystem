@@ -1,6 +1,7 @@
 using HealthcareSystem.Backend;
 using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Repositories;
+using HealthcareSystem.Backend.Repositories.ImageRepository;
 using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 using HealthcareSystem.Backend.Repositories.PolicyPackageRepository;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
@@ -32,6 +33,7 @@ builder.Services.AddScoped<IFeeAffectRepository, FeeAffectRopsitory>();
 builder.Services.AddScoped<IInsuranceDetailRepository, InsuranceDetailRepository>();
 builder.Services.AddScoped<IBasicPriceRepository, BasicPriceRepository>();
 builder.Services.AddScoped<IPolicyPackageRepository, PolicyPackageRepository>();
+builder.Services.AddScoped<IFileRepository, FileRepository>();
 
 
 // Add services
