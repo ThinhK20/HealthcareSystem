@@ -4,19 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
 {
-    [Route("api/images")]
+    [Route("api/files")]
     [ApiController]
-    public class ImageController : ControllerBase
+    public class FileController : ControllerBase
     {
         private readonly IFileRepository _fileRepository;
 
-        public ImageController(IFileRepository fileRepository)
+        public FileController(IFileRepository fileRepository)
         {
             _fileRepository = fileRepository;
         }
 
         [HttpPost("upload")]
-        public async Task<ActionResult<string>> UploadImage([FromForm] FileUploadDTO fileUploadDTO)
+        public async Task<ActionResult<string>> UploadFile([FromForm] FileUploadDTO fileUploadDTO)
         {
             try
             {
