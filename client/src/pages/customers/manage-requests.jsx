@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 const TABLE_HEAD = [
    "User",
    "Staff",
@@ -35,11 +36,9 @@ export default function CustomerRequestManagement() {
 
    useEffect(() => {
       const source = axios.CancelToken.source();
-      console.log("Render");
       getAllCustomerRequestsApi(source.token)
          .then((res) => {
             setRequestsData(res.data);
-            console.log("Data: ", requestsData);
          })
          .catch((e) => {
             toast(e);
@@ -62,8 +61,6 @@ export default function CustomerRequestManagement() {
          }));
          return newRows;
       });
-
-      console.log("Table rows: ", tableRows);
    }, [requestsData]);
 
    return (
@@ -86,9 +83,14 @@ export default function CustomerRequestManagement() {
                         icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                      />
                   </div>
-                  <Button className="flex items-center gap-3" size="sm">
-                     <FontAwesomeIcon icon={faPlusCircle} size="2xl" />
-                     New
+                  <Button size="sm">
+                     <Link
+                        to={"/users/customer-requests/create"}
+                        className="flex items-center gap-3"
+                     >
+                        <FontAwesomeIcon icon={faPlusCircle} size="2xl" />
+                        New
+                     </Link>
                   </Button>
                </div>
             </div>

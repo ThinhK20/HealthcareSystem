@@ -1,16 +1,34 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { FormControl, FormLabel, Select, MenuItem } from "@mui/material";
-import { ButtonGroup } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { getAllPolicyPackagesApi } from "../../apis/policyPackageApis";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 export default function CustomerRequestForm() {
+   const [policyPackages, setPolicyPackages] = useState([]);
+   const [selectedPolicyPackage, setSelectedPolicyPackage] = useState();
+
+   useEffect(() => {
+      const source = axios.CancelToken.source();
+      getAllPolicyPackagesApi(source.token)
+         .then((res) => {
+            setPolicyPackages(res.data);
+         })
+         .catch((e) => toast(e));
+
+      return () => source.cancel();
+   }, []);
+
    return (
       <FormControl>
-         <Typography variant="h6">Create new request for insurance</Typography>
+         <Typography variant="h6">
+            Create new register request for insurance
+         </Typography>
          <Grid container spacing={3} marginY={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
                <FormLabel required>Package</FormLabel>
                <Select
                   variant="outlined"
@@ -21,89 +39,73 @@ export default function CustomerRequestForm() {
                   fullWidth
                   placeholder="Package"
                >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  {policyPackages?.map((policyPackage, index) => (
+                     <MenuItem
+                        key={index}
+                        onClick={() => setSelectedPolicyPackage(policyPackage)}
+                        value={policyPackage?.packageid}
+                     >
+                        {policyPackage?.name}
+                     </MenuItem>
+                  ))}
                </Select>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
+               <FormLabel>Package Name</FormLabel>
+
                <TextField
-                  required
-                  id="address1"
-                  name="address1"
-                  label="Address line 1"
+                  disabled
+                  id="package-name"
+                  name="package-name"
+                  placeholder="Package Name"
                   fullWidth
-                  autoComplete="shipping address-line1"
-                  variant="standard"
-               />
-            </Grid>
-            <Grid item xs={12}>
-               <TextField
-                  id="address2"
-                  name="address2"
-                  label="Address line 2"
-                  fullWidth
-                  autoComplete="shipping address-line2"
+                  value={selectedPolicyPackage?.name}
                   variant="standard"
                />
             </Grid>
             <Grid item xs={12} sm={6}>
+               <FormLabel>Package Description</FormLabel>
                <TextField
-                  required
-                  id="city"
-                  name="city"
-                  label="City"
-                  fullWidth
-                  autoComplete="shipping address-level2"
-                  variant="standard"
-               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-               <TextField
-                  id="state"
-                  name="state"
-                  label="State/Province/Region"
+                  disabled
+                  id="package-description"
+                  name="package-description"
+                  placeholder="Package Description"
+                  value={selectedPolicyPackage?.description}
                   fullWidth
                   variant="standard"
                />
             </Grid>
             <Grid item xs={12} sm={6}>
-               <TextField
+               <FormLabel required>Periodic</FormLabel>
+               <Select
                   required
-                  id="zip"
-                  name="zip"
-                  label="Zip / Postal code"
+                  id="periodic"
+                  name="periodic"
+                  label="Periodic"
                   fullWidth
-                  autoComplete="shipping postal-code"
-                  variant="standard"
-               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-               <TextField
-                  required
-                  id="country"
-                  name="country"
-                  label="Country"
-                  fullWidth
-                  autoComplete="shipping country"
-                  variant="standard"
-               />
-            </Grid>
-            <Grid item xs={12}>
-               <FormControlLabel
-                  control={
-                     <Checkbox
-                        color="secondary"
-                        name="saveAddress"
-                        value="yes"
-                     />
-                  }
-                  label="Use this address for payment details"
-               />
+                  variant="outlined"
+               >
+                  <MenuItem value="monthly">Month</MenuItem>
+                  <MenuItem value="yearly">Yearly</MenuItem>
+                  <MenuItem value="quarterly">Quarterly</MenuItem>
+               </Select>
             </Grid>
          </Grid>
-         <ButtonGroup></ButtonGroup>
+         <div className="flex justify-end w-full gap-4">
+            <button
+               type="submit"
+               className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            >
+               Submit
+            </button>
+            <Link
+               to="/users/customer-requests"
+               className="py-2.5 hover:opacity-70"
+            >
+               Cancel
+            </Link>
+         </div>
       </FormControl>
    );
 }
