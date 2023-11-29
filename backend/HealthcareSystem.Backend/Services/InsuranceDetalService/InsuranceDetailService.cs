@@ -2,25 +2,27 @@
 
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.Entity;
+using HealthcareSystem.Backend.Repositories;
+using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 
 namespace HealthcareSystem.Backend.Services.InsuranceDetalService
 {
     public class InsuranceDetailService : IInsuranceDetailService
     {
-        IInsuranceDetailService _insuranceService;
-        public InsuranceDetailService(IInsuranceDetailService insuranceService)
+        private readonly IInsuranceDetailRepository _insuranceDetailRepository;
+        public InsuranceDetailService(IInsuranceDetailRepository insuranceDetailRepository)
         {
-            _insuranceService= insuranceService;
+            _insuranceDetailRepository = insuranceDetailRepository;
         }
 
         public async Task<InsuranceDetail> AddInsuranceDatail(InsuranceDetailDomain insuranceDetail)
         {
-            return await _insuranceService.AddInsuranceDatail(insuranceDetail);
+            return await _insuranceDetailRepository.AddInsuranceDatail(insuranceDetail);
         }
 
         public async Task<List<InsuranceDetailDomain>> GetByIdAsync(int insuraceID)
         {
-          return await _insuranceService.GetByIdAsync(insuraceID);  
+          return await _insuranceDetailRepository.GetByIdAsync(insuraceID);  
         }
     }
 }
