@@ -4,9 +4,11 @@ using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.ImageRepository;
 using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 using HealthcareSystem.Backend.Repositories.PolicyPackageRepository;
+using HealthcareSystem.Backend.Repositories.RefundRequestRepository;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using HealthcareSystem.Backend.Services.PackagePoliceService;
 using HealthcareSystem.Backend.Services.PaymentService;
+using HealthcareSystem.Backend.Services.RefundRequestService;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +36,7 @@ builder.Services.AddScoped<IInsuranceDetailRepository, InsuranceDetailRepository
 builder.Services.AddScoped<IBasicPriceRepository, BasicPriceRepository>();
 builder.Services.AddScoped<IPolicyPackageRepository, PolicyPackageRepository>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
+builder.Services.AddScoped<IRefundRequestRepository, RefundRequestRepository>();
 
 
 // Add services
@@ -41,6 +44,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPackagePoliceService, PackagePoliceService>();
 builder.Services.AddScoped<IInsuranceDetailService, InsuranceDetailService>();
+builder.Services.AddScoped<IRefundRequestService, RefundRequestService>();
 
 
 

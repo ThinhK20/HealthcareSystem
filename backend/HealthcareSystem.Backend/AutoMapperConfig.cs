@@ -51,6 +51,10 @@ namespace HealthcareSystem.Backend
 
             CreateMap<FeeAffect, FeeAffectDomain>();
 
+            CreateMap<RefundRequestDTO, RefundRequest>().ReverseMap()
+                .ForMember(x => x.File, opt => opt.Ignore());
+            CreateMap<RefundRequestDomain, RefundRequest>().ReverseMap();
+
 
 
 
