@@ -107,20 +107,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
 
-        [HttpGet("GetPaymented")]
-        public async Task<IActionResult> GetPaymented()
-        {
-            try
-            {
-                var payments = await _paymentRepository.GetPaymentedAsync();
-                return Ok(payments);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
+        
         [HttpGet("GetPaymentId/{paymentId}")]
         public async Task<IActionResult> GetPaymentId(int paymentId)
         {
