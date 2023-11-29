@@ -1,11 +1,10 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Repositories.GenericRepository;
 
-namespace HealthcareSystem.Backend.Services.PackagePoliceService
+namespace HealthcareSystem.Backend.Repositories.PolicyPackageRepository
 {
-    public interface IPackagePoliceService
+    public interface IPolicyPackageRepository : IRepository<Models.Entity.PolicyPackage>
     {
-        Task<BasicPriceDomain> GetBasicPriceOfPackage(int PackageID, int Age, string Gender);
-
         public Task<List<PolicyPackageDomain>> GetAllPolicyPackagesAsync();
         public Task<PolicyPackageDomain> GetPolicyPackageByIdAsync(int packageId);
     }
