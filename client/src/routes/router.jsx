@@ -11,6 +11,7 @@ import StaffsPaymentDetail from "../pages/staffs/payment-detail";
 import CheckOut from "../components/payment/checkout";
 import CustomerRequestManagement from "../pages/customers/manage-requests";
 import CustomerRequestForm from "../pages/customers/customer-request-form";
+import RefundRequestForm from "../pages/customers/refund-request-form";
 
 export const router = createBrowserRouter([
    {
@@ -69,5 +70,9 @@ export const router = createBrowserRouter([
    {
       path: "/users/customer-requests/create",
       element: <LayoutRoute element={<CustomerRequestForm />}></LayoutRoute>,
+   },
+   {
+      path: "/users/refund-requests/create",
+      element: <LayoutRoute element={<RefundRequestForm />}></LayoutRoute>,
    },
 ]);

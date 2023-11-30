@@ -7,3 +7,7 @@ export const getAllCustomerRequestsApi = async (cancelToken) => {
       cancelToken: cancelToken,
    });
 };
+
+export const createNewRefundRequestApi = async (submitData) => {
+   return await axios.post(API_URL + "/refund-requests/add", submitData);
+};

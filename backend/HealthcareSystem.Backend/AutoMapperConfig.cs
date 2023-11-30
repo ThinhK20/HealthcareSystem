@@ -42,10 +42,13 @@ namespace HealthcareSystem.Backend
 
             CreateMap<InsuarancePolicyUpdateDTO, InsurancePolicy>().ReverseMap();
 
+            CreateMap<Insurance, InsuranceDomain>().ReverseMap();
+            CreateMap<Insurance, InsuranceCreateDTO>().ReverseMap();
+
 
             CreateMap<Payment, PaymentDomain>();
             CreateMap<InsuranceDetail, InsuranceDetailDomain>();
-            CreateMap<InsuranceDetailDomain,InsuranceDetail > ();
+            CreateMap<InsuranceDetailDomain, InsuranceDetail>();
             CreateMap<User, UserPriceDomain>();
 
             CreateMap<BasicPrice, BasicPriceDomain>();
