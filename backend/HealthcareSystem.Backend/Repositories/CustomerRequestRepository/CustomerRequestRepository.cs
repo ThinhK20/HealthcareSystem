@@ -56,6 +56,7 @@ namespace HealthcareSystem.Backend.Repositories
         public async Task<PaymentDomain> AcceptCustomerRequest(int Accept)
         {
             var ctm_request =  await GetAsync(x => x.RequestID == Accept);
+            if (ctm_request == null) throw new Exception("Request NULL");
             PaymentCreateDTO temp = new PaymentCreateDTO
             {
                 RequestId = ctm_request.RequestID,
@@ -87,11 +88,11 @@ namespace HealthcareSystem.Backend.Repositories
             InsuranceDetailDomain Insuran_form = new InsuranceDetailDomain
             {
                 InsureID = 1,
-                PackagedID = ctm_request.PackageId,
+                PackageID = ctm_request.PackageId,
                 DateStart = DateTime.Now,
-                DateEnd = DateTime.Now,
+                DateEnd = DateTime.Now.AddYears(1),
             };
-            _invoiceDetailService.AddInsuranceDatail(Insuran_form);
+           await _invoiceDetailService.AddInsuranceDatail(Insuran_form);
             return true;
         }
     }

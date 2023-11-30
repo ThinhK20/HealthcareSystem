@@ -45,6 +45,7 @@ namespace HealthcareSystem.Backend
 
             CreateMap<Payment, PaymentDomain>();
             CreateMap<InsuranceDetail, InsuranceDetailDomain>();
+            CreateMap<InsuranceDetailDomain,InsuranceDetail > ();
             CreateMap<User, UserPriceDomain>();
 
             CreateMap<BasicPrice, BasicPriceDomain>();

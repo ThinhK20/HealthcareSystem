@@ -1,5 +1,6 @@
 ﻿using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories;
+using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -10,10 +11,11 @@ namespace HealthcareSystem.Backend.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly IPaymentRepository _paymentRepository;
-
-        public PaymentsController(IPaymentRepository paymentRepository)
+        private readonly IInsuranceDetailRepository _insuranceDetailRepository;
+        public PaymentsController(IPaymentRepository paymentRepository, IInsuranceDetailRepository insuranceDetailRepository)
         {
             _paymentRepository = paymentRepository;
+            _insuranceDetailRepository = insuranceDetailRepository;
         }
 
         [HttpPost("CreatePayment")]
@@ -121,6 +123,26 @@ namespace HealthcareSystem.Backend.Controllers
                 else
                 {
                     return NotFound($"Payment with ID {paymentId} not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("GetPaymentDetailId/{InsureID}")]
+        public async Task<IActionResult> GetInranceDetail(int InsureID)
+        {
+            try
+            {
+                var payment = await _insuranceDetailRepository.GetByIdAsync(InsureID);
+                if (payment != null)
+                {
+                    return Ok(payment);
+                }
+                else
+                {
+                    return NotFound($"Payment with ID {InsureID} not found.");
                 }
             }
             catch (Exception ex)
