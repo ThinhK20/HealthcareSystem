@@ -58,6 +58,7 @@ export default function CustomerRequestManagement() {
             payment: request.payment,
             policyPackage: request.policyPackage,
             periodic: request.periodic,
+            requestID : request.requestID
          }));
          return newRows;
       });
@@ -178,12 +179,12 @@ export default function CustomerRequestManagement() {
                                        value={tableRow.policyPackage?.name}
                                        color={
                                           tableRow.policyPackage?.name ===
-                                          "Basic"
+                                             "Basic"
                                              ? "green"
                                              : tableRow.policyPackage?.name ===
-                                               "Premium"
-                                             ? "amber"
-                                             : "blue"
+                                                "Premium"
+                                                ? "amber"
+                                                : "blue"
                                        }
                                     />
                                  </div>
@@ -242,14 +243,16 @@ export default function CustomerRequestManagement() {
                               </div>
                            </td>
                            <td className={classes}>
-                              <Tooltip title="View details">
-                                 <IconButton variant="text">
-                                    <FontAwesomeIcon
-                                       className="h-4 w-4"
-                                       icon={faEye}
-                                    />
-                                 </IconButton>
-                              </Tooltip>
+                              <Link to={`/staff/payment-detal/${tableRow?.requestID}`}>
+                                 <Tooltip title="View details">
+                                    <IconButton variant="text">
+                                       <FontAwesomeIcon
+                                          className="h-4 w-4"
+                                          icon={faEye}
+                                       />
+                                    </IconButton>
+                                 </Tooltip>
+                              </Link>
                               <Tooltip title="Edit">
                                  <IconButton variant="text">
                                     <PencilIcon className="h-4 w-4" />

@@ -7,6 +7,7 @@ import ConfirmNotification from "../components/insuarancePolices/delete-confirma
 import Form from "../components/insuarancePolices/form";
 import RegisterInsurance from "../components/register-insurance/register-insurance";
 import StaffsPayment from "../pages/staffs/payment";
+import StaffsPaymentDetail from "../pages/staffs/payment-detail";
 import CheckOut from "../components/payment/checkout";
 import CustomerRequestManagement from "../pages/customers/manage-requests";
 import CustomerRequestForm from "../pages/customers/customer-request-form";
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
    {
       path: "staff/payment",
       element: <LayoutRoute element={<StaffsPayment />}></LayoutRoute>,
+   },
+   {
+      path: "staff/payment-detal/:id",
+      element: <LayoutRoute element={<StaffsPaymentDetail />}></LayoutRoute>,
    },
    {
       path: "/payment/checkout",
