@@ -13,7 +13,8 @@ namespace HealthcareSystem.Backend
                  .ForMember(dest => dest.Staff, opt => opt.Ignore())
                  .ForMember(dest => dest.Payment, opt => opt.Ignore())
                  .ForMember(dest => dest.PolicyPackage, opt => opt.Ignore());
-
+            CreateMap<Models.Domain.PaymentDomain, Models.Entity.Payment>()
+                  .ForMember(dest => dest.CustomerRequest, opt => opt.Ignore());
             CreateMap<Models.Entity.CustomerRequest, Models.Domain.CustomerRequestDomain>();
             CreateMap<Models.DTO.CustomerRequestCreateDTO, Models.Entity.CustomerRequest>().ReverseMap();
             CreateMap<Payment, PaymentDomain>().ReverseMap();
@@ -47,6 +48,7 @@ namespace HealthcareSystem.Backend
 
 
             CreateMap<Payment, PaymentDomain>();
+
             CreateMap<InsuranceDetail, InsuranceDetailDomain>();
             CreateMap<InsuranceDetailDomain, InsuranceDetail>();
             CreateMap<User, UserPriceDomain>();
@@ -58,7 +60,10 @@ namespace HealthcareSystem.Backend
             CreateMap<RefundRequestDTO, RefundRequest>().ReverseMap()
                 .ForMember(x => x.File, opt => opt.Ignore());
             CreateMap<RefundRequestDomain, RefundRequest>().ReverseMap();
+            CreateMap<CustomerRequest, CustomerRequestDTO>();
 
+            CreateMap<Payment, PaymentDomain>()
+                .ForMember(dest => dest.CustomerRequest, opt => opt.MapFrom(src => src.CustomerRequest));
 
 
 

@@ -52,7 +52,7 @@ namespace HealthcareSystem.Backend.Repositories
 
         public async Task<List<PaymentDomain>> GetAllPaymentRequestsAsync()
         {
-            var query = await GetAllAsync();
+            var query = await GetAllAsync(null, true, "CustomerRequest");
             var paymentQuery =  query.Select(u => _mapper.Map<PaymentDomain>(u)).ToList();
             return paymentQuery;
         }
@@ -64,7 +64,7 @@ namespace HealthcareSystem.Backend.Repositories
 
         public async Task<List<PaymentDomain>> GetPaymentedAsync()
         {
-            var payments = await GetAllAsync(x => x.Status == true);
+            var payments = await GetAllAsync(x => x.Status == true,true, "CustomerRequest");
             return _mapper.Map<List<PaymentDomain>>(payments);
         }
         public async Task<PaymentDomain> GetPaymentIdAsync(int PaymentId)
