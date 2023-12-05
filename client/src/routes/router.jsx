@@ -13,6 +13,7 @@ import CustomerRequestManagement from "../pages/customers/manage-requests";
 import CustomerRequestForm from "../pages/customers/customer-request-form";
 import RefundRequestForm from "../pages/customers/RefundRequestForm";
 import Page404 from "../pages/Error/page404";
+import Register from "../components/login/register";
 import { RefundRequestManagement } from "../pages/customers/manage-refund-request";
 export const router = createBrowserRouter([
    {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
    {
       path: "/login",
       element: <LayoutRoute element={<Login />}></LayoutRoute>,
+   },
+   {
+      path: "/register",
+      element: <LayoutRoute element={<Register />}></LayoutRoute>,
    },
 
    {

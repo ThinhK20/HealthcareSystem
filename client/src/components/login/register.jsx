@@ -1,14 +1,16 @@
 import { useRef, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import * as jwt from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function Register() {
    const navigateTo = useNavigate();
 
    const usernameRef = useRef(null);
    const passRef = useRef(null);
+   const confirmPasswordRef = useRef(null);
+   const emailRef = useRef(null);
+
    const config = {
       headers: {
          "content-type": "application/json",
@@ -21,50 +23,33 @@ export default function Login() {
 
    const handleSubmit = async (event) => {
       event.preventDefault();
-      console.log(usernameRef.current?.value, passRef.current?.value);
 
       const accountInfo = {
          userName: usernameRef.current?.value,
-         password: passRef.current?.value
+         password: passRef.current?.value,
+         email: emailRef.current?.value,
+         confirmPassword: confirmPasswordRef.current?.value
       };
-      const loginAPI = await authFetch.post("/login", accountInfo, config);
-      console.log(1111, loginAPI)
-      const token = loginAPI.data.token;
-      const decodeToken = await jwt.jwtDecode(token);
-      console.log(token,decodeToken)
-      localStorage.setItem('token', token);
-      const message = (token !== null ? 'Login successfully !' : 'Login failed !')
-      if(token.length != 0){
-         toast.success(message, {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
-          setTimeout(() => {
-             navigateTo('/table-insurance-management')
-          }, 3000); 
-      }
-      else{
-         toast.error(message, {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
-          setTimeout(() => {
-             
-          }, 3000); 
-      }
-     
+      console.log(555555, accountInfo)
+      const registerAPI = await authFetch.post("/register", accountInfo, config);
+
+      console.log(registerAPI)
+
+      const message = (registerAPI.data !== null ? 'Register successfully !' : 'Register failed !')
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setTimeout(() => {
+         navigateTo('/table-insurance-management')
+      }, 3000); 
      
    }
    return (
-      <>
       <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
          <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
             <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
@@ -103,7 +88,7 @@ export default function Login() {
                         <div className="my-12 border-b text-center">
                               <div
                                  className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                                 Or Sign In With Your Account
+                                 
                               </div>
                         </div>
                         <form action="#" onSubmit={handleSubmit}>
@@ -118,6 +103,16 @@ export default function Login() {
                                  name = "password"
                                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                                  type="password" placeholder="Password" />
+                              <input
+                                 ref={confirmPasswordRef}
+                                 name = "confirm"
+                                 className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                                 type="password" placeholder="Confirm Password" />
+                              <input
+                                 ref={emailRef}
+                                 name = "password"
+                                 className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                                 type="email" placeholder="Email" />
                            
                               <button
                                  type="submit"
@@ -129,13 +124,13 @@ export default function Login() {
                                     <path d="M20 8v6M23 11h-6" />
                                  </svg>
                                  <span className="ml-4">
-                                    Sign In
+                                    Sign Up
                                  </span>
                               </button>
                               <p className="mt-6 text-m text-gray-600 text-center">
-                                 If you don't have account <br></br>
-                                 <a href="/register" className="border-b border-gray-500 border-dotted">
-                                    Register Now !
+                                 
+                                 <a href="/login" className="border-b border-gray-500 border-dotted">
+                                    Back To Login
                                  </a>
                                 
                               </p>
@@ -153,9 +148,5 @@ export default function Login() {
             </div>
          </div>
       </div>
-      <ToastContainer />
-
-   </>
-      
    );
    }
