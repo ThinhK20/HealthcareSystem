@@ -8,7 +8,7 @@ namespace HealthcareSystem.Backend.Models.Entity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AccountId { get; set; }
-        public int UserId { get; set; }
+        public int ? UserId { get; set; }
 
         public string Username { get; set; }
 

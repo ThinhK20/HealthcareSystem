@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using BCrypt.Net;
+using AutoMapper;
 
 namespace HealthcareSystem.Backend.Services.AccountService
 {
@@ -14,18 +16,20 @@ namespace HealthcareSystem.Backend.Services.AccountService
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
 
-        public AccountService(IAccountRepository temp, IUserRepository userRepository)
+        public AccountService(IAccountRepository temp, IUserRepository userRepository, IMapper mapper)
         {
             _accountRepository = temp;
             _userRepository = userRepository;
+            _mapper = mapper;
           
         }
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
             var getList = await _accountRepository.GetUser();
-            var checkUser = getList.FirstOrDefault(u => u.Username == loginRequestDTO.UserName && u.Password == loginRequestDTO.Password);
+            var checkUser = getList.FirstOrDefault(u => u.Username == loginRequestDTO.UserName);
             if (checkUser == null)
             {
                 return new LoginResponseDTO()
@@ -36,6 +40,14 @@ namespace HealthcareSystem.Backend.Services.AccountService
             }
             if(checkUser.Status == "Disable")
             {
+                return new LoginResponseDTO()
+                {
+                    Token = "",
+                    user = null
+                };
+            }
+            var isPasswordValid = BCrypt.Net.BCrypt.Verify(loginRequestDTO.Password, checkUser.Password);
+            if (isPasswordValid== false) {
                 return new LoginResponseDTO()
                 {
                     Token = "",
@@ -72,6 +84,32 @@ namespace HealthcareSystem.Backend.Services.AccountService
                 user = userinfo
             };
             return loginRequestDto;
+        }
+        public async Task<AccountDTO> Register(RegisterRequestDTO registerationRequestDTO)
+        {
+            var checkUser =  await _accountRepository.checkUserExist(registerationRequestDTO.UserName);
+            if (checkUser == true)
+            {
+                return null;
+            }
+            if(registerationRequestDTO.Password != registerationRequestDTO.Password)
+            {
+                return null;
+            }
+            var salt = BCrypt.Net.BCrypt.GenerateSalt();
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerationRequestDTO.Password, salt);
+            AccountDTO user = new AccountDTO()
+            {
+                Username = registerationRequestDTO.UserName,
+                Password = hashedPassword,
+                Status = "Active",
+                Role = "Customer"
+            };
+            var userMapper = _mapper.Map<Models.Entity.Account>(user);
+            userMapper.UserId = null;
+            await _accountRepository.CreateAsync(userMapper);
+            user.Password = "";
+            return user;
         }
     }
 }

@@ -20,5 +20,19 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             if (user == null) throw new Exception("Don't have any users.");
             return _mapper.Map<List<Models.Domain.Account>>(user);
         }
+        public  async Task<bool> checkUserExist(string Username)
+        {
+            var user =  await GetAsync(u => u.Username == Username);
+            if(user == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        public async Task<int> getLength()
+        {
+           var user = await GetAllAsync();
+            return user.Count();
+        }
     }
 }

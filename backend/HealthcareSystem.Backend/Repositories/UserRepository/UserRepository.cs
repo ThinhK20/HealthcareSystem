@@ -29,7 +29,7 @@ namespace HealthcareSystem.Backend.Repositories
         public async Task<UserDomain> GetUserByAccount(int AccountId)
         {
             var UserInfo = await GetAsync(x => x.Account.AccountId == AccountId);
-            if (UserInfo == null) throw new Exception("User not found.");
+            if (UserInfo == null) return null;
             return _mapper.Map<UserDomain>(UserInfo);
         }
 

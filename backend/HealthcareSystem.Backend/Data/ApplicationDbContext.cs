@@ -38,7 +38,8 @@ namespace HealthcareSystem.Backend.Data
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Account)
                 .WithOne(a => a.User)
-                .HasForeignKey<Account>(a => a.UserId);
+                .HasForeignKey<Account>(a => a.UserId)
+                .IsRequired(false);
 
             modelBuilder.Entity<Account>()
                 .HasMany(a => a.CustomerInquiries)

@@ -6,5 +6,11 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
     {
         public Task<List<Models.Domain.Account>> GetUser();
 
+        public Task<bool> checkUserExist(string Username);
+
+        public Task<int> getLength();
+
+        
+
     }
 }
