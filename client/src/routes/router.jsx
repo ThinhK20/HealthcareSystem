@@ -11,8 +11,9 @@ import StaffsPaymentDetail from "../pages/staffs/payment-detail";
 import CheckOut from "../components/payment/checkout";
 import CustomerRequestManagement from "../pages/customers/manage-requests";
 import CustomerRequestForm from "../pages/customers/customer-request-form";
-import RefundRequestForm from "../pages/customers/refund-request-form";
+import RefundRequestForm from "../pages/customers/RefundRequestForm";
 import Page404 from "../pages/Error/page404";
+import { RefundRequestManagement } from "../pages/customers/manage-refund-request";
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -62,6 +63,12 @@ export const router = createBrowserRouter([
       element: <LayoutRoute element={<CheckOut />}></LayoutRoute>,
    },
    {
+      path: "/staffs/refund-request-management",
+      element: (
+         <LayoutRoute element={<RefundRequestManagement />}></LayoutRoute>
+      ),
+   },
+   {
       path: "/users/customer-requests",
       element: (
          <LayoutRoute element={<CustomerRequestManagement />}></LayoutRoute>
@@ -77,6 +84,6 @@ export const router = createBrowserRouter([
    },
    {
       path: "*",
-      element: <Page404></Page404>
-   }
+      element: <Page404></Page404>,
+   },
 ]);

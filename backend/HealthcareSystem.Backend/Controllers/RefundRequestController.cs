@@ -1,4 +1,5 @@
-﻿using HealthcareSystem.Backend.Models.DTO;
+﻿using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.RefundRequestService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,19 @@ namespace HealthcareSystem.Backend.Controllers
             try
             {
                 return Ok(await _refundRequestService.CreateRefundRequestAsync(refundRequestDTO));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<List<RefundRequestDomain>>> GetAllRefundRequests()
+        {
+            try
+            {
+                return Ok(await _refundRequestService.GetAllRefundRequestsAsync());
             }
             catch (Exception ex)
             {
