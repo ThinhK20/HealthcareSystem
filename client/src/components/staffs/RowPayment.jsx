@@ -26,7 +26,10 @@ function RowTableStaffsPayment(props) {
                 {formatDate(props.item.createdDate)}
             </td>
             <td className="px-4 py-2 text-[15px] text-[black] font-[500] w-[200px]">
+                <div className="w-full flex justify-end">
+
                 {formatDate(props.item.updatedDate)}
+                </div>
             </td>
             <td className="py-2 text-[15px] text-[black] font-[500] flex justify-end w-[280px] ">
                 <span className="mr-[30px]">{formatNumber(props.item.price)}</span>

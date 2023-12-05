@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import RowTableStaffsPayment from '../../components/staffs/RowPayment'
 import Axios from 'axios'
 import { FunnelIcon } from "@heroicons/react/24/outline";
-
+import { useLocation } from 'react-router-dom';
 const StaffsPayment = () => {
-
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const acc = searchParams.get('acc');
   const [stagePayment, setStagaPayment] = useState([])
   const [Payments, SetPayments] = useState([]);
   const [reset, SetReset] = useState(true);
@@ -103,10 +105,14 @@ const StaffsPayment = () => {
                           Created Date
                         </th>
                         <th scope="col" className="px-4 py-3">
-                          Paymented Date
+                       <div className='w-[100%] flex justify-end'>Paymented Date</div>
                         </th>
                         <th scope="col" className="px-4 py-3 w-[280px]">
-                          <div className='w-[100%] flex justify-end'>Price</div>
+                          <div className='w-[100%] flex justify-end'>
+                            <div className=' mr-[20px]'>
+                              Price
+                            </div>
+                          </div>
                         </th>
                         <th scope="col" className="px-4 py-3 flex justify-center">
                           <button onClick={filterStatus} className='flex justify-center items-center'>

@@ -2,30 +2,42 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios'
 import { formatDate } from '../../helpers/dataHelper';
+import { Button } from '@material-tailwind/react';
+import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-
-const StaffsPaymentDetail = () => {
+const StaffRequestDetail = () => {
     const [data, setData] = useState();
-    const [reset,setReset] = useState();
-    const handleReset = ()=>{
+    const [reset, setReset] = useState();
+    const [dropPayment, SetDropPaymet] = useState(false)
+    const [dropPackage, SetDropPackage] = useState(false)
+    const [PackageDetal, SetPackageDetail] = useState()
+    const handleReset = () => {
         setReset(!reset)
     }
     const { id } = useParams();
     useEffect(() => {
         axios.get(`https://localhost:44384/api/users/customerRequests/${id}`).then((result) => {
             setData(result.data)
-            console.log(result.data)
+            SetPackageDetail(result.data.payment)
+            console.log(result.data.payment)
         }
         )
-    }, [])
+    }, [reset])
     const handleAccept = () => {
-        axios.post(`https://localhost:44384/api/users/customerRequests/${id}`).then(()=>handleReset)
+        axios.post(`https://localhost:44384/api/users/customerRequests/${id}`).then(() => handleReset).then(()=>handleReset)
     }
     const handRefused = () => {
-        axios.post(`https://localhost:44384/api/users/RefusedRequest/${id}`).then(()=>handleReset)
+        axios.post(`https://localhost:44384/api/users/RefusedRequest/${id}`).then(() => handleReset).then(()=>handleReset)
     }
     const handComplete = () => {
-        axios.post(`https://localhost:44384/api/users/CompleteRequest/${id}`).then(()=>handleReset)
+        axios.post(`https://localhost:44384/api/users/CompleteRequest/${id}`).then(() => handleReset).then(()=>handleReset)
+    }
+    const handleDropPaymet = () => {
+        SetDropPaymet(!dropPayment)
+    }
+    const handleDropPackage = () => {
+        SetDropPackage(!dropPackage)
     }
     return (
         <>
@@ -73,9 +85,59 @@ const StaffsPaymentDetail = () => {
                                     </div>
                                 </div>
                             </div>
-                            {data?.paymentId && (
+                            <Button onClick={handleDropPaymet} className="w-full h-[30px] mt-6 bg-[white] text-[black] p-[3px]"><span className='mr-[5px]'>Payment</span>
+                                {dropPayment ? (
+
+                                    <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+                                ) : (
+                                    <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+
+                                )}
+
+                            </Button>
+                            {dropPayment && (
                                 <>
-                                    <div className="mt-6">
+                                    <div className="transition-max-height duration-1000 ease-in-out overflow-hidden ">
+                                        <div className="border border-gray-200 p-4 rounded-lg space-y-4 dr:border-gray-700">
+                                            <div className="hidden sm:grid sm:grid-cols-5">
+                                                <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">Item</div>
+                                                <div className="text-start text-xs font-medium text-gray-500 uppercase">Qty</div>
+                                                <div className="text-start text-xs font-medium text-gray-500 uppercase">Rate</div>
+                                                <div className="text-end text-xs font-medium text-gray-500 uppercase">Amount</div>
+                                            </div>
+                                            <div className="hidden sm:block border-b border-gray-200 dr:border-gray-700"></div>
+                                            {/* {
+                                                PackageDetal?.map((item) => {
+                                                    (
+                                                        <div className="hidden sm:grid sm:grid-cols-5">
+                                                            <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">{item.paymentId}</div>
+                                                            <div className="text-start text-xs font-medium text-gray-500 uppercase">Qty</div>
+                                                            <div className="text-start text-xs font-medium text-gray-500 uppercase">Rate</div>
+                                                            <div className="text-end text-xs font-medium text-gray-500 uppercase">Amount</div>
+                                                        </div>
+                                                    )
+                                                })
+                                            } */}
+
+
+
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                            <Button onClick={handleDropPackage} className="w-full h-[30px] mt-6 bg-[white] text-[black] p-[3px]"><span className='mr-[5px]'>Package</span>
+                                {dropPackage ? (
+
+                                    <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+                                ) : (
+                                    <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+
+                                )}
+
+                            </Button>
+                            {dropPackage && (
+                                <>
+                                    <div className="transition-max-height duration-1000 ease-in-out overflow-hidden ">
                                         <div className="border border-gray-200 p-4 rounded-lg space-y-4 dr:border-gray-700">
                                             <div className="hidden sm:grid sm:grid-cols-5">
                                                 <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">Item</div>
@@ -160,4 +222,4 @@ const StaffsPaymentDetail = () => {
 
     )
 }
-export default StaffsPaymentDetail
+export default StaffRequestDetail

@@ -5,6 +5,7 @@ const Page404 = () => {
         <>
             <div class="grid h-screen place-content-center bg-white px-4">
                 <div class="text-center">
+                    <img className="w-[300px] h-[300px]" src="https://scontent.xx.fbcdn.net/v/t1.15752-9/315171791_891058235587080_9119428914653300827_n.jpg?stp=dst-jpg_s100x100&_nc_cat=107&ccb=1-7&_nc_sid=61f064&_nc_ohc=zRoLT-J2TnsAX-r5_th&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdQZlVxDaT1u81I4DGYBH31PBw6klYKHzrLt6d6R5nQDcQ&oe=6596A4CE" alt="" />
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 1024 768"
