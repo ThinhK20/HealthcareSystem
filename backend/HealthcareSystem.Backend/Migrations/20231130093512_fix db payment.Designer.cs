@@ -4,6 +4,7 @@ using HealthcareSystem.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthcareSystem.Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231130093512_fix db payment")]
+    partial class fixdbpayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,7 @@ namespace HealthcareSystem.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -59,8 +62,7 @@ namespace HealthcareSystem.Backend.Migrations
                         .HasFilter("[InsuranceUserID] IS NOT NULL");
 
                     b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Accounts");
                 });
@@ -245,9 +247,12 @@ namespace HealthcareSystem.Backend.Migrations
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("InsuranceID")
+                        .HasColumnType("int");
+
                     b.HasKey("PackageID", "InsureID");
 
-                    b.HasIndex("InsureID");
+                    b.HasIndex("InsuranceID");
 
                     b.ToTable("InsuranceDetails");
                 });
@@ -314,9 +319,6 @@ namespace HealthcareSystem.Backend.Migrations
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("ExpirationPaypal")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("LinkCheckOut")
                         .HasColumnType("nvarchar(max)");
 
@@ -334,9 +336,6 @@ namespace HealthcareSystem.Backend.Migrations
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("idPayPal")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PaymentId");
 
@@ -513,7 +512,9 @@ namespace HealthcareSystem.Backend.Migrations
 
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.User", "User")
                         .WithOne("Account")
-                        .HasForeignKey("HealthcareSystem.Backend.Models.Entity.Account", "UserId");
+                        .HasForeignKey("HealthcareSystem.Backend.Models.Entity.Account", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Insurance");
 
@@ -587,9 +588,7 @@ namespace HealthcareSystem.Backend.Migrations
                 {
                     b.HasOne("Insurance", "Insurance")
                         .WithMany("InsuranceDetails")
-                        .HasForeignKey("InsureID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InsuranceID");
 
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.PolicyPackage", "PolicyPackage")
                         .WithMany("InsuranceDetails")

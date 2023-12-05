@@ -64,7 +64,6 @@ namespace HealthcareSystem.Backend.Repositories
             };
             ctm_request.Status = "Pending Transfer";
             int Payment_id = await _paymentService.CreatePayment(temp);
-            ctm_request.PaymentId = Payment_id;
             var recept = await _paymentService.GetPaymentIdAsync(Payment_id);
             await UpdateAsync(ctm_request);
             return recept;
