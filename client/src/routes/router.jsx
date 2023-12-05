@@ -13,6 +13,7 @@ import CustomerRequestManagement from "../pages/customers/manage-requests";
 import CustomerRequestForm from "../pages/customers/customer-request-form";
 import RefundRequestForm from "../pages/customers/refund-request-form";
 import Page404 from "../pages/Error/page404";
+import Register from "../components/login/register";
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -22,6 +23,11 @@ export const router = createBrowserRouter([
       path: "/login",
       element: <LayoutRoute element={<Login />}></LayoutRoute>,
    },
+   {
+      path: "/register",
+      element: <LayoutRoute element={<Register />}></LayoutRoute>,
+   },
+
 
    {
       path: "/table-insurance-management",
