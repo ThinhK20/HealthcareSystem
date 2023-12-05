@@ -2,7 +2,7 @@
 {
    public class InsuranceDetailDomain
     {
-        public int? PackagedID   { get; set; }
+        public int? PackageID { get; set; }
         public int? InsureID { get; set; }
         public DateTime? DateStart {  get; set; }
         public DateTime? DateEnd { get; set; }

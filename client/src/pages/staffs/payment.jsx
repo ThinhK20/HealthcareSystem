@@ -4,6 +4,7 @@ import Axios from 'axios'
 import { FunnelIcon } from "@heroicons/react/24/outline";
 
 const StaffsPayment = () => {
+
   const [stagePayment, setStagaPayment] = useState([])
   const [Payments, SetPayments] = useState([]);
   const [reset, SetReset] = useState(true);

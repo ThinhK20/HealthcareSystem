@@ -1,13 +1,22 @@
 using HealthcareSystem.Backend;
 using HealthcareSystem.Backend.Data;
-using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
+using HealthcareSystem.Backend.Repositories.AccountRepository;
+using HealthcareSystem.Backend.Repositories.ImageRepository;
 using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
+using HealthcareSystem.Backend.Repositories.InsuranceRepository;
+using HealthcareSystem.Backend.Repositories.PolicyPackageRepository;
+using HealthcareSystem.Backend.Repositories.RefundRequestRepository;
+using HealthcareSystem.Backend.Services.AccountService;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using HealthcareSystem.Backend.Services.PackagePoliceService;
 using HealthcareSystem.Backend.Services.PaymentService;
+using HealthcareSystem.Backend.Services.RefundRequestService;
 using HealthcareSystem.Backend.Services.UserService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,9 +39,12 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHealthRecordRepository, HealRecordRepository>();
 builder.Services.AddScoped<IFeeAffectRepository, FeeAffectRopsitory>();
 builder.Services.AddScoped<IInsuranceDetailRepository, InsuranceDetailRepository>();
-
-
 builder.Services.AddScoped<IBasicPriceRepository, BasicPriceRepository>();
+builder.Services.AddScoped<IPolicyPackageRepository, PolicyPackageRepository>();
+builder.Services.AddScoped<IFileRepository, FileRepository>();
+builder.Services.AddScoped<IRefundRequestRepository, RefundRequestRepository>();
+builder.Services.AddScoped<IInsuranceRepository, InsuranceRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 
 // Add services
@@ -40,9 +52,27 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPackagePoliceService, PackagePoliceService>();
 builder.Services.AddScoped<IInsuranceDetailService, InsuranceDetailService>();
+builder.Services.AddScoped<IRefundRequestService, RefundRequestService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 
-
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters { 
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime   = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!))
+    };
+});
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>

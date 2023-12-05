@@ -45,7 +45,7 @@ namespace HealthcareSystem.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -59,7 +59,8 @@ namespace HealthcareSystem.Backend.Migrations
                         .HasFilter("[InsuranceUserID] IS NOT NULL");
 
                     b.HasIndex("UserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Accounts");
                 });
@@ -244,12 +245,9 @@ namespace HealthcareSystem.Backend.Migrations
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("InsuranceID")
-                        .HasColumnType("int");
-
                     b.HasKey("PackageID", "InsureID");
 
-                    b.HasIndex("InsuranceID");
+                    b.HasIndex("InsureID");
 
                     b.ToTable("InsuranceDetails");
                 });
@@ -515,9 +513,7 @@ namespace HealthcareSystem.Backend.Migrations
 
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.User", "User")
                         .WithOne("Account")
-                        .HasForeignKey("HealthcareSystem.Backend.Models.Entity.Account", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HealthcareSystem.Backend.Models.Entity.Account", "UserId");
 
                     b.Navigation("Insurance");
 
@@ -591,7 +587,9 @@ namespace HealthcareSystem.Backend.Migrations
                 {
                     b.HasOne("Insurance", "Insurance")
                         .WithMany("InsuranceDetails")
-                        .HasForeignKey("InsuranceID");
+                        .HasForeignKey("InsureID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.PolicyPackage", "PolicyPackage")
                         .WithMany("InsuranceDetails")

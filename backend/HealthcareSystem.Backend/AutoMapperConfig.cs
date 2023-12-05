@@ -13,7 +13,8 @@ namespace HealthcareSystem.Backend
                  .ForMember(dest => dest.Staff, opt => opt.Ignore())
                  .ForMember(dest => dest.Payment, opt => opt.Ignore())
                  .ForMember(dest => dest.PolicyPackage, opt => opt.Ignore());
-
+            CreateMap<Models.Domain.PaymentDomain, Models.Entity.Payment>()
+                  .ForMember(dest => dest.CustomerRequest, opt => opt.Ignore());
             CreateMap<Models.Entity.CustomerRequest, Models.Domain.CustomerRequestDomain>();
             CreateMap<Models.DTO.CustomerRequestCreateDTO, Models.Entity.CustomerRequest>().ReverseMap();
             CreateMap<Payment, PaymentDomain>().ReverseMap();
@@ -42,18 +43,45 @@ namespace HealthcareSystem.Backend
 
             CreateMap<InsuarancePolicyUpdateDTO, InsurancePolicy>().ReverseMap();
 
+            CreateMap<Insurance, InsuranceDomain>().ReverseMap();
+            CreateMap<Insurance, InsuranceCreateDTO>().ReverseMap();
+
 
             CreateMap<Payment, PaymentDomain>();
+
             CreateMap<InsuranceDetail, InsuranceDetailDomain>();
+            CreateMap<InsuranceDetailDomain, InsuranceDetail>();
             CreateMap<User, UserPriceDomain>();
 
             CreateMap<BasicPrice, BasicPriceDomain>();
 
             CreateMap<FeeAffect, FeeAffectDomain>();
 
+            CreateMap<RefundRequestDTO, RefundRequest>().ReverseMap()
+                .ForMember(x => x.File, opt => opt.Ignore());
+            CreateMap<RefundRequestDomain, RefundRequest>().ReverseMap();
+            CreateMap<CustomerRequest, CustomerRequestDTO>();
+
+            CreateMap<Payment, PaymentDomain>()
+                .ForMember(dest => dest.CustomerRequest, opt => opt.MapFrom(src => src.CustomerRequest));
 
 
+            CreateMap<Models.Entity.Account, Models.Domain.Account>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username))
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
+                .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.AccountId))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role));
 
+            CreateMap<Models.DTO.AccountDTO, Models.Entity.Account>()
+               .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username))
+               .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
+               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+               .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role))
+               .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
+
+            CreateMap<User, UserDomain>();
 
         }
     }

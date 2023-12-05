@@ -2,6 +2,10 @@
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HealthcareSystem.Backend.Services.UserService
@@ -83,5 +87,6 @@ namespace HealthcareSystem.Backend.Services.UserService
         {
             return await _customerRequestRepository.CompleteCustomerRequest(id);
         }
+        
     }
 }
