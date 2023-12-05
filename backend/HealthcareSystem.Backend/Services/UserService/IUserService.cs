@@ -14,5 +14,7 @@ namespace HealthcareSystem.Backend.Services.UserService
         public Task<PaymentDomain> AcceptCustomerRequest(int Accept);
         public Task<bool> RefusedCustomerRequest(int id);
         public Task<bool> CompleteCustomerRequest(int id);
+
+
     }
 }

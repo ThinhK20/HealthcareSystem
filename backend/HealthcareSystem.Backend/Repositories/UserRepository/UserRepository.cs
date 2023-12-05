@@ -25,5 +25,13 @@ namespace HealthcareSystem.Backend.Repositories
             if (UserInfo == null) throw new Exception("User not found.");
             return _mapper.Map<UserPriceDomain>(UserInfo);
         }
+
+        public async Task<UserDomain> GetUserByAccount(int AccountId)
+        {
+            var UserInfo = await GetAsync(x => x.Account.AccountId == AccountId);
+            if (UserInfo == null) throw new Exception("User not found.");
+            return _mapper.Map<UserDomain>(UserInfo);
+        }
+
     }
 }

@@ -7,5 +7,8 @@ namespace HealthcareSystem.Backend.Repositories
     public interface IUserRepository: IRepository<Models.Entity.User>
     {
         public Task<UserPriceDomain> GetUserInfoForPriceByIdAsync(int UserID);
+
+        public Task<UserDomain> GetUserByAccount(int AccountId);
+
     }
 }

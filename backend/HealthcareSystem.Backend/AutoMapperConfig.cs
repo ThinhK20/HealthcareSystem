@@ -66,7 +66,15 @@ namespace HealthcareSystem.Backend
                 .ForMember(dest => dest.CustomerRequest, opt => opt.MapFrom(src => src.CustomerRequest));
 
 
+            CreateMap<Models.Entity.Account, Models.Domain.Account>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username))
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
+                .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.AccountId))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role));
 
+            CreateMap<User, UserDomain>();
 
         }
     }
