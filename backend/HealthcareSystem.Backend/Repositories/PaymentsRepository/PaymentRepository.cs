@@ -25,8 +25,13 @@ namespace HealthcareSystem.Backend.Repositories
             {
                 RequestId = payment.RequestId,
                 CreatedDate = DateTime.UtcNow,
+                ExpirationDate = DateTime.UtcNow.AddDays(7),
+                ExpirationPaypal = null,
                 Status = false,
                 Price = payment.Price,
+                UpdatedDate = DateTime.UtcNow,
+                LinkCheckOut = null,
+                PaypalEmail = null,
             };
             Models.Entity.Payment entity = _mapper.Map<Models.Entity.Payment>(pay);
             await CreateAsync(entity);

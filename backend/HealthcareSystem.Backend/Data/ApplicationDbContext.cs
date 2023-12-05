@@ -57,9 +57,9 @@ namespace HealthcareSystem.Backend.Data
                 .HasForeignKey(h => h.FeeAffectID);
 
             modelBuilder.Entity<CustomerRequest>()
-               .HasOne(a => a.Payment)
+               .HasMany(a => a.Payment)
                .WithOne(c => c.CustomerRequest)
-               .HasForeignKey<CustomerRequest>(c => c.PaymentId);
+               .HasForeignKey(c => c.RequestId);
 
 
             modelBuilder.Entity<Account>()
