@@ -10,6 +10,7 @@
 
 
         public string Status { get; set; }
+        public string EmailVerification { get; set; }
 
         public string Role { get; set; }
     }

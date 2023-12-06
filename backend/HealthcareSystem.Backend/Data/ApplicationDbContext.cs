@@ -41,6 +41,7 @@ namespace HealthcareSystem.Backend.Data
                 .HasForeignKey<Account>(a => a.UserId)
                 .IsRequired(false);
 
+
             modelBuilder.Entity<Account>()
                 .HasMany(a => a.CustomerInquiries)
                 .WithOne(c => c.Account)
@@ -91,6 +92,11 @@ namespace HealthcareSystem.Backend.Data
                 .HasForeignKey(c => c.AccountId);
 
 
+            modelBuilder.Entity<EmailVerification>()
+              .HasOne(u => u.account)
+              .WithMany(a => a.verification)
+              .HasForeignKey(a => a.AccountId);
+
             modelBuilder.Entity<CustomerRequest>()
                 .HasOne(cr => cr.Staff)
                 .WithMany(a => a.ApproverRequests)
@@ -127,6 +133,8 @@ namespace HealthcareSystem.Backend.Data
                 .HasOne(rd => rd.InsurancePolicy)
                 .WithMany(ip => ip.RefundDetails)
                 .HasForeignKey(rd => rd.PolicyId);
+
+
         }
     }
 }

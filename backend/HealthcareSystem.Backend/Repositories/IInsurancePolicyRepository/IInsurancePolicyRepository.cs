@@ -4,5 +4,6 @@ namespace HealthcareSystem.Backend.Repositories
 {
     public interface IInsurancePolicyRepository : IRepository<InsurancePolicy>
     {
+
     }
 }
