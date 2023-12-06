@@ -61,9 +61,9 @@ namespace HealthcareSystem.Backend.Repositories
             var paymentQuery =  query.Select(u => _mapper.Map<PaymentDomain>(u)).ToList();
             return paymentQuery;
         }
-        public async Task<List<PaymentDomain>> GetPendingTransferPaymentRequestsAsync()
+        public async Task<List<PaymentDomain>> GetPaymentByRequestID(int requestID)
         {
-            var payments = await GetAllAsync(x => x.Status == false);
+            var payments = await GetAllAsync(x => x.RequestId == requestID);
             return _mapper.Map<List<PaymentDomain>>(payments);
         }
 

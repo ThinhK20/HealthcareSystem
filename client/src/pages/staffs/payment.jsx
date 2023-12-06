@@ -123,7 +123,7 @@ const StaffsPayment = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredPayments.map((item) => {
+                      {filteredPayments?.map((item) => {
                         return <RowTableStaffsPayment item={item} key={item.paymentId} handleReset={handleReset} />;
                       })}
                     </tbody>

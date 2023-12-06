@@ -95,12 +95,12 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
 
-        [HttpGet("GetPendingTransferPaymentRequests")]
-        public async Task<IActionResult> GetPendingTransferPaymentRequests()
+        [HttpGet("GetPaymentByRequestID")]
+        public async Task<IActionResult> GetPaymentByRequestID(int requestID)
         {
             try
             {
-                var payments = await _paymentRepository.GetPendingTransferPaymentRequestsAsync();
+                var payments = await _paymentRepository.GetPaymentByRequestID(requestID);
                 return Ok(payments);
             }
             catch (Exception ex)

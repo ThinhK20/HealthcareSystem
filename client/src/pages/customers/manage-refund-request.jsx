@@ -20,7 +20,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { getAllRefundRequestsApi } from "../../apis/refundRequestApis";
 import { toast } from "react-toastify";
-import { formatDate, formatNumber } from "../../helpers/dataHelper";
+import { formatDate, formatMoney } from "../../helpers/dataHelper";
 const TABLE_HEAD = [
    "User",
    "Hospital Name",
@@ -170,7 +170,7 @@ export function RefundRequestManagement() {
                                  color="blue-gray"
                                  className="font-normal"
                               >
-                                 {formatNumber(tableRow.refundFee)}
+                                 {formatMoney(tableRow.refundFee)}
                               </Typography>
                            </td>
                            <td className={classes}>
