@@ -103,20 +103,36 @@ const StaffRequestDetail = () => {
                             <>
                                 <div className="transition-max-height duration-1000 ease-in-out overflow-hidden ">
                                     <div className="border border-gray-200 p-4 rounded-lg space-y-4 dr:border-gray-700">
-                                        <div className="hidden sm:grid sm:grid-cols-5">
-                                            <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">Package ID</div>
-                                            <div className="text-start text-xs font-medium text-gray-500 uppercase">Name </div>
+                                        <div className="hidden sm:grid sm:grid-cols-4">
+                                            <div className="sm:col-span text-xs font-medium text-gray-500 uppercase">Package ID</div>
+                                            <div className="text-xs font-medium text-gray-500 uppercase text-center">Name </div>
                                             <div className="text-center w-full text-xs font-medium text-gray-500 uppercase col-span-2">Description</div>
 
                                         </div>
                                         <div className="hidden sm:block border-b border-gray-200 dr:border-gray-700"></div>
-                                        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                                            <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">Package #{data?.policyPackage?.packageid}</div>
-                                            <div className="text-start text-xs font-medium text-gray-500 uppercase ">{data?.policyPackage?.name}</div>
-                                            <div className="text-start w-full text-xs font-medium text-gray-500 uppercase col-span-2">{data?.policyPackage?.description}</div>
+                                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                                            <div className="sm:col-span text-xs font-medium text-gray-500  uppercase">Package #{data?.policyPackage?.packageid}</div>
+                                            <div className="text-center text-xs font-medium text-gray-500 uppercase px-[40px]">
+                                                <Chip
+                                                    size="sm"
+                                                    variant="ghost"
+                                                    value={data?.policyPackage?.name}
+                                                    color={
+                                                        data?.policyPackage?.name ===
+                                                            "Basic"
+                                                            ? "green"
+                                                            : data?.policyPackage?.name ===
+                                                                "Premium"
+                                                                ? "amber"
+                                                                : "blue"
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="pl-[30px] text-start w-full text-xs font-medium text-gray-500 uppercase col-span-2">{data?.policyPackage?.description}</div>
                                         </div>
 
                                     </div>
+
                                 </div>
                             </>
                             <Button onClick={handleDropPaymet} className="w-full h-[30px] mt-6 bg-[white] text-[black] p-[3px]"><span className='mr-[5px]'>Payment</span>
@@ -171,8 +187,9 @@ const StaffRequestDetail = () => {
                                                     </div>
                                                 </div>
                                             ))}
-
-
+                                            <div className='w-full flex justify-end my-[30px]'>
+                                                <Link to={`/staff/payment?acc=${data?.staff.accountId}`} className='hover:underline hover:to-blue-800' color='blue'> View All Transaction </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </>

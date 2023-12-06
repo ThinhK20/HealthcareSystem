@@ -14,12 +14,17 @@ function RowTableStaffsPayment(props) {
         >
             <td className="px-4 py-2">
                 <span className="bg-primary-100 text-primary-800 text-[#50505f] px-2 py-0.5 rounded dbg-primary-900 dtext-primary-300 text-[15px] font-[600] w-[200px]">
-                    {props.item.paymentId}
+                {props.item.paymentId}
+                </span>
+            </td>
+            <td className="pr-4 pl-2 py-2">
+                <span className=" text-blue-700 text-sm font-medium px-2 py-0.5 rounded w-[200px]">
+                  Request {props.item.requestId}
                 </span>
             </td>
             <td className="px-4 py-2">
-                <span className=" text-blue-700 text-sm font-medium px-2 py-0.5 rounded w-[200px]">
-                    {props.item.requestId}
+                <span className=" text-blue-700 text-sm font-medium px-2 py-0.5 rounded w-[200px] text-center">
+                    {props.item.customerRequest.accountId}
                 </span>
             </td>
             <td className="px-4 py-2 text-[15px] text-[black] font-[500]">
