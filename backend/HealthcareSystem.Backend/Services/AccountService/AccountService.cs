@@ -98,15 +98,24 @@ namespace HealthcareSystem.Backend.Services.AccountService
             }
             var salt = BCrypt.Net.BCrypt.GenerateSalt();
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerationRequestDTO.Password, salt);
+            User new_user = new User()
+            {
+                Email = registerationRequestDTO.Email
+            };
+            await _userRepository.CreateAsync(new_user);
+
+            var getID = await _userRepository.GetAsync(u => u.Email == registerationRequestDTO.Email);
+
+
             AccountDTO user = new AccountDTO()
             {
+                UserId = getID.UserId,
                 Username = registerationRequestDTO.UserName,
                 Password = hashedPassword,
                 Status = "Active",
                 Role = "Customer"
             };
             var userMapper = _mapper.Map<Models.Entity.Account>(user);
-            userMapper.UserId = null;
             await _accountRepository.CreateAsync(userMapper);
             user.Password = "";
             return user;
