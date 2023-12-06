@@ -16,7 +16,7 @@ namespace HealthcareSystem.Backend.Models.Domain
         public string Status {  get; set; }
         public AccountDTO? Account { get; set; } = new();
         public AccountDTO? Staff { get; set; } = new();
-        public PaymentDomain? Payment { get; set; } = new();
+        //public PaymentDomain? Payment { get; set; } = new();
         public PolicyPackageDomain? PolicyPackage { get; set; } = new();
 
     }

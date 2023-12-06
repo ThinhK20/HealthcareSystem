@@ -10,7 +10,7 @@ namespace HealthcareSystem.Backend.Services.PaymentService
         Task<bool> DeletePaymentByIdAsync(int PaymentID);
         Task<bool> UpdateStatus(int PaymentID);
         Task<List<PaymentDomain>> GetAllPaymentRequestsAsync();
-        Task<List<PaymentDomain>> GetPendingTransferPaymentRequestsAsync();
+        Task<List<PaymentDomain>> GetPaymentByRequestID(int requestID);
         Task<List<PaymentDomain>> GetPaymentedAsync();
         Task<PaymentDomain> GetPaymentIdAsync(int PaymentId);
     }

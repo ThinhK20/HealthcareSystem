@@ -15,7 +15,7 @@ function calDiscount(price, discountPercentage) {
    const discountedPrice = price - discountAmount;
    return discountedPrice;
 }
-function formatNumber(number) {
+function formatMoney(number) {
    try {
       const newNumber = numeral(number).format("0,0").toString() + " ₫";
       return newNumber;
@@ -83,7 +83,7 @@ function isObjectNull(obj) {
 export {
    calDiscount,
    formatNum,
-   formatNumber,
+   formatMoney,
    formatPoints,
    calBeDiscount,
    formatDate,

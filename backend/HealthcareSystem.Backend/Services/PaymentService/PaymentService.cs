@@ -42,9 +42,9 @@ namespace HealthcareSystem.Backend.Services.PaymentService
             return await _services.GetPaymentIdAsync(PaymentId);
         }
 
-        public async Task<List<PaymentDomain>> GetPendingTransferPaymentRequestsAsync()
+        public async Task<List<PaymentDomain>> GetPaymentByRequestID(int requestID)
         {
-            return await _services.GetPendingTransferPaymentRequestsAsync();
+            return await _services.GetPaymentByRequestID(requestID);
         }
 
     }

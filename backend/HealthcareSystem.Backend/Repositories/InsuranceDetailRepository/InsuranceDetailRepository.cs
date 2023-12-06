@@ -20,9 +20,21 @@ namespace HealthcareSystem.Backend.Repositories.InsuranceDetailRepository
         public async Task<InsuranceDetail> AddInsuranceDatail(InsuranceDetailDomain insuranceDetail)
         {
             if (insuranceDetail == null) throw new Exception("Data is null");
-            Models.Entity.InsuranceDetail entity = _mapper.Map<Models.Entity.InsuranceDetail>(insuranceDetail);
-            await CreateAsync(entity);
-            return entity;
+            var getID = await GetAsync(x => x.InsureID == insuranceDetail.InsureID & x.PackageID == insuranceDetail.PackageID);
+            if (getID==null)
+            {
+                Models.Entity.InsuranceDetail entity = _mapper.Map<Models.Entity.InsuranceDetail>(insuranceDetail);
+                await CreateAsync(entity);
+                return entity;
+            }
+            else
+            {
+                getID.DateStart = DateTime.Now.AddDays((getID.DateEnd - getID.DateStart).TotalDays);
+                getID.DateEnd= DateTime.Now.AddYears(1);
+                await UpdateAsync(getID);
+                return getID ;
+            }
+           
         }
 
         public async Task<List<InsuranceDetailDomain>> GetByIdAsync(int insuraceID)

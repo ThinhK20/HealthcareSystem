@@ -81,7 +81,7 @@ namespace HealthcareSystem.Backend.Repositories
         {
             var ctm_request = await GetAsync(x => x.RequestID == id);
             if (ctm_request == null) throw new Exception("Not Found Request ID");
-            await _paymentService.UpdateStatus((int)ctm_request.PackageId);
+            //await _paymentService.UpdateStatus((int)ctm_request.PackageId);
             ctm_request.Status = "Completed";
             await UpdateAsync(ctm_request);
             InsuranceDetailDomain Insuran_form = new InsuranceDetailDomain
