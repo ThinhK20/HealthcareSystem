@@ -41,5 +41,57 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<RefundRequestDomain>> GetRefundRequest([FromRoute(Name = "id")] int refundId)
+        {
+            try
+            {
+                return Ok(await _refundRequestService.GetRefundRequestByIdAsync(refundId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("accept/{id:int}")]
+        public async Task<ActionResult<RefundRequestDomain>> AcceptRefundRequest([FromRoute(Name = "id")] int refundId)
+        {
+            try
+            {
+                return Ok(await _refundRequestService.AcceptRefundRequestByIdAsync(refundId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("reject/{id:int}")]
+        public async Task<ActionResult<RefundRequestDomain>> RejectRefundRequest([FromRoute(Name = "id")] int refundId)
+        {
+            try
+            {
+                return Ok(await _refundRequestService.RejectRefundRequestByIdAsync(refundId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("/pending/{id:int}")]
+        public async Task<ActionResult<RefundRequestDomain>> PendingRefundRequest([FromRoute(Name = "id")] int refundId)
+        {
+            try
+            {
+                return Ok(await _refundRequestService.PendingRefundRequestByIdAsync(refundId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

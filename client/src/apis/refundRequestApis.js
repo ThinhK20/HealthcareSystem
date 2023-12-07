@@ -14,3 +14,19 @@ export const createNewRefundRequestApi = async (submitData) => {
 export const getAllRefundRequestsApi = async () => {
    return await axios.get(API_URL + "/refund-requests/all");
 };
+
+export const getRefundRequestApiById = async (id) => {
+   return await axios.get(API_URL + "/refund-requests/" + id);
+};
+
+export const acceptRefundRequestApiById = async (id) => {
+   return await axios.get(API_URL + "/refund-requests/accept/" + id);
+};
+
+export const rejectRefundRequestApiById = async (id) => {
+   return await axios.get(API_URL + "/refund-requests/reject/" + id);
+};
+
+export const pendingRefundRequestApiById = async (id) => {
+   return await axios.get(API_URL + "/refund-requests/pending/" + id);
+};

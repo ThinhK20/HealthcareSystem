@@ -13,6 +13,8 @@ namespace HealthcareSystem.Backend.Services.RefundRequestService
             _refundRequestRepository = refundRequestRepository;
         }
 
+
+
         public async Task<RefundRequestDTO> CreateRefundRequestAsync(RefundRequestDTO refundRequestDTO)
         {
             return await _refundRequestRepository.CreateRefundRequestAsync(refundRequestDTO);
@@ -21,6 +23,26 @@ namespace HealthcareSystem.Backend.Services.RefundRequestService
         public async Task<List<RefundRequestDomain>> GetAllRefundRequestsAsync()
         {
             return await _refundRequestRepository.GetAllRefundRequestsAsync();
+        }
+
+        public async Task<RefundRequestDomain> GetRefundRequestByIdAsync(int refundId)
+        {
+            return await _refundRequestRepository.GetRefundRequestByIdAsync(refundId);
+        }
+
+        public Task<bool> AcceptRefundRequestByIdAsync(int refundId)
+        {
+            return _refundRequestRepository.AcceptRefundRequestByIdAsync(refundId);
+        }
+
+        public Task<bool> PendingRefundRequestByIdAsync(int refundId)
+        {
+            return _refundRequestRepository.PendingRefundRequestByIdAsync(refundId);
+        }
+
+        public Task<bool> RejectRefundRequestByIdAsync(int refundId)
+        {
+            return _refundRequestRepository.RejectRefundRequestByIdAsync(refundId);
         }
     }
 }

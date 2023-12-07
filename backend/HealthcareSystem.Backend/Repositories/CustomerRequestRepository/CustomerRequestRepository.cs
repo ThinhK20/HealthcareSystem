@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
-using HealthcareSystem.Backend.Services.PaymentService;
-using Microsoft.OpenApi.Validations;
 using HealthcareSystem.Backend.Utils;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HealthcareSystem.Backend.Repositories
 {
@@ -20,8 +16,8 @@ namespace HealthcareSystem.Backend.Repositories
         private readonly IPaymentRepository _paymentService;
         private readonly IInsuranceDetailService _invoiceDetailService;
         private readonly PriceCalculateModule _priceCalculate;
-        
-        public CustomerRequestRepository(IMapper mapper, ApplicationDbContext applicationContext, IPaymentService paymentService, IInsuranceDetailService invoiceDetailService, IUserRepository userRepository, IBasicPriceRepository basicPriceRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository): base(applicationContext)
+
+        public CustomerRequestRepository(IMapper mapper, ApplicationDbContext applicationContext, IPaymentRepository paymentService, IInsuranceDetailService invoiceDetailService, IUserRepository userRepository, IBasicPriceRepository basicPriceRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository) : base(applicationContext)
         {
             _mapper = mapper;
             _applicationContext = applicationContext;
@@ -34,12 +30,12 @@ namespace HealthcareSystem.Backend.Repositories
         {
             if (customerRequest == null) throw new Exception("Customer request not found.");
             Models.Entity.CustomerRequest entity = _mapper.Map<Models.Entity.CustomerRequest>(customerRequest);
-            entity.Status = "Pending Confirmation" ;
+            entity.Status = "Pending Confirmation";
             int month = 0;
             if (customerRequest.Periodic == "quarter ") { month = 3; }
             if (customerRequest.Periodic == "half year") month = 6;
             if (customerRequest.Periodic == "year") month = 12;
-            double price = await _priceCalculate.CalculatePriceByPeriod(customerRequest.AccountId, customerRequest.PackageId,month);
+            double price = await _priceCalculate.CalculatePriceByPeriod(customerRequest.AccountId, customerRequest.PackageId, month);
             price = price * (12 / month);
             entity.Price = (float)price;
             await CreateAsync(entity);
@@ -67,12 +63,12 @@ namespace HealthcareSystem.Backend.Repositories
         }
         public async Task<bool> AcceptCustomerRequest(int Accept)
         {
-            var ctm_request =  await GetAsync(x => x.RequestID == Accept);
+            var ctm_request = await GetAsync(x => x.RequestID == Accept);
             if (ctm_request == null) throw new Exception("Request NULL");
 
- 
+
             ctm_request.Status = "Pending Transfer";
-      
+
             var dataRequest = await GetCustomerRequestByIdAsync(ctm_request.RequestID);
             var month = 0;
             if (dataRequest.Periodic == "quarter") month = 3;
@@ -120,7 +116,7 @@ namespace HealthcareSystem.Backend.Repositories
                 DateStart = DateTime.Now,
                 DateEnd = DateTime.Now.AddYears(1),
             };
-           await _invoiceDetailService.AddInsuranceDatail(Insuran_form);
+            await _invoiceDetailService.AddInsuranceDatail(Insuran_form);
             return true;
         }
     }
