@@ -1,4 +1,6 @@
-﻿using HealthcareSystem.Backend.Repositories.GenericRepository;
+﻿using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Repositories.GenericRepository;
 
 namespace HealthcareSystem.Backend.Repositories.AccountRepository
 {
@@ -9,8 +11,6 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
         public Task<bool> checkUserExist(string Username);
 
         public Task<int> getLength();
-
-        
-
+        Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc);
     }
 }

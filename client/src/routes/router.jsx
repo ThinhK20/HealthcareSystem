@@ -15,6 +15,7 @@ import RefundRequestForm from "../pages/customers/RefundRequestForm";
 import Page404 from "../pages/Error/page404";
 import Register from "../components/login/register";
 import { RefundRequestManagement } from "../pages/customers/manage-refund-request";
+import FormCreateNewStaff from "../pages/staffs/createStaffAccount"
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -64,9 +65,10 @@ export const router = createBrowserRouter([
       element: <LayoutRoute element={<StaffRequestDetail />}></LayoutRoute>,
    },
    {
-      path: "staff/payment-/:id",
-      element: <LayoutRoute element={<StaffRequestDetail />}></LayoutRoute>,
+      path: "staffs/create-staff-account/",
+      element: <LayoutRoute element={<FormCreateNewStaff />}></LayoutRoute>,
    },
+
    {
       path: "/payment/checkout",
       element: <LayoutRoute element={<CheckOut />}></LayoutRoute>,

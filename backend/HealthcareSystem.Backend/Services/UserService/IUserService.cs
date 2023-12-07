@@ -1,5 +1,6 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Models.Entity;
 
 namespace HealthcareSystem.Backend.Services.UserService
 {
@@ -14,7 +15,7 @@ namespace HealthcareSystem.Backend.Services.UserService
         public Task<PaymentDomain> AcceptCustomerRequest(int Accept);
         public Task<bool> RefusedCustomerRequest(int id);
         public Task<bool> CompleteCustomerRequest(int id);
-
+        public Task<UserDTO> CreateUser(UserDTO user);
 
     }
 }

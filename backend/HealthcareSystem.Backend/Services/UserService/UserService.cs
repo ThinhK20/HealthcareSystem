@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -87,6 +88,10 @@ namespace HealthcareSystem.Backend.Services.UserService
         {
             return await _customerRequestRepository.CompleteCustomerRequest(id);
         }
-        
+
+        public async Task<UserDTO> CreateUser(UserDTO user)
+        {
+           return await _userRepository.CreateUser(user);
+        }
     }
 }

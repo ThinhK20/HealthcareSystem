@@ -30,6 +30,14 @@ namespace HealthcareSystem.Backend.Services.AccountService
             _emailSender = emailSender;
             _emailVerificationRepository = emailVerificationRepository;
         }
+
+
+
+        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
+        {
+            return _accountRepository.CreateAccountStaff(acc);
+      }
+
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
             var getList = await _accountRepository.GetUser();

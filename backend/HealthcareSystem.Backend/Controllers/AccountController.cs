@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Azure;
+using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.AccountService;
 using HealthcareSystem.Backend.Services.UserService;
@@ -11,11 +12,12 @@ namespace HealthcareSystem.Backend.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
-
-        public AccountController(IAccountService accountService, IMapper mapper)
+        private readonly IUserService _userService;
+        public AccountController(IAccountService accountService, IMapper mapper, IUserService userService)
         {
             _accountService = accountService;
             _mapper = mapper;
+            _userService = userService;
         }
 
 
@@ -41,6 +43,38 @@ namespace HealthcareSystem.Backend.Controllers
             }
             return Ok("Successfully");
 
+        }
+        [HttpPost("create-new-staff")]
+        public async Task<IActionResult> CreateNewStaff([FromBody] UserDTO user)
+        {
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var tempUser = await _userService.CreateUser(user);
+            if (tempUser == null)
+            {
+                return BadRequest("Failed to create user.");
+            }
+
+            return Ok(tempUser);
+        }
+        [HttpPost("create-new-account")]
+        public async Task<IActionResult> CreateAccount([FromBody] AccountBaseDTO account)
+        {
+            if (account == null)
+            {
+                return BadRequest();
+            }
+
+            var tempUser = await _accountService.CreateAccountStaff(account);
+            if (tempUser == null)
+            {
+                return BadRequest("Failed to create user.");
+            }
+
+            return Ok(tempUser);
         }
     }
 }
