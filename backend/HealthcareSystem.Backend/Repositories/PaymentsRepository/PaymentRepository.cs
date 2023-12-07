@@ -15,7 +15,7 @@ namespace HealthcareSystem.Backend.Repositories
         public PaymentRepository(ApplicationDbContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
-            _applicationContext = context;  
+            _applicationContext = context;
         }
 
         public async Task<int> CreatePayment(PaymentCreateDTO payment)

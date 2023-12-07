@@ -7,6 +7,7 @@ using HealthcareSystem.Backend.Repositories.GenericRepository;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using HealthcareSystem.Backend.Services.PaymentService;
 using Microsoft.OpenApi.Validations;
+using HealthcareSystem.Backend.Utils;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HealthcareSystem.Backend.Repositories
@@ -17,12 +18,15 @@ namespace HealthcareSystem.Backend.Repositories
         private readonly ApplicationDbContext _applicationContext;
         private readonly IPaymentService _paymentService;
         private readonly IInsuranceDetailService _invoiceDetailService;
-        public CustomerRequestRepository(ApplicationDbContext context, IMapper mapper, IPaymentService paymentService, IInsuranceDetailService insuranceDetailService) : base(context)
+        private readonly PriceCalculateModule _priceCalculate;
+        
+        public CustomerRequestRepository(IMapper mapper, ApplicationDbContext applicationContext, IPaymentService paymentService, IInsuranceDetailService invoiceDetailService, IUserRepository userRepository, IBasicPriceRepository basicPriceRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository): base(applicationContext)
         {
             _mapper = mapper;
-            _applicationContext = context;
+            _applicationContext = applicationContext;
             _paymentService = paymentService;
-            _invoiceDetailService = insuranceDetailService;
+            _invoiceDetailService = invoiceDetailService;
+            _priceCalculate = new PriceCalculateModule(userRepository, basicPriceRepository, healthRecordRepository, feeAffectRepository);
         }
 
         public async Task<CustomerRequestCreateDTO> CreateCustomerRequest(CustomerRequestCreateDTO customerRequest)
@@ -30,6 +34,13 @@ namespace HealthcareSystem.Backend.Repositories
             if (customerRequest == null) throw new Exception("Customer request not found.");
             Models.Entity.CustomerRequest entity = _mapper.Map<Models.Entity.CustomerRequest>(customerRequest);
             entity.Status = "Pending Confirmation" ;
+            int month = 0;
+            if (customerRequest.Periodic == "quarter ") { month = 3; }
+            if (customerRequest.Periodic == "half year") month = 6;
+            if (customerRequest.Periodic == "year") month = 12;
+            double price = await _priceCalculate.CalculatePriceByPeriod(customerRequest.AccountId, customerRequest.PackageId,month);
+            price = price * (12 / month);
+            entity.Price = (float)price;
             await CreateAsync(entity);
             return customerRequest;
         }
