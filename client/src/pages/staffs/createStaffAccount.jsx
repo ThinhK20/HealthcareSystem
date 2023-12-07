@@ -1,9 +1,45 @@
 
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
-
+import axios from 'axios';
+import React,{useState} from 'react';
 const FormCreateNewStaff = () => {
+
+      const [formDataAccount, setFormDataAccount] = useState({
+        userId: '',
+        username: '',
+        password: '',
+        status: 'Active',
+        role: 'Customer',
+        fullname: '',
+        email: '',
+        cccd: '',
+        phone: '', // Assuming you want to handle file uploads
+        birthdate:'',
+        address: '',
+        gender: 'Male'
+      })
+      const handleInputChangeAccount = (e) => {
+        const { name, value } = e.target;
+        setFormDataAccount((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      };
+
+      const handleFormSubmit = async (e) => {
+        e.preventDefault();
+      
+        // Sending the first POST request
+       
+        const responseAccount = await axios.post('https://localhost:44384/create-new-staff', formDataAccount);
+      
+        console.log(responseAccount);
+      
+        // You can now perform further actions based on the response data
+      };
+      
     return (
-        <div className='w-full'>
+        <form className='w-full' onSubmit={handleFormSubmit} method='post'>
             <div className='w-[60%] m-auto' >
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
@@ -19,13 +55,15 @@ const FormCreateNewStaff = () => {
                                 </label>
                                 <div className="mt-2">
                                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                        <input
+                                        <input required
                                             type="text"
                                             name="username"
                                             id="username"
                                             autoComplete="username"
                                             className="block flex-1 border-0 bg-transparent py-1.5 pl-[10px] text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                             placeholder="janesmith"
+                                            value={formDataAccount.username}
+                                            onChange={handleInputChangeAccount}
                                         />
                                     </div>
                                 </div>
@@ -36,13 +74,15 @@ const FormCreateNewStaff = () => {
                                 </label>
                                 <div className="mt-2">
                                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                        <input
+                                        <input required
                                             type="text"
-                                            name="username"
-                                            id="username"
-                                            autoComplete="username"
+                                            name="password"
+                                            id="password"
+                                            autoComplete="password"
                                             className=" block flex-1 border-0 bg-transparent py-1.5 pl-[10px] text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                             placeholder="janesmith"
+                                            value={formDataAccount.password}
+                                            onChange={handleInputChangeAccount}
                                         />
                                     </div>
                                 </div>
@@ -54,12 +94,14 @@ const FormCreateNewStaff = () => {
                                 </label>
                                 <div className="mt-2">
                                     <select
-                                        id="country"
-                                        name="country"
-                                        autoComplete="country-name"
+                                        id="role"
+                                        name="role"
+                                        autoComplete="role"
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                                        value={formDataAccount.role}
+                                        onChange={handleInputChangeAccount}
                                     >
-                                        <option>IT</option>
+                                        <option defaultChecked>Customer</option>
                                         <option>Supervice</option>
                                         <option>Security</option>
                                     </select>
@@ -80,27 +122,7 @@ const FormCreateNewStaff = () => {
                                 </div>
                             </div>
 
-                            <div className="col-span-full">
-                                <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
-                                    Cover photo
-                                </label>
-                                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                                    <div className="text-center">
-                                        <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
-                                        <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                                            <label
-                                                htmlFor="file-upload"
-                                                className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                                            >
-                                                <span>Upload a file</span>
-                                                <input id="file-upload" name="file-upload" type="file" className="sr-only" />
-                                            </label>
-                                            <p className="pl-1">or drag and drop</p>
-                                        </div>
-                                        <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
 
@@ -110,32 +132,36 @@ const FormCreateNewStaff = () => {
 
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-3">
-                                <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label htmlFor="fullname" className="block text-sm font-medium leading-6 text-gray-900">
                                     Fullname
                                 </label>
                                 <div className="mt-2">
-                                    <input
+                                    <input required
                                         type="text"
-                                        name="first-name"
-                                        id="first-name"
+                                        name="fullname"
+                                        id="fullname"
                                         autoComplete="given-name"
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        value={formDataAccount.fullname}
+                                        onChange={handleInputChangeAccount}
                                     />
                                 </div>
                             </div>
 
                             <div className="sm:col-span-3">
-                                <label htmlFor="last-name" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label htmlFor="cccd" className="block text-sm font-medium leading-6 text-gray-900">
                                     National Identification Card
                                 </label>
                                 <div className="mt-2">
-                                    <input
+                                    <input required
                                         type="text"
-                                        name="last-name"
-                                        id="last-name"
+                                        name="cccd"
+                                        id="cccd"
                                         autoComplete="family-name"
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
+                                        value={formDataAccount.cccd}
+                                        onChange={handleInputChangeAccount}
+                                   />
                                 </div>
                             </div>
 
@@ -144,55 +170,63 @@ const FormCreateNewStaff = () => {
                                     Email address
                                 </label>
                                 <div className="mt-2">
-                                    <input
+                                    <input required
                                         id="email"
                                         name="email"
                                         type="email"
                                         autoComplete="email"
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        value={formDataAccount.email}
+                                        onChange={handleInputChangeAccount}
                                     />
                                 </div>
 
                             </div>
                             <div className="sm:col-span-2">
-                                <label htmlFor="region" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
                                     Phone
                                 </label>
                                 <div className="mt-2">
-                                    <input
-                                        type="number" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10}" required
+                                    <input 
+                                        type="number" id="phone" name="phone" pattern="[0-9]{10}" required
                                         autoComplete="address-level1"
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
+                                        value={formDataAccount.phone}
+                                        onChange={handleInputChangeAccount}
+                                   />
                                 </div>
                             </div>
 
                             <div className="sm:col-span-2 sm:col-start-1">
-                                <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label htmlFor="birthdate" className="block text-sm font-medium leading-6 text-gray-900">
                                     Birthdate
                                 </label>
                                 <div className="mt-2">
-                                    <input
+                                    <input required
                                         type="date"
-                                        name="date"
-                                        id="date"
+                                        name="birthdate"
+                                        id="birthdate   "
                                         autoComplete="address-level2"
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        value={formDataAccount.birthdate}
+                                        onChange={handleInputChangeAccount}
                                     />
                                 </div>
                             </div>
 
                             <div className="sm:col-span-3">
-                                <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label htmlFor="gender" className="block text-sm font-medium leading-6 text-gray-900">
                                     Gender
                                 </label>
                                 <div className="mt-2">
                                     <select
-                                        id="country"
-                                        name="country"
-                                        autoComplete="country-name"
+                                        id="gender"
+                                        name="gender"
+                                        autoComplete="gender"
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                                    >
+                                        value={formDataAccount.gender}
+                                        onChange={handleInputChangeAccount}
+                                   >
                                         <option>Male</option>
                                         <option>Female</option>
                                         <option>Gay</option>
@@ -201,17 +235,19 @@ const FormCreateNewStaff = () => {
                             </div>
 
                             <div className="col-span-full">
-                                <label htmlFor="street-address" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label htmlFor="address" className="block text-sm font-medium leading-6 text-gray-900">
                                     Street address
                                 </label>
                                 <div className="mt-2">
-                                    <input
+                                    <input required
                                         type="text"
-                                        name="street-address"
-                                        id="street-address"
-                                        autoComplete="street-address"
+                                        name="address"
+                                        id="address"
+                                        autoComplete="address"
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
+                                        value={formDataAccount.address}
+                                        onChange={handleInputChangeAccount}
+                                  />
                                 </div>
                             </div>
 
@@ -229,105 +265,12 @@ const FormCreateNewStaff = () => {
                             We'll always let you know about important changes, but you pick what else you want to hear about.
                         </p>
 
-                        <div className="mt-10 space-y-10">
-                            <fieldset>
-                                <legend className="text-sm font-semibold leading-6 text-gray-900">By Email</legend>
-                                <div className="mt-6 space-y-6">
-                                    <div className="relative flex gap-x-3">
-                                        <div className="flex h-6 items-center">
-                                            <input
-                                                id="comments"
-                                                name="comments"
-                                                type="checkbox"
-                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            />
-                                        </div>
-                                        <div className="text-sm leading-6">
-                                            <label htmlFor="comments" className="font-medium text-gray-900">
-                                                Comments
-                                            </label>
-                                            <p className="text-gray-500">Get notified when someones posts a comment on a posting.</p>
-                                        </div>
-                                    </div>
-                                    <div className="relative flex gap-x-3">
-                                        <div className="flex h-6 items-center">
-                                            <input
-                                                id="candidates"
-                                                name="candidates"
-                                                type="checkbox"
-                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            />
-                                        </div>
-                                        <div className="text-sm leading-6">
-                                            <label htmlFor="candidates" className="font-medium text-gray-900">
-                                                Candidates
-                                            </label>
-                                            <p className="text-gray-500">Get notified when a candidate applies for a job.</p>
-                                        </div>
-                                    </div>
-                                    <div className="relative flex gap-x-3">
-                                        <div className="flex h-6 items-center">
-                                            <input
-                                                id="offers"
-                                                name="offers"
-                                                type="checkbox"
-                                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                            />
-                                        </div>
-                                        <div className="text-sm leading-6">
-                                            <label htmlFor="offers" className="font-medium text-gray-900">
-                                                Offers
-                                            </label>
-                                            <p className="text-gray-500">Get notified when a candidate accepts or rejects an offer.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend className="text-sm font-semibold leading-6 text-gray-900">Push Notifications</legend>
-                                <p className="mt-1 text-sm leading-6 text-gray-600">These are delivered via SMS to your mobile phone.</p>
-                                <div className="mt-6 space-y-6">
-                                    <div className="flex items-center gap-x-3">
-                                        <input
-                                            id="push-everything"
-                                            name="push-notifications"
-                                            type="radio"
-                                            className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                        />
-                                        <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">
-                                            Everything
-                                        </label>
-                                    </div>
-                                    <div className="flex items-center gap-x-3">
-                                        <input
-                                            id="push-email"
-                                            name="push-notifications"
-                                            type="radio"
-                                            className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                        />
-                                        <label htmlFor="push-email" className="block text-sm font-medium leading-6 text-gray-900">
-                                            Same as email
-                                        </label>
-                                    </div>
-                                    <div className="flex items-center gap-x-3">
-                                        <input
-                                            id="push-nothing"
-                                            name="push-notifications"
-                                            type="radio"
-                                            className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                        />
-                                        <label htmlFor="push-nothing" className="block text-sm font-medium leading-6 text-gray-900">
-                                            No push notifications
-                                        </label>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
+           
                     </div>
                 </div>
 
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                    <button type="button" className="text-sm font-semibold leading-6 text-gray-900" onClick={()=>console.log(formDataAccount)}>
                         Cancel
                     </button>
                     <button
@@ -338,7 +281,7 @@ const FormCreateNewStaff = () => {
                     </button>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 export default FormCreateNewStaff;
