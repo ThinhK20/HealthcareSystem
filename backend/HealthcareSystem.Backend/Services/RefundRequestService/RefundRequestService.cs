@@ -1,4 +1,5 @@
-﻿using HealthcareSystem.Backend.Models.DTO;
+﻿using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories.RefundRequestRepository;
 
 namespace HealthcareSystem.Backend.Services.RefundRequestService
@@ -15,6 +16,11 @@ namespace HealthcareSystem.Backend.Services.RefundRequestService
         public async Task<RefundRequestDTO> CreateRefundRequestAsync(RefundRequestDTO refundRequestDTO)
         {
             return await _refundRequestRepository.CreateRefundRequestAsync(refundRequestDTO);
+        }
+
+        public async Task<List<RefundRequestDomain>> GetAllRefundRequestsAsync()
+        {
+            return await _refundRequestRepository.GetAllRefundRequestsAsync();
         }
     }
 }

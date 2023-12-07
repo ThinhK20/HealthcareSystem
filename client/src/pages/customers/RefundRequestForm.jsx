@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import { createNewRefundRequestApi } from "../../apis/refundRequestApis.js";
+
 export default function RefundRequestForm() {
    const [attachFile, setAttachFile] = useState();
    const [errorMsg, setErrorMsg] = useState("");
@@ -43,6 +43,7 @@ export default function RefundRequestForm() {
          return;
       }
       setIsSaving(() => true);
+      // eslint-disable-next-line no-undef
       createNewRefundRequestApi(submitData)
          .then(() => {
             toast.success("Submit a refund request successfully !");

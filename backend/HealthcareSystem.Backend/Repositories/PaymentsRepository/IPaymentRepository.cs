@@ -8,11 +8,11 @@ namespace HealthcareSystem.Backend.Repositories
 {
     public interface IPaymentRepository : IRepository<Models.Entity.Payment>
     {
-        Task<int> CreatePayment(PaymentCreateDTO payment);
+        Task<bool> CreatePayment(Payment payment);
         Task<bool> UpdateStatus(int PaymentID);
         Task<bool> DeletePaymentByIdAsync(int PaymentID);
         Task<List<PaymentDomain>> GetAllPaymentRequestsAsync();
-        Task<List<PaymentDomain>> GetPendingTransferPaymentRequestsAsync();
+        Task<List<PaymentDomain>> GetPaymentByRequestID(int requestID);
         Task<List<PaymentDomain>> GetPaymentedAsync();
         Task<PaymentDomain> GetPaymentIdAsync(int PaymentId);
        

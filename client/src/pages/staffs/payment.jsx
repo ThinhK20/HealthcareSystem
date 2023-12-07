@@ -2,14 +2,20 @@ import React, { useState, useEffect } from 'react'
 import RowTableStaffsPayment from '../../components/staffs/RowPayment'
 import Axios from 'axios'
 import { FunnelIcon } from "@heroicons/react/24/outline";
-
+import { useLocation } from 'react-router-dom';
 const StaffsPayment = () => {
-
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const acc = searchParams.get('acc');
   const [stagePayment, setStagaPayment] = useState([])
   const [Payments, SetPayments] = useState([]);
   const [reset, SetReset] = useState(true);
   const [searchValue, setSearchValue] = useState('');
   const [status, SetStatus] = useState(2)
+  const [filterByAccountId, setFilterByAccountId] = useState(false);
+  const [filterByPaymentId, setFilterByPaymentId] = useState(false);
+  const [filterByRequestId, setFilterByRequestId] = useState(false);
+
   const handleReset = () => {
     SetReset(!reset);
   }
@@ -32,24 +38,37 @@ const StaffsPayment = () => {
       }
     }
   }
-  useEffect(() => {
-    GetPayments();
-
-  }, [reset]);
   const GetPayments = () => {
     Axios.get(`https://localhost:44384/api/Payments/GetAllPaymentRequests`).then((response) => {
       SetPayments(response.data)
       setStagaPayment(response.data);
+      console.log(response.data)
     })
   }
+  useEffect(() => {
+    GetPayments();
+    if(acc!=null){
+      setFilterByAccountId(true);
+      setSearchValue(acc)
+    }
+  }, [reset]);
+
   const filteredPayments = stagePayment.filter((item) => {
-    // Lọc dựa trên giá trị tìm kiếm
+
     const searchLower = searchValue.toLowerCase();
-    return (
+    const matchesSearch =
       item.requestId.toString().toLowerCase().includes(searchLower) ||
-      item.paymentId.toString().toLowerCase().includes(searchLower)
-    );
+      item.paymentId.toString().toLowerCase().includes(searchLower) ||
+      item.customerRequest.accountId.toString().toLowerCase().includes(searchLower);
+
+    const matchesFilter =
+      (!filterByAccountId || item.customerRequest.accountId.toString().toLowerCase().includes(searchLower)) &&
+      (!filterByPaymentId || item.paymentId.toString().toLowerCase().includes(searchLower)) &&
+      (!filterByRequestId || item.requestId.toString().toLowerCase().includes(searchLower));
+
+    return matchesSearch && matchesFilter;
   });
+
   return (
 
     <>
@@ -89,6 +108,36 @@ const StaffsPayment = () => {
                     className='p-[5px] h-[40px] w-[500px] bg-gray-200 rounded-[10px] border-[1px] border-[gray]'
                   />
                 </div>
+                <div className="flex items-center space-x-4 mt-4">
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={filterByAccountId}
+                      onChange={() => setFilterByAccountId(!filterByAccountId)}
+                      className="mr-2"
+                    />
+                    Account ID
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={filterByPaymentId}
+                      onChange={() => setFilterByPaymentId(!filterByPaymentId)}
+                      className="mr-2"
+                    />
+                    Payment ID
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={filterByRequestId}
+                      onChange={() => setFilterByRequestId(!filterByRequestId)}
+                      className="mr-2"
+                    />
+                    Request ID
+                  </label>
+                </div>
+
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left text-gray-500 dtext-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-200 dbg-gray-700 dtext-gray-400">
@@ -99,25 +148,32 @@ const StaffsPayment = () => {
                         <th scope="col" className="px-4 py-3 w-[200px]">
                           Request ID
                         </th>
+                        <th scope="col" className="px-4 py-3 w-[200px]">
+                          Customer ID
+                        </th>
                         <th scope="col" className="px-4 py-3">
                           Created Date
                         </th>
                         <th scope="col" className="px-4 py-3">
-                          Paymented Date
+                          <div className='w-[100%] flex justify-end'>Paymented Date</div>
                         </th>
                         <th scope="col" className="px-4 py-3 w-[280px]">
-                          <div className='w-[100%] flex justify-end'>Price</div>
+                          <div className='w-[100%] flex justify-end'>
+                            <div className=' mr-[20px]'>
+                              Price
+                            </div>
+                          </div>
                         </th>
                         <th scope="col" className="px-4 py-3 flex justify-center">
                           <button onClick={filterStatus} className='flex justify-center items-center'>
-                            <FunnelIcon class="h-6 w-6 text-gray-500" />
+                            <FunnelIcon className="h-6 w-6 text-gray-500" />
                             <div>Status</div>
                           </button>
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredPayments.map((item) => {
+                      {filteredPayments?.map((item) => {
                         return <RowTableStaffsPayment item={item} key={item.paymentId} handleReset={handleReset} />;
                       })}
                     </tbody>

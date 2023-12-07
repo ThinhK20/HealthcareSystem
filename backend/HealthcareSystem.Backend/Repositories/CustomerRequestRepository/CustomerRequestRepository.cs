@@ -3,6 +3,7 @@ using Azure.Core;
 using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using HealthcareSystem.Backend.Services.PaymentService;
@@ -16,7 +17,7 @@ namespace HealthcareSystem.Backend.Repositories
     {
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _applicationContext;
-        private readonly IPaymentService _paymentService;
+        private readonly IPaymentRepository _paymentService;
         private readonly IInsuranceDetailService _invoiceDetailService;
         private readonly PriceCalculateModule _priceCalculate;
         
@@ -64,20 +65,37 @@ namespace HealthcareSystem.Backend.Repositories
         {
             return _mapper.Map<CustomerRequestDomain>(await GetAsync(x => x.RequestID == requestId, true, "Account,Staff,Payment,PolicyPackage"));
         }
-        public async Task<PaymentDomain> AcceptCustomerRequest(int Accept)
+        public async Task<bool> AcceptCustomerRequest(int Accept)
         {
             var ctm_request =  await GetAsync(x => x.RequestID == Accept);
             if (ctm_request == null) throw new Exception("Request NULL");
-            PaymentCreateDTO temp = new PaymentCreateDTO
-            {
-                RequestId = ctm_request.RequestID,
-                Price = (float)ctm_request.Price,
-            };
+
+ 
             ctm_request.Status = "Pending Transfer";
-            int Payment_id = await _paymentService.CreatePayment(temp);
-            var recept = await _paymentService.GetPaymentIdAsync(Payment_id);
+      
+            var dataRequest = await GetCustomerRequestByIdAsync(ctm_request.RequestID);
+            var month = 0;
+            if (dataRequest.Periodic == "quarter") month = 3;
+            if (dataRequest.Periodic == "half year") month = 6;
+            if (dataRequest.Periodic == "year") month = 12;
+            for (var i = 0; i < month; i++)
+            {
+                Payment pay = new Payment
+                {
+                    RequestId = ctm_request.RequestID,
+                    CreatedDate = DateTime.UtcNow.AddMonths(i * month),
+                    ExpirationDate = DateTime.UtcNow.AddMonths(i * month).AddDays(7),
+                    ExpirationPaypal = null,
+                    Status = false,
+                    Price = ctm_request.Price * month / 12,
+                    UpdatedDate = null,
+                    LinkCheckOut = null,
+                    PaypalEmail = null,
+                };
+                await _paymentService.CreatePayment(pay);
+            }
             await UpdateAsync(ctm_request);
-            return recept;
+            return true;
         }
         public async Task<bool> RefusedCustomerRequest(int id)
         {
@@ -92,7 +110,7 @@ namespace HealthcareSystem.Backend.Repositories
         {
             var ctm_request = await GetAsync(x => x.RequestID == id);
             if (ctm_request == null) throw new Exception("Not Found Request ID");
-            await _paymentService.UpdateStatus((int)ctm_request.PackageId);
+            //await _paymentService.UpdateStatus((int)ctm_request.PackageId);
             ctm_request.Status = "Completed";
             await UpdateAsync(ctm_request);
             InsuranceDetailDomain Insuran_form = new InsuranceDetailDomain

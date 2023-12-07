@@ -1,31 +1,53 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios'
-import { formatDate } from '../../helpers/dataHelper';
-
-
-const StaffsPaymentDetail = () => {
+import { formatDate, formatMoney } from '../../helpers/dataHelper';
+import { Button, Typography } from '@material-tailwind/react';
+import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Chip } from '@material-tailwind/react';
+const StaffRequestDetail = () => {
     const [data, setData] = useState();
-    const [reset,setReset] = useState();
-    const handleReset = ()=>{
+    const [reset, setReset] = useState(false);
+    const [dropPayment, SetDropPaymet] = useState(false)
+    const [dropPackage, SetDropPackage] = useState(false)
+    const [paymentDetail, setPaymentDetail] = useState(null);
+    const handleReset = () => {
         setReset(!reset)
     }
     const { id } = useParams();
     useEffect(() => {
-        axios.get(`https://localhost:44384/api/users/customerRequests/${id}`).then((result) => {
-            setData(result.data)
-            console.log(result.data)
-        }
-        )
-    }, [])
+        axios.get(`https://localhost:44384/api/users/customerRequests/${id}`)
+            .then((result) => {
+                setData(result.data);
+                console.log(result.data)
+                axios.get(`https://localhost:44384/api/Payments/GetPaymentByRequestID?requestID=${result.data.requestID}`)
+                    .then((request) => {
+                        setPaymentDetail(request.data);
+                        console.log(request.data);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching payment details:", error);
+                    });
+            })
+            .catch(error => {
+                console.error("Error fetching customer requests:", error);
+            });
+    }, [reset]);
     const handleAccept = () => {
-        axios.post(`https://localhost:44384/api/users/customerRequests/${id}`).then(()=>handleReset)
+        axios.post(`https://localhost:44384/api/users/AcceptRequest/${id}`).then(handleReset)
     }
     const handRefused = () => {
-        axios.post(`https://localhost:44384/api/users/RefusedRequest/${id}`).then(()=>handleReset)
+        axios.post(`https://localhost:44384/api/users/RefusedRequest/${id}`).then(handleReset)
     }
     const handComplete = () => {
-        axios.post(`https://localhost:44384/api/users/CompleteRequest/${id}`).then(()=>handleReset)
+        axios.post(`https://localhost:44384/api/users/CompleteRequest/${id}`).then(handleReset)
+    }
+    const handleDropPaymet = () => {
+        SetDropPaymet(!dropPayment)
+    }
+    const handleDropPackage = () => {
+        SetDropPackage(!dropPackage)
     }
     return (
         <>
@@ -73,25 +95,106 @@ const StaffsPaymentDetail = () => {
                                     </div>
                                 </div>
                             </div>
-                            {data?.paymentId && (
+                            <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="mt-[30px] font-[700] leading-none opacity-70"
+                            >Package Request</Typography>
+                            <>
+                                <div className="transition-max-height duration-1000 ease-in-out overflow-hidden ">
+                                    <div className="border border-gray-200 p-4 rounded-lg space-y-4 dr:border-gray-700">
+                                        <div className="hidden sm:grid sm:grid-cols-4">
+                                            <div className="sm:col-span text-xs font-medium text-gray-500 uppercase">Package ID</div>
+                                            <div className="text-xs font-medium text-gray-500 uppercase text-center">Name </div>
+                                            <div className="text-center w-full text-xs font-medium text-gray-500 uppercase col-span-2">Description</div>
+
+                                        </div>
+                                        <div className="hidden sm:block border-b border-gray-200 dr:border-gray-700"></div>
+                                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                                            <div className="sm:col-span text-xs font-medium text-gray-500  uppercase">Package #{data?.policyPackage?.packageid}</div>
+                                            <div className="text-center text-xs font-medium text-gray-500 uppercase px-[40px]">
+                                                <Chip
+                                                    size="sm"
+                                                    variant="ghost"
+                                                    value={data?.policyPackage?.name}
+                                                    color={
+                                                        data?.policyPackage?.name ===
+                                                            "Basic"
+                                                            ? "green"
+                                                            : data?.policyPackage?.name ===
+                                                                "Premium"
+                                                                ? "amber"
+                                                                : "blue"
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="pl-[30px] text-start w-full text-xs font-medium text-gray-500 uppercase col-span-2">{data?.policyPackage?.description}</div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </>
+                            <Button onClick={handleDropPaymet} className="w-full h-[30px] mt-6 bg-[white] text-[black] p-[3px]"><span className='mr-[5px]'>Payment</span>
+                                {dropPayment ? (
+
+                                    <FontAwesomeIcon icon={faChevronDown}></FontAwesomeIcon>
+                                ) : (
+                                    <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+
+                                )}
+
+                            </Button>
+                            {dropPayment && (
                                 <>
-                                    <div className="mt-6">
+                                    <div className="transition-max-height duration-1000 ease-in-out overflow-hidden ">
                                         <div className="border border-gray-200 p-4 rounded-lg space-y-4 dr:border-gray-700">
                                             <div className="hidden sm:grid sm:grid-cols-5">
-                                                <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">Item</div>
-                                                <div className="text-start text-xs font-medium text-gray-500 uppercase">Qty</div>
-                                                <div className="text-start text-xs font-medium text-gray-500 uppercase">Rate</div>
-                                                <div className="text-end text-xs font-medium text-gray-500 uppercase">Amount</div>
+                                                <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">Payment ID</div>
+                                                <div className="text-start text-xs font-medium text-gray-500 uppercase">Price</div>
+                                                <div className="text-start text-xs font-medium text-gray-500 uppercase">Transfer date</div>
+                                                <div className="text-end text-xs font-medium text-gray-500 uppercase">Status</div>
                                             </div>
                                             <div className="hidden sm:block border-b border-gray-200 dr:border-gray-700"></div>
-                                            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
 
+                                            {paymentDetail?.map((payment) => (
+                                                <div key={payment.paymentId} className="sm:grid sm:grid-cols-5">
+                                                    {/* Item (You can customize this based on your data) */}
+                                                    <div className="sm:col-span-2">{`Payment ${payment.paymentId}`}</div>
+
+                                                    {/* Qty (You can customize this based on your data) */}
+                                                    <div className="text-start">{formatMoney(payment.price)}</div>
+
+                                                    {/* Rate (You can customize this based on your data) */}
+                                                    <div className="text-start">{formatDate(payment.updatedDate)}</div>
+
+                                                    {/* Amount (You can customize this based on your data) */}
+                                                    <div className="text-center">
+                                                        <Chip
+                                                            size="sm"
+                                                            variant="ghost"
+                                                            value={
+                                                                payment?.status
+                                                                    ? "Paid"
+                                                                    : "Pending"
+                                                            }
+                                                            color={
+                                                                payment?.status
+                                                                    ? "green"
+                                                                    : "amber"
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <div className='w-full flex justify-end my-[30px]'>
+                                                <Link to={`/staff/payment?acc=${data?.staff.accountId}`} className='hover:underline hover:to-blue-800' color='blue'> View All Transaction </Link>
                                             </div>
-
                                         </div>
                                     </div>
                                 </>
                             )}
+
 
 
                             <div className="mt-8 flex sm:justify-end">
@@ -160,4 +263,4 @@ const StaffsPaymentDetail = () => {
 
     )
 }
-export default StaffsPaymentDetail
+export default StaffRequestDetail

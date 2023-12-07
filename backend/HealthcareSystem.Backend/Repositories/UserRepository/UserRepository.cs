@@ -33,5 +33,12 @@ namespace HealthcareSystem.Backend.Repositories
             return _mapper.Map<UserDomain>(UserInfo);
         }
 
+        public async Task<UserDTO> CreateUser(UserDTO user)
+        {
+            Models.Entity.User userNew = _mapper.Map<Models.Entity.User>(user); ;
+            await CreateAsync(userNew);
+            var UserCreated = await GetAsync(x =>x.CCCD ==  user.CCCD);
+            return  _mapper.Map<UserDTO>(UserCreated);
+        }
     }
 }

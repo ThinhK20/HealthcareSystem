@@ -18,7 +18,12 @@ namespace HealthcareSystem.Backend.Models.Entity
 
         public string Role { get; set; }
 
+
+
         public virtual User User { get; set; }
+
+        public virtual ICollection<EmailVerification> verification { get; set; }
+
         public virtual ICollection<CustomerInquiry> CustomerInquiries { get; set; }
         public virtual ICollection<HealthRecord> HealthRecords { get; set; }
         public virtual ICollection<CustomerRequest> CustomerRequests { get; set; }

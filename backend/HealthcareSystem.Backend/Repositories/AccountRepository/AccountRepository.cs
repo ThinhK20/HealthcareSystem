@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using HealthcareSystem.Backend.Data;
+using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
+using Microsoft.AspNetCore.Server.IIS.Core;
+using System.Net.WebSockets;
 
 namespace HealthcareSystem.Backend.Repositories.AccountRepository
 {
@@ -33,6 +37,18 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
         {
            var user = await GetAllAsync();
             return user.Count();
+        }
+        public async Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
+        {
+            if(acc==null) throw new Exception("Have not Input");
+            bool checkExist = await checkUserExist(acc.Username);
+            if(checkExist == true) {
+                throw new Exception("Username exist");
+            }
+            Models.Entity.Account account = _mapper.Map<Models.Entity.Account>(acc);
+            await CreateAsync(account);
+            var newAccount = await GetAsync(filter => filter.Username == acc.Username);
+            return _mapper.Map<AccountBaseDTO>(newAccount);
         }
     }
 }

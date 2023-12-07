@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HealthcareSystem.Backend.Data;
+using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
@@ -32,6 +33,12 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
             entityRefundRequest.FileUrl = fileUrl;
             await CreateAsync(entityRefundRequest);
             return refundRequestDTO;
+        }
+
+        public async Task<List<RefundRequestDomain>> GetAllRefundRequestsAsync()
+        {
+            var entities = await GetAllAsync();
+            return entities.Select(t => _mapper.Map<RefundRequestDomain>(t)).ToList();
         }
     }
 }

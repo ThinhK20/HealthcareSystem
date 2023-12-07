@@ -10,7 +10,7 @@ namespace HealthcareSystem.Backend.Repositories
         public Task<bool> DeleteCustomerRequestByIdAsync(int requestId);
         public Task<List<CustomerRequestDomain>> GetAllCustomerRequestsAsync();
         public Task<CustomerRequestDomain> GetCustomerRequestByIdAsync(int requestId);
-        public Task<PaymentDomain> AcceptCustomerRequest(int Accept);
+        public Task<bool> AcceptCustomerRequest(int Accept);
         public Task<bool> CompleteCustomerRequest(int id);
         public Task<bool> RefusedCustomerRequest(int id);
     }

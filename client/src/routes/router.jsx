@@ -7,12 +7,15 @@ import ConfirmNotification from "../components/insuarancePolices/delete-confirma
 import Form from "../components/insuarancePolices/form";
 import RegisterInsurance from "../components/register-insurance/register-insurance";
 import StaffsPayment from "../pages/staffs/payment";
-import StaffsPaymentDetail from "../pages/staffs/payment-detail";
+import StaffRequestDetail from "../pages/staffs/request-detail";
 import CheckOut from "../components/payment/checkout";
 import CustomerRequestManagement from "../pages/customers/manage-requests";
 import CustomerRequestForm from "../pages/customers/customer-request-form";
-import RefundRequestForm from "../pages/customers/refund-request-form";
+import RefundRequestForm from "../pages/customers/RefundRequestForm";
 import Page404 from "../pages/Error/page404";
+import Register from "../components/login/register";
+import { RefundRequestManagement } from "../pages/customers/manage-refund-request";
+import FormCreateNewStaff from "../pages/staffs/createStaffAccount"
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -21,6 +24,10 @@ export const router = createBrowserRouter([
    {
       path: "/login",
       element: <LayoutRoute element={<Login />}></LayoutRoute>,
+   },
+   {
+      path: "/register",
+      element: <LayoutRoute element={<Register />}></LayoutRoute>,
    },
 
    {
@@ -54,12 +61,23 @@ export const router = createBrowserRouter([
       element: <LayoutRoute element={<StaffsPayment />}></LayoutRoute>,
    },
    {
-      path: "staff/payment-detal/:id",
-      element: <LayoutRoute element={<StaffsPaymentDetail />}></LayoutRoute>,
+      path: "staff/request-detail/:id",
+      element: <LayoutRoute element={<StaffRequestDetail />}></LayoutRoute>,
    },
+   {
+      path: "staffs/create-staff-account/",
+      element: <LayoutRoute element={<FormCreateNewStaff />}></LayoutRoute>,
+   },
+
    {
       path: "/payment/checkout",
       element: <LayoutRoute element={<CheckOut />}></LayoutRoute>,
+   },
+   {
+      path: "/staffs/refund-request-management",
+      element: (
+         <LayoutRoute element={<RefundRequestManagement />}></LayoutRoute>
+      ),
    },
    {
       path: "/users/customer-requests",
@@ -77,6 +95,6 @@ export const router = createBrowserRouter([
    },
    {
       path: "*",
-      element: <Page404></Page404>
-   }
+      element: <Page404></Page404>,
+   },
 ]);

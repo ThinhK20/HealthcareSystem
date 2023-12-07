@@ -6,6 +6,8 @@ using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 
+using System;
+
 namespace HealthcareSystem.Backend.Repositories
 {
     public class PaymentRepository : Repository<Models.Entity.Payment>, IPaymentRepository
@@ -16,27 +18,14 @@ namespace HealthcareSystem.Backend.Repositories
         {
             _mapper = mapper;
             _applicationContext = context;
+
         }
 
-        public async Task<int> CreatePayment(PaymentCreateDTO payment)
+        public async Task<bool> CreatePayment(Payment payment)
         {
-            if (payment == null) throw new Exception("Customer request not found.");
-            Payment pay = new Payment
-            {
-                RequestId = payment.RequestId,
-                CreatedDate = DateTime.UtcNow,
-                ExpirationDate = DateTime.UtcNow.AddDays(7),
-                ExpirationPaypal = null,
-                Status = false,
-                Price = payment.Price,
-                UpdatedDate = DateTime.UtcNow,
-                LinkCheckOut = null,
-                PaypalEmail = null,
-            };
-            Models.Entity.Payment entity = _mapper.Map<Models.Entity.Payment>(pay);
-            await CreateAsync(entity);
-            var request = await GetAsync(filter => filter.RequestId == payment.RequestId && pay.CreatedDate== filter.CreatedDate);
-            return request.PaymentId;
+             if(payment==null) return false;
+                await CreateAsync(payment);
+            return true;
         }
         public async Task<bool> UpdateStatus(int PaymentID)
         {
@@ -61,9 +50,9 @@ namespace HealthcareSystem.Backend.Repositories
             var paymentQuery =  query.Select(u => _mapper.Map<PaymentDomain>(u)).ToList();
             return paymentQuery;
         }
-        public async Task<List<PaymentDomain>> GetPendingTransferPaymentRequestsAsync()
+        public async Task<List<PaymentDomain>> GetPaymentByRequestID(int requestID)
         {
-            var payments = await GetAllAsync(x => x.Status == false);
+            var payments = await GetAllAsync(x => x.RequestId == requestID);
             return _mapper.Map<List<PaymentDomain>>(payments);
         }
 

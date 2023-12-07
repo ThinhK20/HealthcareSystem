@@ -7,9 +7,8 @@
         public DateTime? DateRefund { get; set; }
         public string? Status { get; set; }
         public string? HoptitalName { get; set; }
-        public string? HoptitalDescription { get; set; }
-        public IFormFile File { get; set; }
         public string? Description { get; set; }
+        public IFormFile File { get; set; }
         public double? TotalRefundFee { get; set; }
     }
 }

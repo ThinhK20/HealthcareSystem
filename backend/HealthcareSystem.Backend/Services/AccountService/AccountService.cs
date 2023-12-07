@@ -9,6 +9,9 @@ using System.Security.Claims;
 using System.Text;
 using BCrypt.Net;
 using AutoMapper;
+using HealthcareSystem.Backend.Services.EmailService;
+using System;
+using HealthcareSystem.Backend.Repositories.EmailVerificationRepository;
 
 namespace HealthcareSystem.Backend.Services.AccountService
 {
@@ -17,15 +20,24 @@ namespace HealthcareSystem.Backend.Services.AccountService
         private readonly IAccountRepository _accountRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-
-
-        public AccountService(IAccountRepository temp, IUserRepository userRepository, IMapper mapper)
+        private readonly IEmailSender _emailSender;
+        private readonly IEmailVerificationRepository _emailVerificationRepository;
+        public AccountService(IAccountRepository temp, IUserRepository userRepository, IMapper mapper, IEmailSender emailSender, IEmailVerificationRepository emailVerificationRepository)
         {
             _accountRepository = temp;
             _userRepository = userRepository;
             _mapper = mapper;
-          
+            _emailSender = emailSender;
+            _emailVerificationRepository = emailVerificationRepository;
         }
+
+
+
+        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
+        {
+            return _accountRepository.CreateAccountStaff(acc);
+      }
+
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
             var getList = await _accountRepository.GetUser();
@@ -98,17 +110,45 @@ namespace HealthcareSystem.Backend.Services.AccountService
             }
             var salt = BCrypt.Net.BCrypt.GenerateSalt();
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerationRequestDTO.Password, salt);
+            User new_user = new User()
+            {
+                Email = registerationRequestDTO.Email
+            };
+            await _userRepository.CreateAsync(new_user);
+
+            var getID = await _userRepository.GetAsync(u => u.Email == registerationRequestDTO.Email);
+
+            Random random = new Random();
+
+            int randomNumber = random.Next(1000, 10000);
+
+            // Convert the number to a string
+            string result = randomNumber.ToString();
+            await _emailSender.SendEmailAsync(registerationRequestDTO.Email, "Vefify your account !", "Your code is: " + result);
+
             AccountDTO user = new AccountDTO()
             {
+                UserId = getID.UserId,
                 Username = registerationRequestDTO.UserName,
                 Password = hashedPassword,
-                Status = "Active",
+                Status = "Disable",
                 Role = "Customer"
             };
             var userMapper = _mapper.Map<Models.Entity.Account>(user);
-            userMapper.UserId = null;
             await _accountRepository.CreateAsync(userMapper);
+
+            var idAccount = await _accountRepository.GetAsync(u => u.Username == registerationRequestDTO.UserName);
+
+            EmailVerification sendEmail = new EmailVerification()
+            {
+                AccountId = idAccount.AccountId,
+                VerifyNumber = Int32.Parse(result)
+            };
+
+            await _emailVerificationRepository.CreateAsync(sendEmail);
+
             user.Password = "";
+            user.EmailVerification = result;
             return user;
         }
     }

@@ -2,12 +2,14 @@ using HealthcareSystem.Backend;
 using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.AccountRepository;
+using HealthcareSystem.Backend.Repositories.EmailVerificationRepository;
 using HealthcareSystem.Backend.Repositories.ImageRepository;
 using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 using HealthcareSystem.Backend.Repositories.InsuranceRepository;
 using HealthcareSystem.Backend.Repositories.PolicyPackageRepository;
 using HealthcareSystem.Backend.Repositories.RefundRequestRepository;
 using HealthcareSystem.Backend.Services.AccountService;
+using HealthcareSystem.Backend.Services.EmailService;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using HealthcareSystem.Backend.Services.PackagePoliceService;
 using HealthcareSystem.Backend.Services.PaymentService;
@@ -45,6 +47,7 @@ builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<IRefundRequestRepository, RefundRequestRepository>();
 builder.Services.AddScoped<IInsuranceRepository, InsuranceRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IEmailVerificationRepository, EmailVerificationRepository>();
 
 
 // Add services
@@ -55,6 +58,7 @@ builder.Services.AddScoped<IInsuranceDetailService, InsuranceDetailService>();
 builder.Services.AddScoped<IRefundRequestService, RefundRequestService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddAuthentication(x =>
 {
