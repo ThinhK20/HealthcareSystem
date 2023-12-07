@@ -1,6 +1,7 @@
 ﻿using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
+using HealthcareSystem.Backend.Services.PaymentService;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -10,9 +11,9 @@ namespace HealthcareSystem.Backend.Controllers
     [ApiController]
     public class PaymentsController : ControllerBase
     {
-        private readonly IPaymentRepository _paymentRepository;
+        private readonly IPaymentService _paymentRepository;
         private readonly IInsuranceDetailRepository _insuranceDetailRepository;
-        public PaymentsController(IPaymentRepository paymentRepository, IInsuranceDetailRepository insuranceDetailRepository)
+        public PaymentsController(IPaymentService paymentRepository, IInsuranceDetailRepository insuranceDetailRepository)
         {
             _paymentRepository = paymentRepository;
             _insuranceDetailRepository = insuranceDetailRepository;

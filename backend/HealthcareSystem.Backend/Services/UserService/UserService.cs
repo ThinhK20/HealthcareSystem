@@ -76,7 +76,7 @@ namespace HealthcareSystem.Backend.Services.UserService
         //    //int PhaseRecordUser = _hel
         //}
 
-        public async Task<PaymentDomain> AcceptCustomerRequest(int Accept)
+        public async Task<bool> AcceptCustomerRequest(int Accept)
         {
             return await _customerRequestRepository.AcceptCustomerRequest(Accept);
         }
