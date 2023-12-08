@@ -14,8 +14,13 @@ import CustomerRequestForm from "../pages/customers/customer-request-form";
 import RefundRequestForm from "../pages/customers/RefundRequestForm";
 import Page404 from "../pages/Error/page404";
 import Register from "../components/login/register";
-import { RefundRequestManagement } from "../pages/customers/manage-refund-request";
-import FormCreateNewStaff from "../pages/staffs/createStaffAccount"
+import { RefundRequestManagement } from "../pages/staffs/manage-refund-request";
+import FormCreateNewStaff from "../pages/staffs/createStaffAccount";
+import RefundRequestDetails from "../pages/staffs/refund-request-details";
+import EditInformation from "../pages/users/edit-information";
+import EditAccount from "../pages/users/edit-account";
+import EmailVerify from "../components/login/emailverify";
+
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -24,6 +29,10 @@ export const router = createBrowserRouter([
    {
       path: "/login",
       element: <LayoutRoute element={<Login />}></LayoutRoute>,
+   },
+   {
+      path: "/verify",
+      element: <LayoutRoute element={<EmailVerify />}></LayoutRoute>,
    },
    {
       path: "/register",
@@ -74,9 +83,25 @@ export const router = createBrowserRouter([
       element: <LayoutRoute element={<CheckOut />}></LayoutRoute>,
    },
    {
-      path: "/staffs/refund-request-management",
+      path: "/staffs/refund-requests",
       element: (
          <LayoutRoute element={<RefundRequestManagement />}></LayoutRoute>
+      ),
+   },
+   {
+      path: "/staffs/refund-requests/:id",
+      element: <LayoutRoute element={<RefundRequestDetails />}></LayoutRoute>,
+   },
+   {
+      path: "/users/edit-information",
+      element: (
+         <LayoutRoute element={<EditInformation />}></LayoutRoute>
+      ),
+   },
+   {
+      path: "/users/edit-account",
+      element: (
+         <LayoutRoute element={<EditAccount />}></LayoutRoute>
       ),
    },
    {

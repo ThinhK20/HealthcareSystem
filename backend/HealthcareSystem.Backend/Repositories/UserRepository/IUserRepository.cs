@@ -10,5 +10,6 @@ namespace HealthcareSystem.Backend.Repositories
         public Task<UserPriceDomain> GetUserInfoForPriceByIdAsync(int UserID);
         public Task<UserDomain> GetUserByAccount(int AccountId);
         public Task <UserDTO> CreateUser(UserDTO user);
+        public Task<UserDTO> UpdateUser(UserDTO user);
     }
 }

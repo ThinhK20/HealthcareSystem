@@ -12,6 +12,7 @@ using AutoMapper;
 using HealthcareSystem.Backend.Services.EmailService;
 using System;
 using HealthcareSystem.Backend.Repositories.EmailVerificationRepository;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace HealthcareSystem.Backend.Services.AccountService
 {
@@ -37,6 +38,11 @@ namespace HealthcareSystem.Backend.Services.AccountService
         {
             return _accountRepository.CreateAccountStaff(acc);
       }
+
+        public Task<AccountBaseDTO> GetAccountByID(int id)
+        {
+           return _accountRepository.GetAccountByID(id);
+        }
 
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
@@ -151,5 +157,23 @@ namespace HealthcareSystem.Backend.Services.AccountService
             user.EmailVerification = result;
             return user;
         }
+
+        public async Task<bool> Verification(int data)
+        {
+           if(data != null)
+            {
+                await _accountRepository.UpdateStatus(data);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public async Task<AccountBaseDTO> UpdateAccountStaff(AccountBaseDTO acc)
+        {
+            return await _accountRepository.UpdateAccountStaff(acc);
+        }
+        
     }
 }

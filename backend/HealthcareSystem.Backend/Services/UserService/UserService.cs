@@ -93,5 +93,15 @@ namespace HealthcareSystem.Backend.Services.UserService
         {
            return await _userRepository.CreateUser(user);
         }
+
+        public async Task<UserDTO> UpdateUser(UserDTO user)
+        {
+          return await _userRepository.UpdateUser(user);
+        }
+
+        public Task<UserDomain> GetUserByAccount(int AccountId)
+        {
+          return _userRepository.GetUserByAccount(AccountId);
+        }
     }
 }
