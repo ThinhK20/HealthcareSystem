@@ -22,10 +22,11 @@ import EditAccount from "../pages/users/edit-account";
 import EmailVerify from "../components/login/emailverify";
 import CustomersPayment from "../pages/customers/payment";
 import { CustomerRefundRequestManagement } from "../pages/customers/customer-refund-requests";
+import Home from "../pages/general/home";
 export const router = createBrowserRouter([
    {
       path: "/",
-      element: <LayoutRoute element={<App />}></LayoutRoute>,
+      element: <LayoutRoute element={<Home />}></LayoutRoute>,
    },
    {
       path: "/login",

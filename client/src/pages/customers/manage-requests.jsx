@@ -74,7 +74,7 @@ export default function CustomerRequestManagement() {
                   </Typography>
                   <Typography color="gray" className="mt-1 font-normal">
                      These are details about your customer requests to
-                     HealthCare System Company
+                     HEALTIH Solutions Company
                   </Typography>
                </div>
                <div className="flex w-full shrink-0 gap-2 md:w-max">
