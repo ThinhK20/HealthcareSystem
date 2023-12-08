@@ -43,9 +43,9 @@ export function Navbar({ brandName, action }) {
           className="capitalize p-[2px] rounded-md"
         >
 
-          <Link    to={path} 
-          class="relative group px-4 py-2 transition-all duration-300 ease-in-out bg-transparent border-b-1 border-transparent hover:border-black">
-       
+          <Link to={path}
+            class="relative group px-4 py-2 transition-all duration-300 ease-in-out bg-transparent border-b-1 border-transparent hover:border-black">
+
             <span class="relative z-10 font-medium">{name}</span>
             <span class="absolute inset-x-0 bottom-0 h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out"></span>
           </Link>
@@ -62,12 +62,15 @@ export function Navbar({ brandName, action }) {
   }, []);
 
   return (
-    <MTNavbar color="transparent" className="w-[100%] p-0">
+    <div className="p-0 w-screen">
       <div className="flex items-center justify-between text-black bg-[#FFD000] w-full">
         <Link to="/">
-          <Typography className="ml-2 cursor-pointer font-bold">
+          <Typography className="ml-2 cursor-pointer font-bold  flex">
             <img className="w-[80px] h-[80px]" src="https://cdn.discordapp.com/attachments/1160172654825840763/1182623713401786368/22671099-c291-40f9-8c62-14e44a282e8e-removebg-preview.png?ex=65855f29&is=6572ea29&hm=70cc6922ca608eaa28d6e71e8ee2b07ad8bb042e2aee58d51008f4f2a7c03b6b&" alt="" />
-
+            <div className="text-center m-auto">
+              <p className="font-serif border-b-2 border-gray-800">HEALTIH </p>
+              <p className="font-serif font-[400] text-[18]">Solutions</p>
+            </div>
           </Typography>
         </Link>
         <div className="hidden lg:block">{navList}</div>
@@ -99,7 +102,7 @@ export function Navbar({ brandName, action }) {
         </IconButton>
       </div>
       <Collapse open={openNav} className=" rounded-lg ">
-        <div className="container mx-auto bg-[black] rounded-xl">
+        <div className="container mx-auto rounded-xl">
           {navList}
           <a
             href="https://www.material-tailwind.com/blocks/react?ref=mtkr"
@@ -115,19 +118,19 @@ export function Navbar({ brandName, action }) {
           })}
         </div>
       </Collapse>
-    </MTNavbar>
+    </div>
   );
 }
 
 Navbar.defaultProps = {
-  brandName: "Healthcare System",
+  brandName: "HEALTIH Solutions",
   action: (
     <a
       href=""
       target="_blank"
     >
-      <Button variant="gradient" size="sm" fullWidth className="hover:bg-[#545455]">
-        free download
+      <Button variant="gradient" size="sm" className="hover:bg-[#545455] mr-[100px] lg:w-fit w-full">
+        FREE CC
       </Button>
     </a>
   ),
