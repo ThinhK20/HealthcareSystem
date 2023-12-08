@@ -9,5 +9,9 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
     {
         public Task<RefundRequestDTO> CreateRefundRequestAsync(RefundRequestDTO refundRequestDTO);
         public Task<List<RefundRequestDomain>> GetAllRefundRequestsAsync();
+        public Task<RefundRequestDomain> GetRefundRequestByIdAsync(int refundId);
+        public Task<bool> AcceptRefundRequestByIdAsync(int refundId);
+        public Task<bool> RejectRefundRequestByIdAsync(int refundId);
+        public Task<bool> PendingRefundRequestByIdAsync(int refundId);
     }
 }

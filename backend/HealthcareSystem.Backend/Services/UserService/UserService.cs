@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -75,7 +76,7 @@ namespace HealthcareSystem.Backend.Services.UserService
         //    //int PhaseRecordUser = _hel
         //}
 
-        public async Task<PaymentDomain> AcceptCustomerRequest(int Accept)
+        public async Task<bool> AcceptCustomerRequest(int Accept)
         {
             return await _customerRequestRepository.AcceptCustomerRequest(Accept);
         }
@@ -87,6 +88,20 @@ namespace HealthcareSystem.Backend.Services.UserService
         {
             return await _customerRequestRepository.CompleteCustomerRequest(id);
         }
-        
+
+        public async Task<UserDTO> CreateUser(UserDTO user)
+        {
+           return await _userRepository.CreateUser(user);
+        }
+
+        public async Task<UserDTO> UpdateUser(UserDTO user)
+        {
+          return await _userRepository.UpdateUser(user);
+        }
+
+        public Task<UserDomain> GetUserByAccount(int AccountId)
+        {
+          return _userRepository.GetUserByAccount(AccountId);
+        }
     }
 }

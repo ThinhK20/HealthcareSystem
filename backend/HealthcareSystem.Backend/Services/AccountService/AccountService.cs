@@ -31,6 +31,19 @@ namespace HealthcareSystem.Backend.Services.AccountService
             _emailSender = emailSender;
             _emailVerificationRepository = emailVerificationRepository;
         }
+
+
+
+        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
+        {
+            return _accountRepository.CreateAccountStaff(acc);
+      }
+
+        public Task<AccountBaseDTO> GetAccountByID(int id)
+        {
+           return _accountRepository.GetAccountByID(id);
+        }
+
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
             var getList = await _accountRepository.GetUser();
@@ -145,6 +158,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
             return user;
         }
 
+<<<<<<< HEAD
         public async Task<AccountDTO> Verification(AccountDTO data)
         {
            if(data.Status == "Active")
@@ -159,5 +173,12 @@ namespace HealthcareSystem.Backend.Services.AccountService
                 return new AccountDTO();
             }
         }
+=======
+        public async Task<AccountBaseDTO> UpdateAccountStaff(AccountBaseDTO acc)
+        {
+            return await _accountRepository.UpdateAccountStaff(acc);
+        }
+        
+>>>>>>> ce126b1db1c5c86c29b082c763ddeee251244df6
     }
 }

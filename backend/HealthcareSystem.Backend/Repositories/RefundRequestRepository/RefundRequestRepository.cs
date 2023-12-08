@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HealthcareSystem.Backend.Data;
+using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
@@ -35,10 +36,42 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
             return refundRequestDTO;
         }
 
+        public async Task<RefundRequestDomain> GetRefundRequestByIdAsync(int refundId)
+        {
+            var refundRequest = await GetAsync(rq => rq.RefundID == refundId);
+            return _mapper.Map<RefundRequestDomain>(refundRequest);
+        }
+
         public async Task<List<RefundRequestDomain>> GetAllRefundRequestsAsync()
         {
             var entities = await GetAllAsync();
             return entities.Select(t => _mapper.Map<RefundRequestDomain>(t)).ToList();
         }
+
+        public async Task<bool> AcceptRefundRequestByIdAsync(int refundId)
+        {
+            var refundRequest = await GetAsync(rq => rq.RefundID == refundId);
+            refundRequest.Status = RefundRequestStatus.Approved;
+            await UpdateAsync(refundRequest);
+            return true;
+        }
+
+        public async Task<bool> RejectRefundRequestByIdAsync(int refundId)
+        {
+            var refundRequest = await GetAsync(rq => rq.RefundID == refundId);
+            refundRequest.Status = RefundRequestStatus.Rejected;
+            await UpdateAsync(refundRequest);
+            return true;
+        }
+
+        public async Task<bool> PendingRefundRequestByIdAsync(int refundId)
+        {
+            var refundRequest = await GetAsync(rq => rq.RefundID == refundId);
+            refundRequest.Status = RefundRequestStatus.Pending;
+            await UpdateAsync(refundRequest);
+            return true;
+        }
+
+
     }
 }

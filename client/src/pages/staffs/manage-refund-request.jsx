@@ -1,4 +1,3 @@
-import { PencilIcon } from "@heroicons/react/24/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import {
    Card,
@@ -6,11 +5,11 @@ import {
    Typography,
    Button,
    CardBody,
-   Chip,
    CardFooter,
    Avatar,
    IconButton,
    Input,
+   Chip,
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,6 +21,7 @@ import { getAllRefundRequestsApi } from "../../apis/refundRequestApis";
 import { toast } from "react-toastify";
 import { formatDate, formatMoney } from "../../helpers/dataHelper";
 const TABLE_HEAD = [
+   "Id",
    "User",
    "Hospital Name",
    "Description",
@@ -52,6 +52,7 @@ export function RefundRequestManagement() {
    }, []);
 
    useEffect(() => {
+      console.log(refundRequests);
       setTableRows(() => {
          const newRows = refundRequests?.map((request) => ({
             img: "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/405226120_1995521290835244_4541343621775144051_n.jpg?stp=dst-jpg_p320x320&_nc_cat=108&ccb=1-7&_nc_sid=5740b7&_nc_ohc=llvk1mHN0MEAX-X09rK&_nc_ht=scontent.fsgn8-4.fna&cb_e2o_trans=t&oh=00_AfCNK-jrDWbNmf4mBheh79FaqUL8nF7qWOc2B9RfnLk7Rg&oe=65736864",
@@ -61,6 +62,8 @@ export function RefundRequestManagement() {
             refundFee: request.totalRefundFee,
             dateSend: request.dateSend,
             dateRefund: request.dateRefund,
+            status: request.status,
+            refundID: request.refundID,
          }));
          return newRows;
       });
@@ -129,6 +132,17 @@ export function RefundRequestManagement() {
                         <tr key={index}>
                            <td className={classes}>
                               <div className="flex items-center gap-3">
+                                 <Typography
+                                    variant="small"
+                                    color="blue-gray"
+                                    className="font-normal"
+                                 >
+                                    {tableRow.refundID}
+                                 </Typography>
+                              </div>
+                           </td>
+                           <td className={classes}>
+                              <div className="flex items-center gap-3">
                                  <Avatar
                                     src={tableRow.img}
                                     alt={tableRow.user}
@@ -138,7 +152,7 @@ export function RefundRequestManagement() {
                                  <Typography
                                     variant="small"
                                     color="blue-gray"
-                                    className="font-bold"
+                                    className="font-normal"
                                  >
                                     {tableRow.user}
                                  </Typography>
@@ -159,7 +173,7 @@ export function RefundRequestManagement() {
                               <Typography
                                  variant="small"
                                  color="blue-gray"
-                                 className="font-normal"
+                                 className="font-normal max-w-xs"
                               >
                                  {tableRow.description}
                               </Typography>
@@ -192,8 +206,24 @@ export function RefundRequestManagement() {
                               </Typography>
                            </td>
                            <td className={classes}>
+                              <div className="w-max">
+                                 <Chip
+                                    size="sm"
+                                    variant="ghost"
+                                    value={tableRow.status}
+                                    color={
+                                       tableRow.status === "Approved"
+                                          ? "green"
+                                          : tableRow.status === "Pending"
+                                          ? "amber"
+                                          : "red"
+                                    }
+                                 />
+                              </div>
+                           </td>
+                           <td className={classes}>
                               <Link
-                                 to={`/staff/payment-detal/${tableRow?.requestID}`}
+                                 to={`/staffs/refund-requests/${tableRow.refundID}`}
                               >
                                  <Tooltip title="View details">
                                     <IconButton variant="text">
@@ -204,11 +234,6 @@ export function RefundRequestManagement() {
                                     </IconButton>
                                  </Tooltip>
                               </Link>
-                              <Tooltip title="Edit">
-                                 <IconButton variant="text">
-                                    <PencilIcon className="h-4 w-4" />
-                                 </IconButton>
-                              </Tooltip>
                            </td>
                         </tr>
                      );

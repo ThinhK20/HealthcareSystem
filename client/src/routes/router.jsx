@@ -14,8 +14,16 @@ import CustomerRequestForm from "../pages/customers/customer-request-form";
 import RefundRequestForm from "../pages/customers/RefundRequestForm";
 import Page404 from "../pages/Error/page404";
 import Register from "../components/login/register";
+<<<<<<< HEAD
 import { RefundRequestManagement } from "../pages/customers/manage-refund-request";
 import EmailVerify from "../components/login/emailverify";
+=======
+import { RefundRequestManagement } from "../pages/staffs/manage-refund-request";
+import FormCreateNewStaff from "../pages/staffs/createStaffAccount";
+import RefundRequestDetails from "../pages/staffs/refund-request-details";
+import EditInformation from "../pages/users/edit-information";
+import EditAccount from "../pages/users/edit-account";
+>>>>>>> ce126b1db1c5c86c29b082c763ddeee251244df6
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -69,17 +77,34 @@ export const router = createBrowserRouter([
       element: <LayoutRoute element={<StaffRequestDetail />}></LayoutRoute>,
    },
    {
-      path: "staff/payment-/:id",
-      element: <LayoutRoute element={<StaffRequestDetail />}></LayoutRoute>,
+      path: "staffs/create-staff-account/",
+      element: <LayoutRoute element={<FormCreateNewStaff />}></LayoutRoute>,
    },
+
    {
       path: "/payment/checkout",
       element: <LayoutRoute element={<CheckOut />}></LayoutRoute>,
    },
    {
-      path: "/staffs/refund-request-management",
+      path: "/staffs/refund-requests",
       element: (
          <LayoutRoute element={<RefundRequestManagement />}></LayoutRoute>
+      ),
+   },
+   {
+      path: "/staffs/refund-requests/:id",
+      element: <LayoutRoute element={<RefundRequestDetails />}></LayoutRoute>,
+   },
+   {
+      path: "/users/edit-information",
+      element: (
+         <LayoutRoute element={<EditInformation />}></LayoutRoute>
+      ),
+   },
+   {
+      path: "/users/edit-account",
+      element: (
+         <LayoutRoute element={<EditAccount />}></LayoutRoute>
       ),
    },
    {

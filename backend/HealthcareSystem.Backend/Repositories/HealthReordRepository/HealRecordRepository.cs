@@ -20,6 +20,7 @@ namespace HealthcareSystem.Backend.Repositories
         public async Task<Dictionary<int, int>> GetListFeeAffectId(int UserId)
         {
             int maxPhase = await GetMaxPhaseHealthRecord(UserId);
+            if (maxPhase == 0) return null;
             var listHealthRecords = await GetAllAsync(x=> x.Phase == maxPhase && x.UserID == UserId);
             Dictionary<int, int> countFeeAffect = new Dictionary<int, int>();
             foreach (var value in listHealthRecords)
@@ -39,7 +40,7 @@ namespace HealthcareSystem.Backend.Repositories
         public async Task<int> GetMaxPhaseHealthRecord(int UserId)
         {
             var healthRecords = await GetAllAsync(x => x.UserID == UserId);
-            if (healthRecords == null) throw new Exception("Health record of user not found.");
+            if (healthRecords.Count == 0) return 0;
             int maxPhase = (int)healthRecords.Max(h => h.Phase);
             return maxPhase;
         }
