@@ -1,6 +1,7 @@
 ﻿ 
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
+using Microsoft.Identity.Client;
 
 namespace HealthcareSystem.Backend.Services.PaymentService
 {
@@ -13,5 +14,7 @@ namespace HealthcareSystem.Backend.Services.PaymentService
         Task<List<PaymentDomain>> GetPaymentByRequestID(int requestID);
         Task<List<PaymentDomain>> GetPaymentedAsync();
         Task<PaymentDomain> GetPaymentIdAsync(int PaymentId);
+        Task<string> GetCheckOutLink(CheckPayPalInfoDTO info);
+        Task<List<PaymentOfUserDTO>> GetPaymentByUserID(int AccountID);
     }
 }

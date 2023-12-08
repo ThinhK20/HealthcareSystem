@@ -15,6 +15,8 @@ namespace HealthcareSystem.Backend.Repositories
         Task<List<PaymentDomain>> GetPaymentByRequestID(int requestID);
         Task<List<PaymentDomain>> GetPaymentedAsync();
         Task<PaymentDomain> GetPaymentIdAsync(int PaymentId);
-       
+        Task<CheckStatusPayPalReturnDomain> CheckStatusPayPal(CheckPayPalInfoDTO info);
+        Task<bool> UpdatePayPalInfo(int PaymentID, DateTime CreatedDate, string idPayPal, string linkCheckOut);
+        Task<List<PaymentOfUserDTO>> GetPaymentByUserId(int Account);
     }
 }

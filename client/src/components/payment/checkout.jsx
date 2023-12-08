@@ -10,9 +10,9 @@ function CheckOut() {
         baseURL: 'https://localhost:44384/api',
      });
     const getData =  async () => {
-        const data = await authFetch.get("/InsuarancePolicy");
-        console.log(11111111, data.data);
+        const data = await authFetch.get("/Payments/GetPaymenOfUser/1");
         setData(data.data);
+        console.log(data.data)
     }
  
     useEffect(() => {
@@ -34,14 +34,15 @@ function CheckOut() {
                         <thead className="border-b rounded-t-lg text-left">
                         <tr>
                             <th scope="col" className="rounded-tl-lg text-medium text-blue-600 font-medium px-6 py-4">Policy Package</th>
-                            <th scope="col" className="text-medium text-blue-600 font-medium px-6 py-4">Amount</th>
-                            <th scope="col" className="text-medium text-blue-600 font-medium px-6 py-4">The last payment date</th>
+                            <th scope="col" className="text-medium text-blue-600 font-medium px-6 py-4">From Date</th>
+                            <th scope="col" className="text-medium text-blue-600 font-medium px-6 py-4">Expiration Date</th>
+                            <th scope="col" className="rounded-tr-lg text-medium text-blue-600 font-medium px-6 py-4">Status</th>
                             <th scope="col" className="rounded-tr-lg text-medium text-blue-600 font-medium px-6 py-4">Type</th>
 
                         </tr>
                         </thead>
                         <tbody>
-                        {data.map((item, index) => (
+                        {/* {data.map((item, index) => (
                         <tr key={index} className={index % 2 === 0 ? 'border-b bg-gray-100' : 'border-b'}>
                             <th className="text-sm font-medium px-6 py-4 whitespace-nowrap text-left" scope="row">
                              {index + 1 }
@@ -57,7 +58,7 @@ function CheckOut() {
                             </a>
                             </td>
                         </tr>
-                        ))}
+                        ))} */}
                         
                         </tbody>
                     </table>
