@@ -12,6 +12,7 @@ using AutoMapper;
 using HealthcareSystem.Backend.Services.EmailService;
 using System;
 using HealthcareSystem.Backend.Repositories.EmailVerificationRepository;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace HealthcareSystem.Backend.Services.AccountService
 {
@@ -142,6 +143,21 @@ namespace HealthcareSystem.Backend.Services.AccountService
             user.Password = "";
             user.EmailVerification = result;
             return user;
+        }
+
+        public async Task<AccountDTO> Verification(AccountDTO data)
+        {
+           if(data.Status == "Active")
+            {
+
+                var accountEntity = _mapper.Map<Models.Entity.Account>(data);
+                await _accountRepository.UpdateAsync(AccountDTO)
+                return data;
+            }
+            else
+            {
+                return new AccountDTO();
+            }
         }
     }
 }

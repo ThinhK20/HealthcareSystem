@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HealthcareSystem.Backend.Data;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 
 namespace HealthcareSystem.Backend.Repositories.AccountRepository
@@ -34,5 +35,6 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
            var user = await GetAllAsync();
             return user.Count();
         }
+      
     }
 }

@@ -7,6 +7,6 @@ namespace HealthcareSystem.Backend.Services.AccountService
         public Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
 
         public Task<AccountDTO> Register(RegisterRequestDTO registerationRequestDTO);
-
+        public async Task<AccountDTO> Verification(AccountDTO data);
     }
 }

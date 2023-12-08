@@ -42,5 +42,29 @@ namespace HealthcareSystem.Backend.Controllers
             return Ok("Successfully");
 
         }
+
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDTO model)
+        {
+            var user = await _accountService.Register(model);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            return Ok("Successfully");
+
+        }
+        [HttpPost("verification")]
+        public async Task<IActionResult> Verify([FromBody] AccountDTO model)
+        {
+            var user = await _accountService.Verification(model);
+            if (user.UserId == null)
+            {
+                return BadRequest();
+            }
+            return Ok("Successfully");
+
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using HealthcareSystem.Backend.Repositories.GenericRepository;
+﻿using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Repositories.GenericRepository;
 
 namespace HealthcareSystem.Backend.Repositories.AccountRepository
 {
@@ -10,7 +11,6 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
 
         public Task<int> getLength();
 
-        
 
     }
 }
