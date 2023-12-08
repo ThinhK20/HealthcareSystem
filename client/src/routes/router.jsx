@@ -17,6 +17,8 @@ import Register from "../components/login/register";
 import { RefundRequestManagement } from "../pages/staffs/manage-refund-request";
 import FormCreateNewStaff from "../pages/staffs/createStaffAccount";
 import RefundRequestDetails from "../pages/staffs/refund-request-details";
+import EditInformation from "../pages/users/edit-information";
+import EditAccount from "../pages/users/edit-account";
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -83,6 +85,18 @@ export const router = createBrowserRouter([
    {
       path: "/staffs/refund-requests/:id",
       element: <LayoutRoute element={<RefundRequestDetails />}></LayoutRoute>,
+   },
+   {
+      path: "/users/edit-information",
+      element: (
+         <LayoutRoute element={<EditInformation />}></LayoutRoute>
+      ),
+   },
+   {
+      path: "/users/edit-account",
+      element: (
+         <LayoutRoute element={<EditAccount />}></LayoutRoute>
+      ),
    },
    {
       path: "/users/customer-requests",

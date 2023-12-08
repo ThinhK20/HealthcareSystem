@@ -40,5 +40,20 @@ namespace HealthcareSystem.Backend.Repositories
             var UserCreated = await GetAsync(x =>x.CCCD ==  user.CCCD);
             return  _mapper.Map<UserDTO>(UserCreated);
         }
+
+        public async Task<UserDTO> UpdateUser(UserDTO user)
+        {
+            try
+            {
+                Models.Entity.User userNew = _mapper.Map<Models.Entity.User>(user); ;
+                await UpdateAsync(userNew);
+                return user;
+            }
+        catch 
+            {
+                throw new Exception("dont find user");
+            }
+          
+        }
     }
 }

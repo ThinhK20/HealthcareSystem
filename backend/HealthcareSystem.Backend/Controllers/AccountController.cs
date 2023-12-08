@@ -48,7 +48,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
         
         [HttpPost("create-new-staff")]
-        public async Task<IActionResult> CreateAccount([FromBody] AccountUserDTO account)
+        public async Task<IActionResult> CreateAccountStaff([FromBody] AccountUserDTO account)
         {
             if (account == null)
             {
@@ -57,7 +57,7 @@ namespace HealthcareSystem.Backend.Controllers
        
             UserDTO userCreate = new UserDTO
             {
-                Fullname = account.Username,
+                Fullname = account.Fullname,
                 Email = account.Email,
                 CCCD = account.CCCD,
                 Phone = account.Phone,
@@ -79,6 +79,73 @@ namespace HealthcareSystem.Backend.Controllers
                 Role = account.Role
             };
             var tempAccount = await _accountService.CreateAccountStaff(accCreate);
+            if (tempAccount == null)
+            {
+                return BadRequest("Failed to create account.");
+            }
+
+            return Ok(tempAccount);
+        }
+        [HttpPut("edit-account-staff")]
+        public async Task<IActionResult> EditUser([FromBody] AccountBaseDTO account)
+        {
+
+            AccountBaseDTO accCreate = new AccountBaseDTO
+            {
+                AccountId = account.AccountId,
+                UserId = account.UserId,
+                Username = account.Username,
+                Password = account.Password,
+                Status = account.Status,
+                Role = account.Role
+            };
+            var tempAccount = await _accountService.UpdateAccountStaff(accCreate);
+            if (tempAccount == null)
+            {
+                return BadRequest("Failed to create account.");
+            }
+
+            return Ok(tempAccount);
+        }
+        [HttpPut("edit-user-staff")]
+        public async Task<IActionResult> EditAccount([FromBody] UserDTO account)
+        {
+            UserDTO userCreate = new UserDTO
+            {
+                UserId = account.UserId,
+                Fullname = account.Fullname,
+                Email = account.Email,
+                CCCD = account.CCCD,
+                Phone = account.Phone,
+                Birthdate = account.Birthdate,
+                Address = account.Address,
+                Gender = account.Gender,
+            };
+            var tempAccount = await _userService.UpdateUser(userCreate);
+            if (tempAccount == null)
+            {
+                return BadRequest("Failed to create account.");
+            }
+
+            return Ok(tempAccount);
+        }
+        [HttpGet("get-account-staff")]
+        public async Task<IActionResult> getAccount(int AccountID)
+        {
+           
+            var tempAccount = await _accountService.GetAccountByID(AccountID);
+            if (tempAccount == null)
+            {
+                return BadRequest("Failed to create account.");
+            }
+
+            return Ok(tempAccount);
+        }
+        [HttpGet("get-user-staff")]
+        public async Task<IActionResult> getUser(int AccountID)
+        {
+
+            var tempAccount = await _userService.GetUserByAccount(AccountID);
             if (tempAccount == null)
             {
                 return BadRequest("Failed to create account.");

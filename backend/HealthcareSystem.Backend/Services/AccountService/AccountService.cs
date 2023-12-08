@@ -38,6 +38,11 @@ namespace HealthcareSystem.Backend.Services.AccountService
             return _accountRepository.CreateAccountStaff(acc);
       }
 
+        public Task<AccountBaseDTO> GetAccountByID(int id)
+        {
+           return _accountRepository.GetAccountByID(id);
+        }
+
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
             var getList = await _accountRepository.GetUser();
@@ -151,5 +156,11 @@ namespace HealthcareSystem.Backend.Services.AccountService
             user.EmailVerification = result;
             return user;
         }
+
+        public async Task<AccountBaseDTO> UpdateAccountStaff(AccountBaseDTO acc)
+        {
+            return await _accountRepository.UpdateAccountStaff(acc);
+        }
+        
     }
 }

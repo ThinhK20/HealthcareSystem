@@ -16,6 +16,8 @@ namespace HealthcareSystem.Backend.Services.UserService
         public Task<bool> RefusedCustomerRequest(int id);
         public Task<bool> CompleteCustomerRequest(int id);
         public Task<UserDTO> CreateUser(UserDTO user);
+        public Task<UserDTO> UpdateUser(UserDTO user);
+        public Task<UserDomain> GetUserByAccount(int AccountId);
 
     }
 }

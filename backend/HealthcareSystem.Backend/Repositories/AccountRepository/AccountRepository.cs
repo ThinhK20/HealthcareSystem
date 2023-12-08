@@ -50,5 +50,29 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             var newAccount = await GetAsync(filter => filter.Username == acc.Username);
             return _mapper.Map<AccountBaseDTO>(newAccount);
         }
+
+        public async Task<AccountBaseDTO> UpdateAccountStaff(AccountBaseDTO acc)
+        {
+
+            if (acc == null) throw new Exception("Have not Input");
+            bool checkExist = await checkUserExist(acc.Username);
+            if (checkExist != true)
+            {
+                throw new Exception("Username exist");
+            }
+            var temp = await GetAsync(x=>x.AccountId == acc.AccountId);
+            temp.Password = acc.Password;
+            Models.Entity.Account account = _mapper.Map<Models.Entity.Account>(temp);
+            await UpdateAsync(account);
+            return acc;
+
+
+        }
+        public async Task<AccountBaseDTO> GetAccountByID(int id)
+        {
+            var data = await GetAsync(x => x.UserId == id);
+            if(data == null) throw new Exception("dont find user");
+            return _mapper.Map<AccountBaseDTO>(data);
+        }
     }
 }
