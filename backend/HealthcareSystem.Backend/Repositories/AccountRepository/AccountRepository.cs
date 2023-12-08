@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Models.DTO;
-<<<<<<< HEAD
-=======
+
 using HealthcareSystem.Backend.Models.Entity;
->>>>>>> ce126b1db1c5c86c29b082c763ddeee251244df6
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using System.Net.WebSockets;
@@ -21,6 +19,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             _mapper = mapper;
             _applicationContext = context;
         }
+       
         public async Task<List<Models.Domain.Account>> GetUser()
         {
             var user = await GetAllAsync();
@@ -41,9 +40,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
            var user = await GetAllAsync();
             return user.Count();
         }
-<<<<<<< HEAD
-      
-=======
+
         public async Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
         {
             if(acc==null) throw new Exception("Have not Input");
@@ -80,6 +77,18 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             if(data == null) throw new Exception("dont find user");
             return _mapper.Map<AccountBaseDTO>(data);
         }
->>>>>>> ce126b1db1c5c86c29b082c763ddeee251244df6
+        public async Task<bool> UpdateStatus(int userid)
+        {
+            if (userid == null) throw new Exception("Have not Input");
+            var data = await GetAsync(x => x.UserId == userid);
+            bool checkExist = await checkUserExist(data.Username);
+            if (checkExist != true)
+            {
+                return false;
+            }
+            data.Status = "Active";
+            await UpdateAsync(data);
+            return true;
+        }
     }
 }

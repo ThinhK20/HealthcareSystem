@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
@@ -44,8 +44,16 @@ export default function Register() {
         pauseOnHover: true,
         draggable: true,
       });
+      console.log(registerAPI.data.emailVerification, registerAPI.data.status)
       setTimeout(() => {
-         navigateTo('/table-insurance-management')
+         navigateTo('/verify' , {
+            state:
+            {
+               emailVerification : registerAPI.data.emailVerification,
+               status: registerAPI.data.status,
+               userid: registerAPI.data.userId
+            }
+         })
       }, 3000); 
      
    }
@@ -147,6 +155,7 @@ export default function Register() {
                   </div>
             </div>
          </div>
+         <ToastContainer/>
       </div>
    );
    }

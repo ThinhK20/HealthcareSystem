@@ -2,8 +2,58 @@ import { useRef, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import {useLocation} from 'react-router-dom';
 
 export default function EmailVerify() {
+    const navigateTo = useNavigate();
+
+    const inputone = useRef(null);
+    const inputtwo = useRef(null);
+    const inputthree= useRef(null);
+    const inputfour = useRef(null);
+    const location = useLocation();
+    const authFetch = axios.create({
+        baseURL: "https://localhost:44384/",
+     });
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+       const status = location.state.status;
+       const numberverify = location.state.emailVerification;
+       const userid = location.state.userid;
+       const config = {
+        headers: {
+           "content-type": "application/json",
+           "Access-Control-Allow-Origin": "*",
+        },
+     };
+     console.log(66666666)
+       if(status == 'Disable'){
+
+        const stringInput = String(inputone.current.value) + String(inputtwo.current.value) + String(inputthree.current.value) + String(inputfour.current.value);
+        console.log(stringInput)
+        if(stringInput == numberverify){
+            console.log(stringInput)
+            console.log(userid)
+            
+            const verifyAPI = await authFetch.post("/verification", userid, config);
+           if(verifyAPI.data == "Successfully"){
+                toast.success("Verify Successfully !", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
+                setTimeout(() => {
+                    navigateTo('/login')
+                }, 3000); 
+           }
+
+        }
+        }
+    }
+   
   return (
     <div className="w-[100%] flex items-center justify-center min-h-screen p-5 bg-gray-600 min-w-screen">
       <div className="max-w-xl p-8 text-center text-gray-800 bg-white shadow-xl lg:max-w-3xl rounded-3xl lg:p-12 ">
@@ -41,16 +91,17 @@ export default function EmailVerify() {
           </svg>
         </div>
         <p>We're happy you're here. Let's get your email address verified:</p>
-        <form className="pt-3 max-w-sm mx-auto">
+        <form className="pt-3 max-w-sm mx-auto" onSubmit={handleSubmit}>
           <div className="flex mb-2 space-x-2 rtl:space-x-reverse justify-center">
             <div>
               <label htmlFor="code-1" className="sr-only">
                 First code
               </label>
               <input
+               ref={inputone}
                 type="text"
                 maxLength="1"
-                onKeyUp="focusNextInput(this, 'code-1', 'code-2')"
+            
                 id="code-1"
                 className="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 required
@@ -61,9 +112,10 @@ export default function EmailVerify() {
                 Second code
               </label>
               <input
+               ref={inputtwo}
                 type="text"
                 maxLength="1"
-                onKeyUp="focusNextInput(this, 'code-1', 'code-3')"
+               
                 id="code-2"
                 className="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 required
@@ -74,9 +126,10 @@ export default function EmailVerify() {
                 Third code
               </label>
               <input
+               ref={inputthree}
                 type="text"
                 maxLength="1"
-                onKeyUp="focusNextInput(this, 'code-2', 'code-4')"
+               
                 id="code-3"
                 className="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 required
@@ -87,9 +140,10 @@ export default function EmailVerify() {
                 Fourth code
               </label>
               <input
+               ref={inputfour}
                 type="text"
                 maxLength="1"
-                onKeyUp="focusNextInput(this, 'code-3', 'code-5')"
+                
                 id="code-4"
                 className="block w-9 h-9 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 required
@@ -103,12 +157,13 @@ export default function EmailVerify() {
           >
             Please introduce the 4 digit code we sent via email.
           </p>
+          <div className="mt-4">
+            <button type="submit" className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                Verify
+            </button>
+          </div>
         </form>
-        <div className="mt-4">
-          <button className="px-2 py-2 text-blue-200 bg-blue-600 rounded">
-            Click to Verify Email
-          </button>
-        </div>
+        
       </div>
     </div>
     

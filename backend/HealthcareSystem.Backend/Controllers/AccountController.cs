@@ -35,18 +35,6 @@ namespace HealthcareSystem.Backend.Controllers
             return Ok(userLogin);
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDTO model)
-        {
-            var user = await _accountService.Register(model);
-            if (user == null)
-            {
-                return BadRequest();
-            }
-            return Ok("Successfully");
-
-        }
-<<<<<<< HEAD
 
 
         [HttpPost("register")]
@@ -57,21 +45,20 @@ namespace HealthcareSystem.Backend.Controllers
             {
                 return BadRequest();
             }
-            return Ok("Successfully");
+            return Ok(user);
 
         }
         [HttpPost("verification")]
-        public async Task<IActionResult> Verify([FromBody] AccountDTO model)
+        public async Task<IActionResult> Verify([FromBody] int model)
         {
             var user = await _accountService.Verification(model);
-            if (user.UserId == null)
+            if (user == false)
             {
                 return BadRequest();
             }
             return Ok("Successfully");
 
-=======
-        
+        }         
         [HttpPost("create-new-staff")]
         public async Task<IActionResult> CreateAccountStaff([FromBody] AccountUserDTO account)
         {
@@ -177,7 +164,6 @@ namespace HealthcareSystem.Backend.Controllers
             }
 
             return Ok(tempAccount);
->>>>>>> ce126b1db1c5c86c29b082c763ddeee251244df6
         }
     }
 }

@@ -158,27 +158,22 @@ namespace HealthcareSystem.Backend.Services.AccountService
             return user;
         }
 
-<<<<<<< HEAD
-        public async Task<AccountDTO> Verification(AccountDTO data)
+        public async Task<bool> Verification(int data)
         {
-           if(data.Status == "Active")
+           if(data != null)
             {
-
-                var accountEntity = _mapper.Map<Models.Entity.Account>(data);
-                await _accountRepository.UpdateAsync(AccountDTO)
-                return data;
+                await _accountRepository.UpdateStatus(data);
+                return true;
             }
             else
             {
-                return new AccountDTO();
+                return false;
             }
         }
-=======
         public async Task<AccountBaseDTO> UpdateAccountStaff(AccountBaseDTO acc)
         {
             return await _accountRepository.UpdateAccountStaff(acc);
         }
         
->>>>>>> ce126b1db1c5c86c29b082c763ddeee251244df6
     }
 }

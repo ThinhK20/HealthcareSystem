@@ -10,12 +10,11 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
         public Task<bool> checkUserExist(string Username);
 
         public Task<int> getLength();
-<<<<<<< HEAD
 
-
-=======
         public  Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc);
         public Task<AccountBaseDTO> UpdateAccountStaff(AccountBaseDTO acc);
->>>>>>> ce126b1db1c5c86c29b082c763ddeee251244df6
+
+        public Task<bool> UpdateStatus(int userid);
+
     }
 }

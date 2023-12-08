@@ -14,16 +14,13 @@ import CustomerRequestForm from "../pages/customers/customer-request-form";
 import RefundRequestForm from "../pages/customers/RefundRequestForm";
 import Page404 from "../pages/Error/page404";
 import Register from "../components/login/register";
-<<<<<<< HEAD
-import { RefundRequestManagement } from "../pages/customers/manage-refund-request";
-import EmailVerify from "../components/login/emailverify";
-=======
 import { RefundRequestManagement } from "../pages/staffs/manage-refund-request";
 import FormCreateNewStaff from "../pages/staffs/createStaffAccount";
 import RefundRequestDetails from "../pages/staffs/refund-request-details";
 import EditInformation from "../pages/users/edit-information";
 import EditAccount from "../pages/users/edit-account";
->>>>>>> ce126b1db1c5c86c29b082c763ddeee251244df6
+import EmailVerify from "../components/login/emailverify";
+
 export const router = createBrowserRouter([
    {
       path: "/",
