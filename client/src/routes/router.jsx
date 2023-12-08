@@ -15,6 +15,7 @@ import RefundRequestForm from "../pages/customers/RefundRequestForm";
 import Page404 from "../pages/Error/page404";
 import Register from "../components/login/register";
 import { RefundRequestManagement } from "../pages/customers/manage-refund-request";
+import EmailVerify from "../components/login/emailverify";
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
    {
       path: "/login",
       element: <LayoutRoute element={<Login />}></LayoutRoute>,
+   },
+   {
+      path: "/verify",
+      element: <LayoutRoute element={<EmailVerify />}></LayoutRoute>,
    },
    {
       path: "/register",

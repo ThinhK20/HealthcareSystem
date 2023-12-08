@@ -134,7 +134,7 @@ export default function Register() {
                                  </a>
                                 
                               </p>
-                              
+                               
                         </div>
                         </form>
                      </div>
