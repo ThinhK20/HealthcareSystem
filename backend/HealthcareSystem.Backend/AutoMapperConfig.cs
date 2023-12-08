@@ -23,7 +23,7 @@ namespace HealthcareSystem.Backend
             CreateMap<Models.Domain.CustomerRequestDomain, Models.DTO.CustomerRequestCreateDTO>().ReverseMap();
 
             CreateMap<Models.Domain.PolicyPackageDomain, Models.Entity.PolicyPackage>().ReverseMap();
-            CreateMap<AccountBaseDTO,Models.Entity.Account>().ReverseMap();
+            CreateMap<AccountBaseDTO, Models.Entity.Account>().ReverseMap();
             CreateMap<Models.Domain.Account, Models.DTO.AccountDTO>().ReverseMap();
             CreateMap<Models.Domain.Account, Models.Entity.Account>().ReverseMap();
             CreateMap<Models.DTO.AccountDTO, Models.Entity.Account>().ReverseMap();
@@ -54,7 +54,7 @@ namespace HealthcareSystem.Backend
             CreateMap<User, UserPriceDomain>();
             CreateMap<User, UserDomain>();
             CreateMap<UserDTO, User>().ReverseMap();
-            CreateMap<UserDomain,User >().ReverseMap(); ;
+            CreateMap<UserDomain, User>().ReverseMap(); ;
             CreateMap<BasicPrice, BasicPriceDomain>();
 
             CreateMap<FeeAffect, FeeAffectDomain>();

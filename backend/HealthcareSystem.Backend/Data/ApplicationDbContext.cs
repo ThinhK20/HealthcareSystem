@@ -67,7 +67,7 @@ namespace HealthcareSystem.Backend.Data
             modelBuilder.Entity<Account>()
               .HasOne(a => a.Insurance)
               .WithOne(c => c.Account)
-              .HasPrincipalKey<Insurance>(a => a.UserID);
+              .HasPrincipalKey<Insurance>(a => a.AccountId);
 
 
             modelBuilder.Entity<PolicyPackage>()

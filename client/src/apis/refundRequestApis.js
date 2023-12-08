@@ -15,6 +15,12 @@ export const getAllRefundRequestsApi = async () => {
    return await axios.get(API_URL + "/refund-requests/all");
 };
 
+export const getAllRefundRequestByUserIdApi = async (userId, cancelToken) => {
+   return await axios.get(API_URL + "/refund-requests?accountId=" + userId, {
+      cancelToken: cancelToken,
+   });
+};
+
 export const getRefundRequestApiById = async (id) => {
    return await axios.get(API_URL + "/refund-requests/" + id);
 };

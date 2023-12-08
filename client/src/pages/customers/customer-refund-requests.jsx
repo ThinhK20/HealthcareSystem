@@ -1,3 +1,4 @@
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import {
    Card,
    CardHeader,
@@ -7,15 +8,16 @@ import {
    CardFooter,
    Avatar,
    IconButton,
+   Input,
    Chip,
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { getAllRefundRequestsApi } from "../../apis/refundRequestApis";
+import { getAllRefundRequestByUserIdApi } from "../../apis/refundRequestApis";
 import { toast } from "react-toastify";
 import { formatDate, formatMoney } from "../../helpers/dataHelper";
 const TABLE_HEAD = [
@@ -30,13 +32,14 @@ const TABLE_HEAD = [
    "",
 ];
 
-export function RefundRequestManagement() {
+export function CustomerRefundRequestManagement() {
    const [refundRequests, setRefundRequests] = useState();
    const [tableRows, setTableRows] = useState([]);
 
    useEffect(() => {
+      const userId = 1;
       const source = axios.CancelToken.source();
-      getAllRefundRequestsApi(source.token)
+      getAllRefundRequestByUserIdApi(userId, source.token)
          .then((res) => {
             setRefundRequests(res.data);
          })
@@ -76,9 +79,26 @@ export function RefundRequestManagement() {
                      Refund Requests Management
                   </Typography>
                   <Typography color="gray" className="mt-1 font-normal">
-                     These are details about the refund requests to HealthCare
+                     These are details about your refund requests to HealthCare
                      System Company
                   </Typography>
+               </div>
+               <div className="flex w-full shrink-0 gap-2 md:w-max">
+                  <div className="w-full md:w-72">
+                     <Input
+                        label="Search"
+                        icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                     />
+                  </div>
+                  <Button size="sm">
+                     <Link
+                        to={"/users/refund-requests/create"}
+                        className="flex items-center gap-3"
+                     >
+                        <FontAwesomeIcon icon={faPlusCircle} size="2xl" />
+                        New
+                     </Link>
+                  </Button>
                </div>
             </div>
          </CardHeader>

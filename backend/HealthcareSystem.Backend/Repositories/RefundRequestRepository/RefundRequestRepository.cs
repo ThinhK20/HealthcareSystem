@@ -38,7 +38,7 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
 
         public async Task<RefundRequestDomain> GetRefundRequestByIdAsync(int refundId)
         {
-            var refundRequest = await GetAsync(rq => rq.RefundID == refundId);
+            var refundRequest = await GetAsync(rq => rq.RefundID == refundId, false, "Insurance,Insurance.Account");
             return _mapper.Map<RefundRequestDomain>(refundRequest);
         }
 
@@ -46,6 +46,14 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
         {
             var entities = await GetAllAsync();
             return entities.Select(t => _mapper.Map<RefundRequestDomain>(t)).ToList();
+        }
+
+        public async Task<List<RefundRequestDomain>> GetRefundRequestByAccountIdAsync(int accountId)
+        {
+
+            var refundRequests = await GetAllAsync(tracked: false, includeProperites: "Insurance,Insurance.Account");
+            return refundRequests.Where(rr => rr.Insurance!.AccountId == accountId.ToString()).Select(rr => _mapper.Map<RefundRequestDomain>(rr)).ToList();
+
         }
 
         public async Task<bool> AcceptRefundRequestByIdAsync(int refundId)
@@ -69,6 +77,14 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
             var refundRequest = await GetAsync(rq => rq.RefundID == refundId);
             refundRequest.Status = RefundRequestStatus.Pending;
             await UpdateAsync(refundRequest);
+            return true;
+        }
+
+        public async Task<bool> UpdateRefundRequestAsync(RefundRequestDomain refundRequestDomain)
+        {
+            var refundRequest = await GetAsync(rq => rq.RefundID == refundRequestDomain.RefundID, false);
+            if (refundRequest is null) throw new Exception("Not found this refund request. Please try again.");
+            await UpdateAsync(_mapper.Map<RefundRequest>(refundRequestDomain));
             return true;
         }
 

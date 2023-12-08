@@ -11,7 +11,7 @@ import StaffRequestDetail from "../pages/staffs/request-detail";
 import CheckOut from "../components/payment/checkout";
 import CustomerRequestManagement from "../pages/customers/manage-requests";
 import CustomerRequestForm from "../pages/customers/customer-request-form";
-import RefundRequestForm from "../pages/customers/RefundRequestForm";
+import RefundRequestForm from "../pages/customers/refund-request-form";
 import Page404 from "../pages/Error/page404";
 import Register from "../components/login/register";
 import { RefundRequestManagement } from "../pages/staffs/manage-refund-request";
@@ -21,6 +21,7 @@ import EditInformation from "../pages/users/edit-information";
 import EditAccount from "../pages/users/edit-account";
 import EmailVerify from "../components/login/emailverify";
 import CustomersPayment from "../pages/customers/payment";
+import { CustomerRefundRequestManagement } from "../pages/customers/customer-refund-requests";
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -90,20 +91,24 @@ export const router = createBrowserRouter([
       ),
    },
    {
+      path: "/users/refund-requests",
+      element: (
+         <LayoutRoute
+            element={<CustomerRefundRequestManagement />}
+         ></LayoutRoute>
+      ),
+   },
+   {
       path: "/staffs/refund-requests/:id",
       element: <LayoutRoute element={<RefundRequestDetails />}></LayoutRoute>,
    },
    {
       path: "/users/edit-information",
-      element: (
-         <LayoutRoute element={<EditInformation />}></LayoutRoute>
-      ),
+      element: <LayoutRoute element={<EditInformation />}></LayoutRoute>,
    },
    {
       path: "/users/edit-account",
-      element: (
-         <LayoutRoute element={<EditAccount />}></LayoutRoute>
-      ),
+      element: <LayoutRoute element={<EditAccount />}></LayoutRoute>,
    },
    {
       path: "/users/customer-requests",
@@ -127,5 +132,4 @@ export const router = createBrowserRouter([
       path: "*",
       element: <Page404></Page404>,
    },
-   
 ]);
