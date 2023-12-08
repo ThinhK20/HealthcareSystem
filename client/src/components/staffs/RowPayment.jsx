@@ -37,7 +37,7 @@ function RowTableStaffsPayment(props) {
                 </div>
             </td>
             <td className="py-2 text-[15px] text-[black] font-[500] flex justify-end w-[280px] ">
-                <span className="mr-[30px]">{formatMoney(props.item.price)}</span>
+                <span className="mr-[30px] font-[700] text-[#215521]">{formatMoney(props.item.price)}</span>
             </td>
             <td className="px-4 py-2 text-[15px] text-[black] font-[500] w-[300px]">
                 <div className="flex justify-center items-center w-[100%]">

@@ -20,7 +20,7 @@ import RefundRequestDetails from "../pages/staffs/refund-request-details";
 import EditInformation from "../pages/users/edit-information";
 import EditAccount from "../pages/users/edit-account";
 import EmailVerify from "../components/login/emailverify";
-
+import CustomersPayment from "../pages/customers/payment";
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -69,6 +69,7 @@ export const router = createBrowserRouter([
       path: "staff/payment",
       element: <LayoutRoute element={<StaffsPayment />}></LayoutRoute>,
    },
+
    {
       path: "staff/request-detail/:id",
       element: <LayoutRoute element={<StaffRequestDetail />}></LayoutRoute>,
@@ -119,7 +120,12 @@ export const router = createBrowserRouter([
       element: <LayoutRoute element={<RefundRequestForm />}></LayoutRoute>,
    },
    {
+      path: "customers/payment",
+      element: <LayoutRoute element={<CustomersPayment />}></LayoutRoute>,
+   },
+   {
       path: "*",
       element: <Page404></Page404>,
    },
+   
 ]);

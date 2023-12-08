@@ -33,27 +33,22 @@ export function Navbar({ brandName, action }) {
   const [openNav, setOpenNav] = React.useState(false);
 
   const navList = (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 p-[5px]">
+    <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 p-[5px] ">
       {routes.map(({ name, path, icon }) => (
         <Typography
           key={name}
           as="li"
           variant="small"
           color="inherit"
-          className="capitalize hover:bg-[#545455] p-[2px] rounded-md"
+          className="capitalize p-[2px] rounded-md"
         >
-          <Link
-            to={path}
 
-            className="flex items-center gap-1 p-1 font-bold"
-          >
-            {icon &&
-              React.createElement(icon, {
-                className: "w-[18px] h-[18px] opacity-75 mr-1",
-              })}
-            {name}
+          <Link    to={path} 
+          class="relative group px-4 py-2 transition-all duration-300 ease-in-out bg-transparent border-b-1 border-transparent hover:border-black">
+       
+            <span class="relative z-10 font-medium">{name}</span>
+            <span class="absolute inset-x-0 bottom-0 h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out"></span>
           </Link>
-
         </Typography>
       ))}
     </ul>
@@ -67,11 +62,12 @@ export function Navbar({ brandName, action }) {
   }, []);
 
   return (
-    <MTNavbar color="transparent" className="p-5 w-[100%]">
-      <div className="container mx-auto flex items-center justify-between text-white bg-[#000000] p-[10px] rounded-lg">
+    <MTNavbar color="transparent" className="w-[100%] p-0">
+      <div className="flex items-center justify-between text-black bg-[#FFD000] w-full">
         <Link to="/">
           <Typography className="ml-2 cursor-pointer font-bold">
-            {brandName}
+            <img className="w-[80px] h-[80px]" src="https://cdn.discordapp.com/attachments/1160172654825840763/1182623713401786368/22671099-c291-40f9-8c62-14e44a282e8e-removebg-preview.png?ex=65855f29&is=6572ea29&hm=70cc6922ca608eaa28d6e71e8ee2b07ad8bb042e2aee58d51008f4f2a7c03b6b&" alt="" />
+
           </Typography>
         </Link>
         <div className="hidden lg:block">{navList}</div>
@@ -80,7 +76,7 @@ export function Navbar({ brandName, action }) {
             href="https://www.material-tailwind.com/blocks?ref=mtkr"
             target="_blank"
           >
-            <Button variant="text" size="sm" color="white" fullWidth className="hover:bg-[#545455]">
+            <Button variant="text" size="sm" color="black" fullWidth className="hover:bg-[#545455]">
               pro version
             </Button>
           </a>
