@@ -29,7 +29,7 @@ namespace HealthcareSystem.Backend.Controllers
             var userLogin = await _accountService.Login(model);
             if (userLogin.user == null)
             {
-                return BadRequest();
+                return Ok(userLogin.Token);
             }
 
             return Ok(userLogin);
@@ -41,9 +41,9 @@ namespace HealthcareSystem.Backend.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequestDTO model)
         {
             var user = await _accountService.Register(model);
-            if (user == null)
+            if (user.EmailVerification == null)
             {
-                return BadRequest();
+                return Ok(user.Status);
             }
             return Ok(user);
 

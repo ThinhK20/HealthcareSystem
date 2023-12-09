@@ -69,7 +69,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
             if (isPasswordValid== false) {
                 return new LoginResponseDTO()
                 {
-                    Token = "Password is wrong",
+                    Token = "Username or password is wrong",
                     user = null
                 };
             }
@@ -109,14 +109,31 @@ namespace HealthcareSystem.Backend.Services.AccountService
             var checkUser =  await _accountRepository.checkUserExist(registerationRequestDTO.UserName);
             if (checkUser == true)
             {
-                return null;
+                return new AccountDTO
+                {
+
+                    Status = "User existed"
+                };
             }
             var emailChecked = !string.IsNullOrEmpty(registerationRequestDTO.Email) && new EmailAddressAttribute().IsValid(registerationRequestDTO.Email);
             if (emailChecked == false)
             {
-                return null;
-            }
+                return new AccountDTO
+                {
 
+                    Status = "Email is not valid"
+                };
+            }
+            var getID = await _userRepository.GetAsync(u => u.Email == registerationRequestDTO.Email);
+           
+            if(getID != null && getID.Email != null)
+            {
+                return new AccountDTO
+                {
+
+                    Status = "Email existed"
+                };
+            }
             var salt = BCrypt.Net.BCrypt.GenerateSalt();
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerationRequestDTO.Password, salt);
             User new_user = new User()
@@ -125,7 +142,6 @@ namespace HealthcareSystem.Backend.Services.AccountService
             };
             await _userRepository.CreateAsync(new_user);
 
-            var getID = await _userRepository.GetAsync(u => u.Email == registerationRequestDTO.Email);
 
             Random random = new Random();
 
@@ -133,7 +149,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
 
             // Convert the number to a string
             string result = randomNumber.ToString();
-            await _emailSender.SendEmailAsync(registerationRequestDTO.Email, "Vefify your account !", "Your code is: " + result);
+            await _emailSender.SendEmailAsync(registerationRequestDTO.Email, "Verify your account !", "Your code is: " + result);
 
             AccountDTO user = new AccountDTO()
             {
