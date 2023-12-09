@@ -13,6 +13,7 @@ using HealthcareSystem.Backend.Services.EmailService;
 using System;
 using HealthcareSystem.Backend.Repositories.EmailVerificationRepository;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel.DataAnnotations;
 
 namespace HealthcareSystem.Backend.Services.AccountService
 {
@@ -52,7 +53,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
             {
                 return new LoginResponseDTO()
                 {
-                    Token = "",
+                    Token = "User not found",
                     user = null
                 };
             }
@@ -60,7 +61,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
             {
                 return new LoginResponseDTO()
                 {
-                    Token = "",
+                    Token = "User is disable",
                     user = null
                 };
             }
@@ -68,7 +69,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
             if (isPasswordValid== false) {
                 return new LoginResponseDTO()
                 {
-                    Token = "",
+                    Token = "Password is wrong",
                     user = null
                 };
             }
@@ -77,7 +78,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
             {
                 return new LoginResponseDTO
                 {
-                    Token = "",
+                    Token = "User not found",
                     user = null
                 };
             }
@@ -110,10 +111,12 @@ namespace HealthcareSystem.Backend.Services.AccountService
             {
                 return null;
             }
-            if(registerationRequestDTO.Password != registerationRequestDTO.Password)
+            var emailChecked = !string.IsNullOrEmpty(registerationRequestDTO.Email) && new EmailAddressAttribute().IsValid(registerationRequestDTO.Email);
+            if (emailChecked == false)
             {
                 return null;
             }
+
             var salt = BCrypt.Net.BCrypt.GenerateSalt();
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerationRequestDTO.Password, salt);
             User new_user = new User()
