@@ -23,7 +23,7 @@ export default function Register() {
 
    const handleSubmit = async (event) => {
       event.preventDefault();
-
+      
       const accountInfo = {
          userName: usernameRef.current?.value,
          password: passRef.current?.value,
@@ -31,9 +31,21 @@ export default function Register() {
          confirmPassword: confirmPasswordRef.current?.value
       };
       console.log(555555, accountInfo)
+
+      if(passRef.current?.value != confirmPasswordRef.current?.value){
+         toast.error("Password not match", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+      }
+      else{
       const registerAPI = await authFetch.post("/register", accountInfo, config);
 
-      console.log(registerAPI)
+      console.log(registerAPI.data)
 
       const message = (registerAPI.data !== null ? 'Register successfully !' : 'Register failed !')
       toast.success(message, {
@@ -55,6 +67,7 @@ export default function Register() {
             }
          })
       }, 3000); 
+      }
      
    }
    return (
