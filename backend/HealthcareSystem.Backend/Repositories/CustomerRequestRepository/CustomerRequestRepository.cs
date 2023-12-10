@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HealthcareSystem.Backend.Data;
+using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
@@ -32,9 +33,9 @@ namespace HealthcareSystem.Backend.Repositories
             Models.Entity.CustomerRequest entity = _mapper.Map<Models.Entity.CustomerRequest>(customerRequest);
             entity.Status = "Pending Confirmation";
             int month = 0;
-            if (customerRequest.Periodic == "quarter ") { month = 3; }
-            if (customerRequest.Periodic == "half year") month = 6;
-            if (customerRequest.Periodic == "year") month = 12;
+            if (customerRequest.Periodic == Periodic.Quarter) { month = 3; }
+            if (customerRequest.Periodic == Periodic.HalfYear) month = 6;
+            if (customerRequest.Periodic == Periodic.Year) month = 12;
             double price = await _priceCalculate.CalculatePriceByPeriod(customerRequest.AccountId, customerRequest.PackageId, month);
             price = price * (12 / month);
             entity.Price = (float)price;

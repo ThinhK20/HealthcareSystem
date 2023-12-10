@@ -50,9 +50,9 @@ namespace HealthcareSystem.Backend.Services.RefundRequestService
             return _refundRequestRepository.GetRefundRequestByAccountIdAsync(accountId);
         }
 
-        public Task<bool> UpdateRefundRequestAsync(RefundRequestDomain refundRequestDomain)
+        public async Task<bool> UpdateRefundRequestAsync(RefundRequestDTO refundRequestDTO)
         {
-            return _refundRequestRepository.UpdateRefundRequestAsync(refundRequestDomain);
+            return await _refundRequestRepository.UpdateRefundRequestAsync(refundRequestDTO);
         }
     }
 }

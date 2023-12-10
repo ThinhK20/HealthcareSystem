@@ -109,11 +109,11 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateRefundRequest([FromBody] RefundRequestDomain refundRequestDomain)
+        public async Task<IActionResult> UpdateRefundRequest([FromForm] RefundRequestDTO refundRequestDTO)
         {
             try
             {
-                return Ok(await _refundRequestService.UpdateRefundRequestAsync(refundRequestDomain));
+                return Ok(await _refundRequestService.UpdateRefundRequestAsync(refundRequestDTO));
             }
             catch (Exception ex)
             {

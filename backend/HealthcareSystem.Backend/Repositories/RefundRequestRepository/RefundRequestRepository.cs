@@ -36,6 +36,18 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
             return refundRequestDTO;
         }
 
+
+        public async Task<bool> UpdateRefundRequestAsync(RefundRequestDTO refundRequestDTO)
+        {
+            var refundRequest = await GetAsync(rq => rq.RefundID == refundRequestDTO.RefundID, false);
+            if (refundRequest is null) throw new Exception("Not found this refund request. Please try again.");
+            string fileUrl = await _fileRepository.UploadFileAsync(new FileUploadDTO { File = refundRequestDTO.File });
+            var entityRefundRequest = _mapper.Map<RefundRequest>(refundRequestDTO);
+            entityRefundRequest.FileUrl = fileUrl;
+            await UpdateAsync(entityRefundRequest);
+            return true;
+        }
+
         public async Task<RefundRequestDomain> GetRefundRequestByIdAsync(int refundId)
         {
             var refundRequest = await GetAsync(rq => rq.RefundID == refundId, false, "Insurance,Insurance.Account");
@@ -44,7 +56,7 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
 
         public async Task<List<RefundRequestDomain>> GetAllRefundRequestsAsync()
         {
-            var entities = await GetAllAsync();
+            var entities = await GetAllAsync(tracked: false, includeProperites: "Insurance,Insurance.Account");
             return entities.Select(t => _mapper.Map<RefundRequestDomain>(t)).ToList();
         }
 
@@ -80,13 +92,6 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
             return true;
         }
 
-        public async Task<bool> UpdateRefundRequestAsync(RefundRequestDomain refundRequestDomain)
-        {
-            var refundRequest = await GetAsync(rq => rq.RefundID == refundRequestDomain.RefundID, false);
-            if (refundRequest is null) throw new Exception("Not found this refund request. Please try again.");
-            await UpdateAsync(_mapper.Map<RefundRequest>(refundRequestDomain));
-            return true;
-        }
 
 
     }

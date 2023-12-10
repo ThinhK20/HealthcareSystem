@@ -13,13 +13,18 @@ import {
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+   faEye,
+   faPencil,
+   faPlusCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { getAllRefundRequestByUserIdApi } from "../../apis/refundRequestApis";
 import { toast } from "react-toastify";
 import { formatDate, formatMoney } from "../../helpers/dataHelper";
+import { RefundRequestStatus } from "../../enums/refund-request-status";
 const TABLE_HEAD = [
    "Id",
    "User",
@@ -57,7 +62,7 @@ export function CustomerRefundRequestManagement() {
       setTableRows(() => {
          const newRows = refundRequests?.map((request) => ({
             img: "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/405226120_1995521290835244_4541343621775144051_n.jpg?stp=dst-jpg_p320x320&_nc_cat=108&ccb=1-7&_nc_sid=5740b7&_nc_ohc=llvk1mHN0MEAX-X09rK&_nc_ht=scontent.fsgn8-4.fna&cb_e2o_trans=t&oh=00_AfCNK-jrDWbNmf4mBheh79FaqUL8nF7qWOc2B9RfnLk7Rg&oe=65736864",
-            user: "Tuan Minh",
+            user: request.insurance?.account,
             hospitalName: request.hoptitalName,
             description: request.description,
             refundFee: request.totalRefundFee,
@@ -146,7 +151,7 @@ export function CustomerRefundRequestManagement() {
                               <div className="flex items-center gap-3">
                                  <Avatar
                                     src={tableRow.img}
-                                    alt={tableRow.user}
+                                    alt={tableRow.user?.username}
                                     size="md"
                                     className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
                                  />
@@ -155,7 +160,7 @@ export function CustomerRefundRequestManagement() {
                                     color="blue-gray"
                                     className="font-normal"
                                  >
-                                    {tableRow.user}
+                                    {tableRow.user?.username}
                                  </Typography>
                               </div>
                            </td>
@@ -224,7 +229,7 @@ export function CustomerRefundRequestManagement() {
                            </td>
                            <td className={classes}>
                               <Link
-                                 to={`/staffs/refund-requests/${tableRow.refundID}`}
+                                 to={`/users/refund-requests/${tableRow.refundID}`}
                               >
                                  <Tooltip title="View details">
                                     <IconButton variant="text">
@@ -235,6 +240,21 @@ export function CustomerRefundRequestManagement() {
                                     </IconButton>
                                  </Tooltip>
                               </Link>
+                              {tableRow.status ===
+                                 RefundRequestStatus.Pending && (
+                                 <Link
+                                    to={`/users/refund-requests/edit/${tableRow.refundID}`}
+                                 >
+                                    <Tooltip title="Edit">
+                                       <IconButton variant="text">
+                                          <FontAwesomeIcon
+                                             className="h-4 w-4"
+                                             icon={faPencil}
+                                          />
+                                       </IconButton>
+                                    </Tooltip>
+                                 </Link>
+                              )}
                            </td>
                         </tr>
                      );
