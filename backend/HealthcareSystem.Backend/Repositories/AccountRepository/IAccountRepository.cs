@@ -8,7 +8,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
         public Task<List<Models.Domain.Account>> GetUser();
         public Task<AccountBaseDTO> GetAccountByID(int id);
         public Task<bool> checkUserExist(string Username);
-
+        public Task<AccountBaseDTO> updatePassword(PasswordDTO acc);
         public Task<int> getLength();
 
         public  Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc);

@@ -76,10 +76,10 @@ const StaffRequestDetail = () => {
 
                             <div className="mt-8 grid sm:grid-cols-2 gap-3">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-800 dr:text-gray-200">Username request: {data?.account.username}</h3>
+                                    <h3 className="text-lg font-semibold text-gray-800 dr:text-gray-200">Username request: {data?.account?.username}</h3>
                                     <span className="text-lg font-semibold text-gray-800 dr:text-gray-200"></span>
                                     <div className="mt-2 not-italic text-gray-500">
-                                        Confirmation staff : #{data?.staff.accountId}
+                                        Confirmation staff : #{data?.staff?.accountId}
                                     </div>
                                 </div>
                                 <div className="sm:text-end space-y-2">
@@ -188,7 +188,7 @@ const StaffRequestDetail = () => {
                                                 </div>
                                             ))}
                                             <div className='w-full flex justify-end my-[30px]'>
-                                                <Link to={`/staff/payment?acc=${data?.staff.accountId}`} className='hover:underline hover:to-blue-800' color='blue'> View All Transaction </Link>
+                                                <Link to={`/staff/payment?acc=${data?.staff?.accountId}`} className='hover:underline hover:to-blue-800' color='blue'> View All Transaction </Link>
                                             </div>
                                         </div>
                                     </div>
@@ -221,7 +221,7 @@ const StaffRequestDetail = () => {
                             {data?.status === 'Pending Confirmation' && (
 
                                 <button onClick={handleAccept} className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dr:focus:outline-none dr:focus:ring-1 dr:focus:ring-gray-600"  >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                     </svg>
                                     Accept
@@ -230,7 +230,7 @@ const StaffRequestDetail = () => {
                             {data?.status === 'Pending Confirmation' && (
 
                                 <button onClick={handRefused} className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dr:focus:outline-none dr:focus:ring-1 dr:focus:ring-gray-600" >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                     Refuse
@@ -238,7 +238,7 @@ const StaffRequestDetail = () => {
                             )}
                             {data?.status === 'Pending Transfer' && (
                                 <button className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dr:focus:outline-none dr:focus:ring-1 dr:focus:ring-gray-600" >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                     Request Payment
@@ -248,7 +248,7 @@ const StaffRequestDetail = () => {
                             {data?.status === 'Pending Transfer' && (
 
                                 <button onClick={handComplete} className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-green-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dr:focus:outline-none dr:focus:ring-1 dr:focus:ring-gray-600" >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     Complete

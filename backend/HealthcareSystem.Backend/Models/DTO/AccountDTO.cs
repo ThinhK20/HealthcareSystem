@@ -27,6 +27,13 @@
 
         public string Role { get; set; }
     }
+    public class PasswordDTO
+    {
+        public int AccountId { get; set; }
+        public string Username { get; set; }
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
+    }
     public class AccountUserDTO
     {
         public int AccountId { get; set; }

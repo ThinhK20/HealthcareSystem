@@ -23,10 +23,11 @@ import EmailVerify from "../components/login/emailverify";
 import CustomersPayment from "../pages/customers/payment";
 import { CustomerRefundRequestManagement } from "../pages/customers/customer-refund-requests";
 import Home from "../pages/general/home";
+import LayoutIndexRoute from "../shared/layout/layoutIndex";
 export const router = createBrowserRouter([
    {
       path: "/",
-      element: <LayoutRoute element={<Home />}></LayoutRoute>,
+      element: <LayoutIndexRoute element={<Home />}></LayoutIndexRoute>,
    },
    {
       path: "/login",
@@ -68,7 +69,7 @@ export const router = createBrowserRouter([
       element: <LayoutRoute element={<RegisterInsurance />}></LayoutRoute>,
    },
    {
-      path: "staff/payment",
+      path: "staff/  ",
       element: <LayoutRoute element={<StaffsPayment />}></LayoutRoute>,
    },
 

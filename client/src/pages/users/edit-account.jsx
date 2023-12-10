@@ -10,12 +10,18 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { Alert, AlertTitle } from "@mui/material";
 const EditAccount = () => {
 
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-
+    const [password, setPassword] = useState('');
+    const [oldPass, setOldPass] = useState('');
+    const [newPass, setNewPass] = useState('');
+    const [confirmPass, setConfirmPass] = useState('');
+    const [message, setMessage] = useState('');
+    const [messageSuccess, setMessageSuccess] = useState('');
     const handleClickOpen = () => {
         setFormDataAccount((prevData) => ({
             ...prevData,
@@ -36,31 +42,38 @@ const EditAccount = () => {
         status: 'Active',
         role: 'Customer',
     });
-    const [password, setPassword] = useState('');
-    const [oldPass, setOldPass] = useState('');
-    const [newPass, setNewPass] = useState('');
-    const [confirmPass, setConfirmPass] = useState('');
-    const [message, setMessage] = useState('');
+
 
     const handleChangePassword = async () => {
         // Kiểm tra điều kiện hợp lệ trước khi thực hiện thay đổi mật khẩu
         if (oldPass === '' || newPass === '' || confirmPass === '') {
             setMessage('Vui lòng nhập đầy đủ thông tin.');
-        } else if (newPass !== confirmPass) {
+        }
+        // else if(oldPass.length>=8&&newPass.length>=8){
+        //     setMessage('Mật khẩu ít nhất 8 kí tự.');
+        // } 
+        else if (newPass !== confirmPass) {
             setMessage('Mật khẩu mới không trùng khớp.');
-        } else {
-            if (password === oldPass) {
-                // Use a callback function to make sure you are working with the latest state
 
-                console.log(formDataAccount);
-                if (formDataAccount.password != "") {
-                    await axios.put('https://localhost:44384/edit-account-staff', formDataAccount);
-                    setMessage('Thay đổi mật khẩu thành công.');
-                    console.log(formDataAccount);
-                }
+        } else if (newPass === oldPass) {
+            setMessage('Mật khẩu mới trùng mật khẩu cũ. ')
+        }
 
-            } else {
-                setMessage('Thay đổi không thành công.');
+        else {
+
+            console.log(formDataAccount);
+            if (formDataAccount.password != "") {
+                await axios.put('https://localhost:44384/edit-account-staff', formDataAccount).then((result) => {
+                
+                    if (result.data !=null) {
+                        setMessage('');
+                        setMessageSuccess('Thay đổi mật khẩu thành công')
+                    }
+                    else {
+                        setMessage('Thay đổi không thành công')
+                    }
+                });
+                
             }
         }
     };
@@ -81,7 +94,7 @@ const EditAccount = () => {
     };
 
     useEffect(() => {
-        axios.get('https://localhost:44384/get-account-staff?AccountID=1').then((result) => {
+        axios.get('https://localhost:44384/get-account-staff?AccountID=22').then((result) => {
             const userStaffData = result.data;
             setFormDataAccount((prevData) => ({
                 ...prevData,
@@ -104,7 +117,14 @@ const EditAccount = () => {
                         <p className="mt-1 text-sm leading-6 text-gray-600">
                             This information will be displayed publicly so be careful what you share.
                         </p>
-
+                        {message != '' && (<Alert severity="error">
+                            <AlertTitle>Error</AlertTitle>
+                            This is an error alert — <strong>{message}</strong>
+                        </Alert>)}
+                        {messageSuccess != '' && (<Alert severity="success">
+                            <AlertTitle>Success</AlertTitle>
+                            This is a success alert — <strong>{messageSuccess}</strong>
+                        </Alert>)}
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-4">
                                 <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
@@ -257,7 +277,7 @@ const EditAccount = () => {
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                       Thay đổi mật khẩu đê
+                            Thay đổi mật khẩu đê
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>

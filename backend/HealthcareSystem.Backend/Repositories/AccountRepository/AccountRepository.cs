@@ -48,7 +48,10 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             if(checkExist == true) {
                 throw new Exception("Username exist");
             }
+            var salt = BCrypt.Net.BCrypt.GenerateSalt();
+            var hashedOldPassword = BCrypt.Net.BCrypt.HashPassword(acc.Password, salt);
             Models.Entity.Account account = _mapper.Map<Models.Entity.Account>(acc);
+            account.Password = hashedOldPassword;
             await CreateAsync(account);
             var newAccount = await GetAsync(filter => filter.Username == acc.Username);
             return _mapper.Map<AccountBaseDTO>(newAccount);
@@ -65,15 +68,29 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             }
             var temp = await GetAsync(x=>x.AccountId == acc.AccountId);
             temp.Password = acc.Password;
-            Models.Entity.Account account = _mapper.Map<Models.Entity.Account>(temp);
+            Models.Entity.Account account = temp;
             await UpdateAsync(account);
             return acc;
 
-
+        }
+        public async Task<AccountBaseDTO> updatePassword(PasswordDTO acc)
+        {
+            if(acc.OldPassword==acc.NewPassword) { throw new Exception("Password is alike"); }
+            var oldPassword = await GetAsync(x=>x.AccountId==acc.AccountId);
+            if (oldPassword == null) throw new Exception("AccountID Invalid");
+            if (acc.Username != oldPassword.Username) { throw new Exception("Username invalid"); }
+            if(oldPassword==null) { throw new Exception("Dont find Account"); }
+            var salt = BCrypt.Net.BCrypt.GenerateSalt();
+            var isPasswordValid = BCrypt.Net.BCrypt.Verify(acc.OldPassword, oldPassword.Password);
+            if (!isPasswordValid) { throw new Exception("Invalid Password"); }
+            var newPassword = BCrypt.Net.BCrypt.HashPassword(acc.NewPassword, salt);
+            oldPassword.Password= newPassword;
+            await UpdateAsync(oldPassword);
+            return _mapper.Map< AccountBaseDTO >(oldPassword);
         }
         public async Task<AccountBaseDTO> GetAccountByID(int id)
         {
-            var data = await GetAsync(x => x.UserId == id);
+            var data = await GetAsync(x => x.AccountId == id);
             if(data == null) throw new Exception("dont find user");
             return _mapper.Map<AccountBaseDTO>(data);
         }

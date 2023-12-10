@@ -193,6 +193,10 @@ namespace HealthcareSystem.Backend.Services.AccountService
         {
             return await _accountRepository.UpdateAccountStaff(acc);
         }
-        
+
+        public async Task<AccountBaseDTO> updatePassword(PasswordDTO acc)
+        {
+            return await _accountRepository.updatePassword(acc);
+        }
     }
 }

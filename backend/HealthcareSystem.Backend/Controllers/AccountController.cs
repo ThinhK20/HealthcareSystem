@@ -82,6 +82,7 @@ namespace HealthcareSystem.Backend.Controllers
             {
                 return BadRequest("Failed to create user.");
             }
+
             AccountBaseDTO accCreate = new AccountBaseDTO
             {
                 UserId = tempUser.UserId,
@@ -140,6 +141,18 @@ namespace HealthcareSystem.Backend.Controllers
             }
 
             return Ok(tempAccount);
+        }
+        [HttpPut("change-password")]
+        public async Task<IActionResult> changePass([FromBody] PasswordDTO account)
+        {
+            var changePass = await _accountService.updatePassword(account);
+ 
+            if (changePass == null)
+            {
+                return BadRequest("Failed to create account.");
+            }
+
+            return Ok(changePass);
         }
         [HttpGet("get-account-staff")]
         public async Task<IActionResult> getAccount(int AccountID)

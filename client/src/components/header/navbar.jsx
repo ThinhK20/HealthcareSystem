@@ -44,10 +44,10 @@ export function Navbar({ brandName, action }) {
         >
 
           <Link to={path}
-            class="relative group px-4 py-2 transition-all duration-300 ease-in-out bg-transparent border-b-1 border-transparent hover:border-black">
+            className="relative group px-4 py-2 transition-all duration-300 ease-in-out bg-transparent border-b-1 border-transparent hover:border-black">
 
-            <span class="relative z-10 font-medium">{name}</span>
-            <span class="absolute inset-x-0 bottom-0 h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out"></span>
+            <span className="relative z-10 font-medium">{name}</span>
+            <span className="absolute inset-x-0 bottom-0 h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out"></span>
           </Link>
         </Typography>
       ))}
@@ -79,8 +79,8 @@ export function Navbar({ brandName, action }) {
             href="https://www.material-tailwind.com/blocks?ref=mtkr"
             target="_blank"
           >
-            <Button variant="text" size="sm" color="black" fullWidth className="hover:bg-[#545455]">
-              pro version
+            <Button variant="text" size="sm" fullWidth className="hover:bg-[#545455] hover:text-[white]">
+              Sign Up
             </Button>
           </a>
           {React.cloneElement(action, {
@@ -110,7 +110,7 @@ export function Navbar({ brandName, action }) {
             className="mb-2 block"
           >
             <Button variant="text" size="sm" fullWidth>
-              pro version
+              Sign Up
             </Button>
           </a>
           {React.cloneElement(action, {
@@ -130,7 +130,7 @@ Navbar.defaultProps = {
       target="_blank"
     >
       <Button variant="gradient" size="sm" className="hover:bg-[#545455] mr-[100px] lg:w-fit w-full">
-        FREE CC
+        Login
       </Button>
     </a>
   ),
