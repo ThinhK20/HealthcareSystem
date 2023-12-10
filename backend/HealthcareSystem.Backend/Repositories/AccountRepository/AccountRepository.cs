@@ -138,5 +138,12 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             await UpdateAsync(account);
             return true;
         }
+        public async Task<List<AccountGetDTO>> GetAllAccount()
+        {
+            var list = await GetAllAsync();
+            if(list ==null) throw new NotImplementedException();
+
+            return _mapper.Map<List<AccountGetDTO>>(list);
+        }
     }
 }

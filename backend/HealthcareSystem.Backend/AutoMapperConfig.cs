@@ -26,6 +26,7 @@ namespace HealthcareSystem.Backend
             CreateMap<AccountBaseDTO, Models.Entity.Account>().ReverseMap();
             CreateMap<Models.Domain.Account, Models.DTO.AccountDTO>().ReverseMap();
             CreateMap<Models.Domain.Account, Models.Entity.Account>().ReverseMap();
+            CreateMap<AccountGetDTO, Models.Entity.Account>().ReverseMap();
             CreateMap<Models.DTO.AccountDTO, Models.Entity.Account>().ReverseMap();
 
             CreateMap<InsurancePolicy, InsuarancePolicyDTO>()
