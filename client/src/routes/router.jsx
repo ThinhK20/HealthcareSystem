@@ -9,9 +9,9 @@ import RegisterInsurance from "../components/register-insurance/register-insuran
 import StaffsPayment from "../pages/staffs/payment";
 import StaffRequestDetail from "../pages/staffs/request-detail";
 import CheckOut from "../components/payment/checkout";
-import CustomerRequestManagement from "../pages/customers/manage-requests";
-import CustomerRequestForm from "../pages/customers/customer-request-form";
-import RefundRequestForm from "../pages/customers/refund-request-form";
+import CustomerRequestManagement from "../pages/users/manage-requests";
+import CustomerRequestForm from "../pages/users/customer-request-form";
+import RefundRequestForm from "../pages/users/refund-request-form";
 import Page404 from "../pages/Error/page404";
 import Register from "../components/login/register";
 import { RefundRequestManagement } from "../pages/staffs/manage-refund-request";
@@ -20,10 +20,12 @@ import RefundRequestDetails from "../pages/staffs/refund-request-details";
 import EditInformation from "../pages/users/edit-information";
 import EditAccount from "../pages/users/edit-account";
 import EmailVerify from "../components/login/emailverify";
-import CustomersPayment from "../pages/customers/payment";
-import { CustomerRefundRequestManagement } from "../pages/customers/customer-refund-requests";
+import CustomersPayment from "../pages/users/payment";
+import { CustomerRefundRequestManagement } from "../pages/users/customer-refund-requests";
 import Home from "../pages/general/home";
 import LayoutIndexRoute from "../shared/layout/layoutIndex";
+import { UserRoutes } from './users-router';
+import { StaffRoutes } from './staffs-router';
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -43,7 +45,7 @@ export const router = createBrowserRouter([
    },
 
    {
-      path: "/table-insurance-management",
+      path: "staffs/table-insurance-management",
       element: (
          <LayoutRoute element={<TableInsuranceManagement />}></LayoutRoute>
       ),
@@ -69,67 +71,11 @@ export const router = createBrowserRouter([
       element: <LayoutRoute element={<RegisterInsurance />}></LayoutRoute>,
    },
    {
-      path: "staff/  ",
-      element: <LayoutRoute element={<StaffsPayment />}></LayoutRoute>,
-   },
-
-   {
-      path: "staff/request-detail/:id",
-      element: <LayoutRoute element={<StaffRequestDetail />}></LayoutRoute>,
-   },
-   {
-      path: "staffs/create-staff-account/",
-      element: <LayoutRoute element={<FormCreateNewStaff />}></LayoutRoute>,
-   },
-
-   {
       path: "/payment/checkout",
       element: <LayoutRoute element={<CheckOut />}></LayoutRoute>,
    },
-   {
-      path: "/staffs/refund-requests",
-      element: (
-         <LayoutRoute element={<RefundRequestManagement />}></LayoutRoute>
-      ),
-   },
-   {
-      path: "/users/refund-requests",
-      element: (
-         <LayoutRoute
-            element={<CustomerRefundRequestManagement />}
-         ></LayoutRoute>
-      ),
-   },
-   {
-      path: "/staffs/refund-requests/:id",
-      element: <LayoutRoute element={<RefundRequestDetails />}></LayoutRoute>,
-   },
-   {
-      path: "/users/edit-information",
-      element: <LayoutRoute element={<EditInformation />}></LayoutRoute>,
-   },
-   {
-      path: "/users/edit-account",
-      element: <LayoutRoute element={<EditAccount />}></LayoutRoute>,
-   },
-   {
-      path: "/users/customer-requests",
-      element: (
-         <LayoutRoute element={<CustomerRequestManagement />}></LayoutRoute>
-      ),
-   },
-   {
-      path: "/users/customer-requests/create",
-      element: <LayoutRoute element={<CustomerRequestForm />}></LayoutRoute>,
-   },
-   {
-      path: "/users/refund-requests/create",
-      element: <LayoutRoute element={<RefundRequestForm />}></LayoutRoute>,
-   },
-   {
-      path: "customers/payment",
-      element: <LayoutRoute element={<CustomersPayment />}></LayoutRoute>,
-   },
+   ...UserRoutes,
+   ...StaffRoutes,
    {
       path: "*",
       element: <Page404></Page404>,

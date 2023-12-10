@@ -188,7 +188,7 @@ const StaffRequestDetail = () => {
                                                 </div>
                                             ))}
                                             <div className='w-full flex justify-end my-[30px]'>
-                                                <Link to={`/staff/payment?acc=${data?.staff?.accountId}`} className='hover:underline hover:to-blue-800' color='blue'> View All Transaction </Link>
+                                                <Link to={`/staffs/payment?acc=${data?.staff?.accountId}`} className='hover:underline hover:to-blue-800' color='blue'> View All Transaction </Link>
                                             </div>
                                         </div>
                                     </div>

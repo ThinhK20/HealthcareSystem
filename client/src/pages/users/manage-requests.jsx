@@ -243,7 +243,7 @@ export default function CustomerRequestManagement() {
                               </div>
                            </td>
                            <td className={classes}>
-                              <Link to={`/staff/payment-detal/${tableRow?.requestID}`}>
+                              <Link to={`/users/payment`}>
                                  <Tooltip title="View details">
                                     <IconButton variant="text">
                                        <FontAwesomeIcon
