@@ -64,9 +64,9 @@ export function Navbar({ brandName, action }) {
     <div className="p-0 w-screen">
       <div className="flex items-center justify-between text-black bg-[#FFD000] w-full">
         <Link to="/">
-          <Typography className="ml-2 cursor-pointer font-bold  flex">
-            <img className="w-[80px] h-[80px]" src="https://cdn.discordapp.com/attachments/1160172654825840763/1182623713401786368/22671099-c291-40f9-8c62-14e44a282e8e-removebg-preview.png?ex=65855f29&is=6572ea29&hm=70cc6922ca608eaa28d6e71e8ee2b07ad8bb042e2aee58d51008f4f2a7c03b6b&" alt="" />
-            <div className="text-center m-auto">
+          <Typography className="ml-4 cursor-pointer font-bold flex">
+            <img className="w-[60px] h-[60px]" src="https://cdn.discordapp.com/attachments/1160172654825840763/1182623713401786368/22671099-c291-40f9-8c62-14e44a282e8e-removebg-preview.png?ex=65855f29&is=6572ea29&hm=70cc6922ca608eaa28d6e71e8ee2b07ad8bb042e2aee58d51008f4f2a7c03b6b&" alt="" />
+            <div className="text-center m-auto ml-1">
               <p className="font-serif border-b-2 border-gray-800">HEALTIH </p>
               <p className="font-serif font-[400] text-[18]">Solutions</p>
             </div>

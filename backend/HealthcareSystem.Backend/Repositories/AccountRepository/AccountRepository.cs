@@ -75,18 +75,42 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
         }
         public async Task<AccountBaseDTO> updatePassword(PasswordDTO acc)
         {
-            if(acc.OldPassword==acc.NewPassword) { throw new Exception("Password is alike"); }
-            var oldPassword = await GetAsync(x=>x.AccountId==acc.AccountId);
-            if (oldPassword == null) throw new Exception("AccountID Invalid");
-            if (acc.Username != oldPassword.Username) { throw new Exception("Username invalid"); }
-            if(oldPassword==null) { throw new Exception("Dont find Account"); }
-            var salt = BCrypt.Net.BCrypt.GenerateSalt();
+            // Validate input parameters
+            if (acc == null) throw new ArgumentNullException(nameof(acc));
+
+            if (acc.OldPassword == acc.NewPassword)
+            {
+                throw new ArgumentException("New password must be different from the old password", nameof(acc.NewPassword));
+            }
+
+            var oldPassword = await GetAsync(x => x.AccountId == acc.AccountId);
+
+            if (oldPassword == null)
+            {
+                throw new ArgumentException("Invalid Account ID", nameof(acc.AccountId));
+            }
+
+            // Check username after ensuring oldPassword is not null
+            if (acc.Username != oldPassword.Username)
+            {
+                throw new ArgumentException("Invalid Username", nameof(acc.Username));
+            }
+
             var isPasswordValid = BCrypt.Net.BCrypt.Verify(acc.OldPassword, oldPassword.Password);
-            if (!isPasswordValid) { throw new Exception("Invalid Password"); }
+
+            if (!isPasswordValid)
+            {
+                throw new InvalidOperationException("Invalid Old Password");
+            }
+
+            var salt = BCrypt.Net.BCrypt.GenerateSalt();
             var newPassword = BCrypt.Net.BCrypt.HashPassword(acc.NewPassword, salt);
-            oldPassword.Password= newPassword;
+
+            oldPassword.Password = newPassword;
+
             await UpdateAsync(oldPassword);
-            return _mapper.Map< AccountBaseDTO >(oldPassword);
+
+            return _mapper.Map<AccountBaseDTO>(oldPassword);
         }
         public async Task<AccountBaseDTO> GetAccountByID(int id)
         {

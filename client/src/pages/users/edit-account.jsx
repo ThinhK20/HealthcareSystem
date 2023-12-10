@@ -23,9 +23,12 @@ const EditAccount = () => {
     const [message, setMessage] = useState('');
     const [messageSuccess, setMessageSuccess] = useState('');
     const handleClickOpen = () => {
-        setFormDataAccount((prevData) => ({
-            ...prevData,
-            password: newPass,
+      
+        setFormDataPUT(()=> ({
+            accountId: formDataAccount.accountId,
+            username: formDataAccount.username,
+            oldPassword: oldPass,
+            newPassword: newPass,
         }));
         setOpen(true);
     };
@@ -42,7 +45,13 @@ const EditAccount = () => {
         status: 'Active',
         role: 'Customer',
     });
+    const [formDataPUT, setFormDataPUT] = useState({
+        accountId: '',
+        username: '',
+        oldPassword: '',
+        newPassword: '',
 
+    });
 
     const handleChangePassword = async () => {
         // Kiểm tra điều kiện hợp lệ trước khi thực hiện thay đổi mật khẩu
@@ -62,17 +71,24 @@ const EditAccount = () => {
         else {
 
             console.log(formDataAccount);
-            if (formDataAccount.password != "") {
-                await axios.put('https://localhost:44384/edit-account-staff', formDataAccount).then((result) => {
-                
-                    if (result.data !=null) {
-                        setMessage('');
-                        setMessageSuccess('Thay đổi mật khẩu thành công')
-                    }
-                    else {
-                        setMessage('Thay đổi không thành công')
-                    }
-                });
+            if (formDataPUT.password != "") {
+               try{
+                   await axios.put('https://localhost:44384/change-password',formDataPUT).then((result) => {
+                   
+                       if (result.data !=null) {
+                           setMessage('');
+                           setMessageSuccess('Thay đổi mật khẩu thành công')
+                       }
+                       else {
+                           setMessage('Thay đổi không thành công')
+                       }
+                   });
+               }
+               catch {
+                // Xử lý lỗi
+                setMessage('Thay đổi không thành công')
+               
+              }
                 
             }
         }
@@ -94,7 +110,7 @@ const EditAccount = () => {
     };
 
     useEffect(() => {
-        axios.get('https://localhost:44384/get-account-staff?AccountID=22').then((result) => {
+        axios.get('https://localhost:44384/get-account-staff?AccountID=15').then((result) => {
             const userStaffData = result.data;
             setFormDataAccount((prevData) => ({
                 ...prevData,
@@ -259,13 +275,13 @@ const EditAccount = () => {
                     </button>
                     <button onClick={handleClickOpen}
 
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="rounded-md bg-[#028AA9] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Save
                     </button>
                 </div>
             </div>
-            <React.Fragment>
+            <>
                 <Dialog
                     fullScreen={fullScreen}
                     open={open}
@@ -277,7 +293,7 @@ const EditAccount = () => {
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Thay đổi mật khẩu đê
+                           Bạn có chắc muốn thay đổi mật khẩu cũ không ?
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -289,7 +305,7 @@ const EditAccount = () => {
                         </Button>
                     </DialogActions>
                 </Dialog>
-            </React.Fragment>
+            </>
         </div>
     )
 }

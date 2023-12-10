@@ -60,7 +60,7 @@ namespace HealthcareSystem.Backend.Controllers
 
         }         
         [HttpPost("create-new-staff")]
-        public async Task<IActionResult> CreateAccountStaff([FromBody] AccountUserDTO account)
+        public async Task<IActionResult>CreateAccountStaff([FromBody] AccountUserDTO account)
         {
             if (account == null)
             {
@@ -126,7 +126,7 @@ namespace HealthcareSystem.Backend.Controllers
             UserDTO userCreate = new UserDTO
             {
                 UserId = account.UserId,
-                Fullname = account.Fullname,
+                Fullname = account.Fullname, 
                 Email = account.Email,
                 CCCD = account.CCCD,
                 Phone = account.Phone,
