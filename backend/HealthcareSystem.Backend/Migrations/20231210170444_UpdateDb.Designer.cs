@@ -4,6 +4,7 @@ using HealthcareSystem.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthcareSystem.Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231210170444_UpdateDb")]
+    partial class UpdateDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -493,7 +496,11 @@ namespace HealthcareSystem.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InsuranceID"));
 
-                    b.Property<int>("AccountId")
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AccountId1")
                         .HasColumnType("int");
 
                     b.Property<string>("CardOpenDate")
@@ -506,8 +513,7 @@ namespace HealthcareSystem.Backend.Migrations
 
                     b.HasKey("InsuranceID");
 
-                    b.HasIndex("AccountId")
-                        .IsUnique();
+                    b.HasIndex("AccountId1");
 
                     b.ToTable("Insurances");
                 });
@@ -673,8 +679,8 @@ namespace HealthcareSystem.Backend.Migrations
             modelBuilder.Entity("Insurance", b =>
                 {
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.Account", "Account")
-                        .WithOne("Insurance")
-                        .HasForeignKey("Insurance", "AccountId")
+                        .WithMany()
+                        .HasForeignKey("AccountId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -690,9 +696,6 @@ namespace HealthcareSystem.Backend.Migrations
                     b.Navigation("CustomerRequests");
 
                     b.Navigation("HealthRecords");
-
-                    b.Navigation("Insurance")
-                        .IsRequired();
 
                     b.Navigation("verification");
                 });

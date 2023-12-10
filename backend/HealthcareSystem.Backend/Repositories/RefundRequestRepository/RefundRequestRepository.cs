@@ -64,7 +64,7 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
         {
 
             var refundRequests = await GetAllAsync(tracked: false, includeProperites: "Insurance,Insurance.Account");
-            return refundRequests.Where(rr => rr.Insurance!.AccountId == accountId.ToString()).Select(rr => _mapper.Map<RefundRequestDomain>(rr)).ToList();
+            return refundRequests.Where(rr => rr.Insurance!.AccountId == accountId).Select(rr => _mapper.Map<RefundRequestDomain>(rr)).ToList();
 
         }
 

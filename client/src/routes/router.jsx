@@ -13,6 +13,7 @@ import Home from "../pages/general/home";
 import LayoutIndexRoute from "../shared/layout/layoutIndex";
 import { UserRoutes } from "./users-router";
 import { StaffRoutes } from "./staffs-router";
+import StatisticCustomer from "../components/staffs/statistic-customers";
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -37,7 +38,7 @@ export const router = createBrowserRouter([
          <LayoutRoute element={<TableInsuranceManagement />}></LayoutRoute>
       ),
    },
-
+   
    {
       path: "/edit-form",
       // element: <LayoutRoute element={<EditForm />}></LayoutRoute>,
