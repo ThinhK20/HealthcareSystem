@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using HealthcareSystem.Backend.Data;
+using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.DTO;
-
-using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
-using Microsoft.AspNetCore.Server.IIS.Core;
-using System.Net.WebSockets;
 
 namespace HealthcareSystem.Backend.Repositories.AccountRepository
 {
@@ -19,17 +16,17 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             _mapper = mapper;
             _applicationContext = context;
         }
-       
+
         public async Task<List<Models.Domain.Account>> GetUser()
         {
             var user = await GetAllAsync();
             if (user == null) throw new Exception("Don't have any users.");
             return _mapper.Map<List<Models.Domain.Account>>(user);
         }
-        public  async Task<bool> checkUserExist(string Username)
+        public async Task<bool> checkUserExist(string Username)
         {
-            var user =  await GetAsync(u => u.Username == Username);
-            if(user == null)
+            var user = await GetAsync(u => u.Username == Username && u.Status != AccountStatus.Deleted);
+            if (user == null)
             {
                 return false;
             }
@@ -37,15 +34,16 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
         }
         public async Task<int> getLength()
         {
-           var user = await GetAllAsync();
+            var user = await GetAllAsync();
             return user.Count();
         }
 
         public async Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
         {
-            if(acc==null) throw new Exception("Have not Input");
+            if (acc == null) throw new Exception("Have not Input");
             bool checkExist = await checkUserExist(acc.Username);
-            if(checkExist == true) {
+            if (checkExist == true)
+            {
                 throw new Exception("Username exist");
             }
             var salt = BCrypt.Net.BCrypt.GenerateSalt();
@@ -53,7 +51,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             Models.Entity.Account account = _mapper.Map<Models.Entity.Account>(acc);
             account.Password = hashedOldPassword;
             await CreateAsync(account);
-            var newAccount = await GetAsync(filter => filter.Username == acc.Username);
+            var newAccount = await GetAsync(filter => filter.Username == acc.Username && filter.Status != AccountStatus.Deleted);
             return _mapper.Map<AccountBaseDTO>(newAccount);
         }
 
@@ -66,7 +64,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             {
                 throw new Exception("Username exist");
             }
-            var temp = await GetAsync(x=>x.AccountId == acc.AccountId);
+            var temp = await GetAsync(x => x.AccountId == acc.AccountId && x.Status != AccountStatus.Deleted);
             temp.Password = acc.Password;
             Models.Entity.Account account = temp;
             await UpdateAsync(account);
@@ -83,7 +81,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
                 throw new ArgumentException("New password must be different from the old password", nameof(acc.NewPassword));
             }
 
-            var oldPassword = await GetAsync(x => x.AccountId == acc.AccountId);
+            var oldPassword = await GetAsync(x => x.AccountId == acc.AccountId && x.Status != AccountStatus.Deleted);
 
             if (oldPassword == null)
             {
@@ -114,21 +112,30 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
         }
         public async Task<AccountBaseDTO> GetAccountByID(int id)
         {
-            var data = await GetAsync(x => x.AccountId == id);
-            if(data == null) throw new Exception("dont find user");
+            var data = await GetAsync(x => x.AccountId == id && x.Status != AccountStatus.Deleted);
+            if (data == null) throw new Exception("dont find user");
             return _mapper.Map<AccountBaseDTO>(data);
         }
         public async Task<bool> UpdateStatus(int userid)
         {
             if (userid == null) throw new Exception("Have not Input");
-            var data = await GetAsync(x => x.UserId == userid);
+            var data = await GetAsync(x => x.UserId == userid && x.Status != AccountStatus.Deleted);
             bool checkExist = await checkUserExist(data.Username);
             if (checkExist != true)
             {
                 return false;
             }
-            data.Status = "Active";
+            data.Status = AccountStatus.Active;
             await UpdateAsync(data);
+            return true;
+        }
+
+        public async Task<bool> DeleteAccount(int accountId)
+        {
+            var account = await GetAsync(x => x.AccountId == accountId && x.Status != AccountStatus.Deleted);
+            if (account == null) throw new Exception("User not found.");
+            account.Status = AccountStatus.Deleted;
+            await UpdateAsync(account);
             return true;
         }
     }

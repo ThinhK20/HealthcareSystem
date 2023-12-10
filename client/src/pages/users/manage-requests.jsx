@@ -51,7 +51,6 @@ export default function CustomerRequestManagement() {
    }, []);
 
    useEffect(() => {
-      console.log("RequestData: ", requestsData);
       setTableRows(() => {
          const newRows = requestsData?.map((request) => ({
             img: "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/408576504_1420267468843291_3324063907747099310_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=FBBJQqBqlCMAX_3XOPd&_nc_ht=scontent.fsgn8-4.fna&cb_e2o_trans=t&oh=00_AfD7f4MK4vnBqZKZeZRbu1c236KuJE6OahkZOyfVxMykwQ&oe=657B3294",

@@ -1,19 +1,15 @@
-﻿using HealthcareSystem.Backend.Models.Domain;
+﻿using AutoMapper;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.AccountRepository;
+using HealthcareSystem.Backend.Repositories.EmailVerificationRepository;
+using HealthcareSystem.Backend.Services.EmailService;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BCrypt.Net;
-using AutoMapper;
-using HealthcareSystem.Backend.Services.EmailService;
-using System;
-using HealthcareSystem.Backend.Repositories.EmailVerificationRepository;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.ComponentModel.DataAnnotations;
 
 namespace HealthcareSystem.Backend.Services.AccountService
 {
@@ -38,11 +34,11 @@ namespace HealthcareSystem.Backend.Services.AccountService
         public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
         {
             return _accountRepository.CreateAccountStaff(acc);
-      }
+        }
 
         public Task<AccountBaseDTO> GetAccountByID(int id)
         {
-           return _accountRepository.GetAccountByID(id);
+            return _accountRepository.GetAccountByID(id);
         }
 
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
@@ -57,7 +53,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
                     user = null
                 };
             }
-            if(checkUser.Status == "Disable")
+            if (checkUser.Status == "Disable")
             {
                 return new LoginResponseDTO()
                 {
@@ -66,7 +62,8 @@ namespace HealthcareSystem.Backend.Services.AccountService
                 };
             }
             var isPasswordValid = BCrypt.Net.BCrypt.Verify(loginRequestDTO.Password, checkUser.Password);
-            if (isPasswordValid== false) {
+            if (isPasswordValid == false)
+            {
                 return new LoginResponseDTO()
                 {
                     Token = "Username or password is wrong",
@@ -96,7 +93,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            
+
             LoginResponseDTO loginRequestDto = new LoginResponseDTO()
             {
                 Token = tokenHandler.WriteToken(token),
@@ -106,7 +103,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
         }
         public async Task<AccountDTO> Register(RegisterRequestDTO registerationRequestDTO)
         {
-            var checkUser =  await _accountRepository.checkUserExist(registerationRequestDTO.UserName);
+            var checkUser = await _accountRepository.checkUserExist(registerationRequestDTO.UserName);
             if (checkUser == true)
             {
                 return new AccountDTO
@@ -125,8 +122,8 @@ namespace HealthcareSystem.Backend.Services.AccountService
                 };
             }
             var getID = await _userRepository.GetAsync(u => u.Email == registerationRequestDTO.Email);
-           
-            if(getID != null && getID.Email != null)
+
+            if (getID != null && getID.Email != null)
             {
                 return new AccountDTO
                 {
@@ -179,7 +176,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
 
         public async Task<bool> Verification(int data)
         {
-           if(data != null)
+            if (data != null)
             {
                 await _accountRepository.UpdateStatus(data);
                 return true;
@@ -197,6 +194,11 @@ namespace HealthcareSystem.Backend.Services.AccountService
         public async Task<AccountBaseDTO> updatePassword(PasswordDTO acc)
         {
             return await _accountRepository.updatePassword(acc);
+        }
+
+        public Task<bool> DeleteAccount(int accountId)
+        {
+            return _accountRepository.DeleteAccount(accountId);
         }
     }
 }

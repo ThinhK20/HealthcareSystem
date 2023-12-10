@@ -15,13 +15,13 @@ namespace HealthcareSystem.Backend.Repositories.InsuranceRepository
 
         public async Task<List<InsuranceDomain>> GetAllInsurancesAsync()
         {
-            var insurances = await GetAllAsync();
+            var insurances = await GetAllAsync(includeProperites: "Account,InsuranceDetails", tracked: false);
             return insurances.Select(t => _mapper.Map<InsuranceDomain>(t)).ToList();
         }
 
         public async Task<InsuranceDomain> GetInsuranceByIdAsync(int insuranceId)
         {
-            return _mapper.Map<InsuranceDomain>(await GetAsync(t => t.InsuranceID == insuranceId));
+            return _mapper.Map<InsuranceDomain>(await GetAsync(t => t.InsuranceID == insuranceId, false, "Account,InsuranceDetails"));
         }
     }
 }

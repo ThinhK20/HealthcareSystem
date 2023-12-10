@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
-using Azure;
-using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
-using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Services.AccountService;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 
 namespace HealthcareSystem.Backend.Controllers
 {
@@ -58,15 +54,15 @@ namespace HealthcareSystem.Backend.Controllers
             }
             return Ok("Successfully");
 
-        }         
+        }
         [HttpPost("create-new-staff")]
-        public async Task<IActionResult>CreateAccountStaff([FromBody] AccountUserDTO account)
+        public async Task<IActionResult> CreateAccountStaff([FromBody] AccountUserDTO account)
         {
             if (account == null)
             {
                 return BadRequest();
             }
-       
+
             UserDTO userCreate = new UserDTO
             {
                 Fullname = account.Fullname,
@@ -126,7 +122,7 @@ namespace HealthcareSystem.Backend.Controllers
             UserDTO userCreate = new UserDTO
             {
                 UserId = account.UserId,
-                Fullname = account.Fullname, 
+                Fullname = account.Fullname,
                 Email = account.Email,
                 CCCD = account.CCCD,
                 Phone = account.Phone,
@@ -146,7 +142,7 @@ namespace HealthcareSystem.Backend.Controllers
         public async Task<IActionResult> changePass([FromBody] PasswordDTO account)
         {
             var changePass = await _accountService.updatePassword(account);
- 
+
             if (changePass == null)
             {
                 return BadRequest("Failed to create account.");
@@ -157,7 +153,7 @@ namespace HealthcareSystem.Backend.Controllers
         [HttpGet("get-account-staff")]
         public async Task<IActionResult> getAccount(int AccountID)
         {
-           
+
             var tempAccount = await _accountService.GetAccountByID(AccountID);
             if (tempAccount == null)
             {
@@ -177,6 +173,20 @@ namespace HealthcareSystem.Backend.Controllers
             }
 
             return Ok(tempAccount);
+        }
+
+        [HttpDelete("delete/{id:int}")]
+        public async Task<IActionResult> DeleteAccountById([FromRoute(Name = "id")] int accountId)
+        {
+            try
+            {
+                var result = await _accountService.DeleteAccount(accountId);
+                return Ok("Delete account successfully!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

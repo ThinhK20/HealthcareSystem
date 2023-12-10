@@ -1,5 +1,4 @@
-﻿
-namespace HealthcareSystem.Backend.Models.Domain
+﻿namespace HealthcareSystem.Backend.Models.Domain
 {
     public class InsuranceDomain
     {
@@ -8,5 +7,6 @@ namespace HealthcareSystem.Backend.Models.Domain
         public string CardOpenDate { get; set; }
         public string AccountId { get; set; }
         public Account? Account { get; set; } = new();
+        public List<InsuranceDetailDomain>? InsuranceDetails { get; set; } = new();
     }
 }
