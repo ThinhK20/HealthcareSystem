@@ -14,12 +14,13 @@ import {
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
 import { useEffect, useState } from "react";
-import { getAllCustomerRequestsApi } from "../../apis/userApis";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { getAllCustomerRequestsApi } from "../../apis/customerRequestApis";
+import { formatMoney } from "../../helpers/dataHelper";
 const TABLE_HEAD = [
    "User",
    "Staff",
@@ -50,15 +51,17 @@ export default function CustomerRequestManagement() {
    }, []);
 
    useEffect(() => {
+      console.log("RequestData: ", requestsData);
       setTableRows(() => {
          const newRows = requestsData?.map((request) => ({
-            img: "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/326531349_947755589483002_6935008565326110642_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=PJH_vUdCxyAAX9NXJue&_nc_ht=scontent.fsgn8-4.fna&cb_e2o_trans=t&oh=00_AfAClCLAKwfSa5q-4xojAZmk3e1XAhvaLbU1UsJPDzhXfQ&oe=656B7BF1",
+            img: "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/408576504_1420267468843291_3324063907747099310_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=FBBJQqBqlCMAX_3XOPd&_nc_ht=scontent.fsgn8-4.fna&cb_e2o_trans=t&oh=00_AfD7f4MK4vnBqZKZeZRbu1c236KuJE6OahkZOyfVxMykwQ&oe=657B3294",
             user: request.account,
             staff: request.staff,
             payment: request.payment,
             policyPackage: request.policyPackage,
             periodic: request.periodic,
-            requestID : request.requestID
+            requestID: request.requestID,
+            price: request.price,
          }));
          return newRows;
       });
@@ -73,8 +76,8 @@ export default function CustomerRequestManagement() {
                      Customer Requests Management
                   </Typography>
                   <Typography color="gray" className="mt-1 font-normal">
-                     These are details about your customer requests to
-                     HEALTIH Solutions Company
+                     These are details about your customer requests to HEALTIH
+                     Solutions Company
                   </Typography>
                </div>
                <div className="flex w-full shrink-0 gap-2 md:w-max">
@@ -145,7 +148,7 @@ export default function CustomerRequestManagement() {
                            <td className={classes}>
                               <div className="flex items-center gap-3">
                                  <Avatar
-                                    src="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/405951306_320072137500028_6127723524739415292_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=ibticE03VS8AX8vHspU&_nc_ht=scontent.fsgn8-4.fna&cb_e2o_trans=t&oh=00_AfBFaG0mhPAaJlXHdcQlJekioOvRqs43jsoDZhnyu1wx9w&oe=656BD38D"
+                                    src="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/408576504_1420267468843291_3324063907747099310_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=FBBJQqBqlCMAX_3XOPd&_nc_ht=scontent.fsgn8-4.fna&cb_e2o_trans=t&oh=00_AfD7f4MK4vnBqZKZeZRbu1c236KuJE6OahkZOyfVxMykwQ&oe=657B3294"
                                     alt={tableRow.user.username}
                                     size="md"
                                     className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
@@ -165,7 +168,7 @@ export default function CustomerRequestManagement() {
                                  color="blue-gray"
                                  className="font-normal"
                               >
-                                 {tableRow.payment?.price}
+                                 {formatMoney(tableRow.price)}
                               </Typography>
                            </td>
                            <td className={classes}>
@@ -179,12 +182,12 @@ export default function CustomerRequestManagement() {
                                        value={tableRow.policyPackage?.name}
                                        color={
                                           tableRow.policyPackage?.name ===
-                                             "Basic"
+                                          "Basic"
                                              ? "green"
                                              : tableRow.policyPackage?.name ===
-                                                "Premium"
-                                                ? "amber"
-                                                : "blue"
+                                               "Premium"
+                                             ? "amber"
+                                             : "blue"
                                        }
                                     />
                                  </div>

@@ -1,16 +1,18 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { FormControl, FormLabel, Select, MenuItem } from "@mui/material";
+import { Box, FormLabel, Select, MenuItem, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getAllPolicyPackagesApi } from "../../apis/policyPackageApis";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Periodic } from "../../enums/periodic";
+import { createCustomerRequestApi } from "../../apis/customerRequestApis";
 export default function CustomerRequestForm() {
    const [policyPackages, setPolicyPackages] = useState([]);
    const [selectedPolicyPackage, setSelectedPolicyPackage] = useState();
-
+   const navigate = useNavigate();
    useEffect(() => {
       const source = axios.CancelToken.source();
       getAllPolicyPackagesApi(source.token)
@@ -22,8 +24,27 @@ export default function CustomerRequestForm() {
       return () => source.cancel();
    }, []);
 
+   const handleSubmit = (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const submitData = {
+         accountId: 1,
+         packageId: selectedPolicyPackage.packageid,
+         periodic: formData.get("periodic"),
+      };
+
+      createCustomerRequestApi(submitData)
+         .then(() => {
+            toast.success("Request successfully !");
+            navigate("/users/customer-requests");
+         })
+         .catch((err) => toast.error(err));
+
+      console.log(submitData);
+   };
+
    return (
-      <FormControl>
+      <Box component="form" onSubmit={handleSubmit}>
          <Typography variant="h6">
             Create new register request for insurance
          </Typography>
@@ -86,19 +107,25 @@ export default function CustomerRequestForm() {
                   fullWidth
                   variant="outlined"
                >
-                  <MenuItem value="monthly">Month</MenuItem>
-                  <MenuItem value="yearly">Yearly</MenuItem>
-                  <MenuItem value="quarterly">Quarterly</MenuItem>
+                  <MenuItem value={Periodic.Quarter} className="capitalize">
+                     {Periodic.Quarter}
+                  </MenuItem>
+                  <MenuItem value={Periodic.Year} className="capitalize">
+                     {Periodic.Year}
+                  </MenuItem>
+                  <MenuItem value={Periodic.HalfYear} className="capitalize">
+                     {Periodic.HalfYear}
+                  </MenuItem>
                </Select>
             </Grid>
          </Grid>
          <div className="flex justify-end w-full gap-4">
-            <button
+            <Button
                type="submit"
                className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
             >
                Submit
-            </button>
+            </Button>
             <Link
                to="/users/customer-requests"
                className="py-2.5 hover:opacity-70"
@@ -106,6 +133,6 @@ export default function CustomerRequestForm() {
                Cancel
             </Link>
          </div>
-      </FormControl>
+      </Box>
    );
 }

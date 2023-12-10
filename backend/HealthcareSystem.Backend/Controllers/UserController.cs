@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +18,7 @@ namespace HealthcareSystem.Backend.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("createCustomerRequest")]
+        [HttpPost("customerRequests/create")]
         public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequestCreateDTO customerRequest)
         {
             try
@@ -59,7 +58,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost("AcceptRequest/{id:int}")]
-        public async Task<IActionResult> AcceptRequest([FromRoute(Name = "id")] int requestID ) 
+        public async Task<IActionResult> AcceptRequest([FromRoute(Name = "id")] int requestID)
         {
             try
             {
