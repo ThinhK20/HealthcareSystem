@@ -10,8 +10,8 @@ export function Footer({ title, description, socials, menus, copyright }) {
          <div className="container mx-auto">
             <div className="flex flex-wrap pt-6 text-center lg:text-left border-t-2 border-gray-300">
                <div className="w-full px-4 lg:w-6/12">
-                  <img width={150} src="https://cdn.discordapp.com/attachments/1160172654825840763/1182624713445474314/5fa7ceca-d37d-46c7-9095-412d10fdfdcb-removebg-preview.png?ex=65856017&is=6572eb17&hm=611614dd184c7058387e271965d269332dc9cb820e560f4a4d515bea8bbe787a&" alt="" />
-                  <Typography variant="h4" className="mb-4" color="blue-gray">
+                  <img className='lg:mx-[20px] mx-auto' width={150} src="https://cdn.discordapp.com/attachments/1160172654825840763/1182624713445474314/5fa7ceca-d37d-46c7-9095-412d10fdfdcb-removebg-preview.png?ex=65856017&is=6572eb17&hm=611614dd184c7058387e271965d269332dc9cb820e560f4a4d515bea8bbe787a&" alt="" />
+                  <Typography variant="h5" className="mb-4 font-serif" color="blue-gray" >
                      {title}
                   </Typography>
                   <div className="mx-auto flex justify-center gap-2 md:mb-0 lg:justify-start">
