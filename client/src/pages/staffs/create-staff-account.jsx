@@ -1,61 +1,63 @@
-
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
-import axios from 'axios';
-import React,{useState} from 'react';
+import { UserCircleIcon } from "@heroicons/react/24/solid";
+import axios from "axios";
+import { useState } from "react";
 const FormCreateNewStaff = () => {
-
-      const [formDataAccount, setFormDataAccount] = useState({
-        userId: '',
-        username: '',
-        password: '',
-        status: 'Active',
-        role: 'Customer',
-        fullname: '',
-        email: '',
-        cccd: '',
-        phone: '', // Assuming you want to handle file uploads
-        birthdate:'',
-        address: '',
-        gender: 'Male'
-      })
-      const handleInputChangeAccount = (e) => {
+    const [formDataAccount, setFormDataAccount] = useState({
+        userId: "",
+        username: "",
+        password: "",
+        status: "Active",
+        role: "Customer",
+        fullname: "",
+        email: "",
+        cccd: "",
+        phone: "",
+        birthdate: "",
+        address: "",
+        gender: "Male",
+    });
+    const handleInputChangeAccount = (e) => {
         const { name, value } = e.target;
         setFormDataAccount((prevData) => ({
-          ...prevData,
-          [name]: value,
+            ...prevData,
+            [name]: value,
         }));
-      };
+    };
 
-      const handleFormSubmit = async (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
-      
-        // Sending the first POST request
-       
-        const responseAccount = await axios.post('https://localhost:44384/create-new-staff', formDataAccount);
-      
+        const responseAccount = await axios.post(
+            "https://localhost:44384/create-new-staff",
+            formDataAccount
+        );
         console.log(responseAccount);
-      
-        // You can now perform further actions based on the response data
-      };
-      
+    };
+
     return (
-        <form className='w-full' onSubmit={handleFormSubmit} method='post'>
-            <div className='w-[60%] m-auto' >
+        <form className="w-full" onSubmit={handleFormSubmit} method="post">
+            <div className="w-[60%] m-auto">
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900">
+                            Profile
+                        </h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600">
-                            This information will be displayed publicly so be careful what you share.
+                            This information will be displayed publicly so be careful what you
+                            share.
                         </p>
 
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-4">
-                                <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="username"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Username
                                 </label>
                                 <div className="mt-2">
                                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                        <input required
+                                        <input
+                                            required
                                             type="text"
                                             name="username"
                                             id="username"
@@ -69,12 +71,16 @@ const FormCreateNewStaff = () => {
                                 </div>
                             </div>
                             <div className="sm:col-span-4">
-                                <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                                  Password
+                                <label
+                                    htmlFor="username"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
+                                    Password
                                 </label>
                                 <div className="mt-2">
                                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                        <input required
+                                        <input
+                                            required
                                             type="text"
                                             name="password"
                                             id="password"
@@ -89,7 +95,10 @@ const FormCreateNewStaff = () => {
                             </div>
 
                             <div className="sm:col-span-3">
-                                <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="country"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Role
                                 </label>
                                 <div className="mt-2">
@@ -108,11 +117,17 @@ const FormCreateNewStaff = () => {
                                 </div>
                             </div>
                             <div className="col-span-full">
-                                <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="photo"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Photo
                                 </label>
                                 <div className="mt-2 flex items-center gap-x-3">
-                                    <UserCircleIcon className="h-12 w-12 text-gray-300" aria-hidden="true" />
+                                    <UserCircleIcon
+                                        className="h-12 w-12 text-gray-300"
+                                        aria-hidden="true"
+                                    />
                                     <button
                                         type="button"
                                         className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -121,22 +136,28 @@ const FormCreateNewStaff = () => {
                                     </button>
                                 </div>
                             </div>
-
-                           
                         </div>
                     </div>
 
                     <div className="border-b border-gray-900/10 pb-12">
-                        <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
-                        <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900">
+                            Personal Information
+                        </h2>
+                        <p className="mt-1 text-sm leading-6 text-gray-600">
+                            Use a permanent address where you can receive mail.
+                        </p>
 
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-3">
-                                <label htmlFor="fullname" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="fullname"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Fullname
                                 </label>
                                 <div className="mt-2">
-                                    <input required
+                                    <input
+                                        required
                                         type="text"
                                         name="fullname"
                                         id="fullname"
@@ -149,11 +170,15 @@ const FormCreateNewStaff = () => {
                             </div>
 
                             <div className="sm:col-span-3">
-                                <label htmlFor="cccd" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="cccd"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     National Identification Card
                                 </label>
                                 <div className="mt-2">
-                                    <input required
+                                    <input
+                                        required
                                         type="text"
                                         name="cccd"
                                         id="cccd"
@@ -161,16 +186,20 @@ const FormCreateNewStaff = () => {
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         value={formDataAccount.cccd}
                                         onChange={handleInputChangeAccount}
-                                   />
+                                    />
                                 </div>
                             </div>
 
                             <div className="sm:col-span-4">
-                                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="email"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Email address
                                 </label>
                                 <div className="mt-2">
-                                    <input required
+                                    <input
+                                        required
                                         id="email"
                                         name="email"
                                         type="email"
@@ -180,29 +209,39 @@ const FormCreateNewStaff = () => {
                                         onChange={handleInputChangeAccount}
                                     />
                                 </div>
-
                             </div>
                             <div className="sm:col-span-2">
-                                <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="phone"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Phone
                                 </label>
                                 <div className="mt-2">
-                                    <input 
-                                        type="number" id="phone" name="phone" pattern="[0-9]{10}" required
+                                    <input
+                                        type="number"
+                                        id="phone"
+                                        name="phone"
+                                        pattern="[0-9]{10}"
+                                        required
                                         autoComplete="address-level1"
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         value={formDataAccount.phone}
                                         onChange={handleInputChangeAccount}
-                                   />
+                                    />
                                 </div>
                             </div>
 
                             <div className="sm:col-span-2 sm:col-start-1">
-                                <label htmlFor="birthdate" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="birthdate"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Birthdate
                                 </label>
                                 <div className="mt-2">
-                                    <input required
+                                    <input
+                                        required
                                         type="date"
                                         name="birthdate"
                                         id="birthdate   "
@@ -213,9 +252,11 @@ const FormCreateNewStaff = () => {
                                     />
                                 </div>
                             </div>
-
                             <div className="sm:col-span-3">
-                                <label htmlFor="gender" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="gender"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Gender
                                 </label>
                                 <div className="mt-2">
@@ -226,20 +267,23 @@ const FormCreateNewStaff = () => {
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                                         value={formDataAccount.gender}
                                         onChange={handleInputChangeAccount}
-                                   >
+                                    >
                                         <option>Male</option>
                                         <option>Female</option>
                                         <option>Gay</option>
                                     </select>
                                 </div>
                             </div>
-
                             <div className="col-span-full">
-                                <label htmlFor="address" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="address"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Street address
                                 </label>
                                 <div className="mt-2">
-                                    <input required
+                                    <input
+                                        required
                                         type="text"
                                         name="address"
                                         id="address"
@@ -247,30 +291,29 @@ const FormCreateNewStaff = () => {
                                         className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         value={formDataAccount.address}
                                         onChange={handleInputChangeAccount}
-                                  />
+                                    />
                                 </div>
                             </div>
-
-
-
-
-
-
                         </div>
                     </div>
 
                     <div className="border-b border-gray-900/10 pb-12">
-                        <h2 className="text-base font-semibold leading-7 text-gray-900">Notifications</h2>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900">
+                            Notifications
+                        </h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600">
-                            We'll always let you know about important changes, but you pick what else you want to hear about.
+                            We will always let you know about important changes, but you pick
+                            what else you want to hear about.
                         </p>
-
-           
                     </div>
                 </div>
 
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <button type="button" className="text-sm font-semibold leading-6 text-gray-900" onClick={()=>console.log(formDataAccount)}>
+                    <button
+                        type="button"
+                        className="text-sm font-semibold leading-6 text-gray-900"
+                        onClick={() => console.log(formDataAccount)}
+                    >
                         Cancel
                     </button>
                     <button
@@ -282,6 +325,6 @@ const FormCreateNewStaff = () => {
                 </div>
             </div>
         </form>
-    )
-}
+    );
+};
 export default FormCreateNewStaff;
