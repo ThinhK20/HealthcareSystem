@@ -116,6 +116,14 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(tempAccount);
         }
+        [HttpGet("get-all-account")]
+        public async Task<IActionResult> getAccount()
+        {
+
+            var allAccount = await _accountService.GetAllAccount();
+
+            return Ok(allAccount);
+        }
         [HttpPut("edit-user-staff")]
         public async Task<IActionResult> EditAccount([FromBody] UserDTO account)
         {
