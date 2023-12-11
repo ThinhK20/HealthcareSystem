@@ -17,5 +17,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
         public Task<bool> UpdateStatus(int userid);
         public Task<bool> DeleteAccount(int accountId);
 
+        public Task<int> getAccountIdByUserID(int userid);
+
     }
 }

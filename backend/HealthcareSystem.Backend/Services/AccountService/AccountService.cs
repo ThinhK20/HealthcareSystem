@@ -5,6 +5,7 @@ using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.AccountRepository;
 using HealthcareSystem.Backend.Repositories.EmailVerificationRepository;
 using HealthcareSystem.Backend.Services.EmailService;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
@@ -199,6 +200,10 @@ namespace HealthcareSystem.Backend.Services.AccountService
         public Task<bool> DeleteAccount(int accountId)
         {
             return _accountRepository.DeleteAccount(accountId);
+        }
+        public Task<int> getAccountIdByUserID(int userid)
+        {
+            return _accountRepository.getAccountIdByUserID(userid);
         }
     }
 }

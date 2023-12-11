@@ -19,5 +19,8 @@ namespace HealthcareSystem.Backend.Services.UserService
         public Task<UserDTO> UpdateUser(UserDTO user);
         public Task<UserDomain> GetUserByAccount(int AccountId);
 
+
+        public Task<List<UserDTO>> GetAllUsers();
+
     }
 }

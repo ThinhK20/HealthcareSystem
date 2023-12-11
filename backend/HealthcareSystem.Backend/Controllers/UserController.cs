@@ -2,6 +2,7 @@
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace HealthcareSystem.Backend.Controllers
 {
@@ -103,6 +104,19 @@ namespace HealthcareSystem.Backend.Controllers
             catch (Exception ex)
             {
                 return NotFound(ex.Message);
+            }
+        }
+        [HttpGet("getAll")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var result = await _userService.GetAllUsers();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

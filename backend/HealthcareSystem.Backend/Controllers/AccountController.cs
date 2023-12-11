@@ -188,5 +188,19 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("getAccountIdByUserID/{id:int}")]
+        public async Task<IActionResult> getAccountByUserID([FromRoute(Name = "id")] int userID)
+        {
+
+            var id = await _accountService.getAccountIdByUserID(userID);
+            if (id == null)
+            {
+                return BadRequest("Failed to get account id.");
+            }
+
+            return Ok(id);
+        }
+
+
     }
 }

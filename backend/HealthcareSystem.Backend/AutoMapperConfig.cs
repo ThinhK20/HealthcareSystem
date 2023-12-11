@@ -84,6 +84,17 @@ namespace HealthcareSystem.Backend
                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
 
 
+            CreateMap<Models.Entity.User, Models.DTO.UserDTO>()
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+            .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.Fullname))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.CCCD, opt => opt.MapFrom(src => src.CCCD))
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
+            .ForMember(dest => dest.Birthdate, opt => opt.MapFrom(src => src.Birthdate))
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
+             .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender));
+
+
         }
     }
 }

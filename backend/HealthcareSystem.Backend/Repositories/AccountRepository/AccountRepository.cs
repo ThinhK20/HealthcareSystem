@@ -138,5 +138,11 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             await UpdateAsync(account);
             return true;
         }
+        public async Task<int> getAccountIdByUserID(int userid)
+        {
+            var account = await GetAsync(u => u.UserId == userid);
+            if (account == null) throw new Exception("User not found.");
+            return account.AccountId;
+        }
     }
 }

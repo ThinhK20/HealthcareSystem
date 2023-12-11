@@ -13,5 +13,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
         public Task<AccountBaseDTO> GetAccountByID(int id);
         public Task<AccountBaseDTO> updatePassword(PasswordDTO acc);
         public Task<bool> DeleteAccount(int accountId);
+
+        public Task<int> getAccountIdByUserID(int userid);
     }
 }
