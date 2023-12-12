@@ -26,15 +26,14 @@ const StaffsPayment = () => {
   };
   const filterStatus = () => {
     if (status === 2) {
+      setStagaPayment(Payments);
       SetStatus(() => 0);
-      setStagaPayment(Payments.filter((item) => item.status === false));
-    } else {
+    } else if (status === 1) {
+      setStagaPayment(Payments.filter((item) => item.status === true));
       SetStatus(() => status + 1);
-      if (status === 1) {
-        setStagaPayment(Payments.filter((item) => item.status === true));
-      } else {
-        setStagaPayment(Payments);
-      }
+    } else if (status === 0) {
+      setStagaPayment(Payments.filter((item) => item.status === false));
+      SetStatus(() => status + 1);
     }
   };
 
@@ -198,14 +197,14 @@ const StaffsPayment = () => {
                         </th>
                         <th
                           scope="col"
-                          className="px-4 py-3 flex justify-center"
+                          className="px-4 py-3 flex justify-center w-[300px]"
                         >
                           <button
                             onClick={filterStatus}
                             className="flex justify-center items-center"
                           >
                             <FunnelIcon className="h-6 w-6 text-gray-500" />
-                            <div>Status</div>
+                            <div className="">Status</div>
                           </button>
                         </th>
                       </tr>

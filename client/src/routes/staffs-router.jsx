@@ -4,7 +4,6 @@ import StaffRequestDetail from "../pages/staffs/request-detail";
 import FormCreateNewStaff from "../pages/staffs/create-staff-account";
 import { RefundRequestManagement } from "../pages/staffs/manage-refund-request";
 import RefundRequestDetails from "../pages/staffs/refund-request-details";
-import TableInsuranceManagement from "../components/insuarancePolices/table-insurance-management";
 import { ManageAccount } from "../pages/staffs/manage-account";
 export const StaffRoutes = [
   {
@@ -30,9 +29,5 @@ export const StaffRoutes = [
   {
     path: "/staffs/manage-account",
     element: <LayoutRoute element={<ManageAccount />} />,
-  },
-  {
-    path: "staffs/table-insurance-management",
-    element: <LayoutRoute element={<TableInsuranceManagement />}></LayoutRoute>,
   },
 ];
