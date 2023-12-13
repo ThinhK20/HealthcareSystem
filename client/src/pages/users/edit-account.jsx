@@ -10,6 +10,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Alert, AlertTitle } from "@mui/material";
+import { updateAccountsPassword } from "../../apis/accountApis";
 const EditAccount = () => {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -65,16 +66,14 @@ const EditAccount = () => {
       console.log(formDataAccount);
       if (formDataPUT.password != "") {
         try {
-          await axios
-            .put("https://localhost:44384/change-password", formDataPUT)
-            .then((result) => {
-              if (result.data != null) {
-                setMessage("");
-                setMessageSuccess("Thay đổi mật khẩu thành công");
-              } else {
-                setMessage("Thay đổi không thành công");
-              }
-            });
+          updateAccountsPassword(formDataPUT).then((result) => {
+            if (result != null) {
+              setMessage("");
+              setMessageSuccess("Thay đổi mật khẩu thành công");
+            } else {
+              setMessage("Thay đổi không thành công");
+            }
+          });
         } catch {
           // Xử lý lỗi
           setMessage("Thay đổi không thành công");

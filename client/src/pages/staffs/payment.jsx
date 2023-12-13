@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import RowTableStaffsPayment from "../../components/staffs/RowPayment";
-import Axios from "axios";
+import { getPayments } from "../../apis/paymentApis";
 import { FunnelIcon } from "@heroicons/react/24/outline";
 import { useLocation } from "react-router-dom";
 import { formatMoney } from "../../helpers/dataHelper";
@@ -12,7 +12,7 @@ const StaffsPayment = () => {
   const [Payments, SetPayments] = useState([]);
   const [reset, SetReset] = useState(true);
   const [searchValue, setSearchValue] = useState("");
-  const [status, SetStatus] = useState(2);
+  const [status, SetStatus] = useState(0);
   const [filterByAccountId, setFilterByAccountId] = useState(false);
   const [filterByPaymentId, setFilterByPaymentId] = useState(false);
   const [filterByRequestId, setFilterByRequestId] = useState(false);
@@ -29,32 +29,27 @@ const StaffsPayment = () => {
       setStagaPayment(Payments);
       SetStatus(() => 0);
     } else if (status === 1) {
-      setStagaPayment(Payments.filter((item) => item.status === true));
+      setStagaPayment(Payments?.filter((item) => item.status === true));
       SetStatus(() => status + 1);
     } else if (status === 0) {
-      setStagaPayment(Payments.filter((item) => item.status === false));
+      setStagaPayment(Payments?.filter((item) => item.status === false));
       SetStatus(() => status + 1);
     }
   };
 
-  const GetPayments = () => {
-    Axios.get(
-      `https://localhost:44384/api/Payments/GetAllPaymentRequests`
-    ).then((response) => {
-      SetPayments(response.data);
-      setStagaPayment(response.data);
-      console.log(response.data);
-    });
-  };
   useEffect(() => {
-    GetPayments();
+    getPayments().then((response) => {
+      SetPayments(response);
+      setStagaPayment(response);
+      console.log(response);
+    });
     if (acc != null) {
       setFilterByAccountId(true);
       setSearchValue(acc);
     }
   }, [reset]);
 
-  const filteredPayments = stagePayment.filter((item) => {
+  const filteredPayments = stagePayment?.filter((item) => {
     const searchLower = searchValue.toLowerCase();
     const matchesSearch =
       item.requestId.toString().toLowerCase().includes(searchLower) ||

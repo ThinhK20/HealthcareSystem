@@ -1,6 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Alert, AlertTitle } from "@mui/material";
+import {
+  editAccountsInformation,
+  getAccountsInformation,
+} from "../../apis/accountApis";
 
 const EditInformation = () => {
   const [message, setMessage] = useState("");
@@ -10,7 +13,7 @@ const EditInformation = () => {
     fullname: "",
     email: "",
     cccd: "",
-    phone: "", // Assuming you want to handle file uploads
+    phone: "",
     birthdate: "",
     address: "",
     gender: "Male",
@@ -28,26 +31,17 @@ const EditInformation = () => {
 
     // Sending the first POST request
     try {
-      await axios.put(
-        "https://localhost:44384/edit-user-staff",
-        formDataAccount
-      );
+      await editAccountsInformation(formDataAccount);
       setMessageSuccess("Thay đổi thông tin thành công");
       setMessage("");
     } catch {
       setMessage("Thay đổi thông tin thất bại");
     }
-
-    // You can now perform further actions based on the response data
   };
   useEffect(() => {
-    axios
-      .get(`https://localhost:44384/get-user-staff?AccountID=15`)
-      .then((result) => {
-        // Assuming the result.data contains the user staff data
-        const userStaffData = result.data;
-
-        // Update formDataAccount with the received data
+    const fetchUserStaffData = async () => {
+      try {
+        const userStaffData = await getAccountsInformation(1);
         setFormDataAccount({
           userId: userStaffData.userId || "",
           fullname: userStaffData.fullname || "",
@@ -56,14 +50,14 @@ const EditInformation = () => {
           phone: userStaffData.phone || "",
           birthdate: userStaffData.birthdate || "",
           address: userStaffData.address || "",
-          gender: userStaffData.gender || "Male", // Assuming a default value if gender is not provided
+          gender: userStaffData.gender || "Male",
         });
-      })
-      .catch((error) => {
-        // Handle errors if any
+      } catch (error) {
         console.error("Error fetching user staff data:", error);
-      });
-  }, []);
+      }
+    };
+    fetchUserStaffData();
+  }, [messageSuccess, message]);
   return (
     <form
       className="w-full mt-[50px]"
