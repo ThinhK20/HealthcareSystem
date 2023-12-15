@@ -5,7 +5,7 @@ import {faPlus} from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-
+import { toast } from "react-toastify";
  
 function TableInsuranceManagement() {
     const [data, setData] = useState([]);
@@ -23,6 +23,7 @@ function TableInsuranceManagement() {
         const api = await authFetch.delete(`/InsuarancePolicy/${index}`);
         console.log(11111111, api)
         const updatedData = data.filter(item => item.policyID !== index);
+        toast.success("Deleted successfully !")
         setData(updatedData);
       };
     useEffect(() => {

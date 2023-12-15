@@ -2,7 +2,7 @@ import { useRef } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import { register } from "../../apis/authenicationApis";
 export default function Register() {
   const navigateTo = useNavigate();
 
@@ -17,9 +17,7 @@ export default function Register() {
       "Access-Control-Allow-Origin": "*",
     },
   };
-  const authFetch = axios.create({
-    baseURL: "https://localhost:44384/",
-  });
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -42,15 +40,11 @@ export default function Register() {
         draggable: true,
       });
     } else {
-      const registerAPI = await authFetch.post(
-        "/register",
-        accountInfo,
-        config
-      );
+      const registerAPI = await register(accountInfo, config);
       console.log(registerAPI)
 
-      if ( registerAPI.data == "User existed" || registerAPI.data == "User existed" || registerAPI.data == "Email is not valid" || registerAPI.data == "Email existed") {
-        toast.error(registerAPI.data, {
+      if (registerAPI == "User existed" || registerAPI == "User existed" || registerAPI == "Email is not valid" || registerAPI == "Email existed") {
+        toast.error(registerAPI, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -72,15 +66,15 @@ export default function Register() {
           draggable: true,
         });
         console.log(
-          registerAPI.data.emailVerification,
-          registerAPI.data.status
+          registerAPI.emailVerification,
+          registerAPI.status
         );
         setTimeout(() => {
           navigateTo("/verify", {
             state: {
-              emailVerification: registerAPI.data.emailVerification,
-              status: registerAPI.data.status,
-              userid: registerAPI.data.userId,
+              emailVerification: registerAPI.emailVerification,
+              status: registerAPI.status,
+              userid: registerAPI.userId,
             },
           });
         }, 3000);

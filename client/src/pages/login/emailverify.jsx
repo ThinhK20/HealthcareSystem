@@ -1,9 +1,8 @@
-import { useRef, useEffect } from "react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { useRef } from "react";
+import {toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {useLocation} from 'react-router-dom';
-
+import { verifyEmail } from "../../apis/authenicationApis";
 export default function EmailVerify() {
     const navigateTo = useNavigate();
 
@@ -12,9 +11,7 @@ export default function EmailVerify() {
     const inputthree= useRef(null);
     const inputfour = useRef(null);
     const location = useLocation();
-    const authFetch = axios.create({
-        baseURL: "https://localhost:44384/",
-     });
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
        const status = location.state.status;
@@ -35,8 +32,8 @@ export default function EmailVerify() {
             console.log(stringInput)
             console.log(userid)
             
-            const verifyAPI = await authFetch.post("/verification", userid, config);
-           if(verifyAPI.data == "Successfully"){
+          const verifyAPI = await verifyEmail(userid, config);
+           if(verifyAPI == "Successfully"){
                 toast.success("Verify Successfully !", {
                     position: "top-right",
                     autoClose: 2000,

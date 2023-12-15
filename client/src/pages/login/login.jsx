@@ -1,9 +1,8 @@
 import { useRef } from "react";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import * as jwt from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-
+import { login } from "../../apis/authenicationApis";
 export default function Login() {
   const navigateTo = useNavigate();
 
@@ -15,9 +14,7 @@ export default function Login() {
       "Access-Control-Allow-Origin": "*",
     },
   };
-  const authFetch = axios.create({
-    baseURL: "https://localhost:44384/",
-  });
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,9 +24,9 @@ export default function Login() {
       userName: usernameRef.current?.value,
       password: passRef.current?.value,
     };
-    const loginAPI = await authFetch.post("/login", accountInfo, config);
+    const loginAPI = await login(accountInfo, config);
     console.log(1111, loginAPI);
-    const token = loginAPI.data.token || loginAPI.data;
+    const token = loginAPI.token || loginAPI;
     if (
       token == "User not found" ||
       token == "User is disable" ||

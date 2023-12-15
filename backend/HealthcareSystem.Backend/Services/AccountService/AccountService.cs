@@ -140,6 +140,8 @@ namespace HealthcareSystem.Backend.Services.AccountService
             };
             await _userRepository.CreateAsync(new_user);
 
+            var getIDUser = await _userRepository.GetAsync(u => u.Email == registerationRequestDTO.Email);
+
 
             Random random = new Random();
 
@@ -151,7 +153,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
 
             AccountDTO user = new AccountDTO()
             {
-                UserId = getID.UserId,
+                UserId = getIDUser.UserId,
                 Username = registerationRequestDTO.UserName,
                 Password = hashedPassword,
                 Status = "Disable",

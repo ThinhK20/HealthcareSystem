@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
 {
-    public class AccountController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : Controller
     {
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
-        public AccountController(IAccountService accountService, IMapper mapper, IUserService userService)
+        public AuthController(IAccountService accountService, IMapper mapper, IUserService userService)
         {
             _accountService = accountService;
             _mapper = mapper;

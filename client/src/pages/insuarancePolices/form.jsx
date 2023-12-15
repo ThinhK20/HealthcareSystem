@@ -54,7 +54,7 @@ export default function Form() {
          draggable: true,
       });
       setTimeout(() => {
-         navigateTo("/table-insurance-management");
+         navigateTo("/staffs/table-insurance-management");
       }, 3000);
    };
    useEffect(() => {
