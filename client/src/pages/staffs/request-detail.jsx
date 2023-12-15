@@ -232,7 +232,7 @@ const StaffRequestDetail = () => {
 
                           {/* Rate (You can customize this based on your data) */}
                           <div className="text-start">
-                            {formatDate(payment.updatedDate)}
+                            {formatDate(payment.expirationDate)}
                           </div>
 
                           {/* Amount (You can customize this based on your data) */}

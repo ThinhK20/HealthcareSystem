@@ -110,7 +110,7 @@ const UserRequestDetail = () => {
                         Request Date :
                       </dt>
                       <dd className="col-span-2 text-gray-500">
-                        {formatDate(data?.dateRequest)}
+                        {formatDate(data?.expirationDate)}
                       </dd>
                     </dl>
                     <dl className="grid sm:grid-cols-5 gap-x-3">

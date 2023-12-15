@@ -13,7 +13,6 @@ namespace HealthcareSystem.Backend.Models.Entity
         public DateTime? UpdatedDate { get; set; }
         public DateTime? ExpirationDate { get; set; }
         public DateTime? ExpirationPaypal { get; set; }
-
         public double? Price { get; set; }
         public bool? Status { get; set; }
         public string? LinkCheckOut { get; set; }
