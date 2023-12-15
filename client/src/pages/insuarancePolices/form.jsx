@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { createPolicy, updatePolicy } from "../../apis/insurancePoliciesApis";
 
 export default function Form() {
    const navigateTo = useNavigate();
@@ -12,9 +12,7 @@ export default function Form() {
    const id = state?.id || "";
    const name = state?.name || "";
    const description = state?.description || "";
-   const authFetch = axios.create({
-      baseURL: "https://localhost:44384/api",
-   });
+  
    const nameRef = useRef();
    const descriptionRef = useRef();
    const handleSubmit = async (e) => {
@@ -29,16 +27,10 @@ export default function Form() {
          description: descriptionRef.current.value,
       };
       if (status === "create") {
-         const api_create = await authFetch.post(
-            `/InsuarancePolicy`,
-            data_create
-         );
+         const api_create = await createPolicy(data_create);
          console.log(11111111111, api_create);
       } else {
-         const api_update = await authFetch.put(
-            `/InsuarancePolicy`,
-            data_update
-         );
+         const api_update = await updatePolicy(data_update);
          console.log(22222222222, api_update);
       }
       const message =

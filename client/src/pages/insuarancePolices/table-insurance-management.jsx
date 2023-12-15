@@ -2,25 +2,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faEdit} from '@fortawesome/free-solid-svg-icons'
 import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import {faPlus} from '@fortawesome/free-solid-svg-icons'
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
- 
+import { deletePolicy, getAll } from "../../apis/insurancePoliciesApis";
+
 function TableInsuranceManagement() {
     const [data, setData] = useState([]);
 
-    const authFetch = axios.create({
-        baseURL: 'https://localhost:44384/api',
-     });
+    
     const getData =  async () => {
-        const data = await authFetch.get("/InsuarancePolicy");
+        const data = await getAll();
         console.log(11111111, data.data);
-        setData(data.data);
+        setData(data);
     }
     const handleDelete = async (index) => {
         console.log(index)
-        const api = await authFetch.delete(`/InsuarancePolicy/${index}`);
+        const api = await deletePolicy(index);
         console.log(11111111, api)
         const updatedData = data.filter(item => item.policyID !== index);
         toast.success("Deleted successfully !")
