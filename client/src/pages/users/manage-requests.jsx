@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faMoneyBill, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { getAllCustomerRequestsApi } from "../../apis/customerRequestApis";
 import { formatMoney } from "../../helpers/dataHelper";
@@ -251,6 +251,23 @@ export default function CustomerRequestManagement() {
                                        <FontAwesomeIcon
                                           className="h-4 w-4"
                                           icon={faEye}
+                                       />
+                                    </IconButton>
+                                 </Tooltip>
+                              </Link>
+                              <Tooltip title="Edit">
+                                 <IconButton variant="text">
+                                    <PencilIcon className="h-4 w-4" />
+                                 </IconButton>
+                              </Tooltip>
+                           </td>
+                           <td className={classes}>
+                              <Link to={`/users/requests-datail`}>
+                                 <Tooltip title="View details">
+                                    <IconButton variant="text">
+                                       <FontAwesomeIcon
+                                          className="h-4 w-4"
+                                          icon={faMoneyBill}
                                        />
                                     </IconButton>
                                  </Tooltip>
