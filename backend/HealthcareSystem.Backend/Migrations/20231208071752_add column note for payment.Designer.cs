@@ -4,6 +4,7 @@ using HealthcareSystem.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthcareSystem.Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231208071752_add column note for payment")]
+    partial class addcolumnnoteforpayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace HealthcareSystem.Backend.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
+
+                    b.Property<string>("InsuranceUserID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -50,6 +56,10 @@ namespace HealthcareSystem.Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AccountId");
+
+                    b.HasIndex("InsuranceUserID")
+                        .IsUnique()
+                        .HasFilter("[InsuranceUserID] IS NOT NULL");
 
                     b.HasIndex("UserId")
                         .IsUnique()
@@ -496,9 +506,6 @@ namespace HealthcareSystem.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InsuranceID"));
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CardOpenDate")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -507,19 +514,27 @@ namespace HealthcareSystem.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("InsuranceID");
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("AccountId")
-                        .IsUnique();
+                    b.HasKey("InsuranceID");
 
                     b.ToTable("Insurances");
                 });
 
             modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.Account", b =>
                 {
+                    b.HasOne("Insurance", "Insurance")
+                        .WithOne("Account")
+                        .HasForeignKey("HealthcareSystem.Backend.Models.Entity.Account", "InsuranceUserID")
+                        .HasPrincipalKey("Insurance", "UserID");
+
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.User", "User")
                         .WithOne("Account")
                         .HasForeignKey("HealthcareSystem.Backend.Models.Entity.Account", "UserId");
+
+                    b.Navigation("Insurance");
 
                     b.Navigation("User");
                 });
@@ -673,17 +688,6 @@ namespace HealthcareSystem.Backend.Migrations
                     b.Navigation("Insurance");
                 });
 
-            modelBuilder.Entity("Insurance", b =>
-                {
-                    b.HasOne("HealthcareSystem.Backend.Models.Entity.Account", "Account")
-                        .WithOne("Insurance")
-                        .HasForeignKey("Insurance", "AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("HealthcareSystem.Backend.Models.Entity.Account", b =>
                 {
                     b.Navigation("ApproverRequests");
@@ -693,9 +697,6 @@ namespace HealthcareSystem.Backend.Migrations
                     b.Navigation("CustomerRequests");
 
                     b.Navigation("HealthRecords");
-
-                    b.Navigation("Insurance")
-                        .IsRequired();
 
                     b.Navigation("verification");
                 });
@@ -741,6 +742,9 @@ namespace HealthcareSystem.Backend.Migrations
 
             modelBuilder.Entity("Insurance", b =>
                 {
+                    b.Navigation("Account")
+                        .IsRequired();
+
                     b.Navigation("InsuranceDetails");
 
                     b.Navigation("RefundRequests");

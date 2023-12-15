@@ -16,6 +16,7 @@ import { StaffRoutes } from "./staffs-router";
 import Insurance from "../pages/insurances/insurance";
 import FormUpdate from "../pages/insurances/form-update";
 import FormCreate from "../pages/insurances/form-create";
+import ConfirmPayment from "../components/payment/confirmPayment";
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -42,21 +43,15 @@ export const router = createBrowserRouter([
    },
    {
       path: "/insurances",
-      element: (
-         <LayoutRoute element={<Insurance />}></LayoutRoute>
-      ),
+      element: <LayoutRoute element={<Insurance />}></LayoutRoute>,
    },
    {
       path: "/insurances/edit",
-      element: (
-         <LayoutRoute element={<FormUpdate />}></LayoutRoute>
-      ),
+      element: <LayoutRoute element={<FormUpdate />}></LayoutRoute>,
    },
    {
       path: "/insurances/create",
-      element: (
-         <LayoutRoute element={<FormCreate />}></LayoutRoute>
-      ),
+      element: <LayoutRoute element={<FormCreate />}></LayoutRoute>,
    },
    {
       path: "/edit-form",
@@ -86,5 +81,9 @@ export const router = createBrowserRouter([
    {
       path: "*",
       element: <Page404></Page404>,
+   },
+   {
+      path: "/payment/completePayment",
+      element: <LayoutRoute element={<ConfirmPayment />}></LayoutRoute>,
    },
 ]);

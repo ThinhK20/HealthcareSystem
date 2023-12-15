@@ -7,6 +7,7 @@ import RefundRequestForm from "../pages/users/refund-request-form";
 import CustomersPayment from "../pages/users/payment";
 import { CustomerRefundRequestManagement } from "../pages/users/customer-refund-requests";
 import CustomerRefundRequestDetails from "../pages/users/customer-refund-request-details";
+import UserRequestDetail from "../pages/users/request-detail";
 export const UserRoutes = [
    {
       path: "/users/edit-information",
@@ -23,6 +24,10 @@ export const UserRoutes = [
    {
       path: "/users/refund-requests",
       element: <LayoutRoute element={<CustomerRefundRequestManagement />} />,
+   },
+   {
+      path: "/users/requests-detail",
+      element: <LayoutRoute element={<UserRequestDetail />} />,
    },
    {
       path: "/users/refund-requests/create",

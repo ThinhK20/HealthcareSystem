@@ -17,8 +17,8 @@ namespace HealthcareSystem.Backend.Repositories
         private readonly IPaymentRepository _paymentService;
         private readonly IInsuranceDetailService _invoiceDetailService;
         private readonly PriceCalculateModule _priceCalculate;
-
-        public CustomerRequestRepository(IMapper mapper, ApplicationDbContext applicationContext, IPaymentRepository paymentService, IInsuranceDetailService invoiceDetailService, IUserRepository userRepository, IBasicPriceRepository basicPriceRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository) : base(applicationContext)
+        
+        public CustomerRequestRepository(IMapper mapper, ApplicationDbContext applicationContext, IPaymentRepository paymentService, IInsuranceDetailService invoiceDetailService, IUserRepository userRepository, IBasicPriceRepository basicPriceRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository): base(applicationContext)
         {
             _mapper = mapper;
             _applicationContext = applicationContext;
@@ -62,20 +62,19 @@ namespace HealthcareSystem.Backend.Repositories
         {
             return _mapper.Map<CustomerRequestDomain>(await GetAsync(x => x.RequestID == requestId, true, "Account,Staff,Payment,PolicyPackage"));
         }
-        public async Task<bool> AcceptCustomerRequest(int Accept)
+        public async Task<bool> AcceptCustomerRequest(int Accept,int StaffId)
         {
-            var ctm_request = await GetAsync(x => x.RequestID == Accept);
+            var ctm_request = await GetAsync(x => x.RequestID == Accept,true, "PolicyPackage");
             if (ctm_request == null) throw new Exception("Request NULL");
-
-
             ctm_request.Status = "Pending Transfer";
-
+            ctm_request.StaffId = StaffId;
             var dataRequest = await GetCustomerRequestByIdAsync(ctm_request.RequestID);
             var month = 0;
             if (dataRequest.Periodic == "quarter") month = 3;
             if (dataRequest.Periodic == "half year") month = 6;
             if (dataRequest.Periodic == "year") month = 12;
-            for (var i = 0; i < month; i++)
+            int n = 12 / month;
+            for (var i = 0; i < n; i++)
             {
                 Payment pay = new Payment
                 {
@@ -84,10 +83,11 @@ namespace HealthcareSystem.Backend.Repositories
                     ExpirationDate = DateTime.UtcNow.AddMonths(i * month).AddDays(7),
                     ExpirationPaypal = null,
                     Status = false,
-                    Price = ctm_request.Price * month / 12,
+                    Price = ctm_request.Price / n ,
                     UpdatedDate = null,
                     LinkCheckOut = null,
                     PaypalEmail = null,
+                    Note = $"Payment {i+1} of {n} for {ctm_request.PolicyPackage.Name}"
                 };
                 await _paymentService.CreatePayment(pay);
             }

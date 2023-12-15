@@ -39,8 +39,28 @@ namespace HealthcareSystem.Backend
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
 
+            CreateMap<Payment, PayPalCheckDomain>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.ExpirationPaypal, opt => opt.MapFrom(src => src.ExpirationPaypal))
+                .ForMember(dest => dest.idPayPal, opt => opt.MapFrom(src => src.idPayPal))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate))
+                .ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => src.ExpirationDate))
+                .ForMember(dest => dest.idPayPal, opt => opt.MapFrom(src => src.idPayPal))
+                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate))
+                .ForMember(dest => dest.LinkCheckOut, opt => opt.MapFrom(src => src.LinkCheckOut));
+
+            CreateMap<PaymentDomain, PaymentOfUserDTO>()
+                .ForMember(dest => dest.PaymentId, opt => opt.MapFrom(src => src.PaymentId))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => src.ExpirationDate))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
+                .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Note));
 
             CreateMap<InsuarancePolicyCreateDTO, InsurancePolicy>();
+
 
             CreateMap<InsuarancePolicyUpdateDTO, InsurancePolicy>().ReverseMap();
 

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import { formatDate, formatMoney } from "../../helpers/dataHelper";
 import { Button, Typography } from "@material-tailwind/react";
 import {
@@ -11,17 +10,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Chip } from "@material-tailwind/react";
 import { getCustomerRequestByIdApi } from "../../apis/customerRequestApis";
 import { getPaymentsByID } from "../../apis/paymentApis";
-const StaffRequestDetail = () => {
+const UserRequestDetail = () => {
   const [data, setData] = useState();
-  const [reset, setReset] = useState(false);
   const [dropPayment, SetDropPaymet] = useState(false);
   const [paymentDetail, setPaymentDetail] = useState(null);
-  const handleReset = () => {
-    setReset(!reset);
-  };
-  const { id } = useParams();
+
   useEffect(() => {
-    getCustomerRequestByIdApi(id)
+    getCustomerRequestByIdApi(2)
       .then((result) => {
         setData(result);
         getPaymentsByID(result.requestID)
@@ -35,17 +30,7 @@ const StaffRequestDetail = () => {
       .catch((error) => {
         console.error("Error fetching customer requests:", error);
       });
-  }, [reset]);
-  const handleAccept = () => {
-    axios
-      .post(`https://localhost:44384/api/users/AcceptRequest?requestID=${id}&staffid=${1}`)
-      .then(handleReset);
-  };
-  const handRefused = () => {
-    axios
-      .post(`https://localhost:44384/api/users/RefusedRequest/${id}`)
-      .then(handleReset);
-  };
+  }, []);
   // const handComplete = () => {
   //   axios
   //     .post(`https://localhost:44384/api/users/CompleteRequest/${id}`)
@@ -288,97 +273,11 @@ const StaffRequestDetail = () => {
               <p className="mt-5 text-sm text-gray-500">© 2022 Preline.</p>
             </div>
 
-            <div className="mt-6 flex justify-around gap-x-3">
-              {data?.status === "Pending Confirmation" && (
-                <button
-                  onClick={handleAccept}
-                  className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dr:focus:outline-none dr:focus:ring-1 dr:focus:ring-gray-600"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4.5 12.75l6 6 9-13.5"
-                    />
-                  </svg>
-                  Accept
-                </button>
-              )}
-              {data?.status === "Pending Confirmation" && (
-                <button
-                  onClick={handRefused}
-                  className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dr:focus:outline-none dr:focus:ring-1 dr:focus:ring-gray-600"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                  Refuse
-                </button>
-              )}
-              {data?.status === "Pending Transfer" && (
-                <button className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dr:focus:outline-none dr:focus:ring-1 dr:focus:ring-gray-600">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                  Request Payment
-                </button>
-              )}
-              {/* {data?.status === "Pending Transfer" && (
-                <button
-                  onClick={handComplete}
-                  className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-green-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dr:focus:outline-none dr:focus:ring-1 dr:focus:ring-gray-600"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  Complete
-                </button>
-              )} */}
-            </div>
+          
           </div>
         </div>
       </div>
     </>
   );
 };
-export default StaffRequestDetail;
+export default UserRequestDetail;

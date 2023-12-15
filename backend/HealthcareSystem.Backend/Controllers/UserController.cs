@@ -2,7 +2,6 @@
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 
 namespace HealthcareSystem.Backend.Controllers
 {
@@ -37,7 +36,8 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
-                return Ok(await _userService.GetAllCustomerRequestsAsync());
+                var result = await _userService.GetAllCustomerRequestsAsync();
+                return Ok(result.OrderByDescending(x => x.RequestID));
             }
             catch (Exception ex)
             {
@@ -58,12 +58,12 @@ namespace HealthcareSystem.Backend.Controllers
                 return NotFound(ex.Message);
             }
         }
-        [HttpPost("AcceptRequest/{id:int}")]
-        public async Task<IActionResult> AcceptRequest([FromRoute(Name = "id")] int requestID)
+        [HttpPost("AcceptRequest")]
+        public async Task<IActionResult> AcceptRequest(int requestID, int staffid)
         {
             try
             {
-                return Ok(await _userService.AcceptCustomerRequest(requestID));
+                return Ok(await _userService.AcceptCustomerRequest(requestID, staffid));
             }
             catch (Exception ex)
             {

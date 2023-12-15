@@ -17,11 +17,16 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+   faEye,
+   faMoneyBill,
+   faPlusCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { getAllCustomerRequestsApi } from "../../apis/customerRequestApis";
 import { formatMoney } from "../../helpers/dataHelper";
 const TABLE_HEAD = [
+   "Request Id",
    "User",
    "Staff",
    "Price",
@@ -53,7 +58,7 @@ export default function CustomerRequestManagement() {
    useEffect(() => {
       setTableRows(() => {
          const newRows = requestsData?.map((request) => ({
-            img: "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/408576504_1420267468843291_3324063907747099310_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=FBBJQqBqlCMAX_3XOPd&_nc_ht=scontent.fsgn8-4.fna&cb_e2o_trans=t&oh=00_AfD7f4MK4vnBqZKZeZRbu1c236KuJE6OahkZOyfVxMykwQ&oe=657B3294",
+            img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",
             user: request.account,
             staff: request.staff,
             payment: request.payment,
@@ -61,6 +66,7 @@ export default function CustomerRequestManagement() {
             periodic: request.periodic,
             requestID: request.requestID,
             price: request.price,
+            status: request.status,
          }));
          return newRows;
       });
@@ -128,6 +134,17 @@ export default function CustomerRequestManagement() {
                      return (
                         <tr key={index}>
                            <td className={classes}>
+                              <div className="flex items-center  gap-3">
+                                 <Typography
+                                    variant="small"
+                                    color="blue-gray"
+                                    className="font-bold"
+                                 >
+                                    {tableRow.requestID}
+                                 </Typography>
+                              </div>
+                           </td>
+                           <td className={classes}>
                               <div className="flex items-center gap-3">
                                  <Avatar
                                     src={tableRow.img}
@@ -146,21 +163,26 @@ export default function CustomerRequestManagement() {
                            </td>
                            <td className={classes}>
                               <div className="flex items-center gap-3">
-                                 <Avatar
-                                    src="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/408576504_1420267468843291_3324063907747099310_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=FBBJQqBqlCMAX_3XOPd&_nc_ht=scontent.fsgn8-4.fna&cb_e2o_trans=t&oh=00_AfD7f4MK4vnBqZKZeZRbu1c236KuJE6OahkZOyfVxMykwQ&oe=657B3294"
-                                    alt={tableRow.user.username}
-                                    size="md"
-                                    className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-                                 />
-                                 <Typography
-                                    variant="small"
-                                    color="blue-gray"
-                                    className="font-bold"
-                                 >
-                                    {tableRow.user.username}
-                                 </Typography>
+                                 {tableRow?.staff && (
+                                    <>
+                                       <Avatar
+                                          src="https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg"
+                                          alt={tableRow.user.username}
+                                          size="md"
+                                          className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
+                                       />
+                                       <Typography
+                                          variant="small"
+                                          color="blue-gray"
+                                          className="font-bold"
+                                       >
+                                          {tableRow.staff?.username}
+                                       </Typography>
+                                    </>
+                                 )}
                               </div>
                            </td>
+
                            <td className={classes}>
                               <Typography
                                  variant="small"
@@ -197,13 +219,9 @@ export default function CustomerRequestManagement() {
                                  <Chip
                                     size="sm"
                                     variant="ghost"
-                                    value={
-                                       tableRow.payment?.status
-                                          ? "Paid"
-                                          : "Pending"
-                                    }
+                                    value={tableRow.status}
                                     color={
-                                       tableRow.payment?.status
+                                       tableRow.status === "Pending Transfer"
                                           ? "green"
                                           : "amber"
                                     }
@@ -260,6 +278,16 @@ export default function CustomerRequestManagement() {
                                     <PencilIcon className="h-4 w-4" />
                                  </IconButton>
                               </Tooltip>
+                              <Link to={`/users/requests-detail`}>
+                                 <Tooltip title="View details">
+                                    <IconButton variant="text">
+                                       <FontAwesomeIcon
+                                          className="h-4 w-4"
+                                          icon={faMoneyBill}
+                                       />
+                                    </IconButton>
+                                 </Tooltip>
+                              </Link>
                            </td>
                         </tr>
                      );
