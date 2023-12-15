@@ -41,13 +41,13 @@ namespace HealthcareSystem.Backend.Utils
                 }
             }
         }
-        private async Task<CreateOrderReturn> CreateOrder(string linkPayPal, string _tokenPayPal, float price,string PackageName, string returnPath)
+        public async Task<CreateOrderReturn> CreateOrder(string linkPayPal, string _tokenPayPal, double price, string returnPath)
         {
             string baseUrl = $"{linkPayPal}/v2/checkout/orders/";
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_tokenPayPal}");
-                DataCreatePayPal dataCreate = CreateDataOrderPayPal(price,PackageName,returnPath);
+                DataCreatePayPal dataCreate = CreateDataOrderPayPal(price,returnPath);
                 var body = JsonContent.Create(dataCreate);
                 using (HttpResponseMessage res = await client.PostAsync(baseUrl, body))
                 {
@@ -68,14 +68,14 @@ namespace HealthcareSystem.Backend.Utils
                 }
             }
         }
-        private DataCreatePayPal CreateDataOrderPayPal(float price, string PackageName,string returnPath)
+        private DataCreatePayPal CreateDataOrderPayPal(double price,string returnPath)
         {
             var data = new ItemPayPal()
             {
-                name = $"Payment to Insurance company for {PackageName}",
+                name = $"Payment to Insurance company",
                 description = "Payment for Insurance company",
                 quantity = "1",
-                amount = new UnitAmount { currency_code = "USD", value = $"{price}" }
+                unit_amount = new UnitAmount { currency_code = "USD", value = String.Format("{0:0.00}", price) }
             };
             var listData = new List<ItemPayPal>();
             listData.Add(data);
@@ -91,13 +91,13 @@ namespace HealthcareSystem.Backend.Utils
                             amount = new AmountPayPal()
                             {
                                 currency_code = "USD",
-                                value = $"{price}",
+                                value = String.Format("{0:0.00}", price),
                                 breakdown = new BreakdownPayPal()
                                 {
                                     item_total = new ItemTotalPayPal()
                                     {
                                         currency_code = "USD",
-                                        value = $"{price}",
+                                        value =String.Format("{0:0.00}", price),
                                     }
                                 }
                             }
@@ -106,12 +106,12 @@ namespace HealthcareSystem.Backend.Utils
                 application_context = new ApplicationContext()
                 {
                     cancel_url = returnPath,
-                    return_url = $"{returnPath}/completePayment"
+                    return_url = $"{returnPath}/payment/completePayment"
                 }
             };
             return paypalData;
         }
-        private async Task<bool> ConfirmPaymentPalpal(string token,string linkPayPal, string _tokenPaypal)
+        public async Task<bool> ConfirmPaymentPalpal(string token,string linkPayPal, string _tokenPaypal)
         {
             string baseUrl = $"{linkPayPal}/v2/checkout/orders/{token}/capture";
             using (HttpClient client = new HttpClient())

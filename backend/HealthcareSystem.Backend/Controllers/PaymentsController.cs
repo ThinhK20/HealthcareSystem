@@ -151,6 +151,47 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
+        [HttpGet("GetPaymenOfUser/{AccountId}")]
+        public async Task<IActionResult> CheckPayPal(int AccountId)
+        {
+            try
+            {
+                var paymentInfo = await _paymentRepository.GetPaymentByUserID(AccountId);
+                return Ok(paymentInfo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost("GetLinkCheckOut")]
+        public async Task<IActionResult> CheckPayPal([FromBody]CheckPayPalInfoDTO info)
+        {
+            try
+            {
+                var checkInfo = await _paymentRepository.GetCheckOutLink(info);
+                return Ok(checkInfo);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("ConfirmPayment")]
+        public async Task<IActionResult> ConfirmPayment(string token, string PayerID)
+        {
+            try
+            {
+                var test = await _paymentRepository.ConfirmPayment(token,PayerID);
+                if (test == true) return Ok("Done");
+                else return BadRequest("Error");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
