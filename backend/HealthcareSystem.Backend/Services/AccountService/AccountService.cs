@@ -89,7 +89,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
                     new Claim(ClaimTypes.Name, checkUser.UserId.ToString()),
                     new Claim(ClaimTypes.Role, checkUser.Role)
                }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

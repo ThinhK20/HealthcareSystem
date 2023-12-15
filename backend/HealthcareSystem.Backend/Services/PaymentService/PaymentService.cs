@@ -43,8 +43,8 @@ namespace HealthcareSystem.Backend.Services.PaymentService
                 Payment pay = new Payment
                 {
                     RequestId = payment.RequestId,
-                    CreatedDate = DateTime.UtcNow.AddMonths(i * month),
-                    ExpirationDate = DateTime.UtcNow.AddMonths(i * month).AddDays(7),
+                    CreatedDate = DateTime.Now.AddMonths(i * month),
+                    ExpirationDate = DateTime.Now.AddMonths(i * month).AddDays(7),
                     ExpirationPaypal = null,
                     Status = false,
                     Price = payment.Price * month / 12,
