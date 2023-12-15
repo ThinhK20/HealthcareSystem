@@ -58,12 +58,12 @@ namespace HealthcareSystem.Backend.Controllers
                 return NotFound(ex.Message);
             }
         }
-        [HttpPost("AcceptRequest/{id:int}")]
-        public async Task<IActionResult> AcceptRequest([FromRoute(Name = "id")] int requestID)
+        [HttpPost("AcceptRequest")]
+        public async Task<IActionResult> AcceptRequest(int requestID,int staffid)
         {
             try
             {
-                return Ok(await _userService.AcceptCustomerRequest(requestID));
+                return Ok(await _userService.AcceptCustomerRequest(requestID, staffid));
             }
             catch (Exception ex)
             {

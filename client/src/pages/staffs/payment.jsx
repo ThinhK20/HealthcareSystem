@@ -8,7 +8,7 @@ const StaffsPayment = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const acc = searchParams.get("acc");
-  const [stagePayment, setStagaPayment] = useState([]);
+  const [stagePayment, setStagePayment] = useState([]);
   const [Payments, SetPayments] = useState([]);
   const [reset, SetReset] = useState(true);
   const [searchValue, setSearchValue] = useState("");
@@ -26,13 +26,13 @@ const StaffsPayment = () => {
   };
   const filterStatus = () => {
     if (status === 2) {
-      setStagaPayment(Payments);
+      setStagePayment(Payments);
       SetStatus(() => 0);
     } else if (status === 1) {
-      setStagaPayment(Payments?.filter((item) => item.status === true));
+      setStagePayment(Payments?.filter((item) => item.status === true));
       SetStatus(() => status + 1);
     } else if (status === 0) {
-      setStagaPayment(Payments?.filter((item) => item.status === false));
+      setStagePayment(Payments?.filter((item) => item.status === false));
       SetStatus(() => status + 1);
     }
   };
@@ -40,7 +40,7 @@ const StaffsPayment = () => {
   useEffect(() => {
     getPayments().then((response) => {
       SetPayments(response);
-      setStagaPayment(response);
+      setStagePayment(response);
       console.log(response);
     });
     if (acc != null) {
@@ -78,12 +78,10 @@ const StaffsPayment = () => {
     0
   );
 
-  // Số tiền đang chờ chuyển (có thể giả định là số tiền của các khoản thanh toán có status là false)
   const pendingAmount = filteredPayments?.reduce((acc, payment) => {
     return payment.status === false ? acc + payment.price : acc;
   }, 0);
 
-  // Số tiền đã chuyển (có thể giả định là số tiền của các khoản thanh toán có status là true)
   const transferredAmount = filteredPayments?.reduce((acc, payment) => {
     return payment.status === true ? acc + payment.price : acc;
   }, 0);
@@ -182,7 +180,7 @@ const StaffsPayment = () => {
                         </th>
                         <th scope="col" className="px-4 py-3">
                           <div className="w-[100%] flex justify-end">
-                            Paymented Date
+                            Paid Date
                           </div>
                         </th>
                         <th scope="col" className="px-4 py-3 w-[280px]">

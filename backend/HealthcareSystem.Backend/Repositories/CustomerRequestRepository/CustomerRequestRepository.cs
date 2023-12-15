@@ -62,14 +62,12 @@ namespace HealthcareSystem.Backend.Repositories
         {
             return _mapper.Map<CustomerRequestDomain>(await GetAsync(x => x.RequestID == requestId, true, "Account,Staff,Payment,PolicyPackage"));
         }
-        public async Task<bool> AcceptCustomerRequest(int Accept)
+        public async Task<bool> AcceptCustomerRequest(int Accept,int StaffId)
         {
             var ctm_request = await GetAsync(x => x.RequestID == Accept,true, "PolicyPackage");
             if (ctm_request == null) throw new Exception("Request NULL");
-
-
             ctm_request.Status = "Pending Transfer";
-
+            ctm_request.StaffId = StaffId;
             var dataRequest = await GetCustomerRequestByIdAsync(ctm_request.RequestID);
             var month = 0;
             if (dataRequest.Periodic == "quarter") month = 3;

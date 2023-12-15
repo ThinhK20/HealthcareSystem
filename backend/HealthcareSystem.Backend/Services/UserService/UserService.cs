@@ -76,9 +76,9 @@ namespace HealthcareSystem.Backend.Services.UserService
         //    //int PhaseRecordUser = _hel
         //}
 
-        public async Task<bool> AcceptCustomerRequest(int Accept)
+        public async Task<bool> AcceptCustomerRequest(int Accept, int StaffId)
         {
-            return await _customerRequestRepository.AcceptCustomerRequest(Accept);
+            return await _customerRequestRepository.AcceptCustomerRequest(Accept,StaffId);
         }
         public async Task<bool> RefusedCustomerRequest(int id)
         {
