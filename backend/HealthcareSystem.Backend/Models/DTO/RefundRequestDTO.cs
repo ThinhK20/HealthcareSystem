@@ -2,6 +2,7 @@
 {
     public class RefundRequestDTO
     {
+        public int? RefundID { get; set; }
         public int? InsureId { get; set; }
         public DateTime? DateSend { get; set; } = DateTime.Now;
         public DateTime? DateRefund { get; set; }

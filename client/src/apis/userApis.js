@@ -1,9 +1,7 @@
 import axios from "axios";
 
-const API_URL = "https://localhost:44384/api";
+const API_URL = "https://localhost:44384/";
 
-export const getAllCustomerRequestsApi = async (cancelToken) => {
-   return await axios.get(API_URL + "/users/customerRequests", {
-      cancelToken: cancelToken,
-   });
+export const deleteAccountApi = async (accountId) => {
+   return await axios.delete(API_URL + "/delete/" + accountId);
 };

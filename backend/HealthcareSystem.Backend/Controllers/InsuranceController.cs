@@ -1,4 +1,5 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories.InsuranceRepository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,44 @@ namespace HealthcareSystem.Backend.Controllers
             try
             {
                 return Ok(await _insuranceRepository.GetInsuranceByIdAsync(insuranceId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{insuranceId:int}")]
+        public async Task<ActionResult<InsuranceDomain>> Delete([FromRoute] int insuranceId)
+        {
+            try
+            {
+                return Ok(await _insuranceRepository.Delete(insuranceId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<InsuranceDomain>> Create([FromBody] InsuranceDTO data)
+        {
+            try
+            {
+                return Ok(await _insuranceRepository.CreateInsurance(data));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut]
+        public async Task<ActionResult<InsuranceDomain>> Update([FromBody] InsuranceUpdateDTO data)
+        {
+            try
+            {
+                return Ok(await _insuranceRepository.UpdateInsurance(data));
             }
             catch (Exception ex)
             {

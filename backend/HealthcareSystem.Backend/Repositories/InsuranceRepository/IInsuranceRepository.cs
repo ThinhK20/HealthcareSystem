@@ -1,4 +1,5 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 
 namespace HealthcareSystem.Backend.Repositories.InsuranceRepository
@@ -7,5 +8,10 @@ namespace HealthcareSystem.Backend.Repositories.InsuranceRepository
     {
         public Task<List<InsuranceDomain>> GetAllInsurancesAsync();
         public Task<InsuranceDomain> GetInsuranceByIdAsync(int insuranceId);
+
+        public Task<InsuranceDomain> Delete(int insuranceId);
+        public Task<InsuranceDTO> CreateInsurance(Models.DTO.InsuranceDTO data);
+        public Task<InsuranceUpdateDTO> UpdateInsurance(Models.DTO.InsuranceUpdateDTO data);
+
     }
 }

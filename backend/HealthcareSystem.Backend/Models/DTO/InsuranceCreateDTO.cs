@@ -4,6 +4,6 @@
     {
         public string RegisterPlace { get; set; }
         public string CardOpenDate { get; set; }
-        public string UserID { get; set; }
+        public string AccountId { get; set; }
     }
 }

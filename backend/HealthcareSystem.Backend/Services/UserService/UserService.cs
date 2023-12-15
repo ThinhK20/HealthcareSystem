@@ -103,5 +103,9 @@ namespace HealthcareSystem.Backend.Services.UserService
         {
           return _userRepository.GetUserByAccount(AccountId);
         }
+        public Task<List<UserDTO>> GetAllUsers()
+        {
+            return _userRepository.GetAllUsers();
+        }
     }
 }

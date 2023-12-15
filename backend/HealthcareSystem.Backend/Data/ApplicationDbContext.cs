@@ -41,6 +41,12 @@ namespace HealthcareSystem.Backend.Data
                 .HasForeignKey<Account>(a => a.UserId)
                 .IsRequired(false);
 
+            modelBuilder.Entity<Account>()
+                    .HasOne(a => a.Insurance)
+                    .WithOne(c => c.Account)
+                    .HasForeignKey<Insurance>(b => b.AccountId);
+
+
 
             modelBuilder.Entity<Account>()
                 .HasMany(a => a.CustomerInquiries)
@@ -64,10 +70,7 @@ namespace HealthcareSystem.Backend.Data
                .HasForeignKey(c => c.RequestId);
 
 
-            modelBuilder.Entity<Account>()
-              .HasOne(a => a.Insurance)
-              .WithOne(c => c.Account)
-              .HasPrincipalKey<Insurance>(a => a.UserID);
+          
 
 
             modelBuilder.Entity<PolicyPackage>()

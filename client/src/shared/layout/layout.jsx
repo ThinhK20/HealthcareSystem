@@ -9,10 +9,10 @@ const LayoutRoute = ({ element }) => {
             <header className="flex justify-center">
                 <Navbar></Navbar>
             </header>
-            <div className="min-h-[90vh] w-[100%] container mx-auto flex p-5 ">
-                <div className="container mx-auto flex ">
+            <div className="min-h-[90vh] w-[100%] container mx-auto flex">
+                <div className="container mx-auto flex">
                     {element}
-                </div>
+                </div>  
             </div>
             <footer>
                 <Footer></Footer>

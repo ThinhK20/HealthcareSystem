@@ -5,17 +5,16 @@ const year = new Date().getFullYear();
 
 export function Footer({ title, description, socials, menus, copyright }) {
    return (
-      <footer className="relative px-4 pt-8 pb-6  ">
+      <footer className="relative px-4 pt-8 pb-6 text-[black] ">
+         
          <div className="container mx-auto">
-            <div className="flex flex-wrap pt-6 text-center lg:text-left border-t-[1px] border-gray-300">
+            <div className="flex flex-wrap pt-6 text-center lg:text-left border-t-2 border-gray-300">
                <div className="w-full px-4 lg:w-6/12">
-                  <Typography variant="h4" className="mb-4" color="blue-gray">
+                  <img className='lg:mx-[20px] mx-auto' width={150} src="https://cdn.discordapp.com/attachments/1160172654825840763/1182624713445474314/5fa7ceca-d37d-46c7-9095-412d10fdfdcb-removebg-preview.png?ex=65856017&is=6572eb17&hm=611614dd184c7058387e271965d269332dc9cb820e560f4a4d515bea8bbe787a&" alt="" />
+                  <Typography variant="h5" className="mb-4 font-serif" color="blue-gray" >
                      {title}
                   </Typography>
-                  <Typography className="font-normal text-blue-gray-500 lg:w-2/5">
-                     {description}
-                  </Typography>
-                  <div className="mx-auto mt-6 mb-8 flex justify-center gap-2 md:mb-0 lg:justify-start">
+                  <div className="mx-auto flex justify-center gap-2 md:mb-0 lg:justify-start">
                      {socials.map(({ color, name, path }) => (
                         <a
                            key={name}
@@ -35,7 +34,7 @@ export function Footer({ title, description, socials, menus, copyright }) {
                      ))}
                   </div>
                </div>
-               <div className="mx-auto mt-12 grid w-max grid-cols-2 gap-24 lg:mt-0">
+               <div className="mx-auto mt-12 grid w-max grid-cols-2 gap-24 lg:mt-[20px]">
                   {menus.map(({ name, items }) => (
                      <div key={name}>
                         <Typography
@@ -67,7 +66,7 @@ export function Footer({ title, description, socials, menus, copyright }) {
             </div>
             <hr className="my-6 border-gray-300" />
             <div className="flex flex-wrap items-center justify-center md:justify-between">
-               <div className="mx-auto w-full px-4 text-center">
+               <div className="mx-auto w-full text-center">
                   <Typography
                      variant="small"
                      className="font-normal text-blue-gray-500"
@@ -82,7 +81,7 @@ export function Footer({ title, description, socials, menus, copyright }) {
 }
 
 Footer.defaultProps = {
-   title: "Healthcare System",
+   title: "HEALTIH Solutions",
    description:
       "Easy to use React components for Tailwind CSS and Material Design.",
    socials: [
@@ -150,7 +149,7 @@ Footer.defaultProps = {
    ],
    copyright: (
       <>
-         Copyright © {year} Healthcare System by{" "}
+         Copyright © {year} HEALTIH Solutions by{" "}
          <a
             href="https://www.creative-tim.com?ref=mtk"
             target="_blank"

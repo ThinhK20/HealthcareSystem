@@ -12,7 +12,7 @@ public class Insurance
 
     public string CardOpenDate { get; set; }
 
-    public string UserID { get; set; }
+    public int AccountId { get; set; }
 
     public virtual Account Account { get; set; }
     public virtual ICollection<InsuranceDetail>? InsuranceDetails { get; set; }

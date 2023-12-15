@@ -1,51 +1,50 @@
-import { useEffect, useRef } from "react";
+import {  useRef } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import {  useEffect, useState } from "react";
 
-export default function Form() {
+export default function FormCreate() {
    const navigateTo = useNavigate();
    const location = useLocation();
    const { state } = location;
-   const status = state?.status || "create";
-   const id = state?.id || "";
-   const name = state?.name || "";
-   const description = state?.description || "";
+   const userNoInsuarance = state?.userNoInsuarance;
    const authFetch = axios.create({
       baseURL: "https://localhost:44384/api",
    });
-   const nameRef = useRef();
-   const descriptionRef = useRef();
+   const authFetchAccount = axios.create({
+      baseURL: "https://localhost:44384/",
+   });
+    const [selectedUserId, setSelectedUserId] = useState(0);
+
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedUserId(selectedValue);
+
+    // You can perform additional actions with the selected value if needed
+    console.log('Selected User ID:', selectedValue);
+  };
+   const registerPlaceRef = useRef();
+   const cardOpenDateRef = useRef();
    const handleSubmit = async (e) => {
       e.preventDefault();
-      const data_update = {
-         policyID: id,
-         name: nameRef.current.value,
-         description: descriptionRef.current.value,
-      };
-      const data_create = {
-         name: nameRef.current.value,
-         description: descriptionRef.current.value,
-      };
-      if (status === "create") {
-         const api_create = await authFetch.post(
-            `/InsuarancePolicy`,
-            data_create
-         );
-         console.log(11111111111, api_create);
-      } else {
-         const api_update = await authFetch.put(
-            `/InsuarancePolicy`,
-            data_update
-         );
-         console.log(22222222222, api_update);
+      const accountid = await authFetchAccount.get(
+         `/getAccountIdByUserID/`+ selectedUserId
+      );
+      const data = {
+         registerPlace: registerPlaceRef.current.value,
+         cardOpenDate: cardOpenDateRef.current.value,
+         accountId: accountid.data
       }
-      const message =
-         status === "create"
-            ? "Create successfully !"
-            : "Update successfully !";
-      toast.success(message, {
+      console.log("Submitttttttt: ", data)
+      const api = await authFetch.post(
+         `/insurances`,
+         data
+      );
+      console.log(22222222222, api);
+      
+      toast.success("Success", {
          position: "top-right",
          autoClose: 2000,
          hideProgressBar: false,
@@ -54,28 +53,25 @@ export default function Form() {
          draggable: true,
       });
       setTimeout(() => {
-         navigateTo("/table-insurance-management");
+         navigateTo("/insurances");
       }, 3000);
+      
    };
    useEffect(() => {
-      console.log(descriptionRef);
+       console.log(userNoInsuarance, 66666666)
    }, []);
-   const title =
-      status === "create"
-         ? `Create an Insurance Policy`
-         : `Update ${description}`;
-   const title_btn = status === "create" ? "Create" : "Update";
+   
 
    return (
       <>
-         <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+        <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 w-full">
             <div className="relative py-3 sm:max-w-xl sm:mx-auto">
                <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
                   <div className="max-w-md mx-auto">
                      <div className="flex items-center space-x-5">
                         <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
                            <h2 className="leading-relaxed text-blue-600">
-                              {title}
+                              Create a new insurance
                            </h2>
                         </div>
                      </div>
@@ -88,18 +84,15 @@ export default function Form() {
                                     name="name"
                                     id="name"
                                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                    placeholder="Please enter the name of insuarance policy"
                                     required
-                                    defaultValue={
-                                       status === "create" ? " " : name
-                                    }
-                                    ref={nameRef}
+                                    ref={registerPlaceRef}
+                                  
                                  />
                                  <label
                                     htmlFor="name"
                                     className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                                  >
-                                    Name
+                                    Register Place
                                  </label>
                               </div>
                               <div className="relative z-0 w-full mb-5 group">
@@ -108,18 +101,31 @@ export default function Form() {
                                     name="description"
                                     id="description"
                                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                    placeholder="Please enter the description of insuarance policy"
-                                    ref={descriptionRef}
-                                    defaultValue={
-                                       status === "create" ? " " : description
-                                    }
+                                    ref = {cardOpenDateRef}
                                     required
                                  />
                                  <label
                                     htmlFor="description"
                                     className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                                  >
-                                    Description
+                                    Card Open Date
+                                 </label>
+                              </div>
+                              <div className="relative z-0 w-full mb-5 group pt-5">
+                              <select value={selectedUserId} onChange={handleSelectChange} id="underline_select" className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                                 <option  value="" disabled selected>Choose a user</option>
+                                 
+                                 {userNoInsuarance.map(user => (
+                                 <option key={user.userId} value={user.userId}>
+                                    {user.fullname}
+                                 </option>
+                              ))}
+                                                            </select>
+                                 <label
+                                    htmlFor="description"
+                                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                                 >
+                                   Choose Users
                                  </label>
                               </div>
                            </form>
@@ -130,7 +136,7 @@ export default function Form() {
                               onClick={handleSubmit}
                               className="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
                            >
-                              {title_btn}
+                              Create
                            </button>
                         </div>
                      </div>

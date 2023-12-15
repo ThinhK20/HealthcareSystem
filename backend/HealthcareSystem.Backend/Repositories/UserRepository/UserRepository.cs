@@ -5,6 +5,7 @@ using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
+using System.Collections.Generic;
 
 namespace HealthcareSystem.Backend.Repositories
 {
@@ -54,6 +55,11 @@ namespace HealthcareSystem.Backend.Repositories
                 throw new Exception("dont find user");
             }
           
+        }
+        public async Task<List<UserDTO>> GetAllUsers()
+        {
+            var users = await GetAllAsync();
+            return _mapper.Map<List<UserDTO>>(users);
         }
     }
 }

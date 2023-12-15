@@ -34,7 +34,8 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
-                return Ok(await _refundRequestService.GetAllRefundRequestsAsync());
+                var result = await _refundRequestService.GetAllRefundRequestsAsync();
+                return Ok(result.OrderByDescending(rr => rr.DateSend));
             }
             catch (Exception ex)
             {
@@ -48,6 +49,19 @@ namespace HealthcareSystem.Backend.Controllers
             try
             {
                 return Ok(await _refundRequestService.GetRefundRequestByIdAsync(refundId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult<RefundRequestDomain>> GetRefundRequestByAccountId([FromQuery(Name = "accountId")] int accountId)
+        {
+            try
+            {
+                var result = await _refundRequestService.GetRefundRequestByAccountIdAsync(accountId);
+                return Ok(result.OrderByDescending(rr => rr.DateSend));
             }
             catch (Exception ex)
             {
@@ -87,6 +101,19 @@ namespace HealthcareSystem.Backend.Controllers
             try
             {
                 return Ok(await _refundRequestService.PendingRefundRequestByIdAsync(refundId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateRefundRequest([FromForm] RefundRequestDTO refundRequestDTO)
+        {
+            try
+            {
+                return Ok(await _refundRequestService.UpdateRefundRequestAsync(refundRequestDTO));
             }
             catch (Exception ex)
             {

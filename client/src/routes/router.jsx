@@ -1,31 +1,25 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
-import Login from "../components/login/login";
+import Login from "../pages/login/login";
 import LayoutRoute from "../shared/layout/layout";
-import TableInsuranceManagement from "../components/insuarancePolices/table-insurance-management";
-import ConfirmNotification from "../components/insuarancePolices/delete-confirmation";
-import Form from "../components/insuarancePolices/form";
+import TableInsuranceManagement from "../pages/insuarancePolices/table-insurance-management";
+import ConfirmNotification from "../pages/insuarancePolices/delete-confirmation";
+import Form from "../pages/insuarancePolices/form";
 import RegisterInsurance from "../components/register-insurance/register-insurance";
-import StaffsPayment from "../pages/staffs/payment";
-import StaffRequestDetail from "../pages/staffs/request-detail";
 import CheckOut from "../components/payment/checkout";
-import CustomerRequestManagement from "../pages/customers/manage-requests";
-import CustomerRequestForm from "../pages/customers/customer-request-form";
-import RefundRequestForm from "../pages/customers/RefundRequestForm";
 import Page404 from "../pages/Error/page404";
-import Register from "../components/login/register";
-import { RefundRequestManagement } from "../pages/staffs/manage-refund-request";
-import FormCreateNewStaff from "../pages/staffs/createStaffAccount";
-import RefundRequestDetails from "../pages/staffs/refund-request-details";
-import EditInformation from "../pages/users/edit-information";
-import EditAccount from "../pages/users/edit-account";
-import EmailVerify from "../components/login/emailverify";
-import ConfirmPayment from "../components/payment/confirmPayment";
-
+import Register from "../pages/login/register";
+import EmailVerify from "../pages/login/emailverify";
+import Home from "../pages/general/home";
+import LayoutIndexRoute from "../shared/layout/layoutIndex";
+import { UserRoutes } from "./users-router";
+import { StaffRoutes } from "./staffs-router";
+import Insurance from "../pages/insurances/insurance";
+import FormUpdate from "../pages/insurances/form-update";
+import FormCreate from "../pages/insurances/form-create";
 export const router = createBrowserRouter([
    {
       path: "/",
-      element: <LayoutRoute element={<App />}></LayoutRoute>,
+      element: <LayoutIndexRoute element={<Home />}></LayoutIndexRoute>,
    },
    {
       path: "/login",
@@ -41,12 +35,29 @@ export const router = createBrowserRouter([
    },
 
    {
-      path: "/table-insurance-management",
+      path: "staffs/table-insurance-management",
       element: (
          <LayoutRoute element={<TableInsuranceManagement />}></LayoutRoute>
       ),
    },
-
+   {
+      path: "/insurances",
+      element: (
+         <LayoutRoute element={<Insurance />}></LayoutRoute>
+      ),
+   },
+   {
+      path: "/insurances/edit",
+      element: (
+         <LayoutRoute element={<FormUpdate />}></LayoutRoute>
+      ),
+   },
+   {
+      path: "/insurances/create",
+      element: (
+         <LayoutRoute element={<FormCreate />}></LayoutRoute>
+      ),
+   },
    {
       path: "/edit-form",
       // element: <LayoutRoute element={<EditForm />}></LayoutRoute>,
@@ -67,62 +78,11 @@ export const router = createBrowserRouter([
       element: <LayoutRoute element={<RegisterInsurance />}></LayoutRoute>,
    },
    {
-      path: "staff/payment",
-      element: <LayoutRoute element={<StaffsPayment />}></LayoutRoute>,
-   },
-   {
-      path: "staff/request-detail/:id",
-      element: <LayoutRoute element={<StaffRequestDetail />}></LayoutRoute>,
-   },
-   {
-      path: "staffs/create-staff-account/",
-      element: <LayoutRoute element={<FormCreateNewStaff />}></LayoutRoute>,
-   },
-
-   {
-      path: "/payment",
+      path: "/payment/checkout",
       element: <LayoutRoute element={<CheckOut />}></LayoutRoute>,
    },
-   {
-      path: "/payment/completePayment",
-      element: <LayoutRoute element={<ConfirmPayment />}></LayoutRoute>,
-   },
-   {
-      path: "/staffs/refund-requests",
-      element: (
-         <LayoutRoute element={<RefundRequestManagement />}></LayoutRoute>
-      ),
-   },
-   {
-      path: "/staffs/refund-requests/:id",
-      element: <LayoutRoute element={<RefundRequestDetails />}></LayoutRoute>,
-   },
-   {
-      path: "/users/edit-information",
-      element: (
-         <LayoutRoute element={<EditInformation />}></LayoutRoute>
-      ),
-   },
-   {
-      path: "/users/edit-account",
-      element: (
-         <LayoutRoute element={<EditAccount />}></LayoutRoute>
-      ),
-   },
-   {
-      path: "/users/customer-requests",
-      element: (
-         <LayoutRoute element={<CustomerRequestManagement />}></LayoutRoute>
-      ),
-   },
-   {
-      path: "/users/customer-requests/create",
-      element: <LayoutRoute element={<CustomerRequestForm />}></LayoutRoute>,
-   },
-   {
-      path: "/users/refund-requests/create",
-      element: <LayoutRoute element={<RefundRequestForm />}></LayoutRoute>,
-   },
+   ...UserRoutes,
+   ...StaffRoutes,
    {
       path: "*",
       element: <Page404></Page404>,

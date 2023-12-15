@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace HealthcareSystem.Backend.Controllers
 {
@@ -19,7 +19,7 @@ namespace HealthcareSystem.Backend.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("createCustomerRequest")]
+        [HttpPost("customerRequests/create")]
         public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequestCreateDTO customerRequest)
         {
             try
@@ -59,7 +59,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost("AcceptRequest/{id:int}")]
-        public async Task<IActionResult> AcceptRequest([FromRoute(Name = "id")] int requestID ) 
+        public async Task<IActionResult> AcceptRequest([FromRoute(Name = "id")] int requestID)
         {
             try
             {
@@ -104,6 +104,19 @@ namespace HealthcareSystem.Backend.Controllers
             catch (Exception ex)
             {
                 return NotFound(ex.Message);
+            }
+        }
+        [HttpGet("getAll")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var result = await _userService.GetAllUsers();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

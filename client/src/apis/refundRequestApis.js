@@ -11,8 +11,22 @@ export const createNewRefundRequestApi = async (submitData) => {
    });
 };
 
+export const updateRefundRequestApi = async (submitData) => {
+   return await axios.put(API_URL + "/refund-requests/update", submitData, {
+      headers: {
+         "Content-Type": "multipart/form-data",
+      },
+   });
+};
+
 export const getAllRefundRequestsApi = async () => {
    return await axios.get(API_URL + "/refund-requests/all");
+};
+
+export const getAllRefundRequestByUserIdApi = async (userId, cancelToken) => {
+   return await axios.get(API_URL + "/refund-requests?accountId=" + userId, {
+      cancelToken: cancelToken,
+   });
 };
 
 export const getRefundRequestApiById = async (id) => {

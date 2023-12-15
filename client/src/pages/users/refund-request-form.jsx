@@ -121,7 +121,7 @@ export default function RefundRequestForm() {
          </Button>
          <Button>
             <Link
-               to="/users/customer-requests"
+               to="/users/refund-requests"
                className="py-2.5 hover:opacity-70"
             >
                Cancel
