@@ -11,7 +11,11 @@ import {
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
+import {
+   faEye,
+   faPencil,
+   faPlusCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -81,6 +85,17 @@ export function CustomerRefundRequestManagement() {
                      These are details about your refund requests to HealthCare
                      System Company
                   </Typography>
+               </div>
+               <div className="flex w-full shrink-0 gap-2 md:w-max">
+                  <Button size="sm">
+                     <Link
+                        to={"/users/refund-requests/create"}
+                        className="flex items-center gap-3"
+                     >
+                        <FontAwesomeIcon icon={faPlusCircle} size="2xl" />
+                        New
+                     </Link>
+                  </Button>
                </div>
             </div>
          </CardHeader>

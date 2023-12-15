@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import { getAllCustomerRequestsApi } from "../../apis/customerRequestApis";
 import { formatMoney } from "../../helpers/dataHelper";
 const TABLE_HEAD = [
+   "Request Id",
    "User",
    "Staff",
    "Price",
@@ -129,6 +130,17 @@ export default function CustomerRequestManagement() {
                      return (
                         <tr key={index}>
                            <td className={classes}>
+                              <div className="flex items-center  gap-3">
+                                 <Typography
+                                    variant="small"
+                                    color="blue-gray"
+                                    className="font-bold"
+                                 >
+                                    {tableRow.requestID}
+                                 </Typography>
+                              </div>
+                           </td>
+                           <td className={classes}>
                               <div className="flex items-center gap-3">
                                  <Avatar
                                     src={tableRow.img}
@@ -147,8 +159,7 @@ export default function CustomerRequestManagement() {
                            </td>
                            <td className={classes}>
                               <div className="flex items-center gap-3">
-                                 {tableRow.status ===
-                                    "Pending Confirmation" && (
+                                 {tableRow?.staff && (
                                     <>
                                        <Avatar
                                           src="https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg"
@@ -161,7 +172,7 @@ export default function CustomerRequestManagement() {
                                           color="blue-gray"
                                           className="font-bold"
                                        >
-                                          {tableRow.user.username}
+                                          {tableRow.staff?.username}
                                        </Typography>
                                     </>
                                  )}
@@ -207,8 +218,8 @@ export default function CustomerRequestManagement() {
                                     value={tableRow.status}
                                     color={
                                        tableRow.status === "Pending Transfer"
-                                          ? "amber"
-                                          : "green"
+                                          ? "green"
+                                          : "amber"
                                     }
                                  />
                               </div>
