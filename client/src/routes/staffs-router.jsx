@@ -6,6 +6,7 @@ import { RefundRequestManagement } from "../pages/staffs/manage-refund-request";
 import RefundRequestDetails from "../pages/staffs/refund-request-details";
 import TableInsuranceManagement from "../components/register-insurance/register-insurance";
 import { ManageAccount } from "../pages/staffs/manage-account";
+import StaffCustomerRequestManagement from "../pages/staffs/manage-requests";
 export const StaffRoutes = [
    {
       path: "staffs/payment",
@@ -22,6 +23,10 @@ export const StaffRoutes = [
    {
       path: "/staffs/refund-requests",
       element: <LayoutRoute element={<RefundRequestManagement />} />,
+   },
+   {
+      path: "/staffs/customer-requests",
+      element: <LayoutRoute element={<StaffCustomerRequestManagement />} />,
    },
    {
       path: "/staffs/refund-requests/:id",
