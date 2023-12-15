@@ -55,7 +55,8 @@ namespace HealthcareSystem.Backend
                 .ForMember(dest => dest.ExpirationDate, opt => opt.MapFrom(src => src.ExpirationDate))
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId));
+                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
+                .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Note));
 
             CreateMap<InsuarancePolicyCreateDTO, InsurancePolicy>();
 

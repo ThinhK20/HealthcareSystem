@@ -11,6 +11,7 @@ namespace HealthcareSystem.Backend.Models.Domain
         public DateTime? ExpirationDate { get; set; }
         public double? Price { get; set; }
         public bool? Status { get; set; }
+        public string? Note {  get; set; }
         public CustomerRequestDTO? CustomerRequest { get; set; } = new();
 
     }

@@ -4,6 +4,7 @@ using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
+using HealthcareSystem.Backend.Models.PayPal;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 
 using System;
@@ -68,7 +69,8 @@ namespace HealthcareSystem.Backend.Repositories
 
         public async Task<CheckStatusPayPalReturnDomain> CheckStatusPayPal(CheckPayPalInfoDTO info)
         {
-            PayPalCheckDomain paymentInfo = _mapper.Map<PayPalCheckDomain>(await GetAsync(x => (x.PaymentId == info.PaymentId && x.RequestId == info.RequestId && x.CreatedDate <= info.SendTime && x.ExpirationDate >= info.SendTime && x.Status == false)));
+            DateTime timeCheck = DateTime.Now;
+            PayPalCheckDomain paymentInfo = _mapper.Map<PayPalCheckDomain>(await GetAsync(x => (x.PaymentId == info.PaymentId && x.RequestId == info.RequestId && x.CreatedDate <= timeCheck && x.ExpirationDate >= timeCheck && x.Status == false)));
             if (paymentInfo == null) return new CheckStatusPayPalReturnDomain() { status = "null" };
             else
             {
@@ -109,6 +111,21 @@ namespace HealthcareSystem.Backend.Repositories
             listPayment = listPayment.FindAll(payment => payment.CustomerRequest.AccountId == AccountId);
             var result = _mapper.Map<List<PaymentOfUserDTO>>(listPayment);
             return result;
+        }
+        public async Task<Payment> findPaymentByToken(string token)
+        {
+            var query = await GetAsync(x=>x.idPayPal == token);
+            return query;
+        }
+
+        public async Task<int> UpdatePayPalComplete(string token, DateTime updatedDate)
+        {
+            var query = await GetAsync(x => x.idPayPal == token);
+            if (query == null) throw new Exception("Payment not found");
+            query.Status = true;
+            query.UpdatedDate = updatedDate;
+            await UpdateAsync(query);
+            return 1;
         }
     }
 }

@@ -63,7 +63,7 @@ namespace HealthcareSystem.Backend.Repositories
         }
         public async Task<bool> AcceptCustomerRequest(int Accept)
         {
-            var ctm_request = await GetAsync(x => x.RequestID == Accept);
+            var ctm_request = await GetAsync(x => x.RequestID == Accept,true, "PolicyPackage");
             if (ctm_request == null) throw new Exception("Request NULL");
 
 
@@ -88,6 +88,7 @@ namespace HealthcareSystem.Backend.Repositories
                     UpdatedDate = null,
                     LinkCheckOut = null,
                     PaypalEmail = null,
+                    Note = $"Payment {i+1} of {n} for {ctm_request.PolicyPackage.Name}"
                 };
                 await _paymentService.CreatePayment(pay);
             }

@@ -106,12 +106,12 @@ namespace HealthcareSystem.Backend.Utils
                 application_context = new ApplicationContext()
                 {
                     cancel_url = returnPath,
-                    return_url = $"{returnPath}/completePayment"
+                    return_url = $"{returnPath}/payment/completePayment"
                 }
             };
             return paypalData;
         }
-        private async Task<bool> ConfirmPaymentPalpal(string token,string linkPayPal, string _tokenPaypal)
+        public async Task<bool> ConfirmPaymentPalpal(string token,string linkPayPal, string _tokenPaypal)
         {
             string baseUrl = $"{linkPayPal}/v2/checkout/orders/{token}/capture";
             using (HttpClient client = new HttpClient())

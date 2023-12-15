@@ -16,5 +16,6 @@ namespace HealthcareSystem.Backend.Services.PaymentService
         Task<PaymentDomain> GetPaymentIdAsync(int PaymentId);
         Task<string> GetCheckOutLink(CheckPayPalInfoDTO info);
         Task<List<PaymentOfUserDTO>> GetPaymentByUserID(int AccountID);
+        Task<bool> ConfirmPayment(string token, string PayerID);
     }
 }

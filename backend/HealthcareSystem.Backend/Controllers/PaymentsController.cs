@@ -179,5 +179,19 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("ConfirmPayment")]
+        public async Task<IActionResult> ConfirmPayment(string token, string PayerID)
+        {
+            try
+            {
+                var test = await _paymentRepository.ConfirmPayment(token,PayerID);
+                if (test == true) return Ok("Done");
+                else return BadRequest("Error");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

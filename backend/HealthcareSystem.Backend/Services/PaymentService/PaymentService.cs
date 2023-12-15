@@ -7,6 +7,8 @@ using Microsoft.VisualBasic;
 using HealthcareSystem.Backend.Utils;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using HealthcareSystem.Backend.Models.PayPal;
+using Newtonsoft.Json.Linq;
+using CloudinaryDotNet.Actions;
 
 namespace HealthcareSystem.Backend.Services.PaymentService
 {
@@ -18,7 +20,7 @@ namespace HealthcareSystem.Backend.Services.PaymentService
         private readonly IConfiguration _configuration;
         private readonly PayPalSettingDomain _payPalSetting;
 
-        public PaymentService(IConfiguration configuration,IPaymentRepository services, IUserRepository customerRequestRepository, IUserService userService)
+        public PaymentService(IConfiguration configuration, IPaymentRepository services, IUserRepository customerRequestRepository, IUserService userService)
         {
             _configuration = configuration;
             _services = services;
@@ -35,7 +37,7 @@ namespace HealthcareSystem.Backend.Services.PaymentService
             if (dataRequest.Periodic == "quarter ") month = 3;
             if (dataRequest.Periodic == "half year") month = 6;
             if (dataRequest.Periodic == "year") month = 12;
-            if (month==0)  throw new Exception("request not activity.");
+            if (month == 0) throw new Exception("request not activity.");
             for (var i = 0; i < month; i++)
             {
                 Payment pay = new Payment
@@ -90,14 +92,14 @@ namespace HealthcareSystem.Backend.Services.PaymentService
             else if (resultCheck.status == "No Link")
             {
                 //Create Link checkout and add to db
-                string tokenPaypal = await _payPalModule.GetToken(_payPalSetting.username,_payPalSetting.password,_payPalSetting.link);
+                string tokenPaypal = await _payPalModule.GetToken(_payPalSetting.username, _payPalSetting.password, _payPalSetting.link);
                 DateTime createdDate = DateTime.Now;
-                CreateOrderReturn data = await _payPalModule.CreateOrder(_payPalSetting.link,tokenPaypal, (double)resultCheck.Price, _payPalSetting.returnPath);
+                CreateOrderReturn data = await _payPalModule.CreateOrder(_payPalSetting.link, tokenPaypal, (double)resultCheck.Price, _payPalSetting.returnPath);
                 //Store to DB: Payment
                 await _services.UpdatePayPalInfo(info.PaymentId, createdDate, data.id, data.links[1].href);
                 return data.links[1].href;
             }
-            else if(resultCheck.status == "Time expired")
+            else if (resultCheck.status == "Time expired")
             {
                 //Create new Link and add to db
                 string tokenPaypal = await _payPalModule.GetToken(_payPalSetting.username, _payPalSetting.password, _payPalSetting.link);
@@ -112,12 +114,30 @@ namespace HealthcareSystem.Backend.Services.PaymentService
             }
         }
 
+        public async Task<bool> ConfirmPayment(string token, string PayerID)
+        {
+            var resultCheck = await _services.findPaymentByToken(token);
+            if (resultCheck == null) throw new Exception("Error.");
+            string tokenPaypal = await _payPalModule.GetToken(_payPalSetting.username, _payPalSetting.password, _payPalSetting.link);
+            DateTime updatedDate = DateTime.Now;
+            bool result = await _payPalModule.ConfirmPaymentPalpal(token, _payPalSetting.link, tokenPaypal);
+            if (result == true)
+            {
+                await _services.UpdatePayPalComplete(token, updatedDate);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public async Task<List<PaymentOfUserDTO>> GetPaymentByUserID(int AccountID)
         {
             var temp = await _services.GetPaymentByUserId(AccountID);
             return temp;
         }
 
-        
+
     }
 }

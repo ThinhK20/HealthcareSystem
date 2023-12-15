@@ -18,5 +18,7 @@ namespace HealthcareSystem.Backend.Repositories
         Task<CheckStatusPayPalReturnDomain> CheckStatusPayPal(CheckPayPalInfoDTO info);
         Task<bool> UpdatePayPalInfo(int PaymentID, DateTime CreatedDate, string idPayPal, string linkCheckOut);
         Task<List<PaymentOfUserDTO>> GetPaymentByUserId(int Account);
+        Task<Payment> findPaymentByToken(string token);
+        Task<int> UpdatePayPalComplete(string token, DateTime updatedDate);
     }
 }

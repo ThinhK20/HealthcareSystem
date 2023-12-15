@@ -12,5 +12,6 @@
         public string? LinkCheckOut { get; set; }
         public bool? PaypalEmail { get; set; }
         public string? idPayPal { get; set; }
+        
     }
 }
