@@ -38,7 +38,7 @@ const StaffRequestDetail = () => {
   }, [reset]);
   const handleAccept = () => {
     axios
-      .post(`https://localhost:44384/api/users/AcceptRequest/${id}`)
+      .post(`https://localhost:44384/api/users/AcceptRequest?requestID=${id}&staffid=${1}`)
       .then(handleReset);
   };
   const handRefused = () => {
@@ -46,11 +46,11 @@ const StaffRequestDetail = () => {
       .post(`https://localhost:44384/api/users/RefusedRequest/${id}`)
       .then(handleReset);
   };
-  const handComplete = () => {
-    axios
-      .post(`https://localhost:44384/api/users/CompleteRequest/${id}`)
-      .then(handleReset);
-  };
+  // const handComplete = () => {
+  //   axios
+  //     .post(`https://localhost:44384/api/users/CompleteRequest/${id}`)
+  //     .then(handleReset);
+  // };
   const handleDropPaymet = () => {
     SetDropPaymet(!dropPayment);
   };
@@ -352,7 +352,7 @@ const StaffRequestDetail = () => {
                   Request Payment
                 </button>
               )}
-              {data?.status === "Pending Transfer" && (
+              {/* {data?.status === "Pending Transfer" && (
                 <button
                   onClick={handComplete}
                   className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-green-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dr:focus:outline-none dr:focus:ring-1 dr:focus:ring-gray-600"
@@ -373,7 +373,7 @@ const StaffRequestDetail = () => {
                   </svg>
                   Complete
                 </button>
-              )}
+              )} */}
             </div>
           </div>
         </div>
