@@ -1,71 +1,63 @@
 import { useState, useEffect } from "react";
 import RowTableStaffsPayment from "../../components/staffs/RowPayment";
-import Axios from "axios";
 import { FunnelIcon } from "@heroicons/react/24/outline";
+import { getPayments } from "../../apis/paymentApis";
 
 const CustomersPayment = () => {
-  const acc = 1;
-  const [stagePayment, setStagaPayment] = useState([]);
-  const [Payments, SetPayments] = useState([]);
-  const [reset, SetReset] = useState(true);
+  const accountId = 1;
+  const [filteredPayments, setFilteredPayments] = useState([]);
+  const [payments, setPayments] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [status, SetStatus] = useState(2);
+  const [status, setStatus] = useState(1);
   const [filterByPaymentId, setFilterByPaymentId] = useState(false);
   const [filterByRequestId, setFilterByRequestId] = useState(false);
-
-  const handleReset = () => {
-    SetReset(!reset);
-  };
 
   const findOrders = (value) => {
     setSearchValue(value);
   };
   const filterStatus = () => {
     if (status === 2) {
-      SetStatus(() => 0);
-      setStagaPayment(Payments.filter((item) => item.status === false));
+      setStatus(0);
+      setFilteredPayments(payments.filter((item) => item.status === false));
     } else {
-      SetStatus(() => status + 1);
+      setStatus(status + 1);
       if (status === 1) {
-        setStagaPayment(Payments.filter((item) => item.status === true));
+        setFilteredPayments(payments.filter((item) => item.status === true));
       } else {
-        setStagaPayment(Payments);
+        setFilteredPayments(payments);
       }
     }
   };
-  const GetPayments = () => {
-    Axios.get(
-      `https://localhost:44384/api/Payments/GetAllPaymentRequests`
-    ).then((response) => {
-      SetPayments(
-        response.data.filter((x) => x.customerRequest.accountId == acc)
+  const fetchPayments = () => {
+    getPayments().then((response) => {
+      const filteredResponse = response.filter(
+        (x) => x.customerRequest.accountId === accountId
       );
-      setStagaPayment(
-        response.data.filter((x) => x.customerRequest.accountId == acc)
-      );
-      console.log(response.data);
+      setPayments(filteredResponse);
+      setFilteredPayments(filteredResponse);
     });
   };
   useEffect(() => {
-    GetPayments();
-  }, [reset]);
+    fetchPayments();
+  }, []);
 
-  const filteredPayments = stagePayment.filter((item) => {
-    if (acc == null || searchValue == null) return;
-    const searchLower =
-      typeof searchValue === "string" ? searchValue.toLowerCase() : "";
-    const matchesSearch =
-      item.requestId.toString().toLowerCase().includes(searchLower) ||
-      item.paymentId.toString().toLowerCase().includes(searchLower);
+  useEffect(() => {
+    const searchLower = searchValue?.toLowerCase() || "";
+    const filteredPayments = payments.filter((item) => {
+      const matchesSearch =
+        item.requestId.toString().toLowerCase().includes(searchLower) ||
+        item.paymentId.toString().toLowerCase().includes(searchLower);
 
-    const matchesFilter =
-      (!filterByPaymentId ||
-        item.paymentId.toString().toLowerCase().includes(searchLower)) &&
-      (!filterByRequestId ||
-        item.requestId.toString().toLowerCase().includes(searchLower));
+      const matchesFilter =
+        (!filterByPaymentId ||
+          item.paymentId.toString().toLowerCase().includes(searchLower)) &&
+        (!filterByRequestId ||
+          item.requestId.toString().toLowerCase().includes(searchLower));
 
-    return matchesSearch && matchesFilter;
-  });
+      return matchesSearch && matchesFilter;
+    });
+    setFilteredPayments(filteredPayments);
+  }, [searchValue, filterByPaymentId, filterByRequestId]);
 
   return (
     <>
@@ -200,7 +192,6 @@ const CustomersPayment = () => {
                           <RowTableStaffsPayment
                             item={item}
                             key={item.paymentId}
-                            handleReset={handleReset}
                           />
                         );
                       })}

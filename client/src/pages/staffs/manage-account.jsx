@@ -18,7 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { getAccounts } from "../../apis/accountApis";
 import Statistic from "../../components/statistic/statistic";
 const TABLE_HEAD = ["Account ", "User", "Username ", "Role", "Status", ""];
 
@@ -27,9 +27,7 @@ export function ManageAccount() {
    const [tableRows, setTableRows] = useState([]);
 
    useEffect(() => {
-      axios
-         .get("https://localhost:44384/get-all-account")
-         .then((result) => setaccount(result.data));
+      getAccounts().then((result) => setaccount(result));
    }, []);
 
    useEffect(() => {
