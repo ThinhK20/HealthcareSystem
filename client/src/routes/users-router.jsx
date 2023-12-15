@@ -26,7 +26,7 @@ export const UserRoutes = [
       element: <LayoutRoute element={<CustomerRefundRequestManagement />} />,
    },
    {
-      path: "/users/requests-datail/:id",
+      path: "/users/requests-detail",
       element: <LayoutRoute element={<UserRequestDetail />} />,
    },
    {
