@@ -23,11 +23,11 @@ import Statistic from "../../components/statistic/statistic";
 const TABLE_HEAD = ["Account ", "User", "Username ", "Role", "Status", ""];
 
 export function ManageAccount() {
-   const [accounts, setaccount] = useState();
+   const [accounts, setAccount] = useState();
    const [tableRows, setTableRows] = useState([]);
 
    useEffect(() => {
-      getAccounts().then((result) => setaccount(result));
+      getAccounts().then((result) => setAccount(result));
    }, []);
 
    useEffect(() => {

@@ -38,7 +38,9 @@ const StaffRequestDetail = () => {
   }, [reset]);
   const handleAccept = () => {
     axios
-      .post(`https://localhost:44384/api/users/AcceptRequest?requestID=${id}&staffid=${1}`)
+      .post(
+        `https://localhost:44384/api/users/AcceptRequest?requestID=${id}&staffid=${1}`
+      )
       .then(handleReset);
   };
   const handRefused = () => {
@@ -62,7 +64,12 @@ const StaffRequestDetail = () => {
             <div className="flex flex-col p-4 sm:p-10 bg-white shadow-md rounded-xl dr:bg-gray-800">
               <div className="flex justify-between">
                 <div>
-                <img className='' width={90} src="https://cdn.discordapp.com/attachments/1160172654825840763/1182624713445474314/5fa7ceca-d37d-46c7-9095-412d10fdfdcb-removebg-preview.png?ex=65856017&is=6572eb17&hm=611614dd184c7058387e271965d269332dc9cb820e560f4a4d515bea8bbe787a&" alt="" />
+                  <img
+                    className=""
+                    width={90}
+                    src="https://cdn.discordapp.com/attachments/1160172654825840763/1182624713445474314/5fa7ceca-d37d-46c7-9095-412d10fdfdcb-removebg-preview.png?ex=65856017&is=6572eb17&hm=611614dd184c7058387e271965d269332dc9cb820e560f4a4d515bea8bbe787a&"
+                    alt=""
+                  />
 
                   <h1 className="mt-2 text-lg md:text-xl font-semibold text-blue-600 dr:text-white">
                     Healtih Solutions.
@@ -72,12 +79,24 @@ const StaffRequestDetail = () => {
                   <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 dr:text-gray-200">
                     Customer Request #{data?.requestID}
                   </h2>
-                  <span className="mt-1 block text-gray-500">
-                    Status:{" "}
-                    <span className="font-[600] text-[#274f66]">
-                      {data?.status}
+                  <div className=" text-gray-500 flex mt-3 justify-center"> 
+                  Status:{" "}
+                    <span className="font-[600] ml-3">
+               
+                      <Chip
+                        size="sm"
+                        variant="ghost"
+                        value={data?.status}
+                        color={
+                          data?.status === "Pending Transfer"
+                            ? "blue"
+                            : data?.status === "Pending Confirmation"
+                            ? "amber"
+                            : "green"
+                        }
+                      />
                     </span>
-                  </span>
+                  </div>
                   <div className="mt-4 not-italic text-gray-800 dr:text-gray-200"></div>
                 </div>
               </div>
@@ -206,7 +225,7 @@ const StaffRequestDetail = () => {
 
                           {/* Rate (You can customize this based on your data) */}
                           <div className="text-start">
-                            {formatDate(payment.expirationDate)}
+                            {formatDate(payment.updatedDate)}
                           </div>
 
                           {/* Amount (You can customize this based on your data) */}
@@ -307,25 +326,7 @@ const StaffRequestDetail = () => {
                   Refuse
                 </button>
               )}
-              {data?.status === "Pending Transfer" && (
-                <button className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dr:focus:outline-none dr:focus:ring-1 dr:focus:ring-gray-600">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                  Request Payment
-                </button>
-              )}
+             
               {/* {data?.status === "Pending Transfer" && (
                 <button
                   onClick={handComplete}

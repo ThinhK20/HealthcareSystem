@@ -1,11 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import {
    Typography,
    Button,
    IconButton,
-   Collapse, // Thêm import cho Collapse
+   Collapse, 
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon, HomeIcon } from "@heroicons/react/24/outline";
 
@@ -43,12 +43,12 @@ const routes = [
    // Add more route objects as needed
 ];
 
-export function Navbar({ brandName, action }) {
+export function Navbar({ action }) {
    const [openNav, setOpenNav] = React.useState(false);
 
    const navList = (
       <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 p-[5px] ">
-         {routes.map(({ name, path, icon }) => (
+         {routes.map(({ name, path }) => (
             <Typography
                key={name}
                as="li"
@@ -97,7 +97,7 @@ export function Navbar({ brandName, action }) {
             </Link>
             <div className="hidden lg:block">{navList}</div>
             <div className="hidden gap-2 lg:flex">
-               <a
+               <Link
                   href="https://www.material-tailwind.com/blocks?ref=mtkr"
                   target="_blank"
                >
@@ -109,7 +109,7 @@ export function Navbar({ brandName, action }) {
                   >
                      Sign Up
                   </Button>
-               </a>
+               </Link>
                {React.cloneElement(action, {
                   className: "hidden lg:inline-block",
                })}
@@ -131,7 +131,7 @@ export function Navbar({ brandName, action }) {
          <Collapse open={openNav} className=" rounded-lg ">
             <div className="container mx-auto rounded-xl">
                {navList}
-               <a
+               <Link
                   href="https://www.material-tailwind.com/blocks/react?ref=mtkr"
                   target="_blank"
                   className="mb-2 block"
@@ -139,7 +139,7 @@ export function Navbar({ brandName, action }) {
                   <Button variant="text" size="sm" fullWidth>
                      Sign Up
                   </Button>
-               </a>
+               </Link>
                {React.cloneElement(action, {
                   className: "w-full block",
                })}
@@ -152,7 +152,7 @@ export function Navbar({ brandName, action }) {
 Navbar.defaultProps = {
    brandName: "HEALTIH Solutions",
    action: (
-      <a href="" target="_blank">
+      <Link href="" target="_blank">
          <Button
             variant="gradient"
             size="sm"
@@ -160,7 +160,7 @@ Navbar.defaultProps = {
          >
             Login
          </Button>
-      </a>
+      </Link>
    ),
 };
 
