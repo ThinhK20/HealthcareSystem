@@ -1,47 +1,48 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
-  Typography,
-  Button,
-  IconButton,
-  Collapse,
+   Typography,
+   Button,
+   IconButton,
+   Collapse,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon, HomeIcon } from "@heroicons/react/24/outline";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFaceAngry, faFaceGrimace, faPhone } from "@fortawesome/free-solid-svg-icons";
 
 const routes = [
-  {
-    name: "Home",
-    path: "/",
-    icon: HomeIcon,
-  },
-  {
-    name: "Login",
-    path: "/login",
-    icon: HomeIcon,
-  },
-  {
-    name: "Staff Customer Requests",
-    path: "/staffs/customer-requests",
-    icon: HomeIcon,
-  },
-  {
-    name: "Customer Requests",
-    path: "/users/customer-requests",
-    icon: HomeIcon,
-  },
-  {
-    name: "Customer refund Requests",
-    path: "/users/refund-requests",
-    icon: HomeIcon,
-  },
-  {
-    name: "Staff refund Requests",
-    path: "/staffs/refund-requests",
-    icon: HomeIcon,
-  },
-  // Add more route objects as needed
+   {
+      name: "Create",
+      path: "/staffs/create-staff-account",
+      icon: HomeIcon,
+   },
+   {
+      name: "Accounts",
+      path: "/staffs/manage-account",
+      icon: HomeIcon,
+   },
+   {
+      name: "Staff Customer Requests",
+      path: "/staffs/customer-requests",
+      icon: HomeIcon,
+   },
+   {
+      name: "Customer Requests",
+      path: "/users/customer-requests",
+      icon: HomeIcon,
+   },
+   {
+      name: "Customer refund Requests",
+      path: "/users/refund-requests",
+      icon: HomeIcon,
+   },
+   {
+      name: "Staff refund Requests",
+      path: "/staffs/refund-requests",
+      icon: HomeIcon,
+   },
+   // Add more route objects as needed
 ];
 
 export function Navbar({ action }) {
