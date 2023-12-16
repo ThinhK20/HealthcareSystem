@@ -1,23 +1,23 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
    Typography,
    Button,
    IconButton,
-   Collapse, 
+   Collapse,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon, HomeIcon } from "@heroicons/react/24/outline";
 
 const routes = [
    {
-      name: "Home",
-      path: "/",
+      name: "Create",
+      path: "/staffs/create-staff-account",
       icon: HomeIcon,
    },
    {
-      name: "Login",
-      path: "/login",
+      name: "Accounts",
+      path: "/staffs/manage-account",
       icon: HomeIcon,
    },
    {
@@ -78,7 +78,7 @@ export function Navbar({ action }) {
    return (
       <div className="p-0 w-screen">
          <div className="flex items-center justify-between text-black bg-[#FFD000] w-full">
-            <Link to="/">
+            <Link to="/login">
                <Typography className="ml-4 cursor-pointer font-bold flex">
                   <img
                      className="w-[60px] h-[60px]"
@@ -97,10 +97,7 @@ export function Navbar({ action }) {
             </Link>
             <div className="hidden lg:block">{navList}</div>
             <div className="hidden gap-2 lg:flex">
-               <Link
-                  href="https://www.material-tailwind.com/blocks?ref=mtkr"
-                  target="_blank"
-               >
+               <Link to="/register" target="_blank">
                   <Button
                      variant="text"
                      size="sm"
@@ -131,11 +128,7 @@ export function Navbar({ action }) {
          <Collapse open={openNav} className=" rounded-lg ">
             <div className="container mx-auto rounded-xl">
                {navList}
-               <Link
-                  href="https://www.material-tailwind.com/blocks/react?ref=mtkr"
-                  target="_blank"
-                  className="mb-2 block"
-               >
+               <Link to="/register" target="_blank" className="mb-2 block">
                   <Button variant="text" size="sm" fullWidth>
                      Sign Up
                   </Button>
@@ -152,7 +145,7 @@ export function Navbar({ action }) {
 Navbar.defaultProps = {
    brandName: "HEALTIH Solutions",
    action: (
-      <Link href="" target="_blank">
+      <Link to="/login" target="_blank">
          <Button
             variant="gradient"
             size="sm"

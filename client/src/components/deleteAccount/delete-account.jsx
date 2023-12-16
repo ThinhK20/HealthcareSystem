@@ -5,6 +5,7 @@ import { Button, Modal, Box, Typography, Alert } from "@mui/material";
 import { useState } from "react";
 import { deleteAccountApi } from "../../apis/userApis";
 import { toast } from "react-toastify";
+import { IconButton } from "@material-tailwind/react";
 export const DeleteAccount = ({ accountId }) => {
    const [isOpen, setIsOpen] = useState(false);
 
@@ -27,9 +28,9 @@ export const DeleteAccount = ({ accountId }) => {
 
    return (
       <>
-         <Button onClick={handleOpen}>
+         <IconButton onClick={handleOpen}>
             <FontAwesomeIcon icon={faTrash} />
-         </Button>
+         </IconButton>
          <Modal
             open={isOpen}
             onClose={handleClose}
