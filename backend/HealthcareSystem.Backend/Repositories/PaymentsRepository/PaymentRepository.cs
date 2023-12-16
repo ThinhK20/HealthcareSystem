@@ -33,7 +33,7 @@ namespace HealthcareSystem.Backend.Repositories
             var query = await GetAsync(t => t.PaymentId == PaymentID);
             if (query == null) throw new Exception("Payment not found");
             query.Status = true;
-            query.UpdatedDate = DateTime.UtcNow;
+            query.UpdatedDate = DateTime.Now;
             await UpdateAsync(query);
             return true;
         }

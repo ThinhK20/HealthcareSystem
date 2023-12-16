@@ -21,8 +21,8 @@ const routes = [
       icon: HomeIcon,
    },
    {
-      name: "About Us",
-      path: "/about",
+      name: "Staff Customer Requests",
+      path: "/staffs/customer-requests",
       icon: HomeIcon,
    },
    {

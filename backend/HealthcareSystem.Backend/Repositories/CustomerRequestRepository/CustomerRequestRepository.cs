@@ -68,6 +68,7 @@ namespace HealthcareSystem.Backend.Repositories
             if (ctm_request == null) throw new Exception("Request NULL");
             ctm_request.Status = "Pending Transfer";
             ctm_request.StaffId = StaffId;
+            ctm_request.DateAccept = DateTime.Now;
             var dataRequest = await GetCustomerRequestByIdAsync(ctm_request.RequestID);
             var month = 0;
             if (dataRequest.Periodic == "quarter") month = 3;
@@ -79,8 +80,8 @@ namespace HealthcareSystem.Backend.Repositories
                 Payment pay = new Payment
                 {
                     RequestId = ctm_request.RequestID,
-                    CreatedDate = DateTime.UtcNow.AddMonths(i * month),
-                    ExpirationDate = DateTime.UtcNow.AddMonths(i * month).AddDays(7),
+                    CreatedDate = DateTime.Now.AddMonths(i * month),
+                    ExpirationDate = DateTime.Now.AddMonths(i * month).AddDays(7),
                     ExpirationPaypal = null,
                     Status = false,
                     Price = ctm_request.Price / n ,
