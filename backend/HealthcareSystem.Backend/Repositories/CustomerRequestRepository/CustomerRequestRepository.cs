@@ -65,7 +65,7 @@ namespace HealthcareSystem.Backend.Repositories
         public async Task<bool> AcceptCustomerRequest(int Accept,int StaffId)
         {
             var ctm_request = await GetAsync(x => x.RequestID == Accept,true, "PolicyPackage");
-            if (ctm_request.Status == "Pending Transfer") throw new Exception("Accepted");
+            if (ctm_request.Status != "Pending Confirmation") throw new Exception("Accepted");
             if (ctm_request == null) throw new Exception("Request NULL");
             ctm_request.Status = "Pending Transfer";
             ctm_request.StaffId = StaffId;
