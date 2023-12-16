@@ -49,3 +49,17 @@ export const editAccountsInformation = async (formPost) => {
     console.error("Error occurred while fetching account details", error);
   }
 };
+
+
+export const getAccountByUserID = async (selectedUserId) => {
+  try {
+    console.log(selectedUserId)
+    const response = await instance.get(
+      `/getAccountIdByUserID/`+ selectedUserId
+   );
+    return response;
+  } catch (error) {
+    console.error("Error occurred while fetching account details", error);
+  }
+};
+

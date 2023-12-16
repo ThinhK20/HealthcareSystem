@@ -1,22 +1,18 @@
 import {  useRef } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {  useEffect, useState } from "react";
-
+import { createInsurance } from "../../apis/insuranceApis";
+import { getAccountByUserID } from "../../apis/accountApis";
 export default function FormCreate() {
    const navigateTo = useNavigate();
    const location = useLocation();
    const { state } = location;
    const userNoInsuarance = state?.userNoInsuarance;
-   const authFetch = axios.create({
-      baseURL: "https://localhost:44384/api",
-   });
-   const authFetchAccount = axios.create({
-      baseURL: "https://localhost:44384/",
-   });
-    const [selectedUserId, setSelectedUserId] = useState(0);
+   
+   
+   const [selectedUserId, setSelectedUserId] = useState(0);
 
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
@@ -29,19 +25,14 @@ export default function FormCreate() {
    const cardOpenDateRef = useRef();
    const handleSubmit = async (e) => {
       e.preventDefault();
-      const accountid = await authFetchAccount.get(
-         `/getAccountIdByUserID/`+ selectedUserId
-      );
+      const accountid = await  getAccountByUserID(selectedUserId)
       const data = {
          registerPlace: registerPlaceRef.current.value,
          cardOpenDate: cardOpenDateRef.current.value,
          accountId: accountid.data
       }
       console.log("Submitttttttt: ", data)
-      const api = await authFetch.post(
-         `/insurances`,
-         data
-      );
+      const api = await createInsurance(data);
       console.log(22222222222, api);
       
       toast.success("Success", {

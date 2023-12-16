@@ -16,7 +16,8 @@ export const createPolicy = async (data) => {
 };
 export const updatePolicy = async (data) => {
   try {
-    const response = await instance.post("InsuarancePolicy", data);
+    console.log(65666666666)
+    const response = await instance.put("InsuarancePolicy", data);
     return response.data;
   } catch (error) {
     console.error("Error occurred while trying to update an insurance policy", error);

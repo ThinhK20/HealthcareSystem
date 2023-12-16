@@ -2,24 +2,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faEdit} from '@fortawesome/free-solid-svg-icons'
 import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import {faPlus} from '@fortawesome/free-solid-svg-icons'
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
- 
+import { getAllInsurance, deleteInsurance } from "../../apis/insuranceApis";
+ import { getAllUsers } from '../../apis/userApis';
 function Insurance() {
     const [data, setData] = useState([]);
     const [userNoInsuarance, setUserNoInsuarance] = useState([]);
 
-    const authFetch = axios.create({
-        baseURL: 'https://localhost:44384/api',
-    });
+   
     const getData =  async () => {
-        const data = await authFetch.get("/insurances/all");
-        console.log(11111111, data.data);
-        const getUsers = await authFetch.get("/users/getAll");
-        const updatedDataArray = data.data.map(insurance => {
-            const matchingUser = getUsers.data.find(u => u.userId === insurance.account.userId);
+        const data = await getAllInsurance();
+        console.log(1010101010, data);
+        const getUsers = await getAllUsers();
+        const updatedDataArray = data.map(insurance => {
+            const matchingUser = getUsers.find(u => u.userId === insurance.account.userId);
             if (matchingUser) {
               return {
                 ...insurance,
@@ -32,7 +30,7 @@ function Insurance() {
           
             return insurance;
         });
-        const usersWithoutInsurance = getUsers.data.filter(user =>
+        const usersWithoutInsurance = getUsers.filter(user =>
             !updatedDataArray.some(insurance => insurance.account.userId === user.userId)
            
         );
@@ -43,8 +41,7 @@ function Insurance() {
     
     const handleDelete = async (index) => {
         console.log(index)
-        const api = await authFetch.delete(`/insurances/${index}`);
-        console.log(11111111, api)
+        const api = await deleteInsurance(index);
         const updatedData = data.filter(item => item.insuranceID !== index);
         setData(updatedData);
         if(api.request.status == 200){

@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { updateInsurance } from "../../apis/insuranceApis";
 
 export default function FormUpdate() {
    const navigateTo = useNavigate();
@@ -12,10 +12,6 @@ export default function FormUpdate() {
    const registerPlace = state?.registerPlace || "";
    const cardOpenDate = state?.cardOpenDate || "";
    const name = state?.user || "";
-
-   const authFetch = axios.create({
-      baseURL: "https://localhost:44384/api",
-   });
    const registerPlaceRef = useRef();
    const cardOpenDateRef = useRef();
    const handleSubmit = async (e) => {
@@ -26,10 +22,7 @@ export default function FormUpdate() {
          cardOpenDate: cardOpenDateRef.current.value,
       }
       console.log("Submitttttttt: ", data_update)
-      const api_update = await authFetch.put(
-         `/insurances`,
-         data_update
-      );
+      const api_update = await updateInsurance(data_update);
       console.log(22222222222, api_update);
       
       toast.success("Success", {
