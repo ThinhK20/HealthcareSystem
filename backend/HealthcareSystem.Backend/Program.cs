@@ -80,6 +80,10 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+
+
+
+
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {

@@ -42,6 +42,20 @@ namespace HealthcareSystem.Backend.Repositories
             return  _mapper.Map<UserDTO>(UserCreated);
         }
 
+        public async Task<UserDTO> CreateUserGoogle(UserDTO data)
+        {
+            Models.Entity.User userNew = _mapper.Map<Models.Entity.User>(data);
+            var users = await GetAllAsync();
+            bool emailExists = users.Any(user => user.Email == data.Email);
+            if (emailExists)
+            {
+                return new UserDTO { Email = "Exist" };
+            }
+
+            await CreateAsync(userNew);
+            return data;
+        }
+
         public async Task<UserDTO> UpdateUser(UserDTO user)
         {
             try

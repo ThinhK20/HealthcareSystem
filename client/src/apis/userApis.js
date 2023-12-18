@@ -16,3 +16,6 @@ export const getAllUsers = async () => {
       console.error("Error occurred while trying to get users", error);
     }
 };
+
+
+

@@ -173,6 +173,18 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(id);
         }
+        [HttpPost("createNewUser")]
+        public async Task<IActionResult> createNewUser([FromBody] UserDTO account)
+        {
+
+            var id = await _userService.CreateUserGoogle(account);
+            if (id == null)
+            {
+                return BadRequest("Failed to create user.");
+            }
+
+            return Ok(id);
+        }
 
 
     }
