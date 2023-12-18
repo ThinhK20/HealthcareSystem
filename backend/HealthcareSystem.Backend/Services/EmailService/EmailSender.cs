@@ -13,7 +13,7 @@ namespace HealthcareSystem.Backend.Services.EmailService
             var client = new SmtpClient("smtp-mail.outlook.com", 587)
             {
                 EnableSsl = true,
-                Credentials = new NetworkCredential(mail,pw)
+                Credentials = new NetworkCredential(mail, pw)
             };
 
             return client.SendMailAsync(new MailMessage(from: mail, to: email, subject, message));

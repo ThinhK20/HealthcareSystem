@@ -54,7 +54,7 @@ function calBeDiscount(price, discountPercentage) {
 }
 function formatDate(inputDateString) {
    if (inputDateString === null) {
-      return "None";
+      return ;
    }
    const inputDate = new Date(inputDateString);
    const day = inputDate.getUTCDate().toString().padStart(2, "0");
