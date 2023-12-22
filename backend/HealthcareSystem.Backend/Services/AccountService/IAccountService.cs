@@ -5,6 +5,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
     public interface IAccountService
     {
         public Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
+        public  Task<LoginResponseDTO> LoginByGoogle(RegisterRequestDTO loginRequestDTO);
 
         public Task<AccountDTO> Register(RegisterRequestDTO registerationRequestDTO);
         public Task<bool> Verification(int data);

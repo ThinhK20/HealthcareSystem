@@ -1,5 +1,4 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -10,7 +9,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Alert, AlertTitle } from "@mui/material";
-import { updateAccountsPassword } from "../../apis/accountApis";
+import {
+  getAccountByAccountId,
+  updateAccountsPassword,
+} from "../../apis/accountApis";
+import { useParams } from "react-router-dom";
 const EditAccount = () => {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -21,6 +24,7 @@ const EditAccount = () => {
   const [confirmPass, setConfirmPass] = useState("");
   const [message, setMessage] = useState("");
   const [messageSuccess, setMessageSuccess] = useState("");
+  const { id } = useParams();
   const handleClickOpen = () => {
     setFormDataPUT(() => ({
       accountId: formDataAccount.accountId,
@@ -98,21 +102,19 @@ const EditAccount = () => {
   };
 
   useEffect(() => {
-    axios
-      .get("https://localhost:44384/get-account-staff?AccountID=15")
-      .then((result) => {
-        const userStaffData = result.data;
-        setFormDataAccount((prevData) => ({
-          ...prevData,
-          accountId: userStaffData.accountId || "",
-          userId: userStaffData.userId || "",
-          username: userStaffData.username || "",
-          password: "",
-          status: userStaffData.status || "Active",
-          role: userStaffData.role || "Customer",
-        }));
-        setPassword(userStaffData.password);
-      });
+    getAccountByAccountId(id).then((result) => {
+      const userStaffData = result;
+      setFormDataAccount((prevData) => ({
+        ...prevData,
+        accountId: userStaffData.accountId || "",
+        userId: userStaffData.userId || "",
+        username: userStaffData.username || "",
+        password: "",
+        status: userStaffData.status || "Active",
+        role: userStaffData.role || "Customer",
+      }));
+      setPassword(userStaffData.password);
+    });
   }, []);
   return (
     <div className="w-full">

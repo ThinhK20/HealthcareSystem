@@ -11,15 +11,11 @@ import {
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-   faEye,
-   faDollar,
-   faPersonCircleCheck,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEye, faDollar, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getAccounts } from "../../apis/accountApis";
-import Statistic from "../../components/statistic/statistic";
+import { DeleteAccount } from "../../components/deleteAccount/delete-account";
 const TABLE_HEAD = ["Account ", "User", "Username ", "Role", "Status", ""];
 
 export function ManageAccount() {
@@ -47,7 +43,6 @@ export function ManageAccount() {
 
    return (
       <div className="flex flex-col w-full">
-         <Statistic />
          <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
@@ -83,7 +78,7 @@ export function ManageAccount() {
                      </tr>
                   </thead>
                   <tbody>
-                     {tableRows?.slice(0, 6).map((tableRow, index) => {
+                     {tableRows?.map((tableRow, index) => {
                         const isLast = index === tableRows.length - 1;
                         const classes = isLast
                            ? "p-4 "
@@ -148,9 +143,9 @@ export function ManageAccount() {
                                        variant="ghost"
                                        value={tableRow.status}
                                        color={
-                                          tableRow.status === "Approved"
+                                          tableRow.status === "Active"
                                              ? "green"
-                                             : tableRow.status === "Pending"
+                                             : tableRow.status === "Inactive"
                                              ? "amber"
                                              : "red"
                                        }
@@ -171,18 +166,18 @@ export function ManageAccount() {
                                     </Tooltip>
                                  </Link>
                                  <Link
-                                    to={`/staffs/payment?acc=${tableRow.accountId}`}
+                                    to={`/users/edit-account/${tableRow.accountId}`}
                                  >
-                                    <Tooltip title="View details">
+                                    <Tooltip title="Edit">
                                        <IconButton variant="text">
                                           <FontAwesomeIcon
                                              className="h-4 w-4"
-                                             icon={faDollar}
+                                             icon={faPencil}
                                           />
                                        </IconButton>
                                     </Tooltip>
                                  </Link>
-                                 <Link
+                                 {/* <Link
                                     to={`/staffs/refund-requests/${tableRow.status}`}
                                  >
                                     <Tooltip title="View details">
@@ -193,7 +188,10 @@ export function ManageAccount() {
                                           />
                                        </IconButton>
                                     </Tooltip>
-                                 </Link>
+                                 </Link> */}
+                                 <DeleteAccount
+                                    accountId={tableRow.accountId}
+                                 />
                               </td>
                            </tr>
                         );

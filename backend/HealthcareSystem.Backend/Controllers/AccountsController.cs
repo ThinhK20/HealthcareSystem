@@ -89,7 +89,7 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(allAccount);
         }
-        [HttpPut("edit-user-staff")]
+        [HttpPut("edit-user")]
         public async Task<IActionResult> EditAccount([FromBody] UserDTO account)
         {
             UserDTO userCreate = new UserDTO
@@ -123,8 +123,8 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(changePass);
         }
-        [HttpGet("get-account-staff")]
-        public async Task<IActionResult> getAccount(int AccountID)
+        [HttpGet("get-account-by-id/{id:int}")]
+        public async Task<IActionResult> getAccount([FromRoute(Name = "id")] int AccountID)
         {
 
             var tempAccount = await _accountService.GetAccountByID(AccountID);
@@ -135,8 +135,8 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(tempAccount);
         }
-        [HttpGet("get-user-staff")]
-        public async Task<IActionResult> getUser(int AccountID)
+        [HttpGet("get-user-by-account/{id:int}")]
+        public async Task<IActionResult> getUser([FromRoute(Name = "id")] int AccountID)
         {
 
             var tempAccount = await _userService.GetUserByAccount(AccountID);
@@ -169,6 +169,18 @@ namespace HealthcareSystem.Backend.Controllers
             if (id == null)
             {
                 return BadRequest("Failed to get account id.");
+            }
+
+            return Ok(id);
+        }
+        [HttpPost("createNewUser")]
+        public async Task<IActionResult> createNewUser([FromBody] UserDTO account)
+        {
+
+            var id = await _userService.CreateUserGoogle(account);
+            if (id == null)
+            {
+                return BadRequest("Failed to create user.");
             }
 
             return Ok(id);

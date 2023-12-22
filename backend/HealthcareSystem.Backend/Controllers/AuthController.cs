@@ -33,6 +33,18 @@ namespace HealthcareSystem.Backend.Controllers
             return Ok(userLogin);
         }
 
+        [HttpPost("loginByGoogle")]
+        public async Task<IActionResult> LoginByGoogle([FromBody] RegisterRequestDTO model)
+        {
+            var userLogin = await _accountService.LoginByGoogle(model);
+            if (userLogin.user == null)
+            {
+                return Ok(userLogin.Token);
+            }
+
+            return Ok(userLogin);
+        }
+
 
 
         [HttpPost("register")]

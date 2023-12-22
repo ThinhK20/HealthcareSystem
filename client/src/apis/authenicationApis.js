@@ -31,3 +31,13 @@ export const verifyEmail = async (userid, config) => {
     console.error("Error occurred while trying to verify", error);
   }
 };
+
+export const loginByGoogle = async (data) => {
+  try {
+    const response = await instance.post("/loginByGoogle", data);
+    console.log(response, 888)
+    return response.data;
+  } catch (error) {
+    console.error("Error occurred while trying to verify", error);
+  }
+};

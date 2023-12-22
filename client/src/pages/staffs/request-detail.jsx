@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 import { formatDate, formatMoney } from "../../helpers/dataHelper";
 import { Button, Typography } from "@material-tailwind/react";
 import {
@@ -9,7 +8,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Chip } from "@material-tailwind/react";
-import { getCustomerRequestByIdApi } from "../../apis/customerRequestApis";
+import {
+  accecptRequest,
+  getCustomerRequestByIdApi,
+  refuseRequest,
+} from "../../apis/customerRequestApis";
 import { getPaymentsByID } from "../../apis/paymentApis";
 const StaffRequestDetail = () => {
   const [data, setData] = useState();
@@ -37,16 +40,10 @@ const StaffRequestDetail = () => {
       });
   }, [reset]);
   const handleAccept = () => {
-    axios
-      .post(
-        `https://localhost:44384/api/users/AcceptRequest?requestID=${id}&staffid=${1}`
-      )
-      .then(handleReset);
+    accecptRequest(id, 1).then(handleReset);
   };
   const handRefused = () => {
-    axios
-      .post(`https://localhost:44384/api/users/RefusedRequest/${id}`)
-      .then(handleReset);
+    refuseRequest(id).then(handleReset);
   };
   // const handComplete = () => {
   //   axios
@@ -79,10 +76,9 @@ const StaffRequestDetail = () => {
                   <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 dr:text-gray-200">
                     Customer Request #{data?.requestID}
                   </h2>
-                  <div className=" text-gray-500 flex mt-3 justify-center"> 
-                  Status:{" "}
+                  <div className=" text-gray-500 flex mt-3 justify-center">
+                    Status:{" "}
                     <span className="font-[600] ml-3">
-               
                       <Chip
                         size="sm"
                         variant="ghost"
@@ -326,7 +322,7 @@ const StaffRequestDetail = () => {
                   Refuse
                 </button>
               )}
-             
+
               {/* {data?.status === "Pending Transfer" && (
                 <button
                   onClick={handComplete}

@@ -13,5 +13,6 @@ namespace HealthcareSystem.Backend.Repositories
         public Task<UserDTO> UpdateUser(UserDTO user);
 
         public Task<List<UserDTO>> GetAllUsers();
+        public Task<UserDTO> CreateUserGoogle(UserDTO user);
     }
 }

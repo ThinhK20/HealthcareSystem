@@ -24,3 +24,23 @@ export const getCustomerRequestByIdApi = async (requestID) => {
     console.error("Error occurred while fetching account details", error);
   }
 };
+export const accecptRequest = async (requestID,staff) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}users/AcceptRequest?requestID=${requestID}&staffid=${staff}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error occurred while fetching account details", error);
+  }
+};
+export const refuseRequest = async (requestID) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}users/RefusedRequest/${requestID}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error occurred while fetching account details", error);
+  }
+};

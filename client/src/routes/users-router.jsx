@@ -14,7 +14,7 @@ export const UserRoutes = [
       element: <LayoutRoute element={<EditInformation />} />,
    },
    {
-      path: "/users/edit-account",
+      path: "/users/edit-account/:id",
       element: <LayoutRoute element={<EditAccount />} />,
    },
    {

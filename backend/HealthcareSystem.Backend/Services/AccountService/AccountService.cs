@@ -102,6 +102,54 @@ namespace HealthcareSystem.Backend.Services.AccountService
             };
             return loginRequestDto;
         }
+
+        
+
+
+
+
+
+
+        public async Task<LoginResponseDTO> LoginByGoogle(RegisterRequestDTO loginRequestDTO)
+        {
+            var salt = BCrypt.Net.BCrypt.GenerateSalt();
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(loginRequestDTO.Password, salt);
+            var getIDUser = await _userRepository.GetAsync(u => u.Email == loginRequestDTO.Email);
+
+            AccountDTO user = new AccountDTO()
+            {
+                UserId = getIDUser.UserId,
+                Username = loginRequestDTO.UserName,
+                Password = hashedPassword,
+                Status = "Active",
+                Role = "Customer"
+            };
+            var userMapper = _mapper.Map<Models.Entity.Account>(user);
+            await _accountRepository.CreateAsync(userMapper);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes("This is Secret Key of Project PTHTTTHD");
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+               {
+                    new Claim(ClaimTypes.Name, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
+               }),
+                Expires = DateTime.Now.AddDays(7),
+                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            LoginResponseDTO loginRequestDto = new LoginResponseDTO()
+            {
+                Token = tokenHandler.WriteToken(token),
+                user = null
+            };
+            return loginRequestDto;
+             
+        }
         public async Task<AccountDTO> Register(RegisterRequestDTO registerationRequestDTO)
         {
             var checkUser = await _accountRepository.checkUserExist(registerationRequestDTO.UserName);

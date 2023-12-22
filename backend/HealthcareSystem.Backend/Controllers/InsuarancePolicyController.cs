@@ -2,8 +2,6 @@
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
-using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
-using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
@@ -38,7 +36,6 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("{id:int}")]
-
         public async Task<ActionResult<InsuarancePolicyDTO>> GetOnePolicy(int id)
         {
             try
@@ -79,7 +76,7 @@ namespace HealthcareSystem.Backend.Controllers
 
                 Models.Entity.InsurancePolicy model = new()
                 {
-                    
+
                     Description = data.Description,
                     Name = data.Name,
                 };
