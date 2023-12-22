@@ -4,6 +4,7 @@ using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HealthcareSystem.Backend.Repositories
 {
@@ -15,6 +16,22 @@ namespace HealthcareSystem.Backend.Repositories
         {
             _mapper = mapper;
             _applicationContext = context;
+        }
+
+        public async Task<bool> CreateNew(BasicPriceCreateDTO price, int packageId,int index)
+        {
+            if (price == null) return false;
+            BasicPrice priceCreate = new BasicPrice
+            {
+                PackageID = packageId,
+                IndexId = index + 1,
+                FromAge = price.FromAge,
+                ToAge = price.ToAge,
+                Gender = price.Gender,
+                Price = price.Price,
+            };
+            await CreateAsync(priceCreate);
+            return true;
         }
 
         public async Task<BasicPriceDomain> GetBasicPrice(int PackageID, int Age, string Gender)

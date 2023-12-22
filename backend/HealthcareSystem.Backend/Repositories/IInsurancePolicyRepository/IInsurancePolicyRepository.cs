@@ -4,6 +4,6 @@ namespace HealthcareSystem.Backend.Repositories
 {
     public interface IInsurancePolicyRepository : IRepository<InsurancePolicy>
     {
-
+        public Task<InsurancePolicy> GetByIdAsync(int id);
     }
 }

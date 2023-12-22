@@ -1,4 +1,5 @@
-﻿using HealthcareSystem.Backend.Services.PackagePoliceService;
+﻿using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Services.PackagePoliceService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
@@ -35,6 +36,31 @@ namespace HealthcareSystem.Backend.Controllers
                 return Ok(await _packagePoliceService.GetPolicyPackageByIdAsync(packageId));
             }
             catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("CreateNew")]
+        public async Task<IActionResult> CreateNewPackage([FromBody] PackagePolicyCreateDTO detailCreate)
+        {
+            try
+            {
+                bool result = await _packagePoliceService.CreateNewPackage(detailCreate);
+                if (result)
+                {
+                    return Ok(new
+                    {
+                        message = "Succes"
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        message = "fail"
+                    });
+                }
+            }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }

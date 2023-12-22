@@ -127,5 +127,10 @@ namespace HealthcareSystem.Backend.Repositories
             await UpdateAsync(query);
             return 1;
         }
+
+        public async Task<List<Payment>> GetAllPayment(int requestId)
+        {
+            return await GetAllAsync(x=> x.RequestId == requestId);
+        }
     }
 }

@@ -20,5 +20,6 @@ namespace HealthcareSystem.Backend.Repositories
         Task<List<PaymentOfUserDTO>> GetPaymentByUserId(int Account);
         Task<Payment> findPaymentByToken(string token);
         Task<int> UpdatePayPalComplete(string token, DateTime updatedDate);
+        Task<List<Payment>> GetAllPayment(int requestId);
     }
 }

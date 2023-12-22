@@ -14,19 +14,21 @@ namespace HealthcareSystem.Backend.Services.PaymentService
 {
     public class PaymentService : IPaymentService
     {
-        private readonly IPaymentRepository _services;
+        private readonly IPaymentRepository _paymentRepository;
         private readonly IUserService _userService;
         private readonly PayPalModule _payPalModule;
         private readonly IConfiguration _configuration;
         private readonly PayPalSettingDomain _payPalSetting;
+        private readonly ICustomerRequestRepository _customerRequestRepository;
 
-        public PaymentService(IConfiguration configuration, IPaymentRepository services, IUserRepository customerRequestRepository, IUserService userService)
+        public PaymentService(IConfiguration configuration, IPaymentRepository paymentRepository, IUserService userService, ICustomerRequestRepository customerRequestRepository)
         {
             _configuration = configuration;
-            _services = services;
+            _paymentRepository = paymentRepository;
             _userService = userService;
             _payPalModule = new PayPalModule();
             _payPalSetting = _configuration.GetSection("PayPal").Get<PayPalSettingDomain>()!;
+            _customerRequestRepository = customerRequestRepository;
 
         }
         public async Task<bool> CreatePayment(PaymentCreateDTO payment)
@@ -52,42 +54,42 @@ namespace HealthcareSystem.Backend.Services.PaymentService
                     LinkCheckOut = null,
                     PaypalEmail = null,
                 };
-                await _services.CreatePayment(pay);
+                await _paymentRepository.CreatePayment(pay);
             }
             return true;
         }
 
         public async Task<bool> DeletePaymentByIdAsync(int PaymentID)
         {
-            return await _services.DeletePaymentByIdAsync(PaymentID);
+            return await _paymentRepository.DeletePaymentByIdAsync(PaymentID);
         }
         public async Task<bool> UpdateStatus(int PaymentID)
         {
-            return await _services.UpdateStatus(PaymentID);
+            return await _paymentRepository.UpdateStatus(PaymentID);
         }
         public async Task<List<PaymentDomain>> GetAllPaymentRequestsAsync()
         {
-            return await _services.GetAllPaymentRequestsAsync();
+            return await _paymentRepository.GetAllPaymentRequestsAsync();
         }
 
         public async Task<List<PaymentDomain>> GetPaymentedAsync()
         {
-            return await _services.GetPaymentedAsync();
+            return await _paymentRepository.GetPaymentedAsync();
         }
 
         public async Task<PaymentDomain> GetPaymentIdAsync(int PaymentId)
         {
-            return await _services.GetPaymentIdAsync(PaymentId);
+            return await _paymentRepository.GetPaymentIdAsync(PaymentId);
         }
 
         public async Task<List<PaymentDomain>> GetPaymentByRequestID(int requestID)
         {
-            return await _services.GetPaymentByRequestID(requestID);
+            return await _paymentRepository.GetPaymentByRequestID(requestID);
         }
 
         public async Task<string> GetCheckOutLink(CheckPayPalInfoDTO info)
         {
-            var resultCheck = await _services.CheckStatusPayPal(info);
+            var resultCheck = await _paymentRepository.CheckStatusPayPal(info);
             if (resultCheck.status == "null") throw new Exception("Error.");
             else if (resultCheck.status == "No Link")
             {
@@ -96,7 +98,7 @@ namespace HealthcareSystem.Backend.Services.PaymentService
                 DateTime createdDate = DateTime.Now;
                 CreateOrderReturn data = await _payPalModule.CreateOrder(_payPalSetting.link, tokenPaypal, (double)resultCheck.Price, _payPalSetting.returnPath);
                 //Store to DB: Payment
-                await _services.UpdatePayPalInfo(info.PaymentId, createdDate, data.id, data.links[1].href);
+                await _paymentRepository.UpdatePayPalInfo(info.PaymentId, createdDate, data.id, data.links[1].href);
                 return data.links[1].href;
             }
             else if (resultCheck.status == "Time expired")
@@ -105,7 +107,7 @@ namespace HealthcareSystem.Backend.Services.PaymentService
                 string tokenPaypal = await _payPalModule.GetToken(_payPalSetting.username, _payPalSetting.password, _payPalSetting.link);
                 DateTime createdDate = DateTime.Now;
                 CreateOrderReturn data = await _payPalModule.CreateOrder(_payPalSetting.link, tokenPaypal, (double)resultCheck.Price, _payPalSetting.returnPath);
-                await _services.UpdatePayPalInfo(info.PaymentId, createdDate, data.id, data.links[1].href);
+                await _paymentRepository.UpdatePayPalInfo(info.PaymentId, createdDate, data.id, data.links[1].href);
                 return data.links[1].href;
             }
             else
@@ -116,14 +118,20 @@ namespace HealthcareSystem.Backend.Services.PaymentService
 
         public async Task<bool> ConfirmPayment(string token, string PayerID)
         {
-            var resultCheck = await _services.findPaymentByToken(token);
+            var resultCheck = await _paymentRepository.findPaymentByToken(token);
             if (resultCheck == null) throw new Exception("Error.");
             string tokenPaypal = await _payPalModule.GetToken(_payPalSetting.username, _payPalSetting.password, _payPalSetting.link);
             DateTime updatedDate = DateTime.Now;
             bool result = await _payPalModule.ConfirmPaymentPalpal(token, _payPalSetting.link, tokenPaypal);
             if (result == true)
             {
-                await _services.UpdatePayPalComplete(token, updatedDate);
+                int requestId = await _paymentRepository.UpdatePayPalComplete(token, updatedDate);
+                var listPayment = await _paymentRepository.GetAllPayment(requestId);
+                var listAccept = listPayment.FindAll(x => x.Status == true);
+                if (listAccept.Count == listPayment.Count)
+                {
+                    await _customerRequestRepository.CompleteCustomerRequest(requestId);
+                }
                 return true;
             }
             else
@@ -134,7 +142,7 @@ namespace HealthcareSystem.Backend.Services.PaymentService
 
         public async Task<List<PaymentOfUserDTO>> GetPaymentByUserID(int AccountID)
         {
-            var temp = await _services.GetPaymentByUserId(AccountID);
+            var temp = await _paymentRepository.GetPaymentByUserId(AccountID);
             return temp;
         }
 

@@ -111,14 +111,6 @@ namespace HealthcareSystem.Backend.Repositories
             //await _paymentService.UpdateStatus((int)ctm_request.PackageId);
             ctm_request.Status = "Completed";
             await UpdateAsync(ctm_request);
-            InsuranceDetailDomain Insuran_form = new InsuranceDetailDomain
-            {
-                InsureID = 1,
-                PackageID = ctm_request.PackageId,
-                DateStart = DateTime.Now,
-                DateEnd = DateTime.Now.AddYears(1),
-            };
-            await _invoiceDetailService.AddInsuranceDatail(Insuran_form);
             return true;
         }
     }

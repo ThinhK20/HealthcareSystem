@@ -1,4 +1,5 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
 
 namespace HealthcareSystem.Backend.Services.PackagePoliceService
 {
@@ -8,5 +9,6 @@ namespace HealthcareSystem.Backend.Services.PackagePoliceService
 
         public Task<List<PolicyPackageDomain>> GetAllPolicyPackagesAsync();
         public Task<PolicyPackageDomain> GetPolicyPackageByIdAsync(int packageId);
+        public Task<bool> CreateNewPackage(PackagePolicyCreateDTO detailCreate);
     }
 }
