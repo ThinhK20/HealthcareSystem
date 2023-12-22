@@ -34,7 +34,7 @@ export const updateAccountsInformation = async (formPut) => {
 export const getAccountsInformation = async (accountId) => {
    try {
       const response = await instance.get(
-         `/get-user-staff?AccountID=${accountId}`
+         `/get-user-by-account/${accountId}`
       );
       return response.data;
    } catch (error) {
@@ -43,7 +43,7 @@ export const getAccountsInformation = async (accountId) => {
 };
 export const editAccountsInformation = async (formPost) => {
    try {
-      const response = await instance.put("/edit-user-staff", formPost);
+      const response = await instance.put("/edit-user", formPost);
       return response.data;
    } catch (error) {
       console.error("Error occurred while fetching account details", error);
@@ -61,7 +61,6 @@ export const getAccountByUserID = async (selectedUserId) => {
       console.error("Error occurred while fetching account details", error);
    }
 };
-<<<<<<< HEAD
 
 export const createUserGoogle = async (data) => {
   try {
@@ -71,5 +70,23 @@ export const createUserGoogle = async (data) => {
      console.error("Error occurred while trying to create new user", error);
    }
 };
-=======
->>>>>>> 7862d9ad5c8d91b7c94f439202089898e5ccf5dc
+
+export const CreateNewStaff = async (info)=>{
+   try {
+      const response = await instance.post("/create-new-staff", info);
+      return response.data;
+    } catch (error) {
+      console.error("Error occurred while trying to create new user", error);
+    }
+
+}
+
+export const getAccountByAccountId = async (id)=>{
+   try {
+      const response = await instance.get(`/get-account-by-id/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error occurred while trying to create new user", error);
+    }
+
+}

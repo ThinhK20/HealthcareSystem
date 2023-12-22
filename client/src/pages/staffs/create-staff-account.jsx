@@ -1,6 +1,6 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
-import axios from "axios";
 import { useState } from "react";
+import { CreateNewStaff } from "../../apis/accountApis";
 const FormCreateNewStaff = () => {
    const [formDataAccount, setFormDataAccount] = useState({
       userId: "",
@@ -26,10 +26,7 @@ const FormCreateNewStaff = () => {
 
    const handleFormSubmit = async (e) => {
       e.preventDefault();
-      const responseAccount = await axios.post(
-         "https://localhost:44384/api/Accounts/create-new-staff",
-         formDataAccount
-      );
+      const responseAccount = await CreateNewStaff(formDataAccount);
       console.log(responseAccount);
    };
 
