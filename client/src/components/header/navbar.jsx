@@ -2,47 +2,51 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
-   Typography,
-   Button,
-   IconButton,
-   Collapse,
+  Typography,
+  Button,
+  IconButton,
+  Collapse,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon, HomeIcon } from "@heroicons/react/24/outline";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFaceAngry, faFaceGrimace, faPhone } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFaceAngry,
+  faFaceGrimace,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
 
 const routes = [
-   {
-      name: "Create",
-      path: "/staffs/create-staff-account",
-      icon: HomeIcon,
-   },
-   {
-      name: "Accounts",
-      path: "/staffs/manage-account",
-      icon: HomeIcon,
-   },
-   {
-      name: "Staff Customer Requests",
-      path: "/staffs/customer-requests",
-      icon: HomeIcon,
-   },
-   {
-      name: "Customer Requests",
-      path: "/users/customer-requests",
-      icon: HomeIcon,
-   },
-   {
-      name: "Customer refund Requests",
-      path: "/users/refund-requests",
-      icon: HomeIcon,
-   },
-   {
-      name: "Staff refund Requests",
-      path: "/staffs/refund-requests",
-      icon: HomeIcon,
-   },
-   // Add more route objects as needed
+  {
+    name: "Create",
+    path: "/staffs/create-staff-account",
+    icon: HomeIcon,
+  },
+  {
+    name: "Accounts",
+    path: "/staffs/manage-account",
+    icon: HomeIcon,
+  },
+  {
+    name: "Staff Customer Requests",
+    path: "/staffs/customer-requests",
+    icon: HomeIcon,
+  },
+  {
+    name: "Customer Requests",
+    path: "/users/customer-requests",
+    icon: HomeIcon,
+  },
+  {
+    name: "Customer refund Requests",
+    path: "/users/refund-requests",
+    icon: HomeIcon,
+  },
+  {
+    name: "Staff refund Requests",
+    path: "/staffs/refund-requests",
+    icon: HomeIcon,
+  },
+  // Add more route objects as needed
 ];
 
 export function Navbar({ action }) {
@@ -52,6 +56,7 @@ export function Navbar({ action }) {
     <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 p-[5px] ">
       {routes.map(({ name, path }) => (
         <Typography
+        
           key={name}
           as="li"
           variant="small"
@@ -63,7 +68,7 @@ export function Navbar({ action }) {
             className="relative group px-4 py-2 transition-all duration-300 ease-in-out bg-transparent border-b-1 border-transparent hover:border-black"
           >
             <span className="relative z-10 font-medium">{name}</span>
-            <span className="absolute inset-x-0 bottom-0 h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out"></span>
+            <span className="absolute w-full inset-x-0 bottom-0 h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out group-hover:min-w-full"></span>
           </Link>
         </Typography>
       ))}
@@ -84,17 +89,20 @@ export function Navbar({ action }) {
           Liên hệ để được báo giá <strong> 1800 599998</strong>
         </div>
         <div className="grid gap-[15px] grid-cols-3 text-[12px]">
-          <Link to={"#"} >
-            <FontAwesomeIcon icon={faPhone} className="mr-1"/>
+          <Link to={"#"}>
+            <FontAwesomeIcon icon={faPhone} className="mr-1" />
             Liên hệ
           </Link>
           <Link to={"#"} className="fab">
-          <FontAwesomeIcon icon={faFaceGrimace} className="mr-1"/>
-         About us
+            <FontAwesomeIcon icon={faFaceGrimace} className="mr-1" />
+            About us
           </Link>
-          <Link to={"https://www.facebook.com/profile.php?id=100006835475551"} className="">
-          <FontAwesomeIcon icon={faFaceAngry} className="mr-1"/>
-          Sanh Tài
+          <Link
+            to={"https://www.facebook.com/profile.php?id=100006835475551"}
+            className=""
+          >
+            <FontAwesomeIcon icon={faFaceAngry} className="mr-1" />
+            Sanh Tài
           </Link>
         </div>
       </div>

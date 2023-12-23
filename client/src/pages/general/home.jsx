@@ -8,16 +8,16 @@ export default function Home() {
   ];
   return (
     <>
-      <div className="bg-[gray] h-[550px] overflow-hidden text-center w-[100vw]">
-        <Slide>
-          <div className="flex items-center justify-center bg-cover  ">
-            <img className="h-[550px]  object-cover" src={imagesHeader[0]} />
-          </div>
-          <div className="flex items-center justify-center bg-cover  ">
-            <img className="h-[550px]  object-cover" src={imagesHeader[1]} />
-          </div>
+      <div className=" h-[550px] overflow-hidden text-center w-full mx-[30px]">
+        <Slide className="px-[10px]">
           <div className="flex items-center justify-center bg-cover">
-            <img className="h-[550px]  object-cover" src={imagesHeader[2]} />
+            <img className="h-[550px]  object-cover w-full  " src={imagesHeader[0]} />
+          </div>
+          <div className="flex items-center justify-center bg-cover  ">
+            <img className="h-[550px]  object-cover w-full" src={imagesHeader[1]} />
+          </div>
+          <div className="flex items-center justify-center bg-cover bg-[#FFD000]">
+            <img className="h-[550px]  object-cover bg-[#FFD000]" src={imagesHeader[2]} />
           </div>
         </Slide>
       </div>
