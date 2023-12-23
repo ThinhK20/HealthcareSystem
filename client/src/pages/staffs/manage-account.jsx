@@ -11,11 +11,12 @@ import {
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faDollar, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getAccounts } from "../../apis/accountApis";
 import { DeleteAccount } from "../../components/deleteAccount/delete-account";
+import Statistic from "../../components/statistic/statistic";
 const TABLE_HEAD = ["Account ", "User", "Username ", "Role", "Status", ""];
 
 export function ManageAccount() {
@@ -27,7 +28,6 @@ export function ManageAccount() {
    }, []);
 
    useEffect(() => {
-      console.log(accounts);
       setTableRows(() => {
          const newRows = accounts?.map((account) => ({
             img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",
@@ -43,6 +43,7 @@ export function ManageAccount() {
 
    return (
       <div className="flex flex-col w-full">
+         <Statistic />
          <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
