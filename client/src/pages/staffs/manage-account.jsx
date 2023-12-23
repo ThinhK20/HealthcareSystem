@@ -11,7 +11,7 @@ import {
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faDollar, faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getAccounts } from "../../apis/accountApis";
@@ -172,6 +172,18 @@ export function ManageAccount() {
                                           <FontAwesomeIcon
                                              className="h-4 w-4"
                                              icon={faPencil}
+                                          />
+                                       </IconButton>
+                                    </Tooltip>
+                                 </Link>
+                                 <Link
+                                    to={`/staffs/payment?acc=${tableRow.accountId}`}
+                                 >
+                                    <Tooltip title="Paymnet">
+                                       <IconButton variant="text">
+                                          <FontAwesomeIcon
+                                             className="h-4 w-4"
+                                             icon={faDollar}
                                           />
                                        </IconButton>
                                     </Tooltip>
