@@ -2,9 +2,9 @@ import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 export default function Home() {
   const imagesHeader = [
-    "https://www.u.com.my/content/dam/u-mobile/personal/devices/iphone/iphone-14-pro/meta/20220922/iPhone14-Pro-Launch_Meta-Image_EN.png",
-    "https://s.tmimgcdn.com/scr/1200x750/293200/headphone-advertisement-poster-vector_293283-original.jpg",
-    "https://i.ytimg.com/vi/9Rbb5Sk0r_k/maxresdefault.jpg",
+    "https://www.libertyinsurance.com.vn/sites/libertyvn/files/styles/desktop_home_page_carousel/public/2022-04/Untitled%20design_0.png.webp?itok=cB8w5KZM",
+    "https://ibaohiem.vn/wp-content/uploads/2018/04/Bao-hiem-Bao-Viet-An-Gia.jpg",
+    "https://www.libertyinsurance.com.vn/sites/libertyvn/files/2023-04/family_955x958.png",
   ];
   return (
     <>
