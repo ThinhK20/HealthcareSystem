@@ -7,6 +7,7 @@ import RefundRequestDetails from "../pages/staffs/refund-request-details";
 import TableInsuranceManagement from "../components/register-insurance/register-insurance";
 import { ManageAccount } from "../pages/staffs/manage-account";
 import StaffCustomerRequestManagement from "../pages/staffs/manage-requests";
+import Statistic from "../components/statistic/statistic";
 export const StaffRoutes = [
    {
       path: "staffs/payment",
@@ -41,5 +42,9 @@ export const StaffRoutes = [
       element: (
          <LayoutRoute element={<TableInsuranceManagement />}></LayoutRoute>
       ),
+   },
+   {
+      path: "staffs/statistic",
+      element: <LayoutRoute element={<Statistic />}></LayoutRoute>,
    },
 ];

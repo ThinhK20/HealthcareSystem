@@ -16,7 +16,6 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getAccounts } from "../../apis/accountApis";
 import { DeleteAccount } from "../../components/deleteAccount/delete-account";
-import Statistic from "../../components/statistic/statistic";
 const TABLE_HEAD = ["Account ", "User", "Username ", "Role", "Status", ""];
 
 export function ManageAccount() {
@@ -43,7 +42,6 @@ export function ManageAccount() {
 
    return (
       <div className="flex flex-col w-full">
-         <Statistic />
          <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">

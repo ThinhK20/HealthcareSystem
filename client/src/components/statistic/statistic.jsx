@@ -6,6 +6,7 @@ import { getAllRefundRequestsApi } from "../../apis/refundRequestApis";
 import { getAccounts } from "../../apis/accountApis";
 import { getPayments } from "../../apis/paymentApis";
 import { toast } from "react-toastify";
+import { Typography } from "@material-tailwind/react";
 
 export default function Statistic() {
    const [accounts, setAccount] = useState([]);
@@ -94,64 +95,71 @@ export default function Statistic() {
    }, []);
 
    return (
-      <div className="flex items-center flex-wrap">
-         <BarChart
-            width={500}
-            layout="vertical"
-            height={300}
-            series={[
-               {
-                  data: [revenues?.cost],
-                  label: "Cost",
-                  stack: "stack1",
-                  id: "costId",
-               },
-               {
-                  data: [revenues?.salesAmount],
-                  label: "Sales Amount",
-                  stack: "stack2",
-                  id: "salesAmountId",
-               },
-            ]}
-            xAxis={[{ data: ["Total Cost & Sales Amount"], scaleType: "band" }]}
-         />
-
-         <PieChart
-            series={[
-               {
-                  data: [
-                     {
-                        id: 0,
-                        value: accountTypes?.customers?.length,
-                        label: "Customers",
-                     },
-                     {
-                        id: 1,
-                        value: accountTypes?.staffs?.length,
-                        label: "Staffs",
-                     },
-                  ],
-               },
-            ]}
-            width={400}
-            height={200}
-         />
-         {groupRevenuesByMonth && (
-            <LineChart
+      <div>
+         <Typography variant="h3" className="w-full block mb-8">
+            Statistic Dashboard
+         </Typography>
+         <div className="flex items-center flex-wrap">
+            <BarChart
                width={500}
+               layout="vertical"
                height={300}
-               xAxis={[
-                  { data: groupRevenuesByMonth?.months, scaleType: "point" },
-               ]}
                series={[
-                  { data: groupRevenuesByMonth?.costs, label: "Cost" },
                   {
-                     data: groupRevenuesByMonth?.salesAmounts,
+                     data: [revenues?.cost],
+                     label: "Cost",
+                     stack: "stack1",
+                     id: "costId",
+                  },
+                  {
+                     data: [revenues?.salesAmount],
                      label: "Sales Amount",
+                     stack: "stack2",
+                     id: "salesAmountId",
                   },
                ]}
+               xAxis={[
+                  { data: ["Total Cost & Sales Amount"], scaleType: "band" },
+               ]}
             />
-         )}
+
+            <PieChart
+               series={[
+                  {
+                     data: [
+                        {
+                           id: 0,
+                           value: accountTypes?.customers?.length,
+                           label: "Customers",
+                        },
+                        {
+                           id: 1,
+                           value: accountTypes?.staffs?.length,
+                           label: "Staffs",
+                        },
+                     ],
+                  },
+               ]}
+               width={400}
+               height={200}
+            />
+            {groupRevenuesByMonth && (
+               <LineChart
+                  width={500}
+                  height={300}
+                  xAxis={[
+                     { data: groupRevenuesByMonth?.months, scaleType: "point" },
+                  ]}
+                  series={[
+                     { data: groupRevenuesByMonth?.costs, label: "Cost" },
+                     {
+                        data: groupRevenuesByMonth?.salesAmounts,
+                        label: "Sales Amount",
+                     },
+                  ]}
+               />
+            )}
+         </div>
       </div>
    );
 }
