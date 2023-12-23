@@ -7,7 +7,7 @@ const FormCreateNewStaff = () => {
       username: "",
       password: "",
       status: "Active",
-      role: "Customer",
+      role: "Staff",
       fullname: "",
       email: "",
       cccd: "",

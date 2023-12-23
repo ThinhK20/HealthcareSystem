@@ -78,9 +78,9 @@ export function Navbar({ action }) {
   }, []);
 
   return (
-    <div className="p-0 w-screen mb-[30px]">
-      <div className="h-[30px] bg-[#FFE280] w-screen flex justify-around items-center">
-        <div className="ml-[-100px] font-serif text-[14px]">
+    <div className="p-0 w-full mb-[30px]">
+      <div className="h-[30px] bg-[#FFE280] w-full flex justify-around items-center">
+        <div className="   font-serif text-[14px]">
           Liên hệ để được báo giá <strong> 1800 599998</strong>
         </div>
         <div className="grid gap-[15px] grid-cols-3 text-[12px]">
