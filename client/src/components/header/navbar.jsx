@@ -86,12 +86,12 @@ export function Navbar({ action }) {
     <div className="p-0 w-full mb-[30px]">
       <div className="h-[30px] bg-[#FFE280] w-full flex justify-around items-center">
         <div className="   font-serif text-[14px]">
-          Liên hệ để được báo giá <strong> 1800 599998</strong>
+        Contact us for a quote <strong> 1800 599998</strong>
         </div>
         <div className="grid gap-[15px] grid-cols-3 text-[12px]">
           <Link to={"#"}>
             <FontAwesomeIcon icon={faPhone} className="mr-1" />
-            Liên hệ
+            Contact
           </Link>
           <Link to={"#"} className="fab">
             <FontAwesomeIcon icon={faFaceGrimace} className="mr-1" />
@@ -102,7 +102,7 @@ export function Navbar({ action }) {
             className=""
           >
             <FontAwesomeIcon icon={faFaceAngry} className="mr-1" />
-            Sanh Tài
+            For You
           </Link>
         </div>
       </div>
