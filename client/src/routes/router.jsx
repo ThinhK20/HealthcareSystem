@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
    },
 
    {
-      path: "staffs/table-insurance-management",
+      path: "/insurancePolicies",
       element: (
          <LayoutRoute element={<TableInsuranceManagement />}></LayoutRoute>
       ),
@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
    },
 
    {
-      path: "/insuarancePolices/form",
+      path: "/insurancePolices/form",
       element: <LayoutRoute element={<Form />}></LayoutRoute>,
    },
 

@@ -84,6 +84,7 @@ export default function FormCreate() {
                               </div>
                               <div className="relative z-0 w-full mb-5 group">
                                  <input
+                                     datepicker
                                     type="text"
                                     name="description"
                                     id="description"
