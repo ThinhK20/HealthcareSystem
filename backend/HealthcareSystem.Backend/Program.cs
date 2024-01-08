@@ -28,7 +28,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMSSQL")!);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CloudDb")!);
 });
 
 
