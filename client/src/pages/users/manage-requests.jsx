@@ -39,6 +39,8 @@ const TABLE_HEAD = [
 export default function CustomerRequestManagement() {
    const [requestsData, setRequestsData] = useState();
    const [tableRows, setTableRows] = useState([]);
+   const [tableRowsFilter, setTableRowsFilter] = useState(tableRows);
+   const [searchInput, setSearchInput] = useState("");
 
    useEffect(() => {
       const source = axios.CancelToken.source();
@@ -56,20 +58,31 @@ export default function CustomerRequestManagement() {
    }, []);
 
    useEffect(() => {
-      setTableRows(() => {
-         const newRows = requestsData?.map((request) => ({
-            img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",
-            user: request.account,
-            staff: request.staff,
-            payment: request.payment,
-            policyPackage: request.policyPackage,
-            periodic: request.periodic,
-            requestID: request.requestID,
-            price: request.price,
-            status: request.status,
-         }));
-         return newRows;
-      });
+      setTableRowsFilter(() =>
+         tableRows.filter((r) =>
+            r.user.username
+               .toLowerCase()
+               .includes(
+                  searchInput.toLowerCase() || r.staff?.username.toLowerCase()
+               )
+         )
+      );
+   }, [searchInput]);
+
+   useEffect(() => {
+      const newRows = requestsData?.map((request) => ({
+         img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",
+         user: request.account,
+         staff: request.staff,
+         payment: request.payment,
+         policyPackage: request.policyPackage,
+         periodic: request.periodic,
+         requestID: request.requestID,
+         price: request.price,
+         status: request.status,
+      }));
+      setTableRows(() => newRows);
+      setTableRowsFilter(() => newRows);
    }, [requestsData]);
 
    return (
@@ -88,6 +101,7 @@ export default function CustomerRequestManagement() {
                <div className="flex w-full shrink-0 gap-2 md:w-max">
                   <div className="w-full md:w-72">
                      <Input
+                        onChange={(e) => setSearchInput(e.target.value)}
                         label="Search"
                         icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                      />
@@ -125,7 +139,7 @@ export default function CustomerRequestManagement() {
                   </tr>
                </thead>
                <tbody>
-                  {tableRows?.map((tableRow, index) => {
+                  {tableRowsFilter?.map((tableRow, index) => {
                      const isLast = index === tableRows.length - 1;
                      const classes = isLast
                         ? "p-4"

@@ -8,6 +8,7 @@ import { getAccountByUserID } from "../../apis/accountApis";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./style.css";
+
 export default function FormCreate() {
    const navigateTo = useNavigate();
    const location = useLocation();
@@ -28,7 +29,12 @@ export default function FormCreate() {
       const accountid = await getAccountByUserID(selectedUserId);
       const data = {
          registerPlace: registerPlaceRef.current.value,
-         cardOpenDate:  startDate.getFullYear() + "-" + (startDate.getMonth()+1) + "-" + startDate.getDate(),
+         cardOpenDate:
+            startDate.getFullYear() +
+            "-" +
+            (startDate.getMonth() + 1) +
+            "-" +
+            startDate.getDate(),
          accountId: accountid.data,
       };
       console.log("Submitttttttt: ", data);
@@ -89,18 +95,18 @@ export default function FormCreate() {
                                  >
                                     Card Open Date
                                  </label>
-                                 <div style={{ width: '100%' }}>
-                                  <DatePicker
-                                    portalId="my-popper"
-                                    wrapperClassName="custom-datepicker"
-                                    name="description"
-                                    id="description"
-                                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none da:text-white da:border-gray-600 da:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                    selected={startDate} onChange={(date) => setStartDate(date)}
-                                    required
-                                 />
+                                 <div style={{ width: "100%" }}>
+                                    <DatePicker
+                                       portalId="my-popper"
+                                       wrapperClassName="custom-datepicker"
+                                       name="description"
+                                       id="description"
+                                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none da:text-white da:border-gray-600 da:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                       selected={startDate}
+                                       onChange={(date) => setStartDate(date)}
+                                       required
+                                    />
                                  </div>
-                                
                               </div>
                               <div className="relative z-0 w-full mb-5 group pt-5">
                                  <select

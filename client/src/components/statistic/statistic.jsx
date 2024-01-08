@@ -99,7 +99,7 @@ export default function Statistic() {
          <Typography variant="h3" className="w-full block mb-8">
             Statistic Dashboard
          </Typography>
-         <div className="flex items-center flex-wrap">
+         <div className="flex items-center flex-wrap gap-20">
             <BarChart
                width={500}
                layout="vertical"
