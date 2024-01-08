@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import RowTableStaffsPayment from "../../components/staffs/RowPayment";
-import { FunnelIcon } from "@heroicons/react/24/outline";
+import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { getPayments } from "../../apis/paymentApis";
+import LoadingData from "../../components/loading/loadingData";
+import { Input } from "@material-tailwind/react";
 
 const CustomersPayment = () => {
   const accountId = 1;
@@ -117,13 +119,24 @@ const CustomersPayment = () => {
             <div className="px-4 mx-auto max-w-screen-2xl lg:px-12 mt-[10px]">
               <div className="relative overflow-hidden bg-white shadow-md dbg-gray-800 ">
                 <div className="h-[40px] w-[500px] mb-[20px]">
-                  <input
+                  {/* <input
                     type="text"
                     placeholder="Enter Find Payments By AccountID,Username or Phone"
                     value={searchValue}
                     onChange={(e) => findOrders(e.target.value)}
                     className="p-[5px] h-[40px] w-[500px] bg-gray-200 rounded-[10px] border-[1px] border-[gray]"
-                  />
+                  /> */}
+                  <div className="flex w-full shrink-0 gap-2 md:w-max p-2">
+                    <div className="w-full md:w-72">
+                      <Input
+                        label="Search"
+                        icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                        placeholder="Enter Text"
+                        value={searchValue}
+                        onChange={(e) => findOrders(e.target.value)}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="flex items-center space-x-4 mt-4">
                   <label className="flex items-center">
@@ -147,56 +160,62 @@ const CustomersPayment = () => {
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-sm text-left text-gray-500 dtext-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-200 dbg-gray-700 dtext-gray-400">
-                      <tr>
-                        <th scope="col" className="px-4 py-3 w-[200px]">
-                          Payment ID
-                        </th>
-                        <th scope="col" className="px-4 py-3 w-[200px]">
-                          Request ID
-                        </th>
-                        <th scope="col" className="px-4 py-3 w-[200px]">
-                          Customer ID
-                        </th>
-                        <th scope="col" className="px-4 py-3">
-                          Created Date
-                        </th>
-                        <th scope="col" className="px-4 py-3">
-                          <div className="w-[100%] flex justify-end">
-                            Paymented Date
-                          </div>
-                        </th>
-                        <th scope="col" className="px-4 py-3 w-[280px]">
-                          <div className="w-[100%] flex justify-end">
-                            <div className=" mr-[20px]">Price</div>
-                          </div>
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-4 py-3 flex justify-center"
-                        >
-                          <button
-                            onClick={filterStatus}
-                            className="flex justify-center items-center"
+                  {filteredPayments.length > 0 ? (
+                    <table className="w-full text-sm text-left text-gray-500 dtext-gray-400">
+                      <thead className="text-xs text-gray-700 uppercase bg-gray-200 dbg-gray-700 dtext-gray-400">
+                        <tr>
+                          <th scope="col" className="px-4 py-3 w-[200px]">
+                            Payment ID
+                          </th>
+                          <th scope="col" className="px-4 py-3 w-[200px]">
+                            Request ID
+                          </th>
+                          <th scope="col" className="px-4 py-3 w-[200px]">
+                            Customer ID
+                          </th>
+                          <th scope="col" className="px-4 py-3">
+                            Created Date
+                          </th>
+                          <th scope="col" className="px-4 py-3">
+                            <div className="w-[100%] flex justify-end">
+                              Paymented Date
+                            </div>
+                          </th>
+                          <th scope="col" className="px-4 py-3 w-[280px]">
+                            <div className="w-[100%] flex justify-end">
+                              <div className=" mr-[20px]">Price</div>
+                            </div>
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-4 py-3 flex justify-center"
                           >
-                            <FunnelIcon className="h-6 w-6 text-gray-500" />
-                            <div>Status</div>
-                          </button>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredPayments?.map((item) => {
-                        return (
-                          <RowTableStaffsPayment
-                            item={item}
-                            key={item.paymentId}
-                          />
-                        );
-                      })}
-                    </tbody>
-                  </table>
+                            <button
+                              onClick={filterStatus}
+                              className="flex justify-center items-center"
+                            >
+                              <FunnelIcon className="h-6 w-6 text-gray-500" />
+                              <div>Status</div>
+                            </button>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredPayments?.map((item) => {
+                          return (
+                            <RowTableStaffsPayment
+                              item={item}
+                              key={item.paymentId}
+                            />
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <>
+                      <LoadingData></LoadingData>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
