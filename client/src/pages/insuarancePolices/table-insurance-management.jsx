@@ -10,6 +10,8 @@ import { deletePolicy, getAll } from "../../apis/insurancePoliciesApis";
 function TableInsuranceManagement() {
    const [data, setData] = useState([]);
    const [confirm, setConfirm] = useState(0);
+   const [idDelete, setIdDelete] = useState(-1);
+
    const getData = async () => {
       const data = await getAll();
       console.log(11111111, data.data);
@@ -114,6 +116,7 @@ function TableInsuranceManagement() {
                                                 onClick={() =>{
                                                    
                                                    setConfirm(1)
+                                                   setIdDelete(item.policyID)
                                                 }
                                                    
                                           
@@ -156,8 +159,8 @@ function TableInsuranceManagement() {
                                                 </div>
                                                 <div className="flex flex-col space-y-2">
                                                    <button type="button"
-                                                      onClick={ () => handleDelete(item.policyID)}
-                                                      className="px-6 py-2.5 rounded-md text-white text-sm font-semibold border-none outline-none bg-red-500 hover:bg-red-600 active:bg-red-500">Delete</button>
+                                                      onClick={ () => handleDelete(idDelete)}
+                                                      className="px-6 py-2.5 rounded-md text-white text-sm font-semibold border-none outline-none bg-red-500 hover:bg-red-600 active:bg-red-500">Delete + {idDelete}</button>
                                                    <button type="button"
                                                    onClick={() => setConfirm(0)}
                                                       className="px-6 py-2.5 rounded-md text-black text-sm font-semibold border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">Cancel</button>
