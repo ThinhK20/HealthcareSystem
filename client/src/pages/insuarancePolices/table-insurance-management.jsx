@@ -7,18 +7,25 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { deletePolicy, getAll } from "../../apis/insurancePoliciesApis";
 import LoadingWrapper from "../../components/loading/loading";
-
+import {
+   Input
+} from "@material-tailwind/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 function TableInsuranceManagement() {
    const [data, setData] = useState([]);
    const [confirm, setConfirm] = useState(0);
    const [idDelete, setIdDelete] = useState(-1);
    const [loading, setLoading] = useState(false);
+   const [searchInput, setSearchInput] = useState("");
+   const [dataFilter, setDataFilter] = useState([]);
+
 
    const getData = async () => {
       setLoading(true);
       const data = await getAll();
       console.log(11111111, data.data);
       setData(data);
+      setDataFilter(data)
       setLoading(false);
    };
    const handleDelete = async (index) => {
@@ -33,17 +40,37 @@ function TableInsuranceManagement() {
    useEffect(() => {
       getData();
    }, []);
+   useEffect(() => {
+      setData(
+         dataFilter.filter((item) =>
+         item.name.toLowerCase().includes(searchInput) || item.description.toLowerCase().includes(searchInput)
+      )
+      );
+   }, [searchInput]);
    return (
       <>
          <div className="container my-12 py-12 mx-auto px-4 md:px-6 lg:px-12">
-            <Link
+           
+            <div className  = "flex justify-between">
+               <div>
+               <Link
                type="button"
                to={`/insurancePolices/form`}
                state={{ status: "create" }}
-               className="  bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-            >
+               className=" text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+               >
                <FontAwesomeIcon icon={faPlus} /> New
             </Link>
+
+               </div>
+               <div className="w-full max-w-[24rem]">
+                  <Input
+                           onChange={(e) => setSearchInput(e.target.value)}
+                           label="Search by Name or Description"
+                           icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                  />
+               </div>
+            </div>
 
             <section className="mb-20 text-gray-800">
                <div className="block rounded-lg shadow-lg bg-white">

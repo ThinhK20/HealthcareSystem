@@ -50,17 +50,96 @@ namespace HealthcareSystem.Backend.Controllers
                 {
                     return Ok(new
                     {
-                        message = "Succes"
+                        message = "Success"
                     });
                 }
                 else
                 {
                     return BadRequest(new
                     {
-                        message = "fail"
+                        message = "Fail"
                     });
                 }
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("edit")]
+        public async Task<IActionResult> EditPackage([FromBody] PackagePolicyEditDTO packagePolicyEdit )
+        {
+            try
+            {
+                bool result = await _packagePoliceService.EditPackage(packagePolicyEdit);
+                if (result)
+                {
+                    return Ok(new
+                    {
+                        message = "Success"
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        message = "Fail"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete("inactive/{id:int}")]
+        public async Task<IActionResult> InActivePackage([FromRoute(Name = "id")] int packageId)
+        {
+            try
+            {
+                bool result = await _packagePoliceService.InActivePackage(packageId);
+                if (result)
+                {
+                    return Ok(new
+                    {
+                        message = "Success"
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        message = "Fail"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("active/{id:int}")]
+        public async Task<IActionResult> ActivePackage([FromRoute(Name = "id")] int packageId)
+        {
+            try
+            {
+                bool result = await _packagePoliceService.ActivePackage(packageId);
+                if (result)
+                {
+                    return Ok(new
+                    {
+                        message = "Success"
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        message = "Fail"
+                    });
+                }
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

@@ -17,7 +17,7 @@ function calDiscount(price, discountPercentage) {
 }
 function formatMoney(number) {
    try {
-      const newNumber = numeral(number).format("0,0").toString() + " ₫";
+      const newNumber = "$" + number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
       return newNumber;
    } catch (err) {
       console.log(err);

@@ -8,6 +8,10 @@ import { ToastContainer, toast } from "react-toastify";
 import { getAllInsurance, deleteInsurance } from "../../apis/insuranceApis";
 import { getAllUsers } from "../../apis/userApis";
 import LoadingWrapper from "../../components/loading/loading";
+import {
+   Input
+} from "@material-tailwind/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 function Insurance() {
    const [loading, setLoading] = useState(false);
@@ -15,6 +19,9 @@ function Insurance() {
    const [userNoInsuarance, setUserNoInsuarance] = useState([]);
    const [confirm, setConfirm] = useState(0);
    const [idDelete, setIdDelete] = useState(-1);
+   const [searchInput, setSearchInput] = useState("");
+   const [dataFilter, setDataFilter] = useState([]);
+
    const getData = async () => {
       setLoading(true);
       const data = await getAllInsurance();
@@ -45,6 +52,7 @@ function Insurance() {
       setUserNoInsuarance(usersWithoutInsurance);
       console.log(usersWithoutInsurance, 5667899);
       setData(updatedDataArray);
+      setDataFilter(updatedDataArray)
       setLoading(false);
    };
 
@@ -74,20 +82,43 @@ function Insurance() {
          });
       }
    };
+   const search = (data) => {
+       setData(dataFilter.filter((item) => item.account.fullname.toLowerCase().includes(searchInput)))
+   }
    useEffect(() => {
       getData();
    }, []);
+   useEffect(() => {
+      setData(
+         dataFilter.filter((item) =>
+         item.account.fullname.toLowerCase().includes(searchInput) || item.registerPlace.toLowerCase().includes(searchInput) 
+      )
+      );
+   }, [searchInput]);
    return (
       <>
          <div className="container my-12 py-12 mx-auto px-4 md:px-6 lg:px-12">
-            <Link
-               type="button"
-               to={`/insurances/create`}
-               state={{ userNoInsuarance: userNoInsuarance }}
-               className=" text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-            >
-               <FontAwesomeIcon icon={faPlus} /> New
-            </Link>
+            <div className  = "flex justify-between">
+               <div>
+                     <Link
+                     type="button"
+                     to={`/insurances/create`}
+                     state={{ userNoInsuarance: userNoInsuarance }}
+                     className=" text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                  >
+                     <FontAwesomeIcon icon={faPlus} /> New
+                  </Link>
+
+               </div>
+               <div className="w-full max-w-[24rem]">
+                  <Input
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        label="Search by Owner"
+                        icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                  />
+               </div>
+            </div>
+           
             <section className="mb-20 text-gray-800">
                <div className="block rounded-lg shadow-lg bg-white">
                   <div className="flex flex-col">

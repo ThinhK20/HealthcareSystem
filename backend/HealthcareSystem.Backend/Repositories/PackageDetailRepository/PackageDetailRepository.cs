@@ -43,5 +43,9 @@ namespace HealthcareSystem.Backend.Repositories.PackageDetailRepository
         {
             throw new NotImplementedException();
         }
+        public async Task<PackageDetail> GetByIdAsync(int Packageid, int PolicyId)
+        {
+            return await GetAsync(x => x.PolicyID == PolicyId && x.PackageID == Packageid);
+        }
     }
 }
