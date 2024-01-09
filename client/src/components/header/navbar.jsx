@@ -18,7 +18,7 @@ import LoadingWrapper from "../loading/loading";
 
 const routes = [
    {
-      name: "Create",
+      name: "Personal ",
       path: "/staffs/create-staff-account",
       icon: HomeIcon,
    },
@@ -27,27 +27,6 @@ const routes = [
       path: "/staffs/manage-account",
       icon: HomeIcon,
    },
-   {
-      name: "Staff Customer Requests",
-      path: "/staffs/customer-requests",
-      icon: HomeIcon,
-   },
-   {
-      name: "Customer Requests",
-      path: "/users/customer-requests",
-      icon: HomeIcon,
-   },
-   {
-      name: "Customer refund Requests",
-      path: "/users/refund-requests",
-      icon: HomeIcon,
-   },
-   {
-      name: "Staff refund Requests",
-      path: "/staffs/refund-requests",
-      icon: HomeIcon,
-   },
-   // Add more route objects as needed
 ];
 
 export function Navbar({ action }) {
@@ -97,10 +76,7 @@ export function Navbar({ action }) {
                   <FontAwesomeIcon icon={faFaceGrimace} className="mr-1" />
                   About us
                </Link>
-               <Link
-                  to={"https://www.facebook.com/profile.php?id=100006835475551"}
-                  className=""
-               >
+               <Link to={"https://example.com/"} className="">
                   <FontAwesomeIcon icon={faFaceAngry} className="mr-1" />
                   For You
                </Link>
