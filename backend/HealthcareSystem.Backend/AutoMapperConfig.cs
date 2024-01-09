@@ -22,12 +22,26 @@ namespace HealthcareSystem.Backend
             CreateMap<Models.Domain.CustomerRequestDomain, Models.DTO.CustomerRequestCreateDTO>().ReverseMap();
             CreateMap<Models.Domain.CustomerRequestDomain, Models.DTO.CustomerRequestCreateDTO>().ReverseMap();
 
+            CreateMap<Models.Domain.PackageDetailDomain, Models.Entity.PackageDetail>().ReverseMap();
+
+
             CreateMap<Models.Domain.PolicyPackageDomain, Models.Entity.PolicyPackage>().ReverseMap();
+
+            //CreateMap<Models.DTO.PackagePolicyCreateDTO, Models.Entity.PolicyPackage>().ReverseMap();
+            CreateMap<Models.DTO.PackagePolicyEditDTO, Models.Entity.PolicyPackage>().ReverseMap();
+            CreateMap<Models.DTO.BasicPriceEditDTO, Models.Entity.BasicPrice>().ReverseMap();
+            CreateMap<Models.DTO.PackageDetailEditDTO, Models.Entity.PackageDetail>().ReverseMap();
+
             CreateMap<AccountBaseDTO, Models.Entity.Account>().ReverseMap();
             CreateMap<Models.Domain.Account, Models.DTO.AccountDTO>().ReverseMap();
             CreateMap<Models.Domain.Account, Models.Entity.Account>().ReverseMap();
             CreateMap<AccountGetDTO, Models.Entity.Account>().ReverseMap();
             CreateMap<Models.DTO.AccountDTO, Models.Entity.Account>().ReverseMap();
+
+            CreateMap<InsurancePolicyDomain, InsurancePolicy>().ReverseMap();
+
+
+
 
             CreateMap<InsurancePolicy, InsuarancePolicyDTO>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))

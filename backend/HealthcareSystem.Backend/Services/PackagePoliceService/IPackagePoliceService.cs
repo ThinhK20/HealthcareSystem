@@ -10,5 +10,10 @@ namespace HealthcareSystem.Backend.Services.PackagePoliceService
         public Task<List<PolicyPackageDomain>> GetAllPolicyPackagesAsync();
         public Task<PolicyPackageDomain> GetPolicyPackageByIdAsync(int packageId);
         public Task<bool> CreateNewPackage(PackagePolicyCreateDTO detailCreate);
+        public Task<bool> EditPackage(PackagePolicyEditDTO packagePolicyEdit);
+        public Task<bool> InActivePackage(int packageId);
+        public Task<bool> ActivePackage(int packageId);
+
+
     }
 }

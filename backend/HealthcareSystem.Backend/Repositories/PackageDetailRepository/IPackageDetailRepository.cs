@@ -10,5 +10,6 @@ namespace HealthcareSystem.Backend.Repositories
     {
         Task<bool> CreatePackageDetail(PackageDetailCreateDTO packageDetail, int pakaceID);
         Task<bool> UpdateStatus(int PaymentID);
+        Task<PackageDetail> GetByIdAsync(int Packageid, int PolicyId);
     }
 }

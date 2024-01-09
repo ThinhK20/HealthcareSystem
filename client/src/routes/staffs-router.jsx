@@ -1,12 +1,17 @@
 import LayoutRoute from "../shared/layout/layout";
 import StaffsPayment from "../pages/staffs/payment";
 import StaffRequestDetail from "../pages/staffs/request-detail";
+
 import FormCreateNewStaff from "../pages/staffs/create-staff-account";
 import { RefundRequestManagement } from "../pages/staffs/manage-refund-request";
 import RefundRequestDetails from "../pages/staffs/refund-request-details";
 import TableInsuranceManagement from "../components/register-insurance/register-insurance";
 import { ManageAccount } from "../pages/staffs/manage-account";
 import StaffCustomerRequestManagement from "../pages/staffs/manage-requests";
+import PackagePolicy from "../pages/staffs/package-policy";
+import PackagePolicyDetails from "../pages/packagePolicy/detail";
+import CreatePackageForm from "../pages/packagePolicy/create";
+import EditPackageForm from "../pages/packagePolicy/edit";
 export const StaffRoutes = [
    {
       path: "staffs/payment",
@@ -41,5 +46,23 @@ export const StaffRoutes = [
       element: (
          <LayoutRoute element={<TableInsuranceManagement />}></LayoutRoute>
       ),
+   },
+   {
+      path: "staffs/package-policy",
+      element: (
+         <LayoutRoute element={<PackagePolicy />}></LayoutRoute>
+      ),
+   },
+   {
+      path: "/staffs/package-policy/:id",
+      element: <LayoutRoute element={<PackagePolicyDetails />} />,
+   },
+   {
+      path: "/staffs/package-policy/create",
+      element: <LayoutRoute element={<CreatePackageForm />} />,
+   },
+   {
+      path: "/staffs/package-policy/edit/:id",
+      element: <LayoutRoute element={<EditPackageForm />} />,
    },
 ];
