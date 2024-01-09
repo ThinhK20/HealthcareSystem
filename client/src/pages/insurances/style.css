@@ -1,0 +1,6 @@
+.custom-datepicker {
+    width: 100%;
+}
+#my-popper {
+    z-index: 100 !important;
+}

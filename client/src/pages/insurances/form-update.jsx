@@ -1,9 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { updateInsurance } from "../../apis/insuranceApis";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./style.css";
 export default function FormUpdate() {
    const navigateTo = useNavigate();
    const location = useLocation();
@@ -13,13 +15,14 @@ export default function FormUpdate() {
    const cardOpenDate = state?.cardOpenDate || "";
    const name = state?.user || "";
    const registerPlaceRef = useRef();
-   const cardOpenDateRef = useRef();
+   const [startDate, setStartDate] = useState(Date.parse(cardOpenDate));
+
    const handleSubmit = async (e) => {
       e.preventDefault();
       const data_update = {
          insuranceID: id,
          registerPlace: registerPlaceRef.current.value,
-         cardOpenDate: cardOpenDateRef.current.value,
+         cardOpenDate: startDate.getFullYear() + "-" + (startDate.getMonth()+1) + "-" + startDate.getDate(),
       };
       console.log("Submitttttttt: ", data_update);
       const api_update = await updateInsurance(data_update);
@@ -76,22 +79,23 @@ export default function FormUpdate() {
                                  </label>
                               </div>
                               <div className="relative z-0 w-full mb-5 group">
-                                 <input
-                                    type="text"
-                                    name="description"
-                                    id="description"
-                                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none da:text-white da:border-gray-600 da:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                    placeholder="Please enter the description of insuarance policy"
-                                    ref={cardOpenDateRef}
-                                    defaultValue={cardOpenDate}
-                                    required
-                                 />
-                                 <label
+                              <label
                                     htmlFor="description"
                                     className="peer-focus:font-medium absolute text-sm text-gray-500 da:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:da:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                                  >
                                     Card Open Date
                                  </label>
+                                 <div style={{ width: '100%' }}>
+                                  <DatePicker
+                                    portalId="my-popper"
+                                    wrapperClassName="custom-datepicker"
+                                    name="description"
+                                    id="description"
+                                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none da:text-white da:border-gray-600 da:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                    selected={startDate} onChange={(date) => setStartDate(date)}
+                                    required
+                                 />
+                                 </div>
                               </div>
                            </form>
                         </div>

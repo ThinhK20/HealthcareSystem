@@ -9,9 +9,11 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { Periodic } from "../../enums/periodic";
 import { createCustomerRequestApi } from "../../apis/customerRequestApis";
+import LoadingWrapper from "../../components/loading/loading";
 export default function CustomerRequestForm() {
    const [policyPackages, setPolicyPackages] = useState([]);
    const [selectedPolicyPackage, setSelectedPolicyPackage] = useState();
+   const [isLoading, setIsLoading] = useState(false);
    const navigate = useNavigate();
    useEffect(() => {
       const source = axios.CancelToken.source();
@@ -33,18 +35,20 @@ export default function CustomerRequestForm() {
          periodic: formData.get("periodic"),
       };
 
+      setIsLoading(true);
+
       createCustomerRequestApi(submitData)
          .then(() => {
             toast.success("Request successfully !");
             navigate("/users/customer-requests");
          })
-         .catch((err) => toast.error(err));
-
-      console.log(submitData);
+         .catch((err) => toast.error(err))
+         .finally(() => setIsLoading(false));
    };
 
    return (
       <Box component="form" onSubmit={handleSubmit}>
+         <LoadingWrapper open={isLoading} />
          <Typography variant="h6">
             Create new register request for insurance
          </Typography>

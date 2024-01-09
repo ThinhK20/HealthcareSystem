@@ -10,7 +10,7 @@ const LayoutIndexRoute = ({ element }) => {
                 <Navbar></Navbar>
             </header>
             <div className="min-h-[90vh] w-[100%]  mx-auto flex">
-                <div className=" mx-auto flex">
+                <div className=" mx-auto flex w-full">
                     {element}
                 </div>  
             </div>

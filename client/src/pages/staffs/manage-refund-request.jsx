@@ -50,7 +50,6 @@ export function RefundRequestManagement() {
    }, []);
 
    useEffect(() => {
-      console.log(refundRequests);
       setTableRows(() => {
          const newRows = refundRequests?.map((request) => ({
             img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",

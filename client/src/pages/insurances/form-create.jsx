@@ -5,35 +5,41 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { createInsurance } from "../../apis/insuranceApis";
 import { getAccountByUserID } from "../../apis/accountApis";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./style.css";
+
 export default function FormCreate() {
    const navigateTo = useNavigate();
    const location = useLocation();
    const { state } = location;
    const userNoInsuarance = state?.userNoInsuarance;
-
+   const [startDate, setStartDate] = useState(new Date());
    const [selectedUserId, setSelectedUserId] = useState(0);
 
    const handleSelectChange = (event) => {
       const selectedValue = event.target.value;
       setSelectedUserId(selectedValue);
 
-      // You can perform additional actions with the selected value if needed
       console.log("Selected User ID:", selectedValue);
    };
    const registerPlaceRef = useRef();
-   const cardOpenDateRef = useRef();
    const handleSubmit = async (e) => {
       e.preventDefault();
       const accountid = await getAccountByUserID(selectedUserId);
       const data = {
          registerPlace: registerPlaceRef.current.value,
-         cardOpenDate: cardOpenDateRef.current.value,
+         cardOpenDate:
+            startDate.getFullYear() +
+            "-" +
+            (startDate.getMonth() + 1) +
+            "-" +
+            startDate.getDate(),
          accountId: accountid.data,
       };
       console.log("Submitttttttt: ", data);
       const api = await createInsurance(data);
       console.log(22222222222, api);
-
       toast.success("Success", {
          position: "top-right",
          autoClose: 2000,
@@ -83,20 +89,24 @@ export default function FormCreate() {
                                  </label>
                               </div>
                               <div className="relative z-0 w-full mb-5 group">
-                                 <input
-                                    type="text"
-                                    name="description"
-                                    id="description"
-                                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none da:text-white da:border-gray-600 da:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                    ref={cardOpenDateRef}
-                                    required
-                                 />
                                  <label
                                     htmlFor="description"
                                     className="peer-focus:font-medium absolute text-sm text-gray-500 da:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:da:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                                  >
                                     Card Open Date
                                  </label>
+                                 <div style={{ width: "100%" }}>
+                                    <DatePicker
+                                       portalId="my-popper"
+                                       wrapperClassName="custom-datepicker"
+                                       name="description"
+                                       id="description"
+                                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none da:text-white da:border-gray-600 da:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                       selected={startDate}
+                                       onChange={(date) => setStartDate(date)}
+                                       required
+                                    />
+                                 </div>
                               </div>
                               <div className="relative z-0 w-full mb-5 group pt-5">
                                  <select

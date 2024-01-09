@@ -12,6 +12,7 @@ import PackagePolicy from "../pages/staffs/package-policy";
 import PackagePolicyDetails from "../pages/packagePolicy/detail";
 import CreatePackageForm from "../pages/packagePolicy/create";
 import EditPackageForm from "../pages/packagePolicy/edit";
+import Statistic from "../components/statistic/statistic";
 export const StaffRoutes = [
    {
       path: "staffs/payment",
@@ -64,5 +65,9 @@ export const StaffRoutes = [
    {
       path: "/staffs/package-policy/edit/:id",
       element: <LayoutRoute element={<EditPackageForm />} />,
+   },
+   {
+      path: "staffs/statistic",
+      element: <LayoutRoute element={<Statistic />}></LayoutRoute>,
    },
 ];

@@ -13,10 +13,12 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { createNewRefundRequestApi } from "../../apis/refundRequestApis.js";
+import LoadingWrapper from "../../components/loading/loading.jsx";
 export default function RefundRequestForm() {
    const [attachFile, setAttachFile] = useState();
    const [errorMsg, setErrorMsg] = useState("");
    const [isSaving, setIsSaving] = useState(false);
+   const [loading, setLoading] = useState(false);
 
    function onSubmit(e) {
       e.preventDefault();
@@ -63,6 +65,7 @@ export default function RefundRequestForm() {
 
    return (
       <Box component="form" onSubmit={onSubmit}>
+         <LoadingWrapper open={isSaving} />
          <Typography variant="h6">
             Create new refund request for your situation
          </Typography>

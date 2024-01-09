@@ -106,14 +106,14 @@ const EditAccount = () => {
       const userStaffData = result;
       setFormDataAccount((prevData) => ({
         ...prevData,
-        accountId: userStaffData.accountId || "",
-        userId: userStaffData.userId || "",
-        username: userStaffData.username || "",
+        accountId: userStaffData?.accountId || "",
+        userId: userStaffData?.userId || "",
+        username: userStaffData?.username || "",
         password: "",
-        status: userStaffData.status || "Active",
-        role: userStaffData.role || "Customer",
+        status: userStaffData?.status || "Active",
+        role: userStaffData?.role || "Customer",
       }));
-      setPassword(userStaffData.password);
+      setPassword(userStaffData?.password);
     });
   }, []);
   return (
