@@ -55,7 +55,6 @@ export default function Login() {
       };
       setLoading(true);
       const createUser = await createUserGoogle(data);
-      setLoading(false);
       if (createUser.email != "Exist") {
          console.log("Vo dayyyyyyy");
          const randomUsername = generateRandomUsername();
@@ -67,7 +66,6 @@ export default function Login() {
             confirmPassword: null,
          };
          console.log(data_user);
-         setLoading(true);
          const api_login = await loginByGoogle(data_user);
          setLoading(false);
 
