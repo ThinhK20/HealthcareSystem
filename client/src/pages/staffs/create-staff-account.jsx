@@ -1,6 +1,7 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { CreateNewStaff } from "../../apis/accountApis";
+import LoadingWrapper from "../../components/loading/loading";
 const FormCreateNewStaff = () => {
    const [formDataAccount, setFormDataAccount] = useState({
       userId: "",
@@ -16,6 +17,8 @@ const FormCreateNewStaff = () => {
       address: "",
       gender: "Male",
    });
+   const [isLoading, setIsLoading] = useState(false);
+
    const handleInputChangeAccount = (e) => {
       const { name, value } = e.target;
       setFormDataAccount((prevData) => ({
@@ -27,11 +30,11 @@ const FormCreateNewStaff = () => {
    const handleFormSubmit = async (e) => {
       e.preventDefault();
       const responseAccount = await CreateNewStaff(formDataAccount);
-      console.log(responseAccount);
    };
 
    return (
       <form className="w-full" onSubmit={handleFormSubmit} method="post">
+         <LoadingWrapper open={isLoading} />
          <div className="w-[60%] m-auto">
             <div className="space-y-12">
                <div className="border-b border-gray-900/10 pb-12">
