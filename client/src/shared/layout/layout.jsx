@@ -1,13 +1,12 @@
-// LayoutRoute.jsx
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Navbar from "../../components/header/navbar";
 import Footer from "../footer/footer";
 import React, { useState, useEffect } from "react";
+import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 const LayoutRoute = ({ element }) => {
    const [isVisible, setIsVisible] = useState(false);
 
    useEffect(() => {
-      // Thêm sự kiện cuộn để kiểm tra vị trí và hiển thị nút
       const handleScroll = () => {
          const currentPosition = window.scrollY;
          setIsVisible(currentPosition > 200);
@@ -39,7 +38,7 @@ const LayoutRoute = ({ element }) => {
             {isVisible && (
                <button
                   onClick={scrollToTop}
-                  className="bg-[red]"
+                  className="bg-gray-500 hover:bg-gray-600 opacity-80  h-[50px] w-[50px] rounded-full"
                   style={{
                      position: "absolute",
                      bottom: 0,
@@ -47,7 +46,10 @@ const LayoutRoute = ({ element }) => {
                      zIndex: 1000,
                   }}
                >
-                  Scroll to Top
+                  <FontAwesomeIcon
+                     icon={faChevronUp}
+                     className="text-[white] font-[800]"
+                  />
                </button>
             )}
             {/* Nội dung của component */}

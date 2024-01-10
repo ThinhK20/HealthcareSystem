@@ -10,8 +10,11 @@ import {
    Chip,
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
+import { Input } from "@material-tailwind/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -33,6 +36,9 @@ const TABLE_HEAD = [
 export function RefundRequestManagement() {
    const [refundRequests, setRefundRequests] = useState();
    const [tableRows, setTableRows] = useState([]);
+   const [filterTableRows, setFilterTableRows] = useState([]);
+   const [searchInput, setSearchInput] = useState("");
+   const [isStatus, setIsStatus] = useState(0);
 
    useEffect(() => {
       const source = axios.CancelToken.source();
@@ -48,6 +54,57 @@ export function RefundRequestManagement() {
          source.cancel();
       };
    }, []);
+
+   useEffect(() => {
+      setFilterTableRows(() => {
+         switch (isStatus) {
+            case 0:
+               return tableRows.filter(
+                  (r) =>
+                     r.user?.username
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase()) ||
+                     r.hospitalName
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase())
+               );
+            case 1:
+               return tableRows.filter((r) => {
+                  return (
+                     r.status === "Approved" &&
+                     (r.user?.username
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase()) ||
+                        r.hospitalName
+                           .toLowerCase()
+                           .includes(searchInput.toLowerCase()))
+                  );
+               });
+            case 2:
+               return tableRows.filter(
+                  (r) =>
+                     r.status === "Pending" &&
+                     (r.user?.username
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase()) ||
+                        r.hospitalName
+                           .toLowerCase()
+                           .includes(searchInput.toLowerCase()))
+               );
+            case 3:
+               return tableRows.filter(
+                  (r) =>
+                     r.status === "Rejected" &&
+                     (r.user?.username
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase()) ||
+                        r.hospitalName
+                           .toLowerCase()
+                           .includes(searchInput.toLowerCase()))
+               );
+         }
+      });
+   }, [searchInput, isStatus]);
 
    useEffect(() => {
       setTableRows(() => {
@@ -66,6 +123,14 @@ export function RefundRequestManagement() {
       });
    }, [refundRequests]);
 
+   function onFilter() {
+      setIsStatus((oldState) => {
+         let newState = oldState + 1;
+         if (newState >= 4) newState = 0;
+         return newState;
+      });
+   }
+
    return (
       <Card className="h-full w-full">
          <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -78,6 +143,22 @@ export function RefundRequestManagement() {
                      These are details about the refund requests to HealthCare
                      System Company
                   </Typography>
+               </div>
+               <div className="flex w-full shrink-0 gap-4 md:w-max z-50">
+                  <div
+                     onClick={onFilter}
+                     className="flex items-center gap-1 py-2 px-4 hover:bg-gray-300 cursor-pointer rounded"
+                  >
+                     <FontAwesomeIcon icon={faFilter} />
+                     <span>Status</span>
+                  </div>
+                  <div className="w-full md:w-72">
+                     <Input
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        label="Search"
+                        icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                     />
+                  </div>
                </div>
             </div>
          </CardHeader>
@@ -102,7 +183,7 @@ export function RefundRequestManagement() {
                   </tr>
                </thead>
                <tbody>
-                  {tableRows?.map((tableRow, index) => {
+                  {filterTableRows?.map((tableRow, index) => {
                      const isLast = index === tableRows.length - 1;
                      const classes = isLast
                         ? "p-4"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
@@ -18,29 +18,77 @@ import LoadingWrapper from "../loading/loading";
 
 const routes = [
    {
-      name: "Personal ",
+      name: "Insurance Packages ",
       path: "/staffs/create-staff-account",
-      icon: HomeIcon,
+      dropdown: true,
+      content: [
+         {
+            name: "Insurance Packages ",
+            path: "/staffs/create-staff-account",
+         },
+         {
+            name: "Insurance Packages ",
+            path: "/staffs/create-staff-account",
+         },
+         {
+            name: "Insurance Packages ",
+            path: "/staffs/create-staff-account",
+         },
+         {
+            name: "Insurance Packages ",
+            path: "/staffs/create-staff-account",
+         },
+      ],
    },
    {
-      name: "Accounts",
+      name: "Policy",
       path: "/staffs/manage-account",
-      icon: HomeIcon,
+      dropdown: true,
+      content: [
+         {
+            name: "Insurance Packages ",
+            path: "/staffs/create-staff-account",
+         },
+      ],
+   },
+   {
+      name: "About us",
+      path: "/about-us",
+      dropdown: true,
+      content: [
+         {
+            name: "Insurance Packages ",
+            path: "/staffs/create-staff-account",
+         },
+      ],
    },
 ];
 
 export function Navbar({ action }) {
-   const [openNav, setOpenNav] = React.useState(false);
+   const [openNav, setOpenNav] = useState(false);
+   const [openMenu, setOpenMenu] = useState(false);
+   const [detail, setDetail] = useState();
+   const handleHover = (drop, ct) => {
+      if (drop == true) {
+         setOpenMenu(true);
+         setDetail(ct);
+      }
+   };
 
+   const handleLeave = () => {
+      setOpenMenu(false);
+   };
    const navList = (
-      <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 p-[5px] ">
-         {routes.map(({ name, path }) => (
+      <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 h-full ">
+         {routes.map(({ name, path, dropdown, content }) => (
             <Typography
                key={name}
                as="li"
                variant="small"
                color="inherit"
-               className="capitalize p-[2px] rounded-md"
+               className="capitalize  h-full flex justify-center items-center"
+               onMouseEnter={() => handleHover(dropdown, content)}
+               onMouseLeave={handleLeave}
             >
                <Link
                   to={path}
@@ -82,7 +130,8 @@ export function Navbar({ action }) {
                </Link>
             </div>
          </div>
-         <div className="flex items-center justify-between text-black bg-[#FFD000] w-full">
+
+         <div className="flex items-center justify-between text-black bg-[#FFD000] w-full h-[80px]">
             <Link to="/">
                <Typography className="ml-4 cursor-pointer font-bold flex">
                   <img
@@ -100,7 +149,7 @@ export function Navbar({ action }) {
                   </div>
                </Typography>
             </Link>
-            <div className="hidden lg:block">{navList}</div>
+            <div className="hidden lg:block h-full">{navList}</div>
             <div className="hidden gap-2 lg:flex">
                <Link
                   href="https://www.material-tailwind.com/blocks?ref=mtkr"
@@ -133,6 +182,19 @@ export function Navbar({ action }) {
                )}
             </IconButton>
          </div>
+         {openMenu && (
+            <div
+               className="w-full h-[200px] bg-gray-50 transition-[700] absolute z-50 shadow-lg border-b-2 border-b-[#78E1E1]"
+               onMouseEnter={() => setOpenMenu(true)}
+               onMouseLeave={handleLeave}
+            >
+               {detail.map((item) => (
+                  <div className="text-black">
+                     <Link href={item.path}>{item.name}</Link>
+                  </div>
+               ))}
+            </div>
+         )}
          <Collapse open={openNav} className=" rounded-lg ">
             <div className="container mx-auto rounded-xl">
                {navList}

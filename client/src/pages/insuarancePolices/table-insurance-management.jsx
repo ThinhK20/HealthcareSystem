@@ -7,10 +7,10 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { deletePolicy, getAll } from "../../apis/insurancePoliciesApis";
 import LoadingWrapper from "../../components/loading/loading";
-import {
-   Input
-} from "@material-tailwind/react";
+import { Input } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import Pagination from "../../components/pagination/pagination";
+
 function TableInsuranceManagement() {
    const [data, setData] = useState([]);
    const [confirm, setConfirm] = useState(0);
@@ -19,13 +19,19 @@ function TableInsuranceManagement() {
    const [searchInput, setSearchInput] = useState("");
    const [dataFilter, setDataFilter] = useState([]);
 
+   const itemsPerPage = 2;
+   const handlePageChange = (newPage) => {
+      const startIndex = (newPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      setData(dataFilter.slice(startIndex, endIndex));
+   };
 
    const getData = async () => {
       setLoading(true);
       const data = await getAll();
       console.log(11111111, data.data);
-      setData(data);
-      setDataFilter(data)
+      setData(data.slice(0, itemsPerPage));
+      setDataFilter(data);
       setLoading(false);
    };
    const handleDelete = async (index) => {
@@ -42,32 +48,32 @@ function TableInsuranceManagement() {
    }, []);
    useEffect(() => {
       setData(
-         dataFilter.filter((item) =>
-         item.name.toLowerCase().includes(searchInput) || item.description.toLowerCase().includes(searchInput)
-      )
+         dataFilter.filter(
+            (item) =>
+               item.name.toLowerCase().includes(searchInput) ||
+               item.description.toLowerCase().includes(searchInput)
+         )
       );
    }, [searchInput]);
    return (
       <>
          <div className="container my-12 py-12 mx-auto px-4 md:px-6 lg:px-12">
-           
-            <div className  = "flex justify-between">
+            <div className="flex justify-between">
                <div>
-               <Link
-               type="button"
-               to={`/insurancePolices/form`}
-               state={{ status: "create" }}
-               className=" text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-               >
-               <FontAwesomeIcon icon={faPlus} /> New
-            </Link>
-
+                  <Link
+                     type="button"
+                     to={`/insurancePolices/form`}
+                     state={{ status: "create" }}
+                     className=" text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                  >
+                     <FontAwesomeIcon icon={faPlus} /> New
+                  </Link>
                </div>
                <div className="w-full max-w-[24rem]">
                   <Input
-                           onChange={(e) => setSearchInput(e.target.value)}
-                           label="Search by Name or Description"
-                           icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                     onChange={(e) => setSearchInput(e.target.value)}
+                     label="Search by Name or Description"
+                     icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                   />
                </div>
             </div>
@@ -237,6 +243,13 @@ function TableInsuranceManagement() {
                   </div>
                </div>
             </section>
+            <div className="flex justify-center items-center text-center">
+               <Pagination
+                  totalItems={dataFilter.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={handlePageChange}
+               />
+            </div>
          </div>
          <LoadingWrapper open={loading} />
       </>
