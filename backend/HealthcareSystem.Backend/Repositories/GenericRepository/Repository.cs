@@ -32,7 +32,7 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
 
 
         public async Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true,
-            string? includeProperties = null)
+            string? includeProperties = null, int pageSize = 3, int pageNumber = 1)
         {
             IQueryable<T> query = _dbSet;
             if (!tracked) query = query.AsNoTracking();
@@ -43,6 +43,14 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
 
             if (filter != null) query = query.Where(filter);
 
+            if(pageSize > 0)
+            {
+                if(pageSize > 100)
+                {
+                    pageSize = 100;
+                }
+                query = query.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
+            }
             return (await query.FirstOrDefaultAsync())!;
         }
 
