@@ -17,13 +17,23 @@ function TableInsuranceManagement() {
    const [idDelete, setIdDelete] = useState(-1);
    const [loading, setLoading] = useState(false);
    const [searchInput, setSearchInput] = useState("");
+   const [newPage, setNewPage] = useState(0);
    const [dataFilter, setDataFilter] = useState([]);
+   const [dataAfterFilter, setDataAfterFilter] = useState([]);
 
-   const itemsPerPage = 2;
+   const itemsPerPage = 1;
    const handlePageChange = (newPage) => {
       const startIndex = (newPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      setData(dataFilter.slice(startIndex, endIndex));
+      if(searchInput.length == 0 ){
+         setData(dataFilter.slice(startIndex, endIndex));
+
+      }
+      else{
+         setData(dataAfterFilter.slice(startIndex, endIndex));
+
+      }
+      setNewPage(newPage)
    };
 
    const getData = async () => {
@@ -47,13 +57,19 @@ function TableInsuranceManagement() {
       getData();
    }, []);
    useEffect(() => {
+
+      const startIndex = (newPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      console.log("Start: ", startIndex, "End: ", endIndex)
+      const newdata = dataFilter.filter(
+         (item) =>
+            item.name.toLowerCase().includes(searchInput) ||
+            item.description.toLowerCase().includes(searchInput)
+      )
       setData(
-         dataFilter.filter(
-            (item) =>
-               item.name.toLowerCase().includes(searchInput) ||
-               item.description.toLowerCase().includes(searchInput)
-         )
+         newdata.slice(startIndex , endIndex)
       );
+      setDataAfterFilter(newdata)
    }, [searchInput]);
    return (
       <>
@@ -245,7 +261,7 @@ function TableInsuranceManagement() {
             </section>
             <div className="flex justify-center items-center text-center">
                <Pagination
-                  totalItems={dataFilter.length}
+                  totalItems={searchInput.length == 0 ? dataFilter.length : dataAfterFilter.length}
                   itemsPerPage={itemsPerPage}
                   onPageChange={handlePageChange}
                />
