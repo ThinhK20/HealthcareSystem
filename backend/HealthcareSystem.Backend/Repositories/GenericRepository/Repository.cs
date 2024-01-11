@@ -39,7 +39,7 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
 
 
         public async Task<T> GetAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true,
-            string? includeProperties = null, int pageSize = 3, int pageNumber = 1)
+            string? includeProperties = null)
         {
             IQueryable<T> query = _dbSet;
             if (!tracked) query = query.AsNoTracking();
