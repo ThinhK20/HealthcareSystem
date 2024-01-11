@@ -15,7 +15,7 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
             _dbSet = _context.Set<T>();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includeProperites = null)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includeProperites = null, int pageSize = 3, int pageNumber = 1)
         {
             IQueryable<T> query = _dbSet;
             if (filter != null) query = query.Where(filter);
@@ -25,7 +25,14 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
                 foreach (var includeProp in includeProperites.Split(new[] { ',' },
                              StringSplitOptions.RemoveEmptyEntries))
                     query = query.Include(includeProp);
-
+            if (pageSize > 0)
+            {
+                if (pageSize > 100)
+                {
+                    pageSize = 100;
+                }
+                query = query.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
+            }
             return await query.ToListAsync();
         }
 
@@ -43,14 +50,7 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
 
             if (filter != null) query = query.Where(filter);
 
-            if(pageSize > 0)
-            {
-                if(pageSize > 100)
-                {
-                    pageSize = 100;
-                }
-                query = query.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
-            }
+         
             return (await query.FirstOrDefaultAsync())!;
         }
 
