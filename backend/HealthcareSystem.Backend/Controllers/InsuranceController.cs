@@ -29,6 +29,23 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
 
+        [HttpGet("insurancesOnPage")]
+        public async Task<ActionResult<List<InsuranceDomain>>> GetInsurancesOnPage(int pageSize = 2, int pageNumber = 1)
+        {
+            try
+            {
+                Pagination page = new Pagination{
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                };
+                return Ok(await _insuranceRepository.GetInsurancesOnPage(page));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{insuranceId:int}")]
         public async Task<ActionResult<InsuranceDomain>> GetInsurance([FromRoute] int insuranceId)
         {

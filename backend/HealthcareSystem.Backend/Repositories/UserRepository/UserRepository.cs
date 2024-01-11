@@ -46,7 +46,7 @@ namespace HealthcareSystem.Backend.Repositories
         {
             Models.Entity.User userNew = _mapper.Map<Models.Entity.User>(data);
             var users = await GetAllAsync();
-            bool emailExists = users.Any(user => user.Email == data.Email);
+            bool emailExists = users.Any(user => user.Email == data.Email && user.Fullname == data.Fullname);
             if (emailExists)
             {
                 return new UserDTO { Email = "Exist" };

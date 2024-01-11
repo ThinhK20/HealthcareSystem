@@ -178,6 +178,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
 
             var id = await _userService.CreateUserGoogle(account);
+
             if (id == null)
             {
                 return BadRequest("Failed to create user.");
