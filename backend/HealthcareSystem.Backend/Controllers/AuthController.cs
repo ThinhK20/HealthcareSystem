@@ -3,6 +3,10 @@ using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.AccountService;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace HealthcareSystem.Backend.Controllers
 {
@@ -69,6 +73,27 @@ namespace HealthcareSystem.Backend.Controllers
             return Ok("Successfully");
 
         }
+        [HttpPost("generateToken")]
+        public async Task<IActionResult> GenerateToken([FromBody] TokenRequest model)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes("This is Secret Key of Project PTHTTTHD");
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+               {
+                    new Claim(ClaimTypes.Name, model.userId.ToString()),
+                    new Claim(ClaimTypes.Role, model.role)
+               }),
+                Expires = DateTime.Now.AddDays(7),
+                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return Ok(token);
+        }
+
 
 
     }
