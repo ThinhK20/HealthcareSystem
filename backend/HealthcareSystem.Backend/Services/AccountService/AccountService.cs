@@ -41,9 +41,9 @@ namespace HealthcareSystem.Backend.Services.AccountService
         {
             return await _accountRepository.GetAccountsByPage(pageSize, pageNumber);
         }
-        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
+        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc,string email)
         {
-            return _accountRepository.CreateAccountStaff(acc,email);
+            return _accountRepository.CreateAccountStaff(acc, email);
         }
 
         public Task<AccountBaseDTO> GetAccountByID(int id)
