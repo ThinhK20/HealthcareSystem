@@ -83,7 +83,8 @@ namespace HealthcareSystem.Backend.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                {
                     new Claim(ClaimTypes.Name, model.userId.ToString()),
-                    new Claim(ClaimTypes.Role, model.role)
+                    new Claim(ClaimTypes.Role, model.role),
+              
                }),
                 Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

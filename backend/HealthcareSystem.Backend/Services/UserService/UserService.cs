@@ -113,5 +113,9 @@ namespace HealthcareSystem.Backend.Services.UserService
         {
             return _userRepository.GetAllUsers();
         }
+        public async Task<UserDTO> GetUserByEmail(string email)
+        {
+            return await _userRepository.GetUserByEmail(email);
+        }
     }
 }

@@ -6,8 +6,8 @@ import { login, loginByGoogle, generateToken } from "../../apis/authenicationApi
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { createUserGoogle } from "../../apis/accountApis";
 import LoadingWrapper from "../../components/loading/loading";
-import { getAllUsers } from "../../apis/userApis";
-import { getAccounts } from "../../apis/accountApis";
+import {  getUserByEmail } from "../../apis/userApis";
+import { getAccountByUserID , getAccountByAccountId} from "../../apis/accountApis";
 import backgroundImg from "../../../public/background.svg"
 function generateRandomString(length) {
    const characters =
@@ -87,13 +87,11 @@ export default function Login() {
             navigateTo("/");
          }, 3000);
       } else {
-         const getUsers = await getAllUsers();
-         const filteredUsers = getUsers.filter(user => decodeToken.email === user.email);
-         console.log("Filter : ", filteredUsers)
-         const accountData = await getAccounts();
-         const filteredAccount = accountData.filter(account => filteredUsers[0].userId === account.userId);
-         console.log("Account Filter : ", filteredAccount[0].username)
-         const username = filteredAccount[0].username
+         const getUser = await getUserByEmail(data.email);
+         const accountId = await getAccountByUserID(getUser.userId);
+         const accountInfo = await getAccountByAccountId(accountId.data);
+
+         const username = accountInfo.username
          console.log(username, username.startsWith("user_"))
          if(username.startsWith("user_")){
             const payload = {

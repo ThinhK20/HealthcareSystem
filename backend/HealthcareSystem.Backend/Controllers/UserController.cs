@@ -119,5 +119,18 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("getUserByEmail")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            try
+            {
+                var result = await _userService.GetUserByEmail(email);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

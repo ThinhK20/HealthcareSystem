@@ -75,5 +75,11 @@ namespace HealthcareSystem.Backend.Repositories
             var users = await GetAllAsync();
             return _mapper.Map<List<UserDTO>>(users);
         }
+        public async Task<UserDTO> GetUserByEmail(string email)
+        {
+            var UserInfo = await GetAsync(x => x.Email == email);
+            if (UserInfo == null) return null;
+            return _mapper.Map<UserDTO>(UserInfo);
+        }
     }
 }

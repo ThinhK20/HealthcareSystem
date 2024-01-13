@@ -17,5 +17,14 @@ export const getAllUsers = async () => {
    }
 };
 
+export const getUserByEmail = async (email) => {
+   try {
+      const response = await instance.get(`/users/getUserByEmail?email=${email}`);
+      return response.data;
+   } catch (error) {
+      console.error("Error occurred while trying to get users", error);
+   }
+};
+
 
 

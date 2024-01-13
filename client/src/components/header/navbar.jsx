@@ -174,17 +174,28 @@ export function Navbar() {
    const [currentRole, setCurrentRole] = useState("All");
    const [detail, setDetail] = useState();
    const [username, setUsername] = useState();
-   const [stateButton, setStateButton] = useState();
+   const [stateButton, setStateButton] = useState(true);
    useEffect(() => {
       const Decode = async () => {
-         const decodeToken = await jwt.jwtDecode(localStorage.getItem("token"));
+         const token = localStorage.getItem("token")
+         if(token == null){
+      
+            console.log("AAAAAAAAAAAAAA")
+            setStateButton(true);
+         }
+         else{
+            console.log("BBBBBBBBB")
+            const decodeToken = await jwt.jwtDecode(token);
+            const accountId = await getAccountByUserID(decodeToken.unique_name);
 
-         const accountId = await getAccountByUserID(decodeToken.unique_name);
-
-         const info = await getAccountByAccountId(accountId.data);
-
-         setStateButton(!decodeToken.unique_name);
-         setCurrentRole(decodeToken.role || "All");
+            const info = await getAccountByAccountId(accountId.data);
+            
+            console.log(info, 555)
+            setUsername(info.username)
+            setCurrentRole(decodeToken.role || "All");
+            setStateButton(false);
+         }
+        
       };
 
       Decode();
@@ -315,6 +326,10 @@ export function Navbar() {
                      </Link>
                   </>
                ) : (
+                  <>
+                  <p className="font-serif border-b-2 border-gray-800 mr-10">
+                        Hi, {" "} {username}
+                  </p>
                   <Link to="/" target="_blank">
                      <Button
                         variant="gradient"
@@ -324,12 +339,13 @@ export function Navbar() {
                            localStorage.clear();
                            console.log(stateButton, 8888);
 
-                           setStateButton(!stateButton);
+                           setStateButton(true);
                         }}
                      >
                         Log out
                      </Button>
                   </Link>
+                  </>
                )}
             </div>
 
@@ -383,7 +399,7 @@ export function Navbar() {
                         onClick={() => {
                            localStorage.clear();
                            console.log(stateButton, 8888);
-                           setStateButton(!stateButton);
+                           setStateButton(true);
                         }}
                      >
                         Log out

@@ -22,5 +22,9 @@ namespace HealthcareSystem.Backend.Services.UserService
         public Task<UserDTO> CreateUserGoogle(UserDTO user);
         public Task<List<UserDTO>> GetAllUsers();
 
+
+        public Task<UserDTO> GetUserByEmail(string email);
+
+
     }
 }
