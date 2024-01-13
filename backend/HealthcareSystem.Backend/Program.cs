@@ -9,6 +9,7 @@ using HealthcareSystem.Backend.Repositories.InsuranceRepository;
 using HealthcareSystem.Backend.Repositories.PackageDetailRepository;
 using HealthcareSystem.Backend.Repositories.PolicyPackageRepository;
 using HealthcareSystem.Backend.Repositories.RefundRequestRepository;
+using HealthcareSystem.Backend.Repositories.Token;
 using HealthcareSystem.Backend.Services.AccountService;
 using HealthcareSystem.Backend.Services.EmailService;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
@@ -17,6 +18,7 @@ using HealthcareSystem.Backend.Services.PaymentService;
 using HealthcareSystem.Backend.Services.RefundRequestService;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -31,6 +33,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMSSQL")!);
 });
 
+builder.Services.AddDbContext<AuthContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("LocalMSSQL"));
+});
 
 
 
@@ -51,6 +57,7 @@ builder.Services.AddScoped<IInsuranceRepository, InsuranceRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IEmailVerificationRepository, EmailVerificationRepository>();
 builder.Services.AddScoped<IPackageDetailRepository, PackageDetailRepository>();
+builder.Services.AddScoped<ITokenRepository, JWTRepository>();
 
 
 
@@ -66,6 +73,10 @@ builder.Services.AddScoped<IPackagePoliceService, PackagePoliceService>();
 
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+builder.Services.AddIdentityCore<IdentityUser>().AddRoles<IdentityRole>()
+    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("PolicyUser")
+    .AddEntityFrameworkStores<AuthContext>().AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(x =>
 {
@@ -86,6 +97,15 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 1;
+    options.Password.RequiredUniqueChars = 0;
+});
 
 
 
@@ -121,7 +141,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowOrigin"); 
+app.UseCors("AllowOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();

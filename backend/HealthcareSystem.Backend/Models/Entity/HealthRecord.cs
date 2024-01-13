@@ -21,7 +21,7 @@ namespace HealthcareSystem.Backend.Models.Entity
 
         public int FeeAffectID { get; set; }
 
-        public virtual Account Account { get; set; }
+        public virtual User User { get; set; }
 
         public virtual FeeAffect FeeAffects { get; set; }
     }

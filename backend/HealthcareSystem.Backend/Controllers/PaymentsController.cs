@@ -1,7 +1,9 @@
-﻿using HealthcareSystem.Backend.Models.DTO;
+﻿using HealthcareSystem.Backend.Enums;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 using HealthcareSystem.Backend.Services.PaymentService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -9,6 +11,7 @@ namespace HealthcareSystem.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PaymentsController : ControllerBase
     {
         private readonly IPaymentService _paymentRepository;
@@ -166,8 +169,8 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
 
-
         [HttpPost("GetLinkCheckOut")]
+        [Authorize(Roles = Roles.UserRole)]
         public async Task<IActionResult> CheckPayPal([FromBody]CheckPayPalInfoDTO info)
         {
             try
@@ -179,7 +182,9 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpGet("ConfirmPayment")]
+        [Authorize(Roles = Roles.UserRole)]
         public async Task<IActionResult> ConfirmPayment(string token, string PayerID)
         {
             try

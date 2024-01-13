@@ -13,6 +13,7 @@ namespace HealthcareSystem.Backend.Controllers
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+
         public AuthController(IAccountService accountService, IMapper mapper, IUserService userService)
         {
             _accountService = accountService;

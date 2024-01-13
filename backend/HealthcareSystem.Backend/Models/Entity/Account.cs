@@ -25,7 +25,7 @@ namespace HealthcareSystem.Backend.Models.Entity
         public virtual ICollection<EmailVerification> verification { get; set; }
 
         public virtual ICollection<CustomerInquiry> CustomerInquiries { get; set; }
-        public virtual ICollection<HealthRecord> HealthRecords { get; set; }
+        //public virtual ICollection<HealthRecord> HealthRecords { get; set; }
         public virtual ICollection<CustomerRequest> CustomerRequests { get; set; }
         public virtual ICollection<CustomerRequest> ApproverRequests { get; set; }
         public virtual Insurance Insurance { get; set; }

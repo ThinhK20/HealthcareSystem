@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.AccountService;
 using HealthcareSystem.Backend.Services.UserService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
@@ -9,6 +11,7 @@ namespace HealthcareSystem.Backend.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AccountsController : Controller
     {
         private readonly IAccountService _accountService;
@@ -20,6 +23,7 @@ namespace HealthcareSystem.Backend.Controllers
             _mapper = mapper;
             _userService = userService;
         }
+        [Authorize(Roles = Roles.AdminRole)]
         [HttpPost("create-new-staff")]
         public async Task<IActionResult> CreateAccountStaff([FromBody] AccountUserDTO account)
         {
@@ -27,7 +31,7 @@ namespace HealthcareSystem.Backend.Controllers
             {
                 return BadRequest();
             }
-
+            if (account.Role != Roles.NormalStaffRole && account.Role != Roles.AccountantRole && account.Role != Roles.AdminRole && account.Role != Roles.UserRole && account.Role != Roles.CustomerCareRole) return BadRequest();
             UserDTO userCreate = new UserDTO
             {
                 Fullname = account.Fullname,
@@ -52,7 +56,7 @@ namespace HealthcareSystem.Backend.Controllers
                 Status = account.Status,
                 Role = account.Role
             };
-            var tempAccount = await _accountService.CreateAccountStaff(accCreate);
+            var tempAccount = await _accountService.CreateAccountStaff(accCreate,account.Email);
             if (tempAccount == null)
             {
                 return BadRequest("Failed to create account.");
@@ -60,9 +64,11 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(tempAccount);
         }
+        [Authorize(Roles = Roles.AdminRole)]
         [HttpPut("edit-account-staff")]
         public async Task<IActionResult> EditUser([FromBody] AccountBaseDTO account)
         {
+            if (account.Role != Roles.NormalStaffRole && account.Role != Roles.AccountantRole && account.Role != Roles.AdminRole && account.Role != Roles.UserRole && account.Role != Roles.CustomerCareRole) return BadRequest();
 
             AccountBaseDTO accCreate = new AccountBaseDTO
             {
@@ -81,6 +87,7 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(tempAccount);
         }
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.AccountantRole)]
         [HttpGet("get-all-account")]
         public async Task<IActionResult> getAccount()
         {
@@ -147,7 +154,7 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(tempAccount);
         }
-
+        [Authorize(Roles = Roles.AdminRole)]
         [HttpDelete("delete/{id:int}")]
         public async Task<IActionResult> DeleteAccountById([FromRoute(Name = "id")] int accountId)
         {

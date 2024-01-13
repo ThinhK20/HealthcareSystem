@@ -3,6 +3,8 @@ using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
+using HealthcareSystem.Backend.Repositories.Token;
+using Microsoft.AspNetCore.Identity;
 
 namespace HealthcareSystem.Backend.Repositories.AccountRepository
 {
@@ -10,11 +12,16 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
     {
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _applicationContext;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITokenRepository _tokenRepository;
 
-        public AccountRepository(ApplicationDbContext context, IMapper mapper) : base(context)
+
+        public AccountRepository(ApplicationDbContext context, IMapper mapper, UserManager<IdentityUser> userManager , ITokenRepository tokenRepository) : base(context)
         {
             _mapper = mapper;
             _applicationContext = context;
+            _userManager = userManager;
+            _tokenRepository = tokenRepository;
         }
 
         public async Task<List<Models.Domain.Account>> GetUser()
@@ -38,7 +45,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             return user.Count();
         }
 
-        public async Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
+        public async Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc, string email)
         {
             if (acc == null) throw new Exception("Have not Input");
             bool checkExist = await checkUserExist(acc.Username);
@@ -51,6 +58,14 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             Models.Entity.Account account = _mapper.Map<Models.Entity.Account>(acc);
             account.Password = hashedOldPassword;
             await CreateAsync(account);
+            var identityUser = new IdentityUser
+            {
+                UserName = acc.Username,
+                Email = email
+            };
+
+            var identityResult = await _userManager.CreateAsync(identityUser, acc.Password);
+            await _userManager.AddToRolesAsync(identityUser, new List<string> { acc.Role });
             var newAccount = await GetAsync(filter => filter.Username == acc.Username && filter.Status != AccountStatus.Deleted);
             return _mapper.Map<AccountBaseDTO>(newAccount);
         }
@@ -66,10 +81,13 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             }
             var temp = await GetAsync(x => x.AccountId == acc.AccountId && x.Status != AccountStatus.Deleted);
             temp.Password = acc.Password;
+            var user = await _userManager.FindByNameAsync(acc.Username);
+            var roles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, roles.ToList());
+            await _userManager.AddToRolesAsync(user, new List<string> { acc.Role });
             Models.Entity.Account account = temp;
             await UpdateAsync(account);
             return acc;
-
         }
         public async Task<AccountBaseDTO> updatePassword(PasswordDTO acc)
         {

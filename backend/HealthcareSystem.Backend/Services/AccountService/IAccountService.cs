@@ -9,7 +9,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
 
         public Task<AccountDTO> Register(RegisterRequestDTO registerationRequestDTO);
         public Task<bool> Verification(int data);
-        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc);
+        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc,string email);
         public Task<AccountBaseDTO> UpdateAccountStaff(AccountBaseDTO acc);
         public Task<List<AccountGetDTO>> GetAllAccount();
         public Task<AccountBaseDTO> GetAccountByID(int id);

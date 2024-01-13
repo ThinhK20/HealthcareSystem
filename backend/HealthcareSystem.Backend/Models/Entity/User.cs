@@ -23,6 +23,8 @@ namespace HealthcareSystem.Backend.Models.Entity
 
         public string   ? Gender { get; set; }
         public virtual Account Account { get; set; }
+        public virtual ICollection<HealthRecord> HealthRecords { get; set; }
+
 
     }
 }
