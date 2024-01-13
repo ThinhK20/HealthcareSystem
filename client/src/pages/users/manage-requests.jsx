@@ -25,6 +25,7 @@ import {
 import { Link } from "react-router-dom";
 import { getAllCustomerRequestsApi } from "../../apis/customerRequestApis";
 import { formatMoney } from "../../helpers/dataHelper";
+import Paging from "../../components/pagination/pagination";
 const TABLE_HEAD = [
    "Request Id",
    "User",
@@ -36,11 +37,16 @@ const TABLE_HEAD = [
    "",
 ];
 
+const ITEMS_PER_PAGE = 5;
 export default function CustomerRequestManagement() {
    const [requestsData, setRequestsData] = useState();
    const [tableRows, setTableRows] = useState([]);
    const [tableRowsFilter, setTableRowsFilter] = useState(tableRows);
    const [searchInput, setSearchInput] = useState("");
+   const [paginationIndex, setPaginationIndex] = useState({
+      startIndex: 0,
+      endIndex: ITEMS_PER_PAGE,
+   });
 
    useEffect(() => {
       const source = axios.CancelToken.source();
@@ -59,15 +65,22 @@ export default function CustomerRequestManagement() {
 
    useEffect(() => {
       setTableRowsFilter(() =>
-         tableRows.filter((r) =>
-            r.user.username
-               .toLowerCase()
-               .includes(
-                  searchInput.toLowerCase() || r.staff?.username.toLowerCase()
-               )
+         filterTableRows(tableRows).slice(
+            paginationIndex.startIndex,
+            paginationIndex.endIndex
          )
       );
-   }, [searchInput]);
+   }, [searchInput, paginationIndex]);
+
+   function filterTableRows(rowsData) {
+      return rowsData?.filter((r) =>
+         r.user.username
+            .toLowerCase()
+            .includes(
+               searchInput.toLowerCase() || r.staff?.username.toLowerCase()
+            )
+      );
+   }
 
    useEffect(() => {
       const newRows = requestsData?.map((request) => ({
@@ -82,8 +95,17 @@ export default function CustomerRequestManagement() {
          status: request.status,
       }));
       setTableRows(() => newRows);
-      setTableRowsFilter(() => newRows);
+      setTableRowsFilter(() => newRows?.slice(0, ITEMS_PER_PAGE));
    }, [requestsData]);
+
+   function onPageChange(newPage) {
+      const startIndex = (newPage - 1) * ITEMS_PER_PAGE;
+      const endIndex = startIndex + ITEMS_PER_PAGE;
+      setPaginationIndex(() => ({
+         startIndex,
+         endIndex,
+      }));
+   }
 
    return (
       <Card className="h-full w-full">
@@ -118,7 +140,7 @@ export default function CustomerRequestManagement() {
                </div>
             </div>
          </CardHeader>
-         <CardBody className="overflow-scroll px-0">
+         <CardBody className="px-0">
             <table className="w-full min-w-max table-auto text-left">
                <thead>
                   <tr>
@@ -309,36 +331,12 @@ export default function CustomerRequestManagement() {
                </tbody>
             </table>
          </CardBody>
-         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-            <Button variant="outlined" size="sm">
-               Previous
-            </Button>
-            <div className="flex items-center gap-2">
-               <IconButton variant="outlined" size="sm">
-                  1
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  2
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  3
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  ...
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  8
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  9
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  10
-               </IconButton>
-            </div>
-            <Button variant="outlined" size="sm">
-               Next
-            </Button>
+         <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
+            <Paging
+               totalItems={filterTableRows(tableRows)?.length}
+               itemsPerPage={ITEMS_PER_PAGE}
+               onPageChange={onPageChange}
+            />
          </CardFooter>
       </Card>
    );

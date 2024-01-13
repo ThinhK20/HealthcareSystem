@@ -18,23 +18,20 @@ function Insurance() {
    const [confirm, setConfirm] = useState(0);
    const [idDelete, setIdDelete] = useState(-1);
    const [searchInput, setSearchInput] = useState("");
-
    const [newPage, setNewPage] = useState(0);
+
    const [dataFilter, setDataFilter] = useState([]);
    const [dataAfterFilter, setDataAfterFilter] = useState([]);
    const itemsPerPage = 1;
    const handlePageChange = (newPage) => {
       const startIndex = (newPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      if(searchInput.length == 0 ){
+      if (searchInput.length == 0) {
          setData(dataFilter.slice(startIndex, endIndex));
-
-      }
-      else{
+      } else {
          setData(dataAfterFilter.slice(startIndex, endIndex));
-
       }
-      setNewPage(newPage)
+      setNewPage(newPage);
    };
 
    const getData = async () => {
@@ -55,7 +52,6 @@ function Insurance() {
                },
             };
          }
-
          return insurance;
       });
       const usersWithoutInsurance = getUsers.filter(
@@ -97,28 +93,23 @@ function Insurance() {
          });
       }
    };
-  
+
    useEffect(() => {
-      
       getData();
    }, []);
    useEffect(() => {
       const startIndex = (newPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      console.log("Start: ", startIndex, "End: ", endIndex)
+      console.log("Start: ", startIndex, "End: ", endIndex);
       const newdata = dataFilter.filter(
          (item) =>
             item.account.fullname.toLowerCase().includes(searchInput) ||
             item.registerPlace.toLowerCase().includes(searchInput)
-      )
-      setData(
-         newdata.slice(startIndex , endIndex)
       );
-      setDataAfterFilter(newdata)
-
-   
+      setData(newdata.slice(startIndex, endIndex));
+      setDataAfterFilter(newdata);
    }, [searchInput]);
-   
+
    return (
       <>
          <div className="container my-12 py-12 mx-auto px-4 md:px-6 lg:px-12">
@@ -322,7 +313,11 @@ function Insurance() {
             </section>
             <div className="flex justify-center items-center text-center">
                <Pagination
-                  totalItems={searchInput.length == 0 ? dataFilter.length : dataAfterFilter.length}
+                  totalItems={
+                     searchInput.length == 0
+                        ? dataFilter.length
+                        : dataAfterFilter.length
+                  }
                   itemsPerPage={itemsPerPage}
                   onPageChange={handlePageChange}
                />

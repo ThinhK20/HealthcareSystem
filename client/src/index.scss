@@ -15,4 +15,9 @@
 
 
 @layer components {
+    .hover-to-display {
+        &:hover .hover-to-show {
+            display: block !important;
+        }
+    }
 }

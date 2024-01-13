@@ -33,9 +33,7 @@ export const updateAccountsInformation = async (formPut) => {
 };
 export const getAccountsInformation = async (accountId) => {
    try {
-      const response = await instance.get(
-         `/get-user-by-account/${accountId}`
-      );
+      const response = await instance.get(`/get-user-by-account/${accountId}`);
       return response.data;
    } catch (error) {
       console.error("Error occurred while fetching account details", error);
@@ -52,9 +50,9 @@ export const editAccountsInformation = async (formPost) => {
 
 export const getAccountByUserID = async (selectedUserId) => {
    try {
-      console.log(selectedUserId);
+      console.log(selectedUserId, 10101010);
       const response = await instance.get(
-         `/getAccountIdByUserID/` + selectedUserId
+         `/getAccountIdByUserID/` + Number(selectedUserId)
       );
       return response;
    } catch (error) {
@@ -63,30 +61,28 @@ export const getAccountByUserID = async (selectedUserId) => {
 };
 
 export const createUserGoogle = async (data) => {
-  try {
-     const response = await instance.post("/createNewUser", data);
-     return response.data;
+   try {
+      const response = await instance.post("/createNewUser", data);
+      return response.data;
    } catch (error) {
-     console.error("Error occurred while trying to create new user", error);
+      console.error("Error occurred while trying to create new user", error);
    }
 };
 
-export const CreateNewStaff = async (info)=>{
+export const CreateNewStaff = async (info) => {
    try {
       const response = await instance.post("/create-new-staff", info);
       return response.data;
-    } catch (error) {
+   } catch (error) {
       console.error("Error occurred while trying to create new user", error);
-    }
+   }
+};
 
-}
-
-export const getAccountByAccountId = async (id)=>{
+export const getAccountByAccountId = async (id) => {
    try {
       const response = await instance.get(`/get-account-by-id/${id}`);
       return response.data;
-    } catch (error) {
+   } catch (error) {
       console.error("Error occurred while trying to create new user", error);
-    }
-
-}
+   }
+};

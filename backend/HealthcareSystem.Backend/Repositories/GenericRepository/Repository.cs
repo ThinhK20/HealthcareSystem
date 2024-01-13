@@ -1,6 +1,7 @@
 ﻿using HealthcareSystem.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using HealthcareSystem.Backend.Enums;
 
 namespace HealthcareSystem.Backend.Repositories.GenericRepository
 {
@@ -15,12 +16,12 @@ namespace HealthcareSystem.Backend.Repositories.GenericRepository
             _dbSet = _context.Set<T>();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includeProperites = null, int pageSize = 100, int pageNumber = 1)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true, string? includeProperites = null, int pageSize = Int32.MaxValue, int pageNumber = 1)
         {
             IQueryable<T> query = _dbSet;
             if (filter != null) query = query.Where(filter);
             if (!tracked) query = query.AsNoTracking();
-
+            
             if (includeProperites != null)
                 foreach (var includeProp in includeProperites.Split(new[] { ',' },
                              StringSplitOptions.RemoveEmptyEntries))

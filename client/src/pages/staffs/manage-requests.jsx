@@ -1,13 +1,14 @@
 import {
-  Card,
-  CardHeader,
-  Typography,
-  Button,
-  CardBody,
-  Chip,
-  CardFooter,
-  Avatar,
-  IconButton,
+   Card,
+   CardHeader,
+   Typography,
+   Button,
+   CardBody,
+   Chip,
+   CardFooter,
+   Avatar,
+   IconButton,
+   Input,
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
 import { useEffect, useState } from "react";
@@ -19,285 +20,324 @@ import { Link } from "react-router-dom";
 import { getAllCustomerRequestsApi } from "../../apis/customerRequestApis";
 import { formatMoney } from "../../helpers/dataHelper";
 import LoadingData from "../../components/loading/loadingData";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import Paging from "../../components/pagination/pagination";
 const TABLE_HEAD = [
-  "Request Id",
-  "User",
-  "Staff",
-  "Price",
-  "Insurance",
-  "Status",
-  "Payment",
-  "",
+   "Request Id",
+   "User",
+   "Staff",
+   "Price",
+   "Insurance",
+   "Status",
+   "Payment",
+   "",
 ];
 
+const ITEMS_PER_PAGE = 3;
 export default function StaffCustomerRequestManagement() {
-  const [requestsData, setRequestsData] = useState();
-  const [tableRows, setTableRows] = useState([]);
+   const [requestsData, setRequestsData] = useState();
+   const [tableRows, setTableRows] = useState([]);
+   const [tableRowsFilter, setTableRowsFilter] = useState(tableRows);
+   const [searchInput, setSearchInput] = useState("");
+   const [paginationIndex, setPaginationIndex] = useState({
+      startIndex: 0,
+      endIndex: ITEMS_PER_PAGE,
+   });
 
-  useEffect(() => {
-    const source = axios.CancelToken.source();
-    getAllCustomerRequestsApi(source.token)
-      .then((res) => {
-        setRequestsData(res.data);
-      })
-      .catch((e) => {
-        toast(e);
-      });
+   useEffect(() => {
+      const source = axios.CancelToken.source();
+      getAllCustomerRequestsApi(source.token)
+         .then((res) => {
+            setRequestsData(res.data);
+         })
+         .catch((e) => {
+            toast(e);
+         });
 
-    return () => {
-      source.cancel();
-    };
-  }, []);
+      return () => {
+         source.cancel();
+      };
+   }, []);
 
-  useEffect(() => {
-    setTableRows(() => {
+   useEffect(() => {
+      setTableRowsFilter(() =>
+         filterTableRows(tableRows)?.slice(
+            paginationIndex.startIndex,
+            paginationIndex.endIndex
+         )
+      );
+   }, [searchInput, paginationIndex]);
+
+   function filterTableRows(rowsData) {
+      return rowsData?.filter((r) =>
+         r.user.username
+            .toLowerCase()
+            .includes(
+               searchInput.toLowerCase() || r.staff?.username.toLowerCase()
+            )
+      );
+   }
+
+   useEffect(() => {
       const newRows = requestsData?.map((request) => ({
-        img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",
-        user: request.account,
-        staff: request.staff,
-        payment: request.payment,
-        policyPackage: request.policyPackage,
-        periodic: request.periodic,
-        requestID: request.requestID,
-        price: request.price,
-        status: request.status,
+         img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",
+         user: request.account,
+         staff: request.staff,
+         payment: request.payment,
+         policyPackage: request.policyPackage,
+         periodic: request.periodic,
+         requestID: request.requestID,
+         price: request.price,
+         status: request.status,
       }));
-      return newRows;
-    });
-  }, [requestsData]);
+      setTableRows(() => newRows);
+      setTableRowsFilter(() => newRows?.slice(0, ITEMS_PER_PAGE));
+   }, [requestsData]);
 
-  return (
-    <Card className="h-full w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
-          <div>
-            <Typography variant="h5" color="blue-gray">
-              Customer Requests Management
-            </Typography>
-            <Typography color="gray" className="mt-1 font-normal">
-              These are details about your customer requests to HEALTIH
-              Solutions Company
-            </Typography>
-          </div>
-        </div>
-      </CardHeader>
-      <CardBody className="overflow-scroll px-0">
-        {tableRows?.length > 0 ? (
-          <table className="w-full min-w-max table-auto text-left">
-            <thead>
-              <tr>
-                {TABLE_HEAD.map((head) => (
-                  <th
-                    key={head}
-                    className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
-                  >
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal leading-none opacity-70"
-                    >
-                      {head}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {tableRows?.map((tableRow, index) => {
-                const isLast = index === tableRows.length - 1;
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 border-b border-blue-gray-50";
+   useEffect(() => {
+      setTableRowsFilter(() =>
+         filterTableRows(tableRows).slice(
+            paginationIndex.startIndex,
+            paginationIndex.endIndex
+         )
+      );
+   }, [searchInput, paginationIndex]);
 
-                return (
-                  <tr key={index}>
-                    <td className={classes}>
-                      <div className="flex items-center  gap-3">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-bold"
-                        >
-                          {tableRow.requestID}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <Avatar
-                          src={tableRow.img}
-                          alt={tableRow.user.username}
-                          size="md"
-                          className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
+   function onPageChange(newPage) {
+      const startIndex = (newPage - 1) * ITEMS_PER_PAGE;
+      const endIndex = startIndex + ITEMS_PER_PAGE;
+      setPaginationIndex(() => ({
+         startIndex,
+         endIndex,
+      }));
+   }
+
+   return (
+      <Card className="h-full w-full">
+         <CardHeader floated={false} shadow={false} className="rounded-none">
+            <div className="mb-4  w-full ">
+               <div>
+                  <Typography variant="h5" color="blue-gray">
+                     Customer Requests Management
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                     These are details about your customer requests to HEALTIH
+                     Solutions Company
+                  </Typography>
+                  <div className="flex w-full shrink-0 gap-2 justify-end">
+                     <div className="w-full md:w-72">
+                        <Input
+                           onChange={(e) => setSearchInput(e.target.value)}
+                           label="Search"
+                           icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                         />
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-bold"
-                        >
-                          {tableRow.user.username}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        {tableRow?.staff && (
-                          <>
-                            <Avatar
-                              src="https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg"
-                              alt={tableRow.user.username}
-                              size="md"
-                              className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-                            />
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-bold"
-                            >
-                              {tableRow.staff?.username}
-                            </Typography>
-                          </>
-                        )}
-                      </div>
-                    </td>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </CardHeader>
+         <CardBody className="overflow-scroll px-0">
+            {tableRows?.length > 0 ? (
+               <table className="w-full min-w-max table-auto text-left">
+                  <thead>
+                     <tr>
+                        {TABLE_HEAD.map((head) => (
+                           <th
+                              key={head}
+                              className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
+                           >
+                              <Typography
+                                 variant="small"
+                                 color="blue-gray"
+                                 className="font-normal leading-none opacity-70"
+                              >
+                                 {head}
+                              </Typography>
+                           </th>
+                        ))}
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {tableRowsFilter?.map((tableRow, index) => {
+                        const isLast = index === tableRows.length - 1;
+                        const classes = isLast
+                           ? "p-4"
+                           : "p-4 border-b border-blue-gray-50";
 
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {formatMoney(tableRow.price)}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Tooltip title={tableRow.policyPackage?.description}>
-                        <div className="w-max">
-                          <Chip
-                            size="sm"
-                            variant="ghost"
-                            value={tableRow.policyPackage?.name}
-                            color={
-                              tableRow.policyPackage?.name === "Basic"
-                                ? "green"
-                                : tableRow.policyPackage?.name === "Premium"
-                                ? "amber"
-                                : "blue"
-                            }
-                          />
-                        </div>
-                      </Tooltip>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                          size="sm"
-                          variant="ghost"
-                          value={tableRow.status}
-                          color={
-                            tableRow.status === "Pending Transfer"
-                              ? "green"
-                              : "amber"
-                          }
-                        />
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <div className="h-9 w-12 rounded-md border border-blue-gray-50 p-1">
-                          <Avatar
-                            src={
-                              "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
-                              // : "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/mastercard.png"
-                            }
-                            size="sm"
-                            alt={"Visa"}
-                            variant="square"
-                            className="h-full w-full object-contain p-1"
-                          />
-                        </div>
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal capitalize"
-                          >
-                            {/* {account.split("-").join(" ")}{" "}
+                        return (
+                           <tr key={index}>
+                              <td className={classes}>
+                                 <div className="flex items-center  gap-3">
+                                    <Typography
+                                       variant="small"
+                                       color="blue-gray"
+                                       className="font-bold"
+                                    >
+                                       {tableRow.requestID}
+                                    </Typography>
+                                 </div>
+                              </td>
+                              <td className={classes}>
+                                 <div className="flex items-center gap-3">
+                                    <Avatar
+                                       src={tableRow.img}
+                                       alt={tableRow.user.username}
+                                       size="md"
+                                       className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
+                                    />
+                                    <Typography
+                                       variant="small"
+                                       color="blue-gray"
+                                       className="font-bold"
+                                    >
+                                       {tableRow.user.username}
+                                    </Typography>
+                                 </div>
+                              </td>
+                              <td className={classes}>
+                                 <div className="flex items-center gap-3">
+                                    {tableRow?.staff && (
+                                       <>
+                                          <Avatar
+                                             src="https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg"
+                                             alt={tableRow.user.username}
+                                             size="md"
+                                             className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
+                                          />
+                                          <Typography
+                                             variant="small"
+                                             color="blue-gray"
+                                             className="font-bold"
+                                          >
+                                             {tableRow.staff?.username}
+                                          </Typography>
+                                       </>
+                                    )}
+                                 </div>
+                              </td>
+
+                              <td className={classes}>
+                                 <Typography
+                                    variant="small"
+                                    color="blue-gray"
+                                    className="font-normal"
+                                 >
+                                    {formatMoney(tableRow.price)}
+                                 </Typography>
+                              </td>
+                              <td className={classes}>
+                                 <Tooltip
+                                    title={tableRow.policyPackage?.description}
+                                 >
+                                    <div className="w-max">
+                                       <Chip
+                                          size="sm"
+                                          variant="ghost"
+                                          value={tableRow.policyPackage?.name}
+                                          color={
+                                             tableRow.policyPackage?.name ===
+                                             "Basic"
+                                                ? "green"
+                                                : tableRow.policyPackage
+                                                     ?.name === "Premium"
+                                                ? "amber"
+                                                : "blue"
+                                          }
+                                       />
+                                    </div>
+                                 </Tooltip>
+                              </td>
+                              <td className={classes}>
+                                 <div className="w-max">
+                                    <Chip
+                                       size="sm"
+                                       variant="ghost"
+                                       value={tableRow.status}
+                                       color={
+                                          tableRow.status === "Pending Transfer"
+                                             ? "green"
+                                             : "amber"
+                                       }
+                                    />
+                                 </div>
+                              </td>
+                              <td className={classes}>
+                                 <div className="flex items-center gap-3">
+                                    <div className="h-9 w-12 rounded-md border border-blue-gray-50 p-1">
+                                       <Avatar
+                                          src={
+                                             "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
+                                             // : "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/mastercard.png"
+                                          }
+                                          size="sm"
+                                          alt={"Visa"}
+                                          variant="square"
+                                          className="h-full w-full object-contain p-1"
+                                       />
+                                    </div>
+                                    <div className="flex flex-col">
+                                       <Typography
+                                          variant="small"
+                                          color="blue-gray"
+                                          className="font-normal capitalize"
+                                       >
+                                          {/* {account.split("-").join(" ")}{" "}
                                      {accountNumber} */}
-                            Visa 1234
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {"06/2025"}
-                          </Typography>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <Link to={`/staffs/payment`}>
-                        <Tooltip title="View details">
-                          <IconButton variant="text">
-                            <FontAwesomeIcon className="h-4 w-4" icon={faEye} />
-                          </IconButton>
-                        </Tooltip>
-                      </Link>
+                                          Visa 1234
+                                       </Typography>
+                                       <Typography
+                                          variant="small"
+                                          color="blue-gray"
+                                          className="font-normal opacity-70"
+                                       >
+                                          {"06/2025"}
+                                       </Typography>
+                                    </div>
+                                 </div>
+                              </td>
+                              <td className={classes}>
+                                 <Link to={`/staffs/payment`}>
+                                    <Tooltip title="View details">
+                                       <IconButton variant="text">
+                                          <FontAwesomeIcon
+                                             className="h-4 w-4"
+                                             icon={faEye}
+                                          />
+                                       </IconButton>
+                                    </Tooltip>
+                                 </Link>
 
-                      <Link to={`/staffs/request-detail/${tableRow.requestID}`}>
-                        <Tooltip title="View details">
-                          <IconButton variant="text">
-                            <FontAwesomeIcon
-                              className="h-4 w-4"
-                              icon={faMoneyBill}
-                            />
-                          </IconButton>
-                        </Tooltip>
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ) : (
-          <>
-            <LoadingData></LoadingData>
-          </>
-        )}
-      </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Button variant="outlined" size="sm">
-          Previous
-        </Button>
-        <div className="flex items-center gap-2">
-          <IconButton variant="outlined" size="sm">
-            1
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            2
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            3
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            ...
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            8
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            9
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            10
-          </IconButton>
-        </div>
-        <Button variant="outlined" size="sm">
-          Next
-        </Button>
-      </CardFooter>
-    </Card>
-  );
+                                 <Link
+                                    to={`/staffs/request-detail/${tableRow.requestID}`}
+                                 >
+                                    <Tooltip title="View details">
+                                       <IconButton variant="text">
+                                          <FontAwesomeIcon
+                                             className="h-4 w-4"
+                                             icon={faMoneyBill}
+                                          />
+                                       </IconButton>
+                                    </Tooltip>
+                                 </Link>
+                              </td>
+                           </tr>
+                        );
+                     })}
+                  </tbody>
+               </table>
+            ) : (
+               <>
+                  <LoadingData></LoadingData>
+               </>
+            )}
+         </CardBody>
+         <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
+            <Paging
+               totalItems={filterTableRows(tableRows)?.length}
+               itemsPerPage={ITEMS_PER_PAGE}
+               onPageChange={onPageChange}
+            />
+         </CardFooter>
+      </Card>
+   );
 }

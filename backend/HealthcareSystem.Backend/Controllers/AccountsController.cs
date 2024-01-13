@@ -84,11 +84,24 @@ namespace HealthcareSystem.Backend.Controllers
         [HttpGet("get-all-account")]
         public async Task<IActionResult> getAccount()
         {
-
             var allAccount = await _accountService.GetAllAccount();
-
             return Ok(allAccount);
         }
+
+        [HttpGet("get-all-account/page")]
+        public async Task<IActionResult> getAllAccountsByPage([FromQuery] int pageSize, [FromQuery] int pageNumber)
+        {
+            try
+            {
+                var allAccounts = await _accountService.GetAccountsByPage(pageSize, pageNumber);
+                return Ok(allAccounts);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+  
         [HttpPut("edit-user")]
         public async Task<IActionResult> EditAccount([FromBody] UserDTO account)
         {

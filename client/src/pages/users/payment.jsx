@@ -1,19 +1,26 @@
 import { useState, useEffect } from "react";
 import RowTableStaffsPayment from "../../components/staffs/RowPayment";
 import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { getPayments } from "../../apis/paymentApis";
+import { getPaymentsByAccountID } from "../../apis/paymentApis";
 import LoadingData from "../../components/loading/loadingData";
 import { Input } from "@material-tailwind/react";
-
+import Paging from "../../components/pagination/pagination";
+import { jwtDecode } from "jwt-decode";
 const CustomersPayment = () => {
-   const accountId = 1;
    const [filteredPayments, setFilteredPayments] = useState([]);
    const [payments, setPayments] = useState([]);
    const [searchValue, setSearchValue] = useState("");
    const [status, setStatus] = useState(1);
    const [filterByPaymentId, setFilterByPaymentId] = useState(false);
    const [filterByRequestId, setFilterByRequestId] = useState(false);
-
+   const [currentRole, setCurrentRole] = useState("");
+   const [data, setData] = useState();
+   const itemsPerPage = 5;
+   const handlePageChange = (newPage) => {
+      const startIndex = (newPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      setData(filteredPayments.slice(startIndex, endIndex));
+   };
    const findOrders = (value) => {
       setSearchValue(value);
    };
@@ -32,13 +39,13 @@ const CustomersPayment = () => {
          }
       }
    };
-   const fetchPayments = () => {
-      getPayments().then((response) => {
-         const filteredResponse = response.filter(
-            (x) => x.customerRequest.accountId === accountId
-         );
-         setPayments(filteredResponse);
-         setFilteredPayments(filteredResponse);
+   const fetchPayments = async () => {
+      const decodeToken = await jwtDecode(localStorage.getItem("token"));
+      setCurrentRole(decodeToken.unique_name || "");
+      getPaymentsByAccountID(decodeToken.unique_name).then((response) => {
+         setPayments(response);
+         setFilteredPayments(response);
+         setData(response.slice(0, 5));
       });
    };
    useEffect(() => {
@@ -168,7 +175,7 @@ const CustomersPayment = () => {
                         </div>
 
                         <div className="overflow-x-auto">
-                           {filteredPayments.length > 0 ? (
+                           {filteredPayments?.length > 0 ? (
                               <table className="w-full text-sm text-left text-gray-500 dtext-gray-400">
                                  <thead className="text-xs text-gray-700 uppercase bg-gray-200 dbg-gray-700 dtext-gray-400">
                                     <tr>
@@ -223,7 +230,7 @@ const CustomersPayment = () => {
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    {filteredPayments?.map((item) => {
+                                    {data?.map((item) => {
                                        return (
                                           <RowTableStaffsPayment
                                              item={item}
@@ -238,6 +245,13 @@ const CustomersPayment = () => {
                                  <LoadingData></LoadingData>
                               </>
                            )}
+                        </div>
+                        <div className="w-full flex justify-end pr-[50px]">
+                           <Paging
+                              totalItems={filteredPayments?.length}
+                              itemsPerPage={itemsPerPage}
+                              onPageChange={handlePageChange}
+                           />
                         </div>
                      </div>
                   </div>

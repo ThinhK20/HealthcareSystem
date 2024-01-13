@@ -21,6 +21,8 @@ import axios from "axios";
 import { getAllRefundRequestsApi } from "../../apis/refundRequestApis";
 import { toast } from "react-toastify";
 import { formatDate, formatMoney } from "../../helpers/dataHelper";
+import { RefundRequestStatus } from "../../enums/refund-request-status";
+import Paging from "../../components/pagination/pagination";
 const TABLE_HEAD = [
    "Id",
    "User",
@@ -32,6 +34,8 @@ const TABLE_HEAD = [
    "Status",
    "",
 ];
+
+const ITEM_PER_PAGE = 5;
 
 export function RefundRequestManagement() {
    const [refundRequests, setRefundRequests] = useState();
@@ -57,70 +61,73 @@ export function RefundRequestManagement() {
 
    useEffect(() => {
       setFilterTableRows(() => {
-         switch (isStatus) {
-            case 0:
-               return tableRows.filter(
-                  (r) =>
-                     r.user?.username
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase()) ||
-                     r.hospitalName
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase())
-               );
-            case 1:
-               return tableRows.filter((r) => {
-                  return (
-                     r.status === "Approved" &&
-                     (r.user?.username
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase()) ||
-                        r.hospitalName
-                           .toLowerCase()
-                           .includes(searchInput.toLowerCase()))
-                  );
-               });
-            case 2:
-               return tableRows.filter(
-                  (r) =>
-                     r.status === "Pending" &&
-                     (r.user?.username
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase()) ||
-                        r.hospitalName
-                           .toLowerCase()
-                           .includes(searchInput.toLowerCase()))
-               );
-            case 3:
-               return tableRows.filter(
-                  (r) =>
-                     r.status === "Rejected" &&
-                     (r.user?.username
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase()) ||
-                        r.hospitalName
-                           .toLowerCase()
-                           .includes(searchInput.toLowerCase()))
-               );
-         }
+         return filterTableRowsByStatus(tableRows);
       });
    }, [searchInput, isStatus]);
 
+   function filterTableRowsByStatus(rowsData) {
+      switch (isStatus) {
+         case 0:
+            return rowsData?.filter(
+               (r) =>
+                  r.user?.username
+                     .toLowerCase()
+                     .includes(searchInput.toLowerCase()) ||
+                  r.hospitalName
+                     ?.toLowerCase()
+                     .includes(searchInput.toLowerCase())
+            );
+         case 1:
+            return rowsData?.filter((r) => {
+               return (
+                  r.status === RefundRequestStatus.Approved &&
+                  (r.user?.username
+                     .toLowerCase()
+                     .includes(searchInput.toLowerCase()) ||
+                     r.hospitalName
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase()))
+               );
+            });
+         case 2:
+            return rowsData?.filter(
+               (r) =>
+                  r.status === RefundRequestStatus.Pending &&
+                  (r.user?.username
+                     .toLowerCase()
+                     .includes(searchInput.toLowerCase()) ||
+                     r.hospitalName
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase()))
+            );
+         case 3:
+            return rowsData?.filter(
+               (r) =>
+                  r.status === RefundRequestStatus.Rejected &&
+                  (r.user?.username
+                     .toLowerCase()
+                     .includes(searchInput.toLowerCase()) ||
+                     r.hospitalName
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase()))
+            );
+      }
+   }
+
    useEffect(() => {
-      setTableRows(() => {
-         const newRows = refundRequests?.map((request) => ({
-            img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",
-            user: request.insurance?.account,
-            hospitalName: request.hoptitalName,
-            description: request.description,
-            refundFee: request.totalRefundFee,
-            dateSend: request.dateSend,
-            dateRefund: request.dateRefund,
-            status: request.status,
-            refundID: request.refundID,
-         }));
-         return newRows;
-      });
+      const newRows = refundRequests?.map((request) => ({
+         img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",
+         user: request.insurance?.account,
+         hospitalName: request.hoptitalName,
+         description: request.description,
+         refundFee: request.totalRefundFee,
+         dateSend: request.dateSend,
+         dateRefund: request.dateRefund,
+         status: request.status,
+         refundID: request.refundID,
+      }));
+      setTableRows(() => newRows);
+      setFilterTableRows(() => newRows);
    }, [refundRequests]);
 
    function onFilter() {
@@ -144,7 +151,7 @@ export function RefundRequestManagement() {
                      System Company
                   </Typography>
                </div>
-               <div className="flex w-full shrink-0 gap-4 md:w-max z-50">
+               <div className="flex w-full shrink-0 gap-4 md:w-max z-40">
                   <div
                      onClick={onFilter}
                      className="flex items-center gap-1 py-2 px-4 hover:bg-gray-300 cursor-pointer rounded"
@@ -156,6 +163,7 @@ export function RefundRequestManagement() {
                      <Input
                         onChange={(e) => setSearchInput(e.target.value)}
                         label="Search"
+                        placeholder="Search"
                         icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                      />
                   </div>
@@ -273,9 +281,11 @@ export function RefundRequestManagement() {
                                     variant="ghost"
                                     value={tableRow.status}
                                     color={
-                                       tableRow.status === "Approved"
+                                       tableRow.status ===
+                                       RefundRequestStatus.Approved
                                           ? "green"
-                                          : tableRow.status === "Pending"
+                                          : tableRow.status ===
+                                            RefundRequestStatus.Pending
                                           ? "amber"
                                           : "red"
                                     }
@@ -302,36 +312,11 @@ export function RefundRequestManagement() {
                </tbody>
             </table>
          </CardBody>
-         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-            <Button variant="outlined" size="sm">
-               Previous
-            </Button>
-            <div className="flex items-center gap-2">
-               <IconButton variant="outlined" size="sm">
-                  1
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  2
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  3
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  ...
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  8
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  9
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  10
-               </IconButton>
-            </div>
-            <Button variant="outlined" size="sm">
-               Next
-            </Button>
+         <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
+            <Paging
+               itemsPerPage={ITEM_PER_PAGE}
+               totalItems={filterTableRowsByStatus(tableRows)?.length}
+            />
          </CardFooter>
       </Card>
    );

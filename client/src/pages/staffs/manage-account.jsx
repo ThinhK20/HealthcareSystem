@@ -25,16 +25,20 @@ import { DeleteAccount } from "../../components/deleteAccount/delete-account";
 import LoadingData from "../../components/loading/loadingData";
 import { Input } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { InputLabel, MenuItem } from "@mui/material";
+import Paging from "../../components/pagination/pagination";
 
 const TABLE_HEAD = ["Account ", "User", "Username ", "Role", "Status", ""];
-
+const ITEM_PER_PAGE = 5;
 export function ManageAccount() {
    const [accounts, setAccount] = useState();
    const [tableRows, setTableRows] = useState([]);
    const [filterTableRows, setFilterTableRows] = useState([]);
    const [searchInput, setSearchInput] = useState("");
    const [isStatus, setIsStatus] = useState(0);
+   const [paginationIndex, setPaginationIndex] = useState({
+      startIndex: 0,
+      endIndex: ITEM_PER_PAGE,
+   });
 
    useEffect(() => {
       getAccounts().then((result) => setAccount(result));
@@ -61,36 +65,15 @@ export function ManageAccount() {
             status: account.status,
             role: account.role,
          }));
-         return newRows;
+         return newRows?.slice(0, ITEM_PER_PAGE);
       });
    }, [accounts]);
 
    useEffect(() => {
       setFilterTableRows(() => {
-         switch (isStatus) {
-            case 0:
-               return tableRows.filter((r) =>
-                  r.username.toLowerCase().includes(searchInput.toLowerCase())
-               );
-            case 1:
-               return tableRows.filter(
-                  (r) =>
-                     r.status === "Active" &&
-                     r.username
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase())
-               );
-            case 2:
-               return tableRows.filter(
-                  (r) =>
-                     r.status === "Deleted" &&
-                     r.username
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase())
-               );
-         }
+         return filterTableRowsByStatus(tableRows, true);
       });
-   }, [searchInput, isStatus]);
+   }, [searchInput, isStatus, paginationIndex]);
 
    function onFilter() {
       setIsStatus((oldState) => {
@@ -98,6 +81,77 @@ export function ManageAccount() {
          if (newState >= 3) newState = 0;
          return newState;
       });
+   }
+
+   function filterTableRowsByStatus(rowsData, isPaging = false) {
+      switch (isStatus) {
+         case 0:
+            return !isPaging
+               ? rowsData?.filter((r) =>
+                    r.username.toLowerCase().includes(searchInput.toLowerCase())
+                 )
+               : rowsData
+                    ?.filter((r) =>
+                       r.username
+                          .toLowerCase()
+                          .includes(searchInput.toLowerCase())
+                    )
+                    ?.slice(
+                       paginationIndex.startIndex,
+                       paginationIndex.endIndex
+                    );
+         case 1:
+            return !isPaging
+               ? rowsData?.filter(
+                    (r) =>
+                       r.status === "Active" &&
+                       r.username
+                          .toLowerCase()
+                          .includes(searchInput.toLowerCase())
+                 )
+               : rowsData
+                    ?.filter(
+                       (r) =>
+                          r.status === "Active" &&
+                          r.username
+                             .toLowerCase()
+                             .includes(searchInput.toLowerCase())
+                    )
+                    ?.slice(
+                       paginationIndex.startIndex,
+                       paginationIndex.endIndex
+                    );
+         case 2:
+            return !isPaging
+               ? rowsData?.filter(
+                    (r) =>
+                       r.status === "Deleted" &&
+                       r.username
+                          .toLowerCase()
+                          .includes(searchInput.toLowerCase())
+                 )
+               : rowsData
+                    ?.filter(
+                       (r) =>
+                          r.status === "Deleted" &&
+                          r.username
+                             .toLowerCase()
+                             .includes(searchInput.toLowerCase())
+                    )
+                    ?.slice(
+                       paginationIndex.startIndex,
+                       paginationIndex.endIndex
+                    );
+      }
+   }
+
+   function onPageChange(newPage) {
+      const startIndex = (newPage - 1) * ITEM_PER_PAGE;
+      const endIndex = startIndex + ITEM_PER_PAGE;
+      setPaginationIndex(() => ({
+         startIndex,
+         endIndex,
+      }));
    }
 
    return (
@@ -115,7 +169,7 @@ export function ManageAccount() {
                      </Typography>
                   </div>
 
-                  <div className="flex w-full shrink-0 gap-4 md:w-max z-50">
+                  <div className="flex w-full shrink-0 gap-4 md:w-max z-40">
                      <div
                         onClick={onFilter}
                         className="flex items-center gap-1 py-2 px-4 hover:bg-gray-300 cursor-pointer rounded"
@@ -157,7 +211,7 @@ export function ManageAccount() {
                      </thead>
                      <tbody>
                         {filterTableRows?.map((tableRow, index) => {
-                           const isLast = index === tableRows.length - 1;
+                           const isLast = index === tableRows?.length - 1;
                            const classes = isLast
                               ? "p-4 "
                               : "p-4 border-b border-blue-gray-50 text-center ";
@@ -267,18 +321,6 @@ export function ManageAccount() {
                                           </IconButton>
                                        </Tooltip>
                                     </Link>
-                                    {/* <Link
-                         to={`/staffs/refund-requests/${tableRow.status}`}
-                      >
-                         <Tooltip title="View details">
-                            <IconButton variant="text">
-                               <FontAwesomeIcon
-                                  className="h-4 w-4"
-                                  icon={faPersonCircleCheck}
-                               />
-                            </IconButton>
-                         </Tooltip>
-                      </Link> */}
                                     <DeleteAccount
                                        accountId={tableRow.accountId}
                                     />
@@ -294,36 +336,12 @@ export function ManageAccount() {
                   </>
                )}
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-               <Button variant="outlined" size="sm">
-                  Previous
-               </Button>
-               <div className="flex items-center gap-2">
-                  <IconButton variant="outlined" size="sm">
-                     1
-                  </IconButton>
-                  <IconButton variant="text" size="sm">
-                     2
-                  </IconButton>
-                  <IconButton variant="text" size="sm">
-                     3
-                  </IconButton>
-                  <IconButton variant="text" size="sm">
-                     ...
-                  </IconButton>
-                  <IconButton variant="text" size="sm">
-                     8
-                  </IconButton>
-                  <IconButton variant="text" size="sm">
-                     9
-                  </IconButton>
-                  <IconButton variant="text" size="sm">
-                     10
-                  </IconButton>
-               </div>
-               <Button variant="outlined" size="sm">
-                  Next
-               </Button>
+            <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
+               <Paging
+                  totalItems={filterTableRowsByStatus(tableRows)?.length}
+                  itemsPerPage={ITEM_PER_PAGE}
+                  onPageChange={onPageChange}
+               />
             </CardFooter>
          </Card>
       </div>

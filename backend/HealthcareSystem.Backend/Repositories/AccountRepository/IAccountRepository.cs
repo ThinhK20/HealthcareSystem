@@ -6,6 +6,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
     public interface IAccountRepository : IRepository<Models.Entity.Account>
     {
         public Task<List<Models.Domain.Account>> GetUser();
+        public Task<List<Models.Domain.Account>> GetAccountsByPage(int pageSize, int pageNumber);
         public Task<List<AccountGetDTO>> GetAllAccount();
         public Task<AccountBaseDTO> GetAccountByID(int id);
         public Task<bool> checkUserExist(string Username);

@@ -6,6 +6,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
     {
         public Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
         public  Task<LoginResponseDTO> LoginByGoogle(RegisterRequestDTO loginRequestDTO);
+        public Task<List<Models.Domain.Account>> GetAccountsByPage(int pageSize, int pageNumber);
 
         public Task<AccountDTO> Register(RegisterRequestDTO registerationRequestDTO);
         public Task<bool> Verification(int data);
