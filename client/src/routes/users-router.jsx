@@ -14,7 +14,7 @@ export const UserRoutes = [
       element: <LayoutRoute element={<EditInformation />} />,
    },
    {
-      path: "/users/edit-account/:id",
+      path: "/users/edit-account",
       element: <LayoutRoute element={<EditAccount />} />,
    },
    {
@@ -24,10 +24,6 @@ export const UserRoutes = [
    {
       path: "/users/refund-requests",
       element: <LayoutRoute element={<CustomerRefundRequestManagement />} />,
-   },
-   {
-      path: "/users/requests-detail",
-      element: <LayoutRoute element={<UserRequestDetail />} />,
    },
    {
       path: "/users/refund-requests/create",
@@ -46,7 +42,7 @@ export const UserRoutes = [
       element: <LayoutRoute element={<CustomerRequestForm />} />,
    },
    {
-      path: "users/payment",
+      path: "/users/payment",
       element: <LayoutRoute element={<CustomersPayment />} />,
    },
 ];

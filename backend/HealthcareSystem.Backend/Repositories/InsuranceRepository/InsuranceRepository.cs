@@ -22,6 +22,12 @@ namespace HealthcareSystem.Backend.Repositories.InsuranceRepository
             return insurances.Select(t => _mapper.Map<InsuranceDomain>(t)).ToList();
         }
 
+        public async Task<List<InsuranceDomain>> GetInsurancesOnPage(Pagination infoPage)
+        {
+            var insurances = await GetAllAsync(includeProperites: "Account,InsuranceDetails", tracked: false, pageSize: infoPage.PageSize, pageNumber: infoPage.PageNumber);
+            return insurances.Select(t => _mapper.Map<InsuranceDomain>(t)).ToList();
+        }
+
         public async Task<InsuranceDomain> GetInsuranceByIdAsync(int insuranceId)
         {
             return _mapper.Map<InsuranceDomain>(await GetAsync(t => t.InsuranceID == insuranceId, false, "Account,InsuranceDetails"));

@@ -13,7 +13,12 @@ import PackagePolicyDetails from "../pages/packagePolicy/detail";
 import CreatePackageForm from "../pages/packagePolicy/create";
 import EditPackageForm from "../pages/packagePolicy/edit";
 import Statistic from "../components/statistic/statistic";
+import { IndexFunction } from "../pages/staffs";
 export const StaffRoutes = [
+   {
+      path: "/staffs",
+      element: <LayoutRoute element={<IndexFunction />} />,
+   },
    {
       path: "staffs/payment",
       element: <LayoutRoute element={<StaffsPayment />} />,
@@ -43,16 +48,14 @@ export const StaffRoutes = [
       element: <LayoutRoute element={<ManageAccount />} />,
    },
    {
-      path: "staffs/table-insurance-management",
+      path: "/staffs/table-insurance-management",
       element: (
          <LayoutRoute element={<TableInsuranceManagement />}></LayoutRoute>
       ),
    },
    {
-      path: "staffs/package-policy",
-      element: (
-         <LayoutRoute element={<PackagePolicy />}></LayoutRoute>
-      ),
+      path: "/staffs/package-policy",
+      element: <LayoutRoute element={<PackagePolicy />}></LayoutRoute>,
    },
    {
       path: "/staffs/package-policy/:id",
@@ -67,7 +70,7 @@ export const StaffRoutes = [
       element: <LayoutRoute element={<EditPackageForm />} />,
    },
    {
-      path: "staffs/statistic",
+      path: "/staffs/statistic",
       element: <LayoutRoute element={<Statistic />}></LayoutRoute>,
    },
 ];

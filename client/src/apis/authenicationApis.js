@@ -17,7 +17,6 @@ export const login = async (accountInfo, config) => {
 export const register = async (accountInfo, config) => {
   try {
     const response = await instance.post("/register", accountInfo, config);
-    console.log(6666666, response)
     return response.data;
   } catch (error) {
     console.error("Error occurred while trying to register", error);
@@ -35,7 +34,14 @@ export const verifyEmail = async (userid, config) => {
 export const loginByGoogle = async (data) => {
   try {
     const response = await instance.post("/loginByGoogle", data);
-    console.log(response, 888)
+    return response.data;
+  } catch (error) {
+    console.error("Error occurred while trying to verify", error);
+  }
+};
+export const generateToken = async (data) => {
+  try {
+    const response = await instance.post("/generateToken", data);
     return response.data;
   } catch (error) {
     console.error("Error occurred while trying to verify", error);

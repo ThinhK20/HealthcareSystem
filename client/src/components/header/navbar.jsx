@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import {
@@ -12,66 +12,248 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
    faFaceAngry,
    faFaceGrimace,
+   faHouse,
    faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import LoadingWrapper from "../loading/loading";
-
+import * as jwt from "jwt-decode";
+import { getAccounts } from "../../apis/accountApis";
+import { getAccountByUserID } from "../../apis/accountApis";
+import { getAccountByAccountId } from "../../apis/accountApis";
 const routes = [
    {
-      name: "Create",
-      path: "/staffs/create-staff-account",
-      icon: HomeIcon,
-   },
-   {
-      name: "Accounts",
-      path: "/staffs/manage-account",
-      icon: HomeIcon,
-   },
-   {
-      name: "Staff Customer Requests",
-      path: "/staffs/customer-requests",
-      icon: HomeIcon,
-   },
-   {
-      name: "Customer Requests",
+      role: "Customer",
+      name: "Request",
       path: "/users/customer-requests",
-      icon: HomeIcon,
+      dropdown: false,
    },
    {
-      name: "Customer refund Requests",
+      role: "Customer",
+      name: "Refund",
       path: "/users/refund-requests",
-      icon: HomeIcon,
+      dropdown: true,
+      content: [
+         {
+            name: "Create ",
+            path: "/users/refund-requests/create",
+            icon: faHouse,
+         },
+         {
+            name: "Your Request",
+            path: "/users/refund-requests",
+            icon: faHouse,
+         },
+      ],
    },
    {
-      name: "Staff refund Requests",
-      path: "/staffs/refund-requests",
-      icon: HomeIcon,
+      role: "Customer",
+      name: "Insurance Packages",
+      // path: "/users/refund-requests",
+      dropdown: true,
+      content: [
+         {
+            name: "Basic Package",
+            path: "/users/refund-requests/create",
+            icon: faHouse,
+         },
+         {
+            name: "Standard Package",
+            path: "/users/refund-requests",
+            icon: faHouse,
+         },
+         {
+            name: "Premium Package",
+            path: "/users/refund-requests",
+            icon: faHouse,
+         },
+      ],
    },
-   // Add more route objects as needed
+
+   {
+      role: "Customer",
+      name: "Account",
+      path: "",
+      dropdown: true,
+      content: [
+         {
+            name: "Edit Information",
+            path: "/users/edit-information",
+            icon: faHouse,
+         },
+         {
+            name: "Change Password",
+            path: "/users/edit-account",
+            icon: faHouse,
+         },
+      ],
+   },
+   {
+      role: "Customer",
+      name: "Payment",
+      path: "",
+      dropdown: true,
+      content: [
+         {
+            name: "Your Payment",
+            path: "/users/payment",
+            icon: faHouse,
+         },
+      ],
+   },
+   {
+      role: "Staff",
+      name: "Manage",
+      path: "/staffs/payment",
+      dropdown: true,
+      content: [
+         {
+            name: "Accounts",
+            path: "/staffs/manage-account",
+            icon: faHouse,
+         },
+         {
+            name: "Requests",
+            path: "/staffs/customer-requests",
+            icon: faHouse,
+         },
+         {
+            name: "Payments",
+            path: "/staffs/payment",
+            icon: faHouse,
+         },
+         {
+            name: "Refunds",
+            path: "/staffs/refund-requests",
+            icon: faHouse,
+         },
+      ],
+   },
+
+   {
+      role: "Staff",
+      name: "Insurances",
+      path: "/staffs/table-insurance-management",
+      dropdown: true,
+      content: [
+         {
+            name: "Insurance ",
+            path: "/staffs/table-insurance-management",
+         },
+         {
+            name: "Package Policies ",
+            path: "/staffs/package-policy",
+         },
+         {
+            name: "Create New Package Policies ",
+            path: "/staffs/package-policy/create",
+         },
+      ],
+   },
+   {
+      role: "Staff",
+      name: "New Account",
+      path: "/staffs/create-staff-account/",
+      dropdown: false,
+   },
+   {
+      role: "Staff",
+      name: "Statistic",
+      path: "/staffs/statistic",
+      dropdown: false,
+   },
+   {
+      role: "All",
+      name: "About us",
+      path: "/about-us",
+      dropdown: false,
+   },
 ];
 
-export function Navbar({ action }) {
-   const [openNav, setOpenNav] = React.useState(false);
+export function Navbar() {
+   const [openNav, setOpenNav] = useState(false);
+   const [currentRole, setCurrentRole] = useState("All");
+   const [detail, setDetail] = useState();
+   const [username, setUsername] = useState();
+   const [stateButton, setStateButton] = useState(true);
+   useEffect(() => {
+      const Decode = async () => {
+         const token = localStorage.getItem("token")
+         if(token == null){
+      
+            console.log("AAAAAAAAAAAAAA")
+            setStateButton(true);
+         }
+         else{
+            console.log("BBBBBBBBB")
+            const decodeToken = await jwt.jwtDecode(token);
+            const accountId = await getAccountByUserID(decodeToken.unique_name);
+
+            const info = await getAccountByAccountId(accountId.data);
+            
+            console.log(info, 555)
+            setUsername(info.username)
+            setCurrentRole(decodeToken.role || "All");
+            setStateButton(false);
+         }
+        
+      };
+
+      Decode();
+   }, []);
+   const handleHover = (drop, ct) => {
+      if (drop == true) {
+         setDetail(ct);
+         console.log("CT: ", ct);
+      }
+   };
 
    const navList = (
-      <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 p-[5px] ">
-         {routes.map(({ name, path }) => (
-            <Typography
-               key={name}
-               as="li"
-               variant="small"
-               color="inherit"
-               className="capitalize p-[2px] rounded-md"
-            >
-               <Link
-                  to={path}
-                  className="relative group px-4 py-2 transition-all duration-300 ease-in-out bg-transparent border-b-1 border-transparent hover:border-black"
+      <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 h-full ">
+         {routes
+            .filter((item) => item.role === currentRole || item.role === "All")
+            .map(({ name, path, dropdown, content }) => (
+               <Typography
+                  key={name}
+                  as="li"
+                  variant="small"
+                  color="inherit"
+                  className="capitalize relative hover-to-display h-full flex justify-center items-center"
+                  onMouseEnter={() => handleHover(dropdown, content)}
                >
-                  <span className="relative z-10 font-medium">{name}</span>
-                  <span className="absolute w-full inset-x-0 bottom-0 h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out group-hover:min-w-full"></span>
-               </Link>
-            </Typography>
-         ))}
+                  <Link
+                     to={path}
+                     className="relative z-[100000000] group px-4 py-2 transition-all duration-300 ease-in-out bg-transparent border-b-1 border-transparent hover:border-black"
+                  >
+                     <span className="relative z-10 font-medium"> {name}</span>
+                     <span className="absolute w-full inset-x-0 bottom-0  h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out group-hover:min-w-full"></span>
+                  </Link>
+                  {
+                     <div
+                        className="w-full transition-[700] hidden absolute hover-to-show  h-full -bottom-4 right-full   z-50 px-4 py-8 pt-20"
+                        onMouseEnter={() => setOpenMenu(true)}
+                     >
+                        <div className="flex flex-col  bg-transparent  last:rounded-b-lg">
+                           {detail?.map((item, key) => (
+                              <>
+                                 <Link
+                                    to={item.path}
+                                    key={key}
+                                    class="flex gap-4 items-center text-[16px] min-w-[300px] p-3 z-10  hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg  bg-white "
+                                 >
+                                    <div className="bg-gray-100 p-3 rounded-lg">
+                                       <FontAwesomeIcon icon={item.icon} />
+                                    </div>
+                                    <span className="font-[600]">
+                                       {item.name}
+                                    </span>
+                                 </Link>
+                              </>
+                           ))}
+                        </div>
+                     </div>
+                  }
+               </Typography>
+            ))}
       </ul>
    );
 
@@ -89,24 +271,18 @@ export function Navbar({ action }) {
                Contact us for a quote <strong> 1800 599998</strong>
             </div>
             <div className="grid gap-[15px] grid-cols-3 text-[12px]">
-               <Link to={"#"}>
+               <Link to={"/information-company"}>
                   <FontAwesomeIcon icon={faPhone} className="mr-1" />
                   Contact
                </Link>
-               <Link to={"#"} className="fab">
+               <Link to={"/about-us"} className="fab">
                   <FontAwesomeIcon icon={faFaceGrimace} className="mr-1" />
                   About us
                </Link>
-               <Link
-                  to={"https://www.facebook.com/profile.php?id=100006835475551"}
-                  className=""
-               >
-                  <FontAwesomeIcon icon={faFaceAngry} className="mr-1" />
-                  For You
-               </Link>
             </div>
          </div>
-         <div className="flex items-center justify-between text-black bg-[#FFD000] w-full">
+
+         <div className="flex items-center justify-between text-black bg-[#FFD000] w-full h-[80px]">
             <Link to="/">
                <Typography className="ml-4 cursor-pointer font-bold flex">
                   <img
@@ -116,7 +292,7 @@ export function Navbar({ action }) {
                   />
                   <div className="text-center m-auto ml-1">
                      <p className="font-serif border-b-2 border-gray-800">
-                        HEALTIH{" "}
+                        HEALTH{" "}
                      </p>
                      <p className="font-serif font-[400] text-[18]">
                         Solutions
@@ -124,25 +300,55 @@ export function Navbar({ action }) {
                   </div>
                </Typography>
             </Link>
-            <div className="hidden lg:block">{navList}</div>
+            <div className="hidden lg:block h-full">{navList}</div>
+
             <div className="hidden gap-2 lg:flex">
-               <Link
-                  href="https://www.material-tailwind.com/blocks?ref=mtkr"
-                  target="_blank"
-               >
-                  <Button
-                     variant="text"
-                     size="sm"
-                     fullWidth
-                     className="hover:bg-[#545455] hover:text-[white]"
-                  >
-                     Sign Up
-                  </Button>
-               </Link>
-               {React.cloneElement(action, {
-                  className: "hidden lg:inline-block",
-               })}
+               {stateButton ? (
+                  <>
+                     <Link to="/register" target="_blank">
+                        <Button
+                           variant="text"
+                           size="sm"
+                           fullWidth
+                           className="hover:bg-[#545455] hover:text-[white]"
+                        >
+                           Sign Up
+                        </Button>
+                     </Link>
+                     <Link to="/login" target="_blank">
+                        <Button
+                           variant="gradient"
+                           size="sm"
+                           className="hover:bg-[#545455] mr-[100px] lg:w-fit w-full"
+                        >
+                           Login
+                        </Button>
+                     </Link>
+                  </>
+               ) : (
+                  <>
+                  <p className="font-serif border-b-2 border-gray-800 mr-10">
+                        Hi, {" "} {username}
+                  </p>
+                  <Link to="/" target="_blank">
+                     <Button
+                        variant="gradient"
+                        size="sm"
+                        className="hover:bg-[#545455] mr-[100px] lg:w-fit w-full"
+                        onClick={() => {
+                           localStorage.clear();
+                           console.log(stateButton, 8888);
+
+                           setStateButton(true);
+                        }}
+                     >
+                        Log out
+                     </Button>
+                  </Link>
+                  </>
+               )}
             </div>
+
             <IconButton
                variant="text"
                size="sm"
@@ -157,40 +363,53 @@ export function Navbar({ action }) {
                )}
             </IconButton>
          </div>
+
          <Collapse open={openNav} className=" rounded-lg ">
             <div className="container mx-auto rounded-xl">
                {navList}
-               <Link
-                  href="https://www.material-tailwind.com/blocks/react?ref=mtkr"
-                  target="_blank"
-                  className="mb-2 block"
-               >
-                  <Button variant="text" size="sm" fullWidth>
-                     Sign Up
-                  </Button>
-               </Link>
-               {React.cloneElement(action, {
-                  className: "w-full block",
-               })}
+               {stateButton ? (
+                  <>
+                     <Link
+                        to="/register"
+                        target="_blank"
+                        className="mb-2 block"
+                     >
+                        <Button variant="text" size="sm" fullWidth>
+                           Sign Up
+                        </Button>
+                     </Link>
+                     <Link to="/login" target="_blank" className="mb-2 block">
+                        <Button
+                           variant="text"
+                           size="sm"
+                           className="bg-[#545455]"
+                           fullWidth
+                        >
+                           Login
+                        </Button>
+                     </Link>
+                  </>
+               ) : (
+                  <Link to="/" target="_blank" className="mb-2 block">
+                     <Button
+                        variant="text"
+                        size="sm"
+                        className="bg-[#545455]"
+                        fullWidth
+                        onClick={() => {
+                           localStorage.clear();
+                           console.log(stateButton, 8888);
+                           setStateButton(true);
+                        }}
+                     >
+                        Log out
+                     </Button>
+                  </Link>
+               )}
             </div>
          </Collapse>
       </div>
    );
 }
-
-Navbar.defaultProps = {
-   brandName: "HEALTIH Solutions",
-   action: (
-      <Link href="" target="_blank">
-         <Button
-            variant="gradient"
-            size="sm"
-            className="hover:bg-[#545455] mr-[100px] lg:w-fit w-full"
-         >
-            Login
-         </Button>
-      </Link>
-   ),
-};
 
 export default Navbar;

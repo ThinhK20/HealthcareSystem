@@ -10,14 +10,19 @@ import {
    Chip,
 } from "@material-tailwind/react";
 import Tooltip from "@mui/material/Tooltip";
+import { Input } from "@material-tailwind/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { getAllRefundRequestsApi } from "../../apis/refundRequestApis";
 import { toast } from "react-toastify";
 import { formatDate, formatMoney } from "../../helpers/dataHelper";
+import { RefundRequestStatus } from "../../enums/refund-request-status";
+import Paging from "../../components/pagination/pagination";
 const TABLE_HEAD = [
    "Id",
    "User",
@@ -30,9 +35,14 @@ const TABLE_HEAD = [
    "",
 ];
 
+const ITEM_PER_PAGE = 5;
+
 export function RefundRequestManagement() {
    const [refundRequests, setRefundRequests] = useState();
    const [tableRows, setTableRows] = useState([]);
+   const [filterTableRows, setFilterTableRows] = useState([]);
+   const [searchInput, setSearchInput] = useState("");
+   const [isStatus, setIsStatus] = useState(0);
 
    useEffect(() => {
       const source = axios.CancelToken.source();
@@ -50,21 +60,83 @@ export function RefundRequestManagement() {
    }, []);
 
    useEffect(() => {
-      setTableRows(() => {
-         const newRows = refundRequests?.map((request) => ({
-            img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",
-            user: request.insurance?.account,
-            hospitalName: request.hoptitalName,
-            description: request.description,
-            refundFee: request.totalRefundFee,
-            dateSend: request.dateSend,
-            dateRefund: request.dateRefund,
-            status: request.status,
-            refundID: request.refundID,
-         }));
-         return newRows;
+      setFilterTableRows(() => {
+         return filterTableRowsByStatus(tableRows);
       });
+   }, [searchInput, isStatus]);
+
+   function filterTableRowsByStatus(rowsData) {
+      switch (isStatus) {
+         case 0:
+            return rowsData?.filter(
+               (r) =>
+                  r.user?.username
+                     .toLowerCase()
+                     .includes(searchInput.toLowerCase()) ||
+                  r.hospitalName
+                     ?.toLowerCase()
+                     .includes(searchInput.toLowerCase())
+            );
+         case 1:
+            return rowsData?.filter((r) => {
+               return (
+                  r.status === RefundRequestStatus.Approved &&
+                  (r.user?.username
+                     .toLowerCase()
+                     .includes(searchInput.toLowerCase()) ||
+                     r.hospitalName
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase()))
+               );
+            });
+         case 2:
+            return rowsData?.filter(
+               (r) =>
+                  r.status === RefundRequestStatus.Pending &&
+                  (r.user?.username
+                     .toLowerCase()
+                     .includes(searchInput.toLowerCase()) ||
+                     r.hospitalName
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase()))
+            );
+         case 3:
+            return rowsData?.filter(
+               (r) =>
+                  r.status === RefundRequestStatus.Rejected &&
+                  (r.user?.username
+                     .toLowerCase()
+                     .includes(searchInput.toLowerCase()) ||
+                     r.hospitalName
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase()))
+            );
+      }
+   }
+
+   useEffect(() => {
+      const newRows = refundRequests?.map((request) => ({
+         img: "https://static2-images.vnncdn.net/files/publish/2022/12/8/meo-1-1416.jpg",
+         user: request.insurance?.account,
+         hospitalName: request.hoptitalName,
+         description: request.description,
+         refundFee: request.totalRefundFee,
+         dateSend: request.dateSend,
+         dateRefund: request.dateRefund,
+         status: request.status,
+         refundID: request.refundID,
+      }));
+      setTableRows(() => newRows);
+      setFilterTableRows(() => newRows);
    }, [refundRequests]);
+
+   function onFilter() {
+      setIsStatus((oldState) => {
+         let newState = oldState + 1;
+         if (newState >= 4) newState = 0;
+         return newState;
+      });
+   }
 
    return (
       <Card className="h-full w-full">
@@ -78,6 +150,23 @@ export function RefundRequestManagement() {
                      These are details about the refund requests to HealthCare
                      System Company
                   </Typography>
+               </div>
+               <div className="flex w-full shrink-0 gap-4 md:w-max z-40">
+                  <div
+                     onClick={onFilter}
+                     className="flex items-center gap-1 py-2 px-4 hover:bg-gray-300 cursor-pointer rounded"
+                  >
+                     <FontAwesomeIcon icon={faFilter} />
+                     <span>Status</span>
+                  </div>
+                  <div className="w-full md:w-72">
+                     <Input
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        label="Search"
+                        placeholder="Search"
+                        icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                     />
+                  </div>
                </div>
             </div>
          </CardHeader>
@@ -102,7 +191,7 @@ export function RefundRequestManagement() {
                   </tr>
                </thead>
                <tbody>
-                  {tableRows?.map((tableRow, index) => {
+                  {filterTableRows?.map((tableRow, index) => {
                      const isLast = index === tableRows.length - 1;
                      const classes = isLast
                         ? "p-4"
@@ -192,9 +281,11 @@ export function RefundRequestManagement() {
                                     variant="ghost"
                                     value={tableRow.status}
                                     color={
-                                       tableRow.status === "Approved"
+                                       tableRow.status ===
+                                       RefundRequestStatus.Approved
                                           ? "green"
-                                          : tableRow.status === "Pending"
+                                          : tableRow.status ===
+                                            RefundRequestStatus.Pending
                                           ? "amber"
                                           : "red"
                                     }
@@ -221,36 +312,11 @@ export function RefundRequestManagement() {
                </tbody>
             </table>
          </CardBody>
-         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-            <Button variant="outlined" size="sm">
-               Previous
-            </Button>
-            <div className="flex items-center gap-2">
-               <IconButton variant="outlined" size="sm">
-                  1
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  2
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  3
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  ...
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  8
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  9
-               </IconButton>
-               <IconButton variant="text" size="sm">
-                  10
-               </IconButton>
-            </div>
-            <Button variant="outlined" size="sm">
-               Next
-            </Button>
+         <CardFooter className="flex items-center justify-center border-t border-blue-gray-50 p-4">
+            <Paging
+               itemsPerPage={ITEM_PER_PAGE}
+               totalItems={filterTableRowsByStatus(tableRows)?.length}
+            />
          </CardFooter>
       </Card>
    );

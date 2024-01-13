@@ -2,7 +2,9 @@ import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { CreateNewStaff } from "../../apis/accountApis";
 import LoadingWrapper from "../../components/loading/loading";
+import { useNavigate } from "react-router-dom";
 const FormCreateNewStaff = () => {
+   const navigateTo = useNavigate();
    const [formDataAccount, setFormDataAccount] = useState({
       userId: "",
       username: "",
@@ -30,6 +32,7 @@ const FormCreateNewStaff = () => {
    const handleFormSubmit = async (e) => {
       e.preventDefault();
       const responseAccount = await CreateNewStaff(formDataAccount);
+      navigateTo("/");
    };
 
    return (
@@ -111,7 +114,7 @@ const FormCreateNewStaff = () => {
                               onChange={handleInputChangeAccount}
                            >
                               <option defaultChecked>Customer</option>
-                              <option>Supervice</option>
+                              <option>Staff</option>
                               <option>Security</option>
                            </select>
                         </div>

@@ -2,11 +2,13 @@ import { useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import * as jwt from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { login, loginByGoogle } from "../../apis/authenicationApis";
+import { login, loginByGoogle, generateToken } from "../../apis/authenicationApis";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { createUserGoogle } from "../../apis/accountApis";
 import LoadingWrapper from "../../components/loading/loading";
-
+import {  getUserByEmail } from "../../apis/userApis";
+import { getAccountByUserID , getAccountByAccountId} from "../../apis/accountApis";
+import backgroundImg from "../../../public/background.svg"
 function generateRandomString(length) {
    const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -85,14 +87,45 @@ export default function Login() {
             navigateTo("/");
          }, 3000);
       } else {
-         toast.error("Email existed", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-         });
+         const getUser = await getUserByEmail(data.email);
+         const accountId = await getAccountByUserID(getUser.userId);
+         const accountInfo = await getAccountByAccountId(accountId.data);
+
+         const username = accountInfo.username
+         console.log(username, username.startsWith("user_"))
+         if(username.startsWith("user_")){
+            const payload = {
+               role: filteredAccount[0].role,
+               userId: filteredAccount[0].userId
+            };
+            const token = await generateToken(payload);
+            setLoading(false);
+            console.log("Token hereeeeee: ", token)
+            localStorage.setItem("token", token);
+            toast.success("Login successfully !", {
+               position: "top-right",
+               autoClose: 2000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+            });
+            setTimeout(() => {
+               navigateTo("/");
+            }, 3000);
+         }
+         else{
+            setLoading(false)
+            toast.error("Email existed", {
+               position: "top-right",
+               autoClose: 2000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+            });
+         }
+         
       }
    };
 
@@ -142,12 +175,12 @@ export default function Login() {
    };
    return (
       <>
-         <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+         <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center w-full">
             <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
                <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
                   <div>
                      <img
-                        src="https://drive.google.com/uc?export=view&id=1MFiKAExRFF0-2YNpAZzIu1Sh52J8r16v"
+                        src="https://img.freepik.com/free-vector/login-concept-illustration_114360-739.jpg"
                         className="w-mx-auto"
                      />
                   </div>
@@ -225,7 +258,7 @@ export default function Login() {
                      className="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat"
                      style={{
                         "background-image":
-                           "url('https://drive.google.com/uc?export=view&id=1KZ_Ub_2lZ0dHbKV0fAIhxVhiQA183RCz')",
+                           `url(${backgroundImg})`,
                      }}
                   ></div>
                </div>

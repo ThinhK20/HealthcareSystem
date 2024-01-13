@@ -1,10 +1,59 @@
-// LayoutRoute.jsx
-import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Navbar from "../../components/header/navbar";
 import Footer from "../footer/footer";
+import React, { useState, useEffect } from "react";
+import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 const LayoutRoute = ({ element }) => {
+   const [isVisible, setIsVisible] = useState(false);
+
+   useEffect(() => {
+      const handleScroll = () => {
+         const currentPosition = window.scrollY;
+         setIsVisible(currentPosition > 200);
+      };
+
+      window.addEventListener("scroll", handleScroll);
+      return () => {
+         window.removeEventListener("scroll", handleScroll);
+      };
+   }, []);
+
+   const scrollToTop = () => {
+      window.scrollTo({
+         top: 0,
+         behavior: "smooth",
+      });
+   };
+
    return (
-      <div className="w-[100%]">
+      <div className="w-[100%] bg">
+         <div
+            style={{
+               position: "fixed",
+               bottom: "20px",
+               right: "20px",
+               zIndex: 999,
+            }}
+         >
+            {isVisible && (
+               <button
+                  onClick={scrollToTop}
+                  className="bg-gray-500 hover:bg-gray-600 opacity-80  h-[50px] w-[50px] rounded-full"
+                  style={{
+                     position: "absolute",
+                     bottom: 0,
+                     right: 0,
+                     zIndex: 1000,
+                  }}
+               >
+                  <FontAwesomeIcon
+                     icon={faChevronUp}
+                     className="text-[white] font-[800]"
+                  />
+               </button>
+            )}
+            {/* Nội dung của component */}
+         </div>
          <header className="flex justify-center">
             <Navbar></Navbar>
          </header>

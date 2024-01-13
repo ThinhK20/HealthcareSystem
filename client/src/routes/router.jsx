@@ -17,6 +17,8 @@ import Insurance from "../pages/insurances/insurance";
 import FormUpdate from "../pages/insurances/form-update";
 import FormCreate from "../pages/insurances/form-create";
 import ConfirmPayment from "../components/payment/confirmPayment";
+import AboutUs from "../pages/users/about-us";
+import InformationCompany from "../pages/users/information-company";
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -25,6 +27,10 @@ export const router = createBrowserRouter([
    {
       path: "/login",
       element: <LayoutRoute element={<Login />}></LayoutRoute>,
+   },
+   {
+      path: "/blog",
+      element: <LayoutIndexRoute element={<Login />}></LayoutIndexRoute>,
    },
    {
       path: "/verify",
@@ -85,5 +91,13 @@ export const router = createBrowserRouter([
    {
       path: "/payment/completePayment",
       element: <LayoutRoute element={<ConfirmPayment />}></LayoutRoute>,
+   },
+   {
+      path: "/about-us",
+      element: <LayoutRoute element={<AboutUs />}></LayoutRoute>,
+   },
+   {
+      path: "/information-company",
+      element: <LayoutRoute element={<InformationCompany />}></LayoutRoute>,
    },
 ]);

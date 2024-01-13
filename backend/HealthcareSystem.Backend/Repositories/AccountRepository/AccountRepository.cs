@@ -30,6 +30,14 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             if (user == null) throw new Exception("Don't have any users.");
             return _mapper.Map<List<Models.Domain.Account>>(user);
         }
+        
+        public async Task<List<Models.Domain.Account>> GetAccountsByPage(int pageSize, int pageNumber)
+        {
+            var user = await GetAllAsync(pageNumber:pageNumber, pageSize: pageSize);
+            if (user == null) throw new Exception("Don't have any users.");
+            return _mapper.Map<List<Models.Domain.Account>>(user);
+        }
+        
         public async Task<bool> checkUserExist(string Username)
         {
             var user = await GetAsync(u => u.Username == Username && u.Status != AccountStatus.Deleted);

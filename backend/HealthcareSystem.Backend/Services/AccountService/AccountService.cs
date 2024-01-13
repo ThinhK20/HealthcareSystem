@@ -37,10 +37,11 @@ namespace HealthcareSystem.Backend.Services.AccountService
             _userManager = userManager;
             _tokenRepository = tokenRepository;
         }
-
-
-
-        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc, string email)
+        public async Task<List<Models.Domain.Account>> GetAccountsByPage(int pageSize, int pageNumber)
+        {
+            return await _accountRepository.GetAccountsByPage(pageSize, pageNumber);
+        }
+        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
         {
             return _accountRepository.CreateAccountStaff(acc,email);
         }
@@ -128,7 +129,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
             var salt = BCrypt.Net.BCrypt.GenerateSalt();
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(loginRequestDTO.Password, salt);
             var getIDUser = await _userRepository.GetAsync(u => u.Email == loginRequestDTO.Email);
-
+         
             AccountDTO user = new AccountDTO()
             {
                 UserId = getIDUser.UserId,

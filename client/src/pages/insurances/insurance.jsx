@@ -8,11 +8,9 @@ import { ToastContainer, toast } from "react-toastify";
 import { getAllInsurance, deleteInsurance } from "../../apis/insuranceApis";
 import { getAllUsers } from "../../apis/userApis";
 import LoadingWrapper from "../../components/loading/loading";
-import {
-   Input
-} from "@material-tailwind/react";
+import { Input } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-
+import Pagination from "../../components/pagination/pagination";
 function Insurance() {
    const [loading, setLoading] = useState(false);
    const [data, setData] = useState([]);
@@ -20,7 +18,21 @@ function Insurance() {
    const [confirm, setConfirm] = useState(0);
    const [idDelete, setIdDelete] = useState(-1);
    const [searchInput, setSearchInput] = useState("");
+   const [newPage, setNewPage] = useState(0);
+
    const [dataFilter, setDataFilter] = useState([]);
+   const [dataAfterFilter, setDataAfterFilter] = useState([]);
+   const itemsPerPage = 1;
+   const handlePageChange = (newPage) => {
+      const startIndex = (newPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      if (searchInput.length == 0) {
+         setData(dataFilter.slice(startIndex, endIndex));
+      } else {
+         setData(dataAfterFilter.slice(startIndex, endIndex));
+      }
+      setNewPage(newPage);
+   };
 
    const getData = async () => {
       setLoading(true);
@@ -40,7 +52,6 @@ function Insurance() {
                },
             };
          }
-
          return insurance;
       });
       const usersWithoutInsurance = getUsers.filter(
@@ -51,8 +62,8 @@ function Insurance() {
       );
       setUserNoInsuarance(usersWithoutInsurance);
       console.log(usersWithoutInsurance, 5667899);
-      setData(updatedDataArray);
-      setDataFilter(updatedDataArray)
+      setData(updatedDataArray.slice(0, itemsPerPage));
+      setDataFilter(updatedDataArray);
       setLoading(false);
    };
 
@@ -82,25 +93,29 @@ function Insurance() {
          });
       }
    };
-   const search = (data) => {
-       setData(dataFilter.filter((item) => item.account.fullname.toLowerCase().includes(searchInput)))
-   }
+
    useEffect(() => {
       getData();
    }, []);
    useEffect(() => {
-      setData(
-         dataFilter.filter((item) =>
-         item.account.fullname.toLowerCase().includes(searchInput) || item.registerPlace.toLowerCase().includes(searchInput) 
-      )
+      const startIndex = (newPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      console.log("Start: ", startIndex, "End: ", endIndex);
+      const newdata = dataFilter.filter(
+         (item) =>
+            item.account.fullname.toLowerCase().includes(searchInput) ||
+            item.registerPlace.toLowerCase().includes(searchInput)
       );
+      setData(newdata.slice(startIndex, endIndex));
+      setDataAfterFilter(newdata);
    }, [searchInput]);
+
    return (
       <>
          <div className="container my-12 py-12 mx-auto px-4 md:px-6 lg:px-12">
-            <div className  = "flex justify-between">
+            <div className="flex justify-between">
                <div>
-                     <Link
+                  <Link
                      type="button"
                      to={`/insurances/create`}
                      state={{ userNoInsuarance: userNoInsuarance }}
@@ -108,17 +123,16 @@ function Insurance() {
                   >
                      <FontAwesomeIcon icon={faPlus} /> New
                   </Link>
-
                </div>
                <div className="w-full max-w-[24rem]">
                   <Input
-                        onChange={(e) => setSearchInput(e.target.value)}
-                        label="Search by Owner"
-                        icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                     onChange={(e) => setSearchInput(e.target.value)}
+                     label="Search by Owner"
+                     icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                   />
                </div>
             </div>
-           
+
             <section className="mb-20 text-gray-800">
                <div className="block rounded-lg shadow-lg bg-white">
                   <div className="flex flex-col">
@@ -297,6 +311,17 @@ function Insurance() {
                   </div>
                </div>
             </section>
+            <div className="flex justify-center items-center text-center">
+               <Pagination
+                  totalItems={
+                     searchInput.length == 0
+                        ? dataFilter.length
+                        : dataAfterFilter.length
+                  }
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={handlePageChange}
+               />
+            </div>
          </div>
          <ToastContainer />
          <LoadingWrapper open={loading} />
