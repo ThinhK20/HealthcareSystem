@@ -56,7 +56,7 @@ namespace HealthcareSystem.Backend.Controllers
                 Status = account.Status,
                 Role = account.Role
             };
-            var tempAccount = await _accountService.CreateAccountStaff(accCreate,account.Email);
+            var tempAccount = await _accountService.CreateAccountStaff(accCreate, account.Email);
             if (tempAccount == null)
             {
                 return BadRequest("Failed to create account.");
@@ -108,7 +108,7 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
-  
+
         [HttpPut("edit-user")]
         public async Task<IActionResult> EditAccount([FromBody] UserDTO account)
         {

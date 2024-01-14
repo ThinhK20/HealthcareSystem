@@ -1,6 +1,5 @@
 ﻿using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.DTO;
-using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 using HealthcareSystem.Backend.Services.PaymentService;
 using Microsoft.AspNetCore.Authorization;
@@ -113,7 +112,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
 
-        
+
         [HttpGet("GetPaymentId/{paymentId}")]
         public async Task<IActionResult> GetPaymentId(int paymentId)
         {
@@ -171,13 +170,14 @@ namespace HealthcareSystem.Backend.Controllers
 
         [HttpPost("GetLinkCheckOut")]
         [Authorize(Roles = Roles.UserRole)]
-        public async Task<IActionResult> CheckPayPal([FromBody]CheckPayPalInfoDTO info)
+        public async Task<IActionResult> CheckPayPal([FromBody] CheckPayPalInfoDTO info)
         {
             try
             {
                 var checkInfo = await _paymentRepository.GetCheckOutLink(info);
                 return Ok(checkInfo);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -189,7 +189,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
-                var test = await _paymentRepository.ConfirmPayment(token,PayerID);
+                var test = await _paymentRepository.ConfirmPayment(token, PayerID);
                 if (test == true) return Ok("Done");
                 else return BadRequest("Error");
             }
