@@ -67,7 +67,6 @@ namespace HealthcareSystem.Backend.Controllers
 
         public async Task<ActionResult<InsuarancePolicyCreateDTO>> CreatePolicy([FromBody] InsuarancePolicyCreateDTO data)
         {
-
             try
             {
                 if (!ModelState.IsValid)
