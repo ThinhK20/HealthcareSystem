@@ -6,7 +6,9 @@ import {
   getAccountsInformation,
 } from "../../apis/accountApis";
 import * as jwt from "jwt-decode";
+import { useParams } from "react-router-dom";
 const EditInformation = () => {
+  const params = useParams();
   const [message, setMessage] = useState("");
   const [messageSuccess, setMessageSuccess] = useState("");
   const [currentID, setCurrentID] = useState("");
@@ -41,10 +43,9 @@ const EditInformation = () => {
     }
   };
   useEffect(() => {
+
     const fetchUserStaffData = async () => {
-      const decodeToken = await jwt.jwtDecode(localStorage.getItem("token"));
-      setCurrentID(decodeToken.unique_name || "");
-      const accountID = await getAccountByUserID(decodeToken.unique_name);
+      const accountID = await getAccountByUserID(params.id);
       try {
         const userStaffData = await getAccountsInformation(accountID);
         setFormDataAccount({

@@ -23,9 +23,9 @@ export const updateAccountsPassword = async (formPut) => {
       console.error("Error occurred while updating account details", error);
    }
 };
-export const updateAccountsInformation = async (formPut) => {
+export const updateAccounts = async (formPut) => {
    try {
-      const response = await instance.put("/edit-user-staff", formPut);
+      const response = await instance.put("/edit-account-staff", formPut);
       return response.data;
    } catch (error) {
       console.error("Error occurred while updating account details", error);

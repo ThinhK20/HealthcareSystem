@@ -12,13 +12,15 @@ import { Alert, AlertTitle } from "@mui/material";
 import {
    getAccountByAccountId,
    getAccountByUserID,
+   updateAccounts,
    updateAccountsPassword,
 } from "../../apis/accountApis";
 import * as jwt from "jwt-decode";
+import { useParams } from "react-router-dom";
 const EditAccount = () => {
+   const params = useParams();
    const [open, setOpen] = React.useState(false);
    const theme = useTheme();
-   const [currentRole, setCurrentRole] = useState("");
    const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
    const [password, setPassword] = useState("");
    const [oldPass, setOldPass] = useState("");
@@ -30,9 +32,11 @@ const EditAccount = () => {
    const handleClickOpen = () => {
       setFormDataPUT(() => ({
          accountId: formDataAccount.accountId,
+         userId: formDataAccount.userId,
          username: formDataAccount.username,
-         oldPassword: oldPass,
-         newPassword: newPass,
+         password: formDataAccount.password,
+         status: formDataAccount.status,
+         role: formDataAccount.role,
       }));
       setOpen(true);
    };
@@ -51,37 +55,13 @@ const EditAccount = () => {
    });
    const [formDataPUT, setFormDataPUT] = useState({
       accountId: "",
+      userId: "",
       username: "",
-      oldPassword: "",
-      newPassword: "",
+      password: "",
+      status: "Active",
+      role: "Customer",
    });
 
-   const handleChangePassword = async () => {
-      if (oldPass === "" || newPass === "" || confirmPass === "") {
-         setMessage("Vui lòng nhập đầy đủ thông tin.");
-      } else if (newPass !== confirmPass) {
-         setMessage("Mật khẩu mới không trùng khớp.");
-      } else if (newPass === oldPass) {
-         setMessage("Mật khẩu mới trùng mật khẩu cũ. ");
-      } else {
-         console.log(formDataAccount);
-         if (formDataPUT.password != "") {
-            try {
-               updateAccountsPassword(formDataPUT).then((result) => {
-                  if (result != null) {
-                     setMessage("");
-                     setMessageSuccess("Thay đổi mật khẩu thành công");
-                  } else {
-                     setMessage("Thay đổi không thành công");
-                  }
-               });
-            } catch {
-               // Xử lý lỗi
-               setMessage("Thay đổi không thành công");
-            }
-         }
-      }
-   };
 
    const handleInputChangeAccount = (e) => {
       const { name, value } = e.target;
@@ -90,20 +70,13 @@ const EditAccount = () => {
          [name]: value,
       }));
    };
-
    const handleFormSubmit = async () => {
-      console.log(oldPass, newPass, confirmPass, password);
-      await handleChangePassword();
-      console.log(oldPass, newPass, confirmPass, password);
+      await updateAccounts(formDataPUT)
       handleClose();
    };
-
    useEffect(() => {
       const Decode = async () => {
-         const decodeToken = await jwt.jwtDecode(localStorage.getItem("token"));
-         setCurrentRole(decodeToken.unique_name || "");
-         const accountID =  await getAccountByUserID(decodeToken.unique_name)
-         await getAccountByAccountId(accountID).then((result) => {
+         await getAccountByAccountId(params.id).then((result) => {
          const userStaffData = result;
             setFormDataAccount((prevData) => ({
                ...prevData,
@@ -114,7 +87,6 @@ const EditAccount = () => {
                status: userStaffData?.status || "Active",
                role: userStaffData?.role || "Customer",
             }));
-            setPassword(userStaffData?.password);
          });
       };
       Decode();
@@ -169,77 +141,7 @@ const EditAccount = () => {
                            </div>
                         </div>
                      </div>
-                     <div className="sm:col-span-4">
-                        <label
-                           htmlFor="password"
-                           className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                           Old Password
-                        </label>
-                        <div className="mt-2">
-                           <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                              <input
-                                 required
-                                 type="password"
-                                 name="password"
-                                 id="password"
-                                 autoComplete="password"
-                                 className=" block flex-1 border-0 bg-transparent py-1.5 pl-[10px] text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                 placeholder="janesmith"
-                                 value={oldPass}
-                                 onChange={(e) => setOldPass(e.target.value)}
-                              />
-                           </div>
-                        </div>
-                     </div>
-                     <div className="sm:col-span-4">
-                        <label
-                           htmlFor="username"
-                           className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                           New Password
-                        </label>
-                        <div className="mt-2">
-                           <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                              <input
-                                 required
-                                 type="password"
-                                 name="password1"
-                                 id="password1"
-                                 autoComplete="password1"
-                                 className=" block flex-1 border-0 bg-transparent py-1.5 pl-[10px] text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                 placeholder="janesmith"
-                                 value={newPass}
-                                 onChange={(e) => setNewPass(e.target.value)}
-                              />
-                           </div>
-                        </div>
-                     </div>
-                     <div className="sm:col-span-4">
-                        <label
-                           htmlFor="username"
-                           className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                           Confirm New Password
-                        </label>
-                        <div className="mt-2">
-                           <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                              <input
-                                 required
-                                 type="password"
-                                 name="password2"
-                                 id="password2"
-                                 autoComplete="password2"
-                                 className=" block flex-1 border-0 bg-transparent py-1.5 pl-[10px] text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                 placeholder="janesmith"
-                                 value={confirmPass}
-                                 onChange={(e) =>
-                                    setConfirmPass(e.target.value)
-                                 }
-                              />
-                           </div>
-                        </div>
-                     </div>
+            
 
                      <div className="sm:col-span-3">
                         <label
@@ -250,7 +152,6 @@ const EditAccount = () => {
                         </label>
                         <div className="mt-2">
                            <select
-                              disabled
                               id="role"
                               name="role"
                               autoComplete="role"
@@ -259,8 +160,26 @@ const EditAccount = () => {
                               onChange={handleInputChangeAccount}
                            >
                               <option>Customer</option>
-                              <option>Supervice</option>
-                              <option>Security</option>
+                              <option>Staffs</option>
+                           </select>
+                        </div>
+                        <label
+                           htmlFor="country"
+                           className="block text-sm font-medium leading-6 text-gray-900 mt-[30px]"
+                        >
+                           Status
+                        </label>
+                        <div className="mt-2">
+                           <select
+                              id="status"
+                              name="status"
+                              autoComplete="status"
+                              className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                              value={formDataAccount.status}
+                              onChange={handleInputChangeAccount}
+                           >
+                              <option>Active</option>
+                              <option>Inactive</option>
                            </select>
                         </div>
                      </div>
