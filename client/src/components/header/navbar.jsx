@@ -22,13 +22,13 @@ import { getAccountByUserID } from "../../apis/accountApis";
 import { getAccountByAccountId } from "../../apis/accountApis";
 const routes = [
    {
-      role: "Customer",
+      role: "User",
       name: "Request",
       path: "/users/customer-requests",
       dropdown: false,
    },
    {
-      role: "Customer",
+      role: "User",
       name: "Refund",
       path: "/users/refund-requests",
       dropdown: true,
@@ -46,7 +46,7 @@ const routes = [
       ],
    },
    {
-      role: "Customer",
+      role: "User",
       name: "Insurance Packages",
       // path: "/users/refund-requests",
       dropdown: true,
@@ -70,7 +70,7 @@ const routes = [
    },
 
    {
-      role: "Customer",
+      role: "User",
       name: "Account",
       path: "",
       dropdown: true,
@@ -88,7 +88,7 @@ const routes = [
       ],
    },
    {
-      role: "Customer",
+      role: "User",
       name: "Payment",
       path: "",
       dropdown: true,
@@ -175,24 +175,25 @@ export function Navbar() {
    const [detail, setDetail] = useState();
    const [username, setUsername] = useState();
    const [stateButton, setStateButton] = useState(true);
+   function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+   }
    useEffect(() => {
       const Decode = async () => {
-         const token = localStorage.getItem("token")
-         if(token == null){
-      
-            console.log("AAAAAAAAAAAAAA")
+         const token = getCookie("token")
+         if(token === undefined){
             setStateButton(true);
+            localStorage.clear()
          }
          else{
-            console.log("BBBBBBBBB")
-            const decodeToken = await jwt.jwtDecode(token);
-            const accountId = await getAccountByUserID(decodeToken.unique_name);
-
+            console.log("Logged")
+            const accountId = await getAccountByUserID(localStorage.getItem("userId"));
+            localStorage.setItem("accountId", accountId.data)
             const info = await getAccountByAccountId(accountId.data);
-            
-            console.log(info, 555)
-            setUsername(info.username)
-            setCurrentRole(decodeToken.role || "All");
+            setUsername(localStorage.getItem("username"))
+            setCurrentRole(info.role ? info.role : "All");
             setStateButton(false);
          }
         
@@ -338,7 +339,7 @@ export function Navbar() {
                         onClick={() => {
                            localStorage.clear();
                            console.log(stateButton, 8888);
-
+                           document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';   
                            setStateButton(true);
                         }}
                      >

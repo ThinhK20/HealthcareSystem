@@ -39,13 +39,13 @@ const EditInformation = () => {
          setMessage("Thay đổi thông tin thất bại");
       }
    };
+
    useEffect(() => {
       const fetchUserStaffData = async () => {
-         const decodeToken = await jwt.jwtDecode(localStorage.getItem("token"));
-         setCurrentID(decodeToken.unique_name || "");
+         const accountId = localStorage.getItem('accountId')
          try {
             const userStaffData = await getAccountsInformation(
-               decodeToken.unique_name
+               accountId
             );
             setFormDataAccount({
                userId: userStaffData.userId || "",
@@ -102,7 +102,6 @@ const EditInformation = () => {
                         <div className="mt-2">
                            <input
                               required
-                              disabled
                               type="text"
                               name="fullname"
                               id="fullname"
@@ -124,7 +123,6 @@ const EditInformation = () => {
                         <div className="mt-2">
                            <input
                               required
-                              disabled
                               type="text"
                               name="cccd"
                               id="cccd"

@@ -97,11 +97,18 @@ const EditAccount = () => {
       handleClose();
    };
 
+   function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+   }
+
    useEffect(() => {
       const Decode = async () => {
-         const decodeToken = await jwt.jwtDecode(localStorage.getItem("token"));
-         setCurrentRole(decodeToken.unique_name || "");
-         getAccountByAccountId(decodeToken.unique_name).then((result) => {
+         const tokenValue = getCookie("token")
+         const accountId = localStorage.getItem("accountId")
+         const decodeToken = await jwt.jwtDecode(tokenValue);
+         getAccountByAccountId(accountId).then((result) => {
             const userStaffData = result;
             setFormDataAccount((prevData) => ({
                ...prevData,
@@ -110,7 +117,7 @@ const EditAccount = () => {
                username: userStaffData?.username || "",
                password: "",
                status: userStaffData?.status || "Active",
-               role: userStaffData?.role || "Customer",
+               role: userStaffData?.role || "User",
             }));
             setPassword(userStaffData?.password);
          });
@@ -183,7 +190,6 @@ const EditAccount = () => {
                                  id="password"
                                  autoComplete="password"
                                  className=" block flex-1 border-0 bg-transparent py-1.5 pl-[10px] text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                 placeholder="janesmith"
                                  value={oldPass}
                                  onChange={(e) => setOldPass(e.target.value)}
                               />
@@ -206,7 +212,6 @@ const EditAccount = () => {
                                  id="password1"
                                  autoComplete="password1"
                                  className=" block flex-1 border-0 bg-transparent py-1.5 pl-[10px] text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                 placeholder="janesmith"
                                  value={newPass}
                                  onChange={(e) => setNewPass(e.target.value)}
                               />
@@ -229,7 +234,6 @@ const EditAccount = () => {
                                  id="password2"
                                  autoComplete="password2"
                                  className=" block flex-1 border-0 bg-transparent py-1.5 pl-[10px] text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                 placeholder="janesmith"
                                  value={confirmPass}
                                  onChange={(e) =>
                                     setConfirmPass(e.target.value)
@@ -239,49 +243,6 @@ const EditAccount = () => {
                         </div>
                      </div>
 
-                     <div className="sm:col-span-3">
-                        <label
-                           htmlFor="country"
-                           className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                           Role
-                        </label>
-                        <div className="mt-2">
-                           <select
-                              disabled
-                              id="role"
-                              name="role"
-                              autoComplete="role"
-                              className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                              value={formDataAccount.role}
-                              onChange={handleInputChangeAccount}
-                           >
-                              <option>Customer</option>
-                              <option>Supervice</option>
-                              <option>Security</option>
-                           </select>
-                        </div>
-                     </div>
-                     <div className="col-span-full">
-                        <label
-                           htmlFor="photo"
-                           className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                           Photo
-                        </label>
-                        <div className="mt-2 flex items-center gap-x-3">
-                           <UserCircleIcon
-                              className="h-12 w-12 text-gray-300"
-                              aria-hidden="true"
-                           />
-                           <button
-                              type="button"
-                              className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                           >
-                              Change
-                           </button>
-                        </div>
-                     </div>
                   </div>
                </div>
 

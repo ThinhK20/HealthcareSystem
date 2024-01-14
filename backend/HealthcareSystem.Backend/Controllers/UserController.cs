@@ -47,8 +47,6 @@ namespace HealthcareSystem.Backend.Controllers
                 return NotFound(ex.Message);
             }
         }
-
-
         [HttpGet("customerRequests/{id:int}")]
         public async Task<IActionResult> GetCustomerRequestsById([FromRoute(Name = "id")] int requestId)
         {
@@ -102,7 +100,6 @@ namespace HealthcareSystem.Backend.Controllers
         }
         [HttpDelete("customerRequests/{id:int}")]
         [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
-
         public async Task<IActionResult> DeleteCustomerRequestById([FromRoute(Name = "id")] int requestId)
         {
             try

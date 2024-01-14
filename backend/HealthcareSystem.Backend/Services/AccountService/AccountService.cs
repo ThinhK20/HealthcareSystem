@@ -117,13 +117,6 @@ namespace HealthcareSystem.Backend.Services.AccountService
             return loginRequestDto;
         }
 
-
-
-
-
-
-
-
         public async Task<LoginResponseDTO> LoginByGoogle(RegisterRequestDTO loginRequestDTO)
         {
             var salt = BCrypt.Net.BCrypt.GenerateSalt();

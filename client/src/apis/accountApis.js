@@ -4,7 +4,16 @@ const URL = `${API_URL}/Accounts`;
 
 const instance = axios.create({
    baseURL: URL,
+   headers:{
+      "Authorization": `Bearer ${getCookie("token")}`
+   }
 });
+
+function getCookie(name) {
+   const value = `; ${document.cookie}`;
+   const parts = value.split(`; ${name}=`);
+   if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 export const getAccounts = async () => {
    try {

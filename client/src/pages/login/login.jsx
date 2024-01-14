@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import * as jwt from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +32,7 @@ function generateRandomPassword() {
 export default function Login() {
    const navigateTo = useNavigate();
    const [loading, setLoading] = useState(false);
-
+   const [isLogin, setIsLogin] = useState(false)
    const usernameRef = useRef(null);
    const passRef = useRef(null);
    const config = {
@@ -132,8 +132,6 @@ export default function Login() {
    const handleSubmit = async (event) => {
       setLoading(true);
       event.preventDefault();
-      console.log(usernameRef.current?.value, passRef.current?.value);
-
       const accountInfo = {
          userName: usernameRef.current?.value,
          password: passRef.current?.value,
@@ -157,8 +155,14 @@ export default function Login() {
          });
       } else {
          const decodeToken = await jwt.jwtDecode(token);
-         console.log(token, decodeToken);
-         localStorage.setItem("token", token);
+         let time = new Date(1970, 0, 1); // Epoch
+         time.setSeconds(decodeToken.exp);
+         let userInfo = loginAPI.user;
+         localStorage.clear()
+         document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+         document.cookie = `token = ${loginAPI.token};expires = ${time}`
+         localStorage.setItem("userId", userInfo.userId)
+         localStorage.setItem("username", usernameRef.current?.value)
 
          toast.success("Login successfully !", {
             position: "top-right",
@@ -173,10 +177,29 @@ export default function Login() {
          }, 3000);
       }
    };
+
+   function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+   useEffect(()=>{
+      let valueCookie = getCookie("token")
+      if (valueCookie === undefined){
+         setIsLogin(false)
+      }
+      else{
+         setIsLogin(true)
+      }
+   },[])
+
    return (
+      
       <>
          <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center w-full">
-            <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+            {
+               (isLogin === false) ? (<div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
                <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
                   <div>
                      <img
@@ -262,7 +285,9 @@ export default function Login() {
                      }}
                   ></div>
                </div>
-            </div>
+            </div>) : (<p>You already login</p>)
+            }
+            
          </div>
          <ToastContainer />
          <LoadingWrapper open={loading} />

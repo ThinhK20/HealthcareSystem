@@ -39,10 +39,17 @@ const CustomersPayment = () => {
          }
       }
    };
+
+   function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+   }
+
    const fetchPayments = async () => {
-      const decodeToken = await jwtDecode(localStorage.getItem("token"));
-      setCurrentRole(decodeToken.unique_name || "");
-      getPaymentsByAccountID(decodeToken.unique_name).then((response) => {
+      const tokenValue = getCookie("token")
+      const accountId = localStorage.getItem("accountId")
+      getPaymentsByAccountID(accountId).then((response) => {
          setPayments(response);
          setFilteredPayments(response);
          setData(response.slice(0, 5));
