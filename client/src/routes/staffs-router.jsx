@@ -14,10 +14,20 @@ import CreatePackageForm from "../pages/packagePolicy/create";
 import EditPackageForm from "../pages/packagePolicy/edit";
 import Statistic from "../components/statistic/statistic";
 import { IndexFunction } from "../pages/staffs";
+import EditInformation from "../pages/staffs/edit-information";
+import EditAccount from "../pages/staffs/edit-account";
 export const StaffRoutes = [
    {
       path: "/staffs",
       element: <LayoutRoute element={<IndexFunction />} />,
+   },
+   {
+      path: "/staffs/edit-information/:id",
+      element: <LayoutRoute element={<EditInformation />} />,
+   },
+   {
+      path: "/staffs/edit-account/:id",
+      element: <LayoutRoute element={<EditAccount />} />,
    },
    {
       path: "staffs/payment",

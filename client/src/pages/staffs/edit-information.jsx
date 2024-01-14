@@ -6,7 +6,9 @@ import {
   getAccountsInformation,
 } from "../../apis/accountApis";
 import * as jwt from "jwt-decode";
+import { useParams } from "react-router-dom";
 const EditInformation = () => {
+  const params = useParams();
   const [message, setMessage] = useState("");
   const [messageSuccess, setMessageSuccess] = useState("");
   const [currentID, setCurrentID] = useState("");
@@ -40,99 +42,97 @@ const EditInformation = () => {
       setMessage("Thay đổi thông tin thất bại");
     }
   };
-     useEffect(() => {
-      const fetchUserStaffData = async () => {
-         const accountId = localStorage.getItem('accountId')
-         try {
-            const userStaffData = await getAccountsInformation(
-               accountId
-            );
-            setFormDataAccount({
-               userId: userStaffData.userId || "",
-               fullname: userStaffData.fullname || "",
-               email: userStaffData.email || "",
-               cccd: userStaffData.cccd || "",
-               phone: userStaffData.phone || "",
-               birthdate: userStaffData.birthdate || "",
-               address: userStaffData.address || "",
-               gender: userStaffData.gender || "Male",
-            });
-         } catch (error) {
-            console.error("Error fetching user staff data:", error);
-         }
-      };
-      fetchUserStaffData();
-   }, [messageSuccess, message]);
-   return (
-      <form
-         className="w-full mt-[50px]"
-         onSubmit={handleFormSubmit}
-         method="post"
-      >
-         <div className="w-[60%] m-auto">
-            <div className="space-y-12">
-               <div className="border-b border-gray-900/10 pb-12">
-                  <h2 className="text-base font-semibold leading-7 text-gray-900">
-                     Personal Information
-                  </h2>
-                  <p className="mt-1 text-sm leading-6 text-gray-600">
-                     Use a permanent address where you can receive mail.
-                  </p>
-                  {message != "" && (
-                     <Alert severity="error">
-                        <AlertTitle>Error</AlertTitle>
-                        This is an error alert — <strong>{message}</strong>
-                     </Alert>
-                  )}
-                  {messageSuccess != "" && (
-                     <Alert severity="success">
-                        <AlertTitle>Success</AlertTitle>
-                        This is a success alert —{" "}
-                        <strong>{messageSuccess}</strong>
-                     </Alert>
-                  )}
-                  <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                     <div className="sm:col-span-3">
-                        <label
-                           htmlFor="fullname"
-                           className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                           Fullname
-                        </label>
-                        <div className="mt-2">
-                           <input
-                              required
-                              type="text"
-                              name="fullname"
-                              id="fullname"
-                              autoComplete="given-name"
-                              className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                              value={formDataAccount.fullname}
-                              onChange={handleInputChangeAccount}
-                           />
-                        </div>
-                     </div>
+  useEffect(() => {
 
-                     <div className="sm:col-span-3">
-                        <label
-                           htmlFor="cccd"
-                           className="block text-sm font-medium leading-6 text-gray-900"
-                        >
-                           National Identification Card
-                        </label>
-                        <div className="mt-2">
-                           <input
-                              required
-                              type="text"
-                              name="cccd"
-                              id="cccd"
-                              autoComplete="family-name"
-                              className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                              value={formDataAccount.cccd}
-                              onChange={handleInputChangeAccount}
-                           />
-                        </div>
-                     </div>
+    const fetchUserStaffData = async () => {
+      const accountID = await getAccountByUserID(params.id);
+      try {
+        const userStaffData = await getAccountsInformation(accountID);
+        setFormDataAccount({
+          userId: userStaffData.userId || "",
+          fullname: userStaffData.fullname || "",
+          email: userStaffData.email || "",
+          cccd: userStaffData.cccd || "",
+          phone: userStaffData.phone || "",
+          birthdate: userStaffData.birthdate || "",
+          address: userStaffData.address || "",
+          gender: userStaffData.gender || "Male",
+        });
+      } catch (error) {
+        console.error("Error fetching user staff data:", error);
+      }
+    };
+    fetchUserStaffData();
+  }, [messageSuccess, message]);
+  return (
+    <form
+      className="w-full mt-[50px]"
+      onSubmit={handleFormSubmit}
+      method="post"
+    >
+      <div className="w-[60%] m-auto">
+        <div className="space-y-12">
+          <div className="border-b border-gray-900/10 pb-12">
+            <h2 className="text-base font-semibold leading-7 text-gray-900">
+              Personal Information
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-gray-600">
+              Use a permanent address where you can receive mail.
+            </p>
+            {message != "" && (
+              <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                This is an error alert — <strong>{message}</strong>
+              </Alert>
+            )}
+            {messageSuccess != "" && (
+              <Alert severity="success">
+                <AlertTitle>Success</AlertTitle>
+                This is a success alert — <strong>{messageSuccess}</strong>
+              </Alert>
+            )}
+            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="fullname"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Fullname
+                </label>
+                <div className="mt-2">
+                  <input
+                    required
+                    type="text"
+                    name="fullname"
+                    id="fullname"
+                    autoComplete="given-name"
+                    className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formDataAccount.fullname}
+                    onChange={handleInputChangeAccount}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="cccd"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  National Identification Card
+                </label>
+                <div className="mt-2">
+                  <input
+                    required
+                    type="text"
+                    name="cccd"
+                    id="cccd"
+                    autoComplete="family-name"
+                    className="p-[10px] block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formDataAccount.cccd}
+                    onChange={handleInputChangeAccount}
+                  />
+                </div>
+              </div>
 
               <div className="sm:col-span-4">
                 <label
@@ -215,6 +215,7 @@ const EditInformation = () => {
                   >
                     <option>Male</option>
                     <option>Female</option>
+                    <option>Gay</option>
                   </select>
                 </div>
               </div>
