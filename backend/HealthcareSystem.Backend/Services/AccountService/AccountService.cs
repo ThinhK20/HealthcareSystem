@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.AccountRepository;
 using HealthcareSystem.Backend.Repositories.EmailVerificationRepository;
+using HealthcareSystem.Backend.Repositories.Token;
 using HealthcareSystem.Backend.Services.EmailService;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
@@ -21,21 +24,26 @@ namespace HealthcareSystem.Backend.Services.AccountService
         private readonly IMapper _mapper;
         private readonly IEmailSender _emailSender;
         private readonly IEmailVerificationRepository _emailVerificationRepository;
-        public AccountService(IAccountRepository temp, IUserRepository userRepository, IMapper mapper, IEmailSender emailSender, IEmailVerificationRepository emailVerificationRepository)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITokenRepository _tokenRepository;
+
+        public AccountService(IAccountRepository temp, IUserRepository userRepository, IMapper mapper, IEmailSender emailSender, IEmailVerificationRepository emailVerificationRepository, UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
         {
             _accountRepository = temp;
             _userRepository = userRepository;
             _mapper = mapper;
             _emailSender = emailSender;
             _emailVerificationRepository = emailVerificationRepository;
+            _userManager = userManager;
+            _tokenRepository = tokenRepository;
         }
         public async Task<List<Models.Domain.Account>> GetAccountsByPage(int pageSize, int pageNumber)
         {
             return await _accountRepository.GetAccountsByPage(pageSize, pageNumber);
         }
-        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc)
+        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc,string email)
         {
-            return _accountRepository.CreateAccountStaff(acc);
+            return _accountRepository.CreateAccountStaff(acc, email);
         }
 
         public Task<AccountBaseDTO> GetAccountByID(int id)
@@ -81,30 +89,35 @@ namespace HealthcareSystem.Backend.Services.AccountService
                     user = null
                 };
             }
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes("This is Secret Key of Project PTHTTTHD");
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-               {
-                    new Claim(ClaimTypes.Name, checkUser.UserId.ToString()),
-                    new Claim(ClaimTypes.Role, checkUser.Role)
-               }),
-                Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+            //var tokenHandler = new JwtSecurityTokenHandler();
+            //var key = Encoding.UTF8.GetBytes("This is Secret Key of Project PTHTTTHD");
+            //var tokenDescriptor = new SecurityTokenDescriptor
+            //{
+            //    Subject = new ClaimsIdentity(new Claim[]
+            //   {
+            //        new Claim(ClaimTypes.Name, checkUser.UserId.ToString()),
+            //        new Claim(ClaimTypes.Role, checkUser.Role)
+            //   }),
+            //    Expires = DateTime.Now.AddDays(7),
+            //    SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            //};
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            //var token = tokenHandler.CreateToken(tokenDescriptor);
+
+
+            var user = await _userManager.FindByNameAsync(loginRequestDTO.UserName);
+            var roles = await _userManager.GetRolesAsync(user);
+            var jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
 
             LoginResponseDTO loginRequestDto = new LoginResponseDTO()
             {
-                Token = tokenHandler.WriteToken(token),
+                Token = jwtToken,
                 user = userinfo
             };
             return loginRequestDto;
         }
 
-        
+
 
 
 
@@ -149,7 +162,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
                 user = null
             };
             return loginRequestDto;
-             
+
         }
         public async Task<AccountDTO> Register(RegisterRequestDTO registerationRequestDTO)
         {
@@ -189,6 +202,16 @@ namespace HealthcareSystem.Backend.Services.AccountService
             };
             await _userRepository.CreateAsync(new_user);
 
+
+            //Add data to auth database
+            var identityUser = new IdentityUser
+            {
+                UserName = registerationRequestDTO.UserName,
+                Email = registerationRequestDTO.Email
+            };
+
+            var identityResult = await _userManager.CreateAsync(identityUser, registerationRequestDTO.Password);
+            await _userManager.AddToRolesAsync(identityUser, new List<string> { Roles.UserRole });
             var getIDUser = await _userRepository.GetAsync(u => u.Email == registerationRequestDTO.Email);
 
 

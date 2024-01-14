@@ -1,11 +1,14 @@
-﻿using HealthcareSystem.Backend.Models.DTO;
+﻿using HealthcareSystem.Backend.Enums;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.PackagePoliceService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
 {
     [Route("api/policy-packages/")]
     [ApiController]
+    [Authorize]
     public class PolicyPackageController : ControllerBase
     {
         private readonly IPackagePoliceService _packagePoliceService;
@@ -41,6 +44,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost("CreateNew")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> CreateNewPackage([FromBody] PackagePolicyCreateDTO detailCreate)
         {
             try
@@ -67,6 +71,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPut("edit")]
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<IActionResult> EditPackage([FromBody] PackagePolicyEditDTO packagePolicyEdit )
         {
             try
@@ -93,6 +98,8 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpDelete("inactive/{id:int}")]
+        [Authorize(Roles = Roles.AdminRole)]
+
         public async Task<IActionResult> InActivePackage([FromRoute(Name = "id")] int packageId)
         {
             try
@@ -119,6 +126,8 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPut("active/{id:int}")]
+        [Authorize(Roles = Roles.AdminRole)]
+
         public async Task<IActionResult> ActivePackage([FromRoute(Name = "id")] int packageId)
         {
             try

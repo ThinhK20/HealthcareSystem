@@ -1,11 +1,13 @@
 ﻿using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories.ImageRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
 {
     [Route("api/files")]
     [ApiController]
+    [Authorize]
     public class FileController : ControllerBase
     {
         private readonly IFileRepository _fileRepository;

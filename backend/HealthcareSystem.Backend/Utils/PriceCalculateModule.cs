@@ -60,20 +60,21 @@ namespace HealthcareSystem.Backend.Utils
             return increasePercent;
         }
 
-        public async Task<double> CalculatePriceByPeriod(int UserID, int PackageID, int Month)
+        public async Task<double> CalculatePriceByPeriod(int AccountId, int PackageID, int Month)
         {
             try
             {
                 if (Month == 3 || Month == 6 || Month == 12)
                 {
-                    var userInfo = await _userRepository.GetUserInfoForPriceByIdAsync(UserID);
+                    var User = await _userRepository.GetUserByAccount(AccountId);
+                    var userInfo = await _userRepository.GetUserInfoForPriceByIdAsync(User.UserId);
                     DateTime birthDate = DateTime.Parse(userInfo.Birthdate);
                     var today = DateTime.Today;
                     int age = today.Year - birthDate.Year;
                     string gender = userInfo.Gender;
                     var basicPriceInfo = await _basicPriceRepository.GetBasicPrice(PackageID, age, gender);
                     double basicPrice = (double)basicPriceInfo.Price;
-                    var IncreasePercent = await GetFeesIncrease(UserID);
+                    var IncreasePercent = await GetFeesIncrease(User.UserId);
                     var priceMonth = basicPrice + (basicPrice * IncreasePercent / 100);
                     double price = 0;
                     if (Month == 3) price = priceMonth * 3 * 0.98;
@@ -88,7 +89,7 @@ namespace HealthcareSystem.Backend.Utils
             }
             catch (Exception ex)
             {
-                throw new Exception("Error.");
+                throw new Exception(ex.Message);
             }
         }
     }

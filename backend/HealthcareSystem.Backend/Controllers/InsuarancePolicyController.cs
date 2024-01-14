@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
+using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class InsuarancePolicyController : ControllerBase
     {
         private readonly IInsurancePolicyRepository _dbIP;
@@ -20,7 +23,7 @@ namespace HealthcareSystem.Backend.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-
+        [Authorize(Roles = Roles.AdminRole)]
         public async Task<ActionResult<IEnumerable<InsuarancePolicyDTO>>> GetAllPolicy()
         {
             try
@@ -36,6 +39,8 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(Roles = Roles.AdminRole)]
+
         public async Task<ActionResult<InsuarancePolicyDTO>> GetOnePolicy(int id)
         {
             try
@@ -58,6 +63,8 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = Roles.AdminRole)]
+
         public async Task<ActionResult<InsuarancePolicyCreateDTO>> CreatePolicy([FromBody] InsuarancePolicyCreateDTO data)
         {
 
@@ -96,6 +103,8 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = Roles.AdminRole)]
+
         public async Task<IActionResult> DeletePolicy(int id)
         {
             try
@@ -120,6 +129,8 @@ namespace HealthcareSystem.Backend.Controllers
 
 
         [HttpPut]
+        [Authorize(Roles = Roles.AdminRole)]
+
         public async Task<ActionResult<InsuarancePolicyUpdateDTO>> UpdatePolicy([FromBody] InsuarancePolicyUpdateDTO data)
         {
             try

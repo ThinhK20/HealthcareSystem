@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Services.UserService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
 {
     [Route("api/users")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -17,8 +20,8 @@ namespace HealthcareSystem.Backend.Controllers
             _userService = userService;
             _mapper = mapper;
         }
-
         [HttpPost("customerRequests/create")]
+        [Authorize(Roles = Roles.UserRole)]
         public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequestCreateDTO customerRequest)
         {
             try
@@ -30,8 +33,8 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
         [HttpGet("customerRequests")]
+        [Authorize(Roles = Roles.CustomerCareRole + "," + Roles.AccountantRole + "," + Roles.NormalStaffRole + "," + Roles.AdminRole)]
         public async Task<IActionResult> GetAllCustomerRequests()
         {
             try
@@ -59,6 +62,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost("AcceptRequest")]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
         public async Task<IActionResult> AcceptRequest(int requestID, int staffid)
         {
             try
@@ -71,6 +75,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost("RefusedRequest/{id:int}")]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
         public async Task<IActionResult> RefusedRequest([FromRoute(Name = "id")] int requestID)
         {
             try
@@ -83,6 +88,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost("CompleteRequest/{id:int}")]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
         public async Task<IActionResult> Test([FromRoute(Name = "id")] int requestID)
         {
             try
@@ -95,6 +101,8 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpDelete("customerRequests/{id:int}")]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
+
         public async Task<IActionResult> DeleteCustomerRequestById([FromRoute(Name = "id")] int requestId)
         {
             try
@@ -107,6 +115,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpGet("getAll")]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
         public async Task<IActionResult> GetAllUsers()
         {
             try

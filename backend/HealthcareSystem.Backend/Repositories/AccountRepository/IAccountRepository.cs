@@ -13,7 +13,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
         public Task<AccountBaseDTO> updatePassword(PasswordDTO acc);
         public Task<int> getLength();
 
-        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc);
+        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc,string email);
         public Task<AccountBaseDTO> UpdateAccountStaff(AccountBaseDTO acc);
 
         public Task<bool> UpdateStatus(int userid);
