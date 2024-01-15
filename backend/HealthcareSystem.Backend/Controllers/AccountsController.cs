@@ -11,7 +11,7 @@ namespace HealthcareSystem.Backend.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class AccountsController : Controller
     {
         private readonly IAccountService _accountService;
@@ -23,7 +23,7 @@ namespace HealthcareSystem.Backend.Controllers
             _mapper = mapper;
             _userService = userService;
         }
-        [Authorize(Roles = Roles.AdminRole)]
+        // [Authorize(Roles = Roles.AdminRole)]
         [HttpPost("create-new-staff")]
         public async Task<IActionResult> CreateAccountStaff([FromBody] AccountUserDTO account)
         {

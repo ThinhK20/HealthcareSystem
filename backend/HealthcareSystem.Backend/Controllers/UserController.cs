@@ -47,8 +47,24 @@ namespace HealthcareSystem.Backend.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpGet("customerRequestsByAccId/{id:int}")]
+        [Authorize(Roles = Roles.CustomerCareRole + "," + Roles.AccountantRole + "," + Roles.NormalStaffRole + "," + Roles.AdminRole)]
+        public async Task<IActionResult> GetAllCustomerRequestsByAccId([FromRoute(Name = "id")] int accountId)
+        {
+            try
+            {
+                var result = await _userService.GetAllCustomerRequestsAsync();
+                return Ok(result.Where(x => x.AccountId == accountId));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
         [HttpGet("customerRequests/{id:int}")]
-        public async Task<IActionResult> GetCustomerRequestsById([FromRoute(Name = "id")] int requestId)
+        public async Task<IActionResult> GetCustomerRequestById([FromRoute(Name = "id")] int requestId)
         {
             try
             {

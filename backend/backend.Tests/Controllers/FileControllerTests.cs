@@ -15,6 +15,7 @@ public class FileControllerTests
         _fileRepository = A.Fake<IFileRepository>();
     }
 
+    [Fact]
     public async Task FileController_UploadFile_ReturnOk()
     {
         FileUploadDTO fileUploadDto = A.Fake<FileUploadDTO>();

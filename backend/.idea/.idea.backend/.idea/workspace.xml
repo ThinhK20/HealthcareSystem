@@ -10,16 +10,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1a8344f-e32d-48c6-984e-08ce5f6cd98e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend.Tests/Services/RefundServiceTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/RefundDetailController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Models/DTO/CreateRefundDetailDTO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Models/Domain/RefundDetailDomain.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Repositories/RefundDetailRepository/IRefundDetailRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Repositories/RefundDetailRepository/RefundDetailRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Services/RefundDetailService/IRefundDetailService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Services/RefundDetailService/RefundDetailService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/AutoMapperConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/AutoMapperConfig.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/AccountsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/AccountsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/PaymentsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/PaymentsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend.Tests/Controllers/AccountControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend.Tests/Controllers/AccountControllerTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend.Tests/Controllers/AuthControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend.Tests/Controllers/AuthControllerTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend.Tests/Controllers/InsurancePolicyControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend.Tests/Controllers/InsurancePolicyControllerTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend.Tests/Services/PackagePolicyServiceTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend.Tests/Services/PackagePolicyServiceTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend.Tests/Services/PaymentServiceTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend.Tests/backend.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/backend.Tests/backend.Tests.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/RefundRequestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/RefundRequestController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/HealthcareSystem.Backend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/HealthcareSystem.Backend.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Models/Entity/RefundDetail.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Models/Entity/RefundDetail.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Services/AccountService/AccountService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Services/AccountService/AccountService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Services/EmailService/EmailSender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Services/EmailService/EmailSender.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend.Tests/Controllers/FileControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend.Tests/Controllers/FileControllerTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/insurances/form-create.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/insurances/form-create.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/pages/users/customer-refund-requests.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/pages/users/customer-refund-requests.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/routes/router.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/routes/router.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +134,8 @@
       <updated>1705159715574</updated>
       <workItem from="1705159721879" duration="9512000" />
       <workItem from="1705218558395" duration="6970000" />
-      <workItem from="1705247856819" duration="1266000" />
+      <workItem from="1705247856819" duration="2486000" />
+      <workItem from="1705328146064" duration="9899000" />
     </task>
     <servers />
   </component>

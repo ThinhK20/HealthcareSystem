@@ -22,6 +22,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using HealthcareSystem.Backend.Repositories.RefundDetailRepository;
+using HealthcareSystem.Backend.Services.RefundDetailService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +60,7 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IEmailVerificationRepository, EmailVerificationRepository>();
 builder.Services.AddScoped<IPackageDetailRepository, PackageDetailRepository>();
 builder.Services.AddScoped<ITokenRepository, JWTRepository>();
+builder.Services.AddScoped<IRefundDetailRepository, RefundDetailRepository>();
 
 
 
@@ -70,6 +73,7 @@ builder.Services.AddScoped<IInsuranceDetailService, InsuranceDetailService>();
 builder.Services.AddScoped<IRefundRequestService, RefundRequestService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPackagePoliceService, PackagePoliceService>();
+builder.Services.AddScoped<IRefundDetailService, RefundDetailService>();
 
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();

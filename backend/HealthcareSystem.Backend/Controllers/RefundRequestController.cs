@@ -20,7 +20,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpPost("add")]
-        [Authorize(Roles = Roles.UserRole)]
+        [Authorize(Roles = Roles.UserRole + "," + Roles.AdminRole) ]
         public async Task<IActionResult> CreateNewRefundRequest([FromForm] RefundRequestDTO refundRequestDTO)
         {
             try

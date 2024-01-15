@@ -7,8 +7,8 @@ namespace HealthcareSystem.Backend.Services.EmailService
     {
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            var mail = "tainguyensanh@gmail.com";
-            var pw = "########";
+            var mail = "thinhnguyent.2002@gmail.com";
+            var pw = "Hp101068";
 
             var client = new SmtpClient("smtp-mail.outlook.com", 587)
             {

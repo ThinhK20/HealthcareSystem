@@ -61,12 +61,12 @@ export default function Form() {
    return (
       <>
          <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 w-full">
-            <div className="relative py-3 sm:max-w-xl sm:mx-auto">
+            <div className="relative py-3 sm:max-w-xl sm:mx-auto w-full">
                <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
                   <div className="max-w-md mx-auto">
                      <div className="flex items-center space-x-5">
-                        <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
-                           <h2 className="leading-relaxed text-blue-600">
+                        <div className="block pl-2 font-semibold text-xl self-start text-gray-700 w-full">
+                           <h2 className="leading-relaxed text-blue-600 text-center pb-12">
                               {title}
                            </h2>
                         </div>

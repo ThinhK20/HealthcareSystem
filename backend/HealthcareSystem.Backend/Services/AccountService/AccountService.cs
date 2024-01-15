@@ -214,15 +214,15 @@ namespace HealthcareSystem.Backend.Services.AccountService
 
             // Convert the number to a string
             string result = randomNumber.ToString();
-            await _emailSender.SendEmailAsync(registerationRequestDTO.Email, "Verify your account !", "Your code is: " + result);
+            // await _emailSender.SendEmailAsync(registerationRequestDTO.Email, "Verify your account !", "Your code is: " + result);
 
             AccountDTO user = new AccountDTO()
             {
                 UserId = getIDUser.UserId,
                 Username = registerationRequestDTO.UserName,
                 Password = hashedPassword,
-                Status = "Disable",
-                Role = "Customer"
+                Status = "Active",
+                Role = Roles.UserRole
             };
             var userMapper = _mapper.Map<Models.Entity.Account>(user);
             await _accountRepository.CreateAsync(userMapper);

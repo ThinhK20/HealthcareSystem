@@ -19,6 +19,9 @@ import FormCreate from "../pages/insurances/form-create";
 import ConfirmPayment from "../components/payment/confirmPayment";
 import AboutUs from "../pages/users/about-us";
 import InformationCompany from "../pages/users/information-company";
+import InsurancePackage from "../pages/insurancePackage/insurance-package";
+import Refund from "../pages/refund/refund";
+
 export const router = createBrowserRouter([
    {
       path: "/",
@@ -99,5 +102,13 @@ export const router = createBrowserRouter([
    {
       path: "/information-company",
       element: <LayoutRoute element={<InformationCompany />}></LayoutRoute>,
+   },
+   {
+      path: "/insurance-package",
+      element: <LayoutRoute element={<InsurancePackage />}></LayoutRoute>,
+   },
+   {
+      path: "/refund",
+      element: <LayoutRoute element={<Refund />}></LayoutRoute>,
    },
 ]);
