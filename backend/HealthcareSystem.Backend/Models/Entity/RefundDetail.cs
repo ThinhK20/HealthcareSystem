@@ -12,6 +12,7 @@ namespace HealthcareSystem.Backend.Models.Entity
         public int PolicyId { get; set; }
         public string Description { get; set; }
         public double RefundFee { get; set; }
+        public double PaidFee { get; set; }
         public virtual RefundRequest RefundRequest { get; set; }
         public virtual InsurancePolicy InsurancePolicy { get; set; }
     }

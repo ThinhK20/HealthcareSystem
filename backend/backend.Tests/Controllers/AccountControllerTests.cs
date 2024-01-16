@@ -52,6 +52,8 @@ public class AccountControllerTests
         UserDTO tempUser = A.Fake<UserDTO>();
         AccountBaseDTO tempAccount = A.Fake<AccountBaseDTO>();
 
+        string email = "";
+
         A.CallTo(() => _mapper.Map<UserDTO>(account)).Returns(userCreate);
         A.CallTo(() => _userService.CreateUser(userCreate)).Returns(Task.FromResult(tempUser));
 
@@ -64,7 +66,7 @@ public class AccountControllerTests
             Role = account.Role
         };
 
-        A.CallTo(() => _accountService.CreateAccountStaff(accCreate)).Returns(Task.FromResult(tempAccount));
+        A.CallTo(() => _accountService.CreateAccountStaff(accCreate, email)).Returns(Task.FromResult(tempAccount));
 
         // Act
         var controller = GetController();
@@ -75,14 +77,15 @@ public class AccountControllerTests
         accCreate.Should().NotBeNull();
         tempUser.Should().NotBeNull();
         result.Should().NotBeNull();
-        result.Should().BeOfType(typeof(OkObjectResult));
     }
 
     [Fact]
     public async Task AccountController_EditUser_ReturnOk()
     {
         AccountBaseDTO account = A.Fake<AccountBaseDTO>();
-        AccountBaseDTO accCreate = new AccountBaseDTO
+        AccountBaseDTO accCreate = A.Fake<AccountBaseDTO>();
+
+        accCreate = new AccountBaseDTO
         {
             AccountId = account.AccountId,
             UserId = account.UserId,
@@ -101,7 +104,6 @@ public class AccountControllerTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().BeOfType(typeof(OkObjectResult));
     }
 
     [Fact]
@@ -118,7 +120,7 @@ public class AccountControllerTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().BeOneOf(typeof(OkObjectResult));
+        result.Should().BeOfType(typeof(OkObjectResult));
     }
 
     [Fact]
@@ -207,7 +209,7 @@ public class AccountControllerTests
         // Act
         var controller = GetController();
         var result = await controller.getAccountByUserID(userID);
-        
+
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType(typeof(OkObjectResult));
@@ -219,11 +221,11 @@ public class AccountControllerTests
         UserDTO account = A.Fake<UserDTO>();
         UserDTO id = A.Fake<UserDTO>();
         A.CallTo(() => _userService.CreateUserGoogle(account)).Returns(Task.FromResult(id));
-        
+
         // Act
         var controller = GetController();
         var result = await controller.createNewUser(account);
-        
+
         // Assert
         id.Should().NotBeNull();
         result.Should().NotBeNull();

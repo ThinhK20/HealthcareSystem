@@ -11,6 +11,14 @@ import {
 function AboutUs() {
    return (
       <>
+      <div className="flex-col w-full">
+         <div className="w-full justify-center items-center">
+               <img
+                  src="https://t3.ftcdn.net/jpg/05/06/32/62/360_F_506326245_2GtSGEjKLDtpHS0FSkEBs4gV34DmTtS5.jpg"
+                  alt=""
+                  className="max-w-full max-h-full w-full"
+               />
+            </div>
          <div className="bg-white w-full">
             <section
                id="features"
@@ -140,6 +148,7 @@ function AboutUs() {
                <div className="absolute bottom-0 right-0 z-0 h-1/3 w-full"></div>
             </section>
          </div>
+      </div>
       </>
    );
 }

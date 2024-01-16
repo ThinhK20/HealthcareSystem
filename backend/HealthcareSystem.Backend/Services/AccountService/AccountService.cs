@@ -238,8 +238,8 @@ namespace HealthcareSystem.Backend.Services.AccountService
                 UserId = getIDUser.UserId,
                 Username = registerationRequestDTO.UserName,
                 Password = hashedPassword,
-                Status = "Disable",
-                Role = "User"
+                Status = "Active",
+                Role = Roles.UserRole
             };
             var userMapper = _mapper.Map<Models.Entity.Account>(user);
             await _accountRepository.CreateAsync(userMapper);

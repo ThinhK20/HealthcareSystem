@@ -49,9 +49,9 @@ export function CustomerRefundRequestManagement() {
    const [isStatus, setIsStatus] = useState(0);
 
    useEffect(() => {
-      const userId = 1;
+      const accountId = localStorage.getItem("accountId");
       const source = axios.CancelToken.source();
-      getAllRefundRequestByUserIdApi(userId, source.token)
+      getAllRefundRequestByUserIdApi(accountId, source.token)
          .then((res) => {
             setRefundRequests(res.data);
          })
