@@ -11,7 +11,7 @@ namespace HealthcareSystem.Backend.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class AccountsController : Controller
     {
         private readonly IAccountService _accountService;
@@ -23,7 +23,7 @@ namespace HealthcareSystem.Backend.Controllers
             _mapper = mapper;
             _userService = userService;
         }
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
+        //[Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
         [HttpPost("create-new-staff")]
         public async Task<IActionResult> CreateAccountStaff([FromBody] AccountUserDTO account)
         {
@@ -31,7 +31,7 @@ namespace HealthcareSystem.Backend.Controllers
             {
                 return BadRequest();
             }
-            if (account.Role != Roles.NormalStaffRole && account.Role != Roles.AccountantRole && account.Role != Roles.AdminRole && account.Role != Roles.UserRole && account.Role != Roles.CustomerCareRole) return BadRequest();
+            if (account.Role != Roles.NormalStaffRole && account.Role != Roles.AccountantRole && account.Role != Roles.AdminRole && account.Role != Roles.UserRole && account.Role != Roles.CustomerCareRole && account.Role != Roles.TestRole) return BadRequest();
             UserDTO userCreate = new UserDTO
             {
                 Fullname = account.Fullname,
@@ -68,7 +68,7 @@ namespace HealthcareSystem.Backend.Controllers
         [HttpPut("edit-account-staff")]
         public async Task<IActionResult> EditUser([FromBody] AccountBaseDTO account)
         {
-            if (account.Role != Roles.NormalStaffRole && account.Role != Roles.AccountantRole && account.Role != Roles.AdminRole && account.Role != Roles.UserRole && account.Role != Roles.CustomerCareRole) return BadRequest();
+            if (account.Role != Roles.NormalStaffRole && account.Role != Roles.AccountantRole && account.Role != Roles.AdminRole && account.Role != Roles.UserRole && account.Role != Roles.CustomerCareRole && account.Role != Roles.TestRole) return BadRequest();
 
             AccountBaseDTO accCreate = new AccountBaseDTO
             {
@@ -193,7 +193,20 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(id);
         }
-        
+
+        [HttpGet("getInsuranceDetailsByAccountId/{id:int}")]
+        public async Task<IActionResult> getInsuranceDetailsByAccountId([FromRoute(Name = "id")] int accountId)
+        {
+            try
+            {
+                var data = await _accountService.getInsuranceDetailsByAccountId(accountId);
+                return Ok(data);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+            
 
     }
 }

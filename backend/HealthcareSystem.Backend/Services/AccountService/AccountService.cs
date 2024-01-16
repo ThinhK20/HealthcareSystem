@@ -5,6 +5,8 @@ using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.AccountRepository;
 using HealthcareSystem.Backend.Repositories.EmailVerificationRepository;
+using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
+using HealthcareSystem.Backend.Repositories.InsuranceRepository;
 using HealthcareSystem.Backend.Repositories.Token;
 using HealthcareSystem.Backend.Services.EmailService;
 using Microsoft.AspNetCore.Identity;
@@ -26,8 +28,10 @@ namespace HealthcareSystem.Backend.Services.AccountService
         private readonly IEmailVerificationRepository _emailVerificationRepository;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ITokenRepository _tokenRepository;
+        private readonly IInsuranceRepository _insuranceRepository;
+        private readonly IInsuranceDetailRepository _insuranceDetailRepository;
 
-        public AccountService(IAccountRepository temp, IUserRepository userRepository, IMapper mapper, IEmailSender emailSender, IEmailVerificationRepository emailVerificationRepository, UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
+        public AccountService(IAccountRepository temp, IUserRepository userRepository, IMapper mapper, IEmailSender emailSender, IEmailVerificationRepository emailVerificationRepository, UserManager<IdentityUser> userManager, ITokenRepository tokenRepository, IInsuranceRepository insuranceRepository, IInsuranceDetailRepository insuranceDetailRepository)
         {
             _accountRepository = temp;
             _userRepository = userRepository;
@@ -36,6 +40,8 @@ namespace HealthcareSystem.Backend.Services.AccountService
             _emailVerificationRepository = emailVerificationRepository;
             _userManager = userManager;
             _tokenRepository = tokenRepository;
+            _insuranceRepository = insuranceRepository;
+            _insuranceDetailRepository = insuranceDetailRepository;
         }
         public async Task<List<Models.Domain.Account>> GetAccountsByPage(int pageSize, int pageNumber)
         {
@@ -254,6 +260,15 @@ namespace HealthcareSystem.Backend.Services.AccountService
 
             await _emailVerificationRepository.CreateAsync(sendEmail);
 
+            var insuranceCardData = new InsuranceDTO()
+            {
+                AccountId = idAccount.AccountId,
+                CardOpenDate = DateTime.Today.ToString(),
+                RegisterPlace = "Ho Chi Minh"
+            };
+
+            await _insuranceRepository.CreateInsurance(insuranceCardData);
+
             user.Password = "";
             user.EmailVerification = result;
             return user;
@@ -320,6 +335,18 @@ namespace HealthcareSystem.Backend.Services.AccountService
                 user = userinfo
             };
             return loginRequestDto;
+        }
+
+        public async Task<object> getInsuranceDetailsByAccountId(int accountId)
+        {
+            var insuranceData = await _insuranceRepository.GetInsuranceByAccountIdAsync(accountId);
+            var listPackageOfInsuranceData = await _insuranceDetailRepository.GetDetailByIdAsync(insuranceData.InsuranceID);
+            var dataReturn = new 
+            {
+                insuranceInfo = insuranceData,
+                listPackage = listPackageOfInsuranceData
+            };
+            return dataReturn;
         }
     }
 }

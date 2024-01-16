@@ -20,5 +20,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
         public Task<int> getAccountIdByUserID(int userid);
 
         public Task<LoginResponseDTO> loginByGoogle(string email);
+
+        public Task<object> getInsuranceDetailsByAccountId(int accountId);
     }
 }

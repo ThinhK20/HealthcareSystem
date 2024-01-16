@@ -3,7 +3,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 import { Input } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -18,7 +18,8 @@ import {
 } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import LoadingWrapper from "../../components/loading/loading";
-import { getAll } from "../../apis/insurancePoliciesApis";
+import { detailPolicy, getAll } from "../../apis/insurancePoliciesApis";
+import { getAllRefundDetailsByRefundIdApi } from "../../apis/refundDetailApis";
 
 function Refund() {
    const maskStyle = {
@@ -26,6 +27,10 @@ function Refund() {
    };
    const currency = useRef();
    const [loading, setLoading] = useState(false);
+   const [refundDetails, setRefundDetails] = useState([]);
+   const [PackagePolicy, setPackagePolicy] = useState(1);
+   const [price, setPrice] = useState();
+   const { id: refundId } = useParams();
 
    const [selectedPolicy, setSelectedUserPolicy] = useState();
    const [data, setData] = useState();
@@ -39,16 +44,26 @@ function Refund() {
 
       console.log(selectedPolicy, currency.current.value);
    };
-   const getPackages = async () => {
+   const getPolicy = async () => {
       setLoading(true);
       const dataPackages = await getAll();
-      console.log(dataPackages, 99999);
+      console.log(dataPackages);
       setData(dataPackages);
       setLoading(false);
    };
+
+   const getDetail = async () => {
+      await detailPolicy(PackagePolicy, selectedPolicy).then((result) => {
+         setPrice(result);
+         console.log(result);
+      });
+   };
    useEffect(() => {
-      getPackages();
+      getPolicy();
    }, []);
+   useEffect(() => {
+      getDetail();
+   }, [selectedPolicy]);
 
    return (
       <>
@@ -60,10 +75,10 @@ function Refund() {
                         <div className="inline-block min-w-full sm:px-6 lg:px-8">
                            <div className="overflow-hidden">
                               <form>
-                                 <div class="space-y-12">
-                                    <div class="border-b border-gray-900/10 border-t border-l border-r">
-                                       <div class="mt-5">
-                                          <div class="w-full text-center">
+                                 <div className="space-y-12">
+                                    <div className="border-b border-gray-900/10 border-t border-l border-r">
+                                       <div className="mt-5">
+                                          <div className="w-full text-center">
                                              <Typography
                                                 fontSize={30}
                                                 fontWeight={600}
@@ -75,12 +90,26 @@ function Refund() {
                                        </div>
                                     </div>
 
-                                    <div class="border-b border-gray-900/10 pb-12 pl-28 border-t border-l border-r pt-6">
-                                       <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                          <div class="sm:col-span-3">
+                                    <div className="border-b border-gray-900/10 pb-12 pl-28 border-t border-l border-r pt-6">
+                                       <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                          <div className="sm:col-span-3">
                                              <label
                                                 for="countries"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                className="block mb-2 text-sm font-medium text-gray-900 da:text-white"
+                                             >
+                                                Current Package:
+                                             </label>
+                                             <input
+                                                id="Packages"
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 da:bg-gray-700 da:border-gray-600 da:placeholder-gray-400 da:text-white da:focus:ring-blue-500 da:focus:border-blue-500"
+                                             ></input>
+                                          </div>
+                                       </div>
+                                       <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                          <div className="sm:col-span-3">
+                                             <label
+                                                for="countries"
+                                                className="block mb-2 text-sm font-medium text-gray-900 da:text-white"
                                              >
                                                 Select a policy
                                              </label>
@@ -88,7 +117,7 @@ function Refund() {
                                                 onChange={onChangePolicy}
                                                 value={selectedPolicy}
                                                 id="countries"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 da:bg-gray-700 da:border-gray-600 da:placeholder-gray-400 da:text-white da:focus:ring-blue-500 da:focus:border-blue-500"
                                              >
                                                 <option selected>
                                                    Choose a country
@@ -99,49 +128,70 @@ function Refund() {
                                                       key={item.policyID}
                                                       value={item.policyID}
                                                    >
-                                                      {item.name}
+                                                      {item.name} -{" "}
+                                                      {item.description}
                                                    </option>
                                                 ))}
                                              </select>
                                           </div>
                                        </div>
-                                       <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                          <div class="sm:col-span-3">
+                                       <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                          <div className="sm:col-span-3">
+                                             <label
+                                                for="countries"
+                                                className="block mb-2 text-sm font-medium text-gray-900 da:text-white"
+                                             >
+                                                Phần trăm được giảm ={" "}
+                                                {price?.payoutPrice}
+                                             </label>
+                                          </div>
+                                          <div className="sm:col-span-3">
+                                             <label
+                                                for="countries"
+                                                className="block mb-2 text-sm font-medium text-gray-900 da:text-white"
+                                             >
+                                                Phần trăm được giảm ={" "}
+                                                {price?.payoutPrice}
+                                             </label>
+                                          </div>
+                                       </div>
+                                       <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                          <div className="sm:col-span-3">
                                              <label
                                                 for="country"
-                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                                className="block text-sm font-medium leading-6 text-gray-900"
                                              >
                                                 Currency
                                              </label>
-                                             <div class="mt-2">
-                                                <div class="flex items-center">
+                                             <div className="mt-2">
+                                                <div className="flex items-center">
                                                    <button
                                                       id="dropdown-phone-button"
                                                       data-dropdown-toggle="dropdown-phone"
-                                                      class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                                                      className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 da:bg-gray-700 da:hover:bg-gray-600 da:focus:ring-gray-700 da:text-white da:border-gray-600"
                                                       type="button"
                                                    >
                                                       VND{" "}
                                                    </button>
                                                    <div
                                                       id="dropdown-phone"
-                                                      class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-52 dark:bg-gray-700"
+                                                      className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-52 da:bg-gray-700"
                                                    >
                                                       <ul
-                                                         class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                                         className="py-2 text-sm text-gray-700 da:text-gray-200"
                                                          aria-labelledby="dropdown-phone-button"
                                                       >
                                                          <li>
                                                             <button
                                                                type="button"
-                                                               class="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                               className="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 da:text-gray-200 da:hover:bg-gray-600 da:hover:text-white"
                                                                role="menuitem"
                                                             >
-                                                               <div class="inline-flex items-center">
+                                                               <div className="inline-flex items-center">
                                                                   <svg
                                                                      fill="none"
                                                                      aria-hidden="true"
-                                                                     class="h-4 w-4 me-2"
+                                                                     className="h-4 w-4 me-2"
                                                                      viewBox="0 0 20 15"
                                                                   >
                                                                      <rect
@@ -244,11 +294,11 @@ function Refund() {
                                                       </ul>
                                                    </div>
 
-                                                   <div class="relative w-full">
+                                                   <div className="relative w-full">
                                                       <input
                                                          type="number"
                                                          id="phone-input"
-                                                         class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-0 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                                                         className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-0 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 da:bg-gray-700 da:border-s-gray-700  da:border-gray-600 da:placeholder-gray-400 da:text-white da:focus:border-blue-500"
                                                          placeholder="123456789"
                                                          ref={currency}
                                                          required
@@ -261,17 +311,17 @@ function Refund() {
                                     </div>
                                  </div>
 
-                                 <div class="mt-6 flex items-center justify-end gap-x-6 justify-center pb-5">
+                                 <div className="mt-6 flex items-center justify-end gap-x-6 justify-center pb-5">
                                     <button
                                        type="button"
-                                       class="text-sm font-semibold leading-6 text-gray-900"
+                                       className="text-sm font-semibold leading-6 text-gray-900"
                                     >
                                        Cancel
                                     </button>
                                     <button
                                        type="button"
                                        onClick={handleSubmit}
-                                       class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                       className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                     >
                                        Save
                                     </button>
@@ -283,7 +333,59 @@ function Refund() {
                   </div>
                </div>
             </section>
+            {/* Table */}
+            <table class="min-w-full text-left text-sm font-light">
+               <thead
+                  class="border-b bg-white font-medium "
+                  style={{ background: "#FFD000" }}
+               >
+                  <tr>
+                     <th scope="col" class="px-6 py-4">
+                        Id
+                     </th>
+                     <th scope="col" class="px-6 py-4">
+                        Insurance Policy
+                     </th>
+                     <th scope="col" class="px-6 py-4">
+                        Description
+                     </th>
+                     <th scope="col" class="px-6 py-4">
+                        Refund Fee
+                     </th>
+                     <th scope="col" class="px-6 py-4">
+                        Paid Fee
+                     </th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr class="border-b  ">
+                     <td class="whitespace-nowrap px-6 py-4 font-medium">
+                        Details of Fees
+                     </td>
+                  </tr>
+                  {refundDetails?.map((refundDetail, index) => (
+                     <tr key={index} class="border-b bg-neutral-100 ">
+                        <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                           {index + 1}
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                           {refundDetail.insurancePolicy.name}
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4">
+                           {refundDetail.insurancePolicy.description}
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4">
+                           {refundDetail.refundFee}
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4">
+                           {refundDetail.paidFee}
+                        </td>
+                     </tr>
+                  ))}
+               </tbody>
+            </table>
          </div>
+
          <ToastContainer />
          <LoadingWrapper open={loading} />
       </>

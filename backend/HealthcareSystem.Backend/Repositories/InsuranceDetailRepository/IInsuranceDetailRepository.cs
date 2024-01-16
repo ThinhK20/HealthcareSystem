@@ -8,6 +8,7 @@ namespace HealthcareSystem.Backend.Repositories.InsuranceDetailRepository
     {
         public Task<List<InsuranceDetailDomain>> GetByIdAsync(int insuraceID);
         public Task<InsuranceDetail> AddInsuranceDatail(InsuranceDetailDomain insuranceDetail);
+        public Task<List<InsuranceDetailDomainWithoutFKInsurance>> GetDetailByIdAsync(int insuraceID);
 
     }
 }

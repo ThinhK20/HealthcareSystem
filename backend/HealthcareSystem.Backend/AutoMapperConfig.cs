@@ -26,6 +26,8 @@ namespace HealthcareSystem.Backend
 
 
             CreateMap<Models.Domain.PolicyPackageDomain, Models.Entity.PolicyPackage>().ReverseMap();
+            CreateMap<Models.Domain.PolicyPackageDomainWithoutFK, Models.Entity.PolicyPackage>().ReverseMap();
+
 
             //CreateMap<Models.DTO.PackagePolicyCreateDTO, Models.Entity.PolicyPackage>().ReverseMap();
             CreateMap<Models.DTO.PackagePolicyEditDTO, Models.Entity.PolicyPackage>().ReverseMap();
@@ -82,12 +84,16 @@ namespace HealthcareSystem.Backend
             CreateMap<InsuarancePolicyUpdateDTO, InsurancePolicy>().ReverseMap();
 
             CreateMap<Insurance, InsuranceDomain>().ReverseMap();
+            CreateMap<Insurance, InsuranceDomainWithoutFK>().ReverseMap();
+
             CreateMap<Insurance, InsuranceCreateDTO>().ReverseMap();
 
 
             CreateMap<Payment, PaymentDomain>();
 
             CreateMap<InsuranceDetail, InsuranceDetailDomain>();
+            CreateMap<InsuranceDetail, InsuranceDetailDomainWithoutFKInsurance>();
+
             CreateMap<InsuranceDetailDomain, InsuranceDetail>();
             CreateMap<User, UserPriceDomain>();
             CreateMap<User, UserDomain>();

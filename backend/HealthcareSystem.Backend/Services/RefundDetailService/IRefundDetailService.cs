@@ -8,4 +8,6 @@ public interface IRefundDetailService
     public Task<RefundDetailDomain> CreateRefundDetailAsync(CreateRefundDetailDTO refundDetailDTO);
     public Task<List<RefundDetailDomain>> GetAllRefundDetailsAsync();
     public Task<RefundDetailDomain> GetRefundDetailAsync(int refundDetailId);
+    public Task<List<RefundDetailDomain>> GetAllRefundDetailsByRefundRequestIdAsync(int refundId);
+
 }

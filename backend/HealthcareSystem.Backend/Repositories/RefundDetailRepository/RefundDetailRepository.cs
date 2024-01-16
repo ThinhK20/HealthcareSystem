@@ -19,13 +19,31 @@ public class RefundDetailRepository : Repository<RefundDetail>, IRefundDetailRep
         var existedRefundDetail = await GetAsync(x =>
             x.RefundID == refundDetailDomain.RefundID && x.PolicyId == refundDetailDomain.PolicyId);
         if (existedRefundDetail != null) throw new BadHttpRequestException("Refund detail already existed.");
-        await CreateAsync(_mapper.Map<RefundDetail>(refundDetailDomain));
+
+        RefundDetail createRefundDetailEntity = new()
+        {
+            PolicyId = refundDetailDomain.PolicyId,
+            RefundID = refundDetailDomain.RefundID,
+            Description = refundDetailDomain.Description,
+            PaidFee = refundDetailDomain.PaidFee,
+            RefundFee = refundDetailDomain.RefundFee
+        };
+        
+        await CreateAsync(_mapper.Map<RefundDetail>(createRefundDetailEntity));
         return refundDetailDomain;
     }
 
     public async Task<List<RefundDetailDomain>> GetAllRefundDetailsAsync()
     {
         var refundDetails = await GetAllAsync(tracked: false, includeProperites: "InsurancePolicy,RefundRequest");
+        return refundDetails.Select(x => _mapper.Map<RefundDetailDomain>(x)).ToList();
+    }
+
+    public async Task<List<RefundDetailDomain>> GetAllRefundDetailsByRefundRequestIdAsync(int refundId)
+    {
+        var refundDetails = await GetAllAsync(x => x.RefundID == refundId, tracked: false,
+            includeProperites: "InsurancePolicy,RefundRequest");
+        
         return refundDetails.Select(x => _mapper.Map<RefundDetailDomain>(x)).ToList();
     }
 
