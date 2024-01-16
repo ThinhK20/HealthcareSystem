@@ -10,6 +10,6 @@ public class RefundDetailDomain
     public string Description { get; set; } = "";
     public double RefundFee { get; set; }
     public double PaidFee { get; set; }
-    public RefundRequestDomain RefundRequest { get; set; } = new();
-    public InsurancePolicyDomain InsurancePolicy { get; set; } = new();
+    public RefundRequest RefundRequest { get; set; } = new();
+    public InsurancePolicy InsurancePolicy { get; set; } = new();
 }

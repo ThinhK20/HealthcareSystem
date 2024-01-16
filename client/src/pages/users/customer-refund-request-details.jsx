@@ -15,19 +15,30 @@ import {
 import { toast } from "react-toastify";
 import { formatMoney } from "../../helpers/dataHelper";
 import { RefundRequestStatus } from "../../enums/refund-request-status";
+import { getAllRefundDetailsByRefundIdApi } from "../../apis/refundDetailApis";
 export default function CustomerRefundRequestDetails() {
    const [data, setData] = useState();
    const [isEdit, setIsEdit] = useState(false);
    const [attachFile, setAttachFile] = useState();
+   const [refundDetails, setRefundDetails] = useState([]);
 
    const params = useParams();
    const navigate = useNavigate();
    const location = useLocation();
 
+   const getRefundDetails = async () => {
+      setIsEdit(true);
+      const refundId = params.id;
+      const dataRefundDetails = await getAllRefundDetailsByRefundIdApi(
+         refundId
+      );
+      setRefundDetails(dataRefundDetails);
+      setIsEdit(false);
+   };
+
    useEffect(() => {
       getRefundRequestApiById(params.id)
          .then((res) => {
-            console.log(res.data);
             setData(res.data);
             if (
                location.pathname.includes("edit") &&
@@ -36,6 +47,8 @@ export default function CustomerRefundRequestDetails() {
                setIsEdit(true);
          })
          .catch((ex) => toast.error(ex));
+
+      getRefundDetails();
 
       return () => setIsEdit(false);
    }, []);
@@ -194,6 +207,60 @@ export default function CustomerRefundRequestDetails() {
                )}
             </div>
          </div>
+
+         {/* Table */}
+         {data?.status !== RefundRequestStatus.Pending && (
+            <table class="min-w-full text-left text-sm font-light">
+               <thead
+                  class="border-b bg-white font-medium "
+                  style={{ background: "#FFD000" }}
+               >
+                  <tr>
+                     <th scope="col" class="px-6 py-4">
+                        Id
+                     </th>
+                     <th scope="col" class="px-6 py-4">
+                        Insurance Policy
+                     </th>
+                     <th scope="col" class="px-6 py-4">
+                        Description
+                     </th>
+                     <th scope="col" class="px-6 py-4">
+                        Refund Fee
+                     </th>
+                     <th scope="col" class="px-6 py-4">
+                        Paid Fee
+                     </th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr class="border-b  ">
+                     <td class="whitespace-nowrap px-6 py-4 font-medium">
+                        Details of Fees
+                     </td>
+                  </tr>
+                  {refundDetails?.map((refundDetail, index) => (
+                     <tr key={index} class="border-b bg-neutral-100 ">
+                        <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                           {index + 1}
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                           {refundDetail.insurancePolicy.name}
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4">
+                           {refundDetail.insurancePolicy.description}
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4">
+                           {refundDetail.refundFee}
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4">
+                           {refundDetail.paidFee}
+                        </td>
+                     </tr>
+                  ))}
+               </tbody>
+            </table>
+         )}
          <div className="flex justify-end w-full gap-4">
             {isEdit && (
                <Button

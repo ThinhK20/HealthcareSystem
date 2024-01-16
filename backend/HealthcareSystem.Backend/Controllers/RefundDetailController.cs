@@ -36,6 +36,12 @@ namespace HealthcareSystem.Backend.Controllers
         {
             return Ok(await _refundDetailService.GetAllRefundDetailsAsync());
         }
+        
+        [HttpGet("allByRefund/{id:int}")]
+        public async Task<IActionResult> GetAllRefundDetails([FromRoute(Name = "id")] int refundId)
+        {
+            return Ok(await _refundDetailService.GetAllRefundDetailsByRefundRequestIdAsync(refundId));
+        }
 
         [HttpGet("get/{id:int}")]
         public async Task<IActionResult> GetRefundDetail([FromRoute(Name = "id")] int refundDetailId)

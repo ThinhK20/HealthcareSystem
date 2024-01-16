@@ -72,4 +72,9 @@ public class RefundDetailService : IRefundDetailService
     {
         return await _refundDetailRepository.GetRefundDetailAsync(refundDetailId);
     }
+
+    public async Task<List<RefundDetailDomain>> GetAllRefundDetailsByRefundRequestIdAsync(int refundId)
+    {
+        return await _refundDetailRepository.GetAllRefundDetailsByRefundRequestIdAsync(refundId);
+    }
 }

@@ -4,16 +4,15 @@ const API_URL = "https://localhost:44384/api";
 function getCookie(name) {
    const value = `; ${document.cookie}`;
    const parts = value.split(`; ${name}=`);
-   if (parts.length === 2) return parts.pop().split(';').shift();
- }
+   if (parts.length === 2) return parts.pop().split(";").shift();
+}
 
 const instance = axios.create({
    baseURL: API_URL,
-   headers:{
-      "Authorization": `Bearer ${getCookie("token")}`
-   }
+   headers: {
+      Authorization: `Bearer ${getCookie("token")}`,
+   },
 });
-
 
 export const createNewRefundRequestApi = async (submitData) => {
    submitData.status = RefundRequestStatus.Pending;
@@ -37,6 +36,7 @@ export const getAllRefundRequestsApi = async () => {
 };
 
 export const getAllRefundRequestByUserIdApi = async (userId, cancelToken) => {
+   console.log("userId: ", userId);
    return await instance.get("/refund-requests?accountId=" + userId, {
       cancelToken: cancelToken,
    });
