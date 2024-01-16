@@ -43,6 +43,18 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("detail-package")]
+        public async Task<IActionResult> GetDetailPackage(int packageId,int policyId)
+        {
+            try
+            {
+                return Ok(await _packagePoliceService.GetPackageDetails(packageId, policyId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpPost("CreateNew")]
         [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
         public async Task<IActionResult> CreateNewPackage([FromBody] PackagePolicyCreateDTO detailCreate)
