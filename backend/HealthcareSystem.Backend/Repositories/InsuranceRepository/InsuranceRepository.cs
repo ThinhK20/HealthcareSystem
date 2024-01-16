@@ -85,5 +85,13 @@ namespace HealthcareSystem.Backend.Repositories.InsuranceRepository
             await UpdateAsync(insurance);
             return data;
         }
+
+        public async Task<InsuranceDomainWithoutFK> GetInsuranceByAccountIdAsync(int accountId)
+        {
+            if (accountId == null) throw new Exception("Invaild id");
+            var insurance = await GetAsync(i => i.AccountId == accountId);
+            var insuranceMap = _mapper.Map<InsuranceDomainWithoutFK>(insurance);
+            return insuranceMap;
+        }
     }
 }

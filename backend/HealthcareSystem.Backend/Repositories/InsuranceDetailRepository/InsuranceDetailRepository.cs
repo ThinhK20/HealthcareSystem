@@ -44,6 +44,13 @@ namespace HealthcareSystem.Backend.Repositories.InsuranceDetailRepository
             var result = _mapper.Map<List<InsuranceDetailDomain>>(data);
             return result;
         }
+        public async Task<List<InsuranceDetailDomainWithoutFKInsurance>> GetDetailByIdAsync(int insuraceID)
+        {
+            if (insuraceID == null) throw new Exception("Data is null");
+            var data = await GetAllAsync(x => x.InsureID == insuraceID, true, "PolicyPackage");
+            var result = _mapper.Map<List<InsuranceDetailDomainWithoutFKInsurance>>(data);
+            return result;
+        }
     }
 }
 

@@ -16,7 +16,7 @@ namespace HealthcareSystem.Backend.Repositories.InsuranceRepository
         public Task<InsuranceDTO> CreateInsurance(Models.DTO.InsuranceDTO data);
         public Task<InsuranceUpdateDTO> UpdateInsurance(Models.DTO.InsuranceUpdateDTO data);
 
- 
+        public Task<InsuranceDomainWithoutFK> GetInsuranceByAccountIdAsync(int accountId);
 
     }
 }
