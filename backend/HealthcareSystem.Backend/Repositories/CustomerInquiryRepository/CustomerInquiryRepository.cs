@@ -28,7 +28,6 @@ namespace HealthcareSystem.Backend.Repositories
 
             CustomerInquiry obj = new CustomerInquiry
             {
-                AccountId = data.AccountId,
                 FullName = data.FullName,
                 Phone = data.Phone,
                 Email = data.Email,

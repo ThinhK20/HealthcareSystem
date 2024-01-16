@@ -8,7 +8,6 @@ namespace HealthcareSystem.Backend.Models.Entity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int InquiryID { get; set; }
-        public int? AccountId { get; set; }
         public string? FullName { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
@@ -17,7 +16,6 @@ namespace HealthcareSystem.Backend.Models.Entity
         public DateTime? DateAnwser { get; set; }
         public string? Question { get; set; }
         public string? Status { get; set; }
-        public virtual Account Account { get; set; }
 
     }
 }
