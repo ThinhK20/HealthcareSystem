@@ -9,7 +9,6 @@ namespace HealthcareSystem.Backend.Controllers
 {
     [Route("api/users")]
     [ApiController]
-    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -21,7 +20,7 @@ namespace HealthcareSystem.Backend.Controllers
             _mapper = mapper;
         }
         [HttpPost("customerRequests/create")]
-        [Authorize(Roles = Roles.UserRole)]
+        [Authorize(Roles = Roles.UserRole + "," + Roles.TestRole)]
         public async Task<IActionResult> CreateCustomerRequest([FromBody] CustomerRequestCreateDTO customerRequest)
         {
             try
@@ -34,7 +33,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpGet("customerRequests")]
-        [Authorize(Roles = Roles.CustomerCareRole + "," + Roles.AccountantRole + "," + Roles.NormalStaffRole + "," + Roles.AdminRole)]
+        [Authorize(Roles = Roles.CustomerCareRole + "," + Roles.TestRole+ "," + Roles.AccountantRole + "," + Roles.NormalStaffRole + "," + Roles.AdminRole)]
         public async Task<IActionResult> GetAllCustomerRequests()
         {
             try
@@ -48,6 +47,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpGet("customerRequests/{id:int}")]
+        [Authorize(Roles = Roles.TestRole)]
         public async Task<IActionResult> GetCustomerRequestsById([FromRoute(Name = "id")] int requestId)
         {
             try
@@ -60,7 +60,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost("AcceptRequest")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.TestRole)]
         public async Task<IActionResult> AcceptRequest(int requestID, int staffid)
         {
             try
@@ -73,7 +73,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost("RefusedRequest/{id:int}")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.TestRole)]
         public async Task<IActionResult> RefusedRequest([FromRoute(Name = "id")] int requestID)
         {
             try
@@ -86,7 +86,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost("CompleteRequest/{id:int}")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.TestRole)]
         public async Task<IActionResult> Test([FromRoute(Name = "id")] int requestID)
         {
             try
@@ -99,7 +99,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpDelete("customerRequests/{id:int}")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.TestRole)]
         public async Task<IActionResult> DeleteCustomerRequestById([FromRoute(Name = "id")] int requestId)
         {
             try
@@ -112,7 +112,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpGet("getAll")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.TestRole)]
         public async Task<IActionResult> GetAllUsers()
         {
             try
@@ -125,18 +125,18 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        //[HttpGet("getUserByEmail")]
-        //public async Task<IActionResult> GetUserByEmail(string email)
-        //{
-        //    try
-        //    {
-        //        var result = await _userService.GetUserByEmail(email);
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        [HttpGet("getUserByEmail")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            try
+            {
+                var result = await _userService.GetUserByEmail(email);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

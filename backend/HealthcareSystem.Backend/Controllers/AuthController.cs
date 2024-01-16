@@ -38,16 +38,34 @@ namespace HealthcareSystem.Backend.Controllers
             return Ok(userLogin);
         }
 
-        [HttpPost("loginByGoogle")]
-        public async Task<IActionResult> LoginByGoogle([FromBody] RegisterRequestDTO model)
+        [HttpPost("createAccountForGoogleLogin")]
+        public async Task<IActionResult> createAccountForGoogleLogin([FromBody] RegisterRequestDTO model)
         {
-            var userLogin = await _accountService.LoginByGoogle(model);
+            var userLogin = await _accountService.createAccountForGoogleLogin(model);
             if (userLogin.user == null)
             {
                 return Ok(userLogin.Token);
             }
-
             return Ok(userLogin);
+        }
+
+        [HttpPost("loginByGoogle")]
+        public async Task<IActionResult> loginByGoogle([FromBody] RegisterRequestDTO model)
+        {
+            try
+            {
+                var userLogin = await _accountService.loginByGoogle(model.Email);
+                if (userLogin.user == null)
+                {
+                    return Ok(userLogin.Token);
+                }
+                return Ok(userLogin);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
 
@@ -94,6 +112,25 @@ namespace HealthcareSystem.Backend.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return Ok(token);
+        }
+        [HttpPost("checkEmailByGoogle")]
+        public async Task<IActionResult> checkEmailByGoogle([FromBody] UserDTO account)
+        {
+            try
+            {
+                var id = await _userService.checkEmailByGoogleLogin(account);
+
+                if (id == null)
+                {
+                    return BadRequest("Failed to create user.");
+                }
+
+                return Ok(id);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
 

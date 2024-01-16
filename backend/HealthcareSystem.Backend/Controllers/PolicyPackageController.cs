@@ -44,7 +44,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPost("CreateNew")]
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
         public async Task<IActionResult> CreateNewPackage([FromBody] PackagePolicyCreateDTO detailCreate)
         {
             try
@@ -71,7 +71,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPut("edit")]
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
         public async Task<IActionResult> EditPackage([FromBody] PackagePolicyEditDTO packagePolicyEdit )
         {
             try
@@ -98,7 +98,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpDelete("inactive/{id:int}")]
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
 
         public async Task<IActionResult> InActivePackage([FromRoute(Name = "id")] int packageId)
         {
@@ -126,7 +126,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPut("active/{id:int}")]
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
 
         public async Task<IActionResult> ActivePackage([FromRoute(Name = "id")] int packageId)
         {

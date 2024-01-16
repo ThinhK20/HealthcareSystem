@@ -94,9 +94,9 @@ namespace HealthcareSystem.Backend.Services.UserService
            return await _userRepository.CreateUser(user);
         }
 
-        public async Task<UserDTO> CreateUserGoogle(UserDTO user)
+        public async Task<UserGoogleDTO> checkEmailByGoogleLogin(UserDTO user)
         {
-            return await _userRepository.CreateUserGoogle(user);
+            return await _userRepository.checkEmailByGoogle(user);
 
         }
 

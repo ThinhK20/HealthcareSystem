@@ -5,7 +5,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
     public interface IAccountService
     {
         public Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO);
-        public  Task<LoginResponseDTO> LoginByGoogle(RegisterRequestDTO loginRequestDTO);
+        public  Task<LoginResponseDTO> createAccountForGoogleLogin(RegisterRequestDTO loginRequestDTO);
         public Task<List<Models.Domain.Account>> GetAccountsByPage(int pageSize, int pageNumber);
 
         public Task<AccountDTO> Register(RegisterRequestDTO registerationRequestDTO);
@@ -18,5 +18,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
         public Task<bool> DeleteAccount(int accountId);
 
         public Task<int> getAccountIdByUserID(int userid);
+
+        public Task<LoginResponseDTO> loginByGoogle(string email);
     }
 }

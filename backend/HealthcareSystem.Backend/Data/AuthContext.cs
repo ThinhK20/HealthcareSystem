@@ -15,6 +15,7 @@ namespace HealthcareSystem.Backend.Data
             var adminRoleId = "a298a2bb22a23883b1a5db7939f233c0e8f5f813adfd2c9889d44cc6a45e5b37";
             var customerCareStaffRoleId = "c988a78dc5639b5dfd7c4dfd60400edaa22561a2676729149e49b19d2c8466ad";
             var accountantRoleId = "b1cdd14b306372a94d9ce88b44eb12790f6e153cbeb28e39e6edecb152ec5dd8";
+            var testingRoleId = "8c40537d8c41574967302176d24e9588bd74e078b1a858c36a4a5e499f18215b";
             var roles = new List<IdentityRole>() {
 
             new IdentityRole(){
@@ -47,7 +48,13 @@ namespace HealthcareSystem.Backend.Data
                     ConcurrencyStamp = accountantRoleId,
                     Name = "Accountant",
                     NormalizedName = "Accountant".ToUpper()
-            }
+            },
+            new IdentityRole(){
+                    Id= testingRoleId,
+                    ConcurrencyStamp = testingRoleId,
+                    Name = "Test",
+                    NormalizedName = "Test".ToUpper()
+            },
 
         };
             builder.Entity<IdentityRole>().HasData(roles);

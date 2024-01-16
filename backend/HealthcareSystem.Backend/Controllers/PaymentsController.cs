@@ -170,7 +170,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpPost("GetLinkCheckOut")]
-        [Authorize(Roles = Roles.UserRole)]
+        [Authorize(Roles = Roles.UserRole + "," + Roles.TestRole)]
         public async Task<IActionResult> CheckPayPal([FromBody]CheckPayPalInfoDTO info)
         {
             try
@@ -184,7 +184,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("ConfirmPayment")]
-        [Authorize(Roles = Roles.UserRole)]
+        [Authorize(Roles = Roles.UserRole + "," + Roles.TestRole)]
         public async Task<IActionResult> ConfirmPayment(string token, string PayerID)
         {
             try

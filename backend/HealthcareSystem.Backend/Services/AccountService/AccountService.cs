@@ -117,7 +117,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
             return loginRequestDto;
         }
 
-        public async Task<LoginResponseDTO> LoginByGoogle(RegisterRequestDTO loginRequestDTO)
+        public async Task<LoginResponseDTO> createAccountForGoogleLogin(RegisterRequestDTO loginRequestDTO)
         {
             var salt = BCrypt.Net.BCrypt.GenerateSalt();
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(loginRequestDTO.Password, salt);
@@ -129,30 +129,46 @@ namespace HealthcareSystem.Backend.Services.AccountService
                 Username = loginRequestDTO.UserName,
                 Password = hashedPassword,
                 Status = "Active",
-                Role = "Customer"
+                Role = "User"
             };
             var userMapper = _mapper.Map<Models.Entity.Account>(user);
             await _accountRepository.CreateAsync(userMapper);
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes("This is Secret Key of Project PTHTTTHD");
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-               {
-                    new Claim(ClaimTypes.Name, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role)
-               }),
-                Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+            //var tokenHandler = new JwtSecurityTokenHandler();
+            //var key = Encoding.UTF8.GetBytes("This is Secret Key of Project PTHTTTHD");
+            //var tokenDescriptor = new SecurityTokenDescriptor
+            //{
+            //    Subject = new ClaimsIdentity(new Claim[]
+            //   {
+            //        new Claim(ClaimTypes.Name, user.UserId.ToString()),
+            //        new Claim(ClaimTypes.Role, user.Role)
+            //   }),
+            //    Expires = DateTime.Now.AddDays(7),
+            //    SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            //};
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            //var token = tokenHandler.CreateToken(tokenDescriptor);
+            var identityUser = new IdentityUser
+            {
+                UserName = loginRequestDTO.UserName,
+                Email = loginRequestDTO.Email
+            };
+            var identityResult = await _userManager.CreateAsync(identityUser, loginRequestDTO.Password);
+            await _userManager.AddToRolesAsync(identityUser, new List<string> { Roles.UserRole });
+
+            var userIdentity = await _userManager.FindByEmailAsync(loginRequestDTO.Email);
+            var roles = await _userManager.GetRolesAsync(userIdentity);
+            var jwtToken = _tokenRepository.CreateJWTToken(userIdentity, roles.ToList());
+
+            var getList = await _accountRepository.GetUser();
+            var checkUser = getList.FirstOrDefault(u => u.Username == loginRequestDTO.UserName);
+            var userinfo = await _userRepository.GetUserByAccount(checkUser.AccountId);
+
 
             LoginResponseDTO loginRequestDto = new LoginResponseDTO()
             {
-                Token = tokenHandler.WriteToken(token),
-                user = null
+                Token = jwtToken,
+                user = userinfo
             };
             return loginRequestDto;
 
@@ -168,6 +184,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
                     Status = "User existed"
                 };
             }
+            
             var emailChecked = !string.IsNullOrEmpty(registerationRequestDTO.Email) && new EmailAddressAttribute().IsValid(registerationRequestDTO.Email);
             if (emailChecked == false)
             {
@@ -214,7 +231,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
 
             // Convert the number to a string
             string result = randomNumber.ToString();
-            await _emailSender.SendEmailAsync(registerationRequestDTO.Email, "Verify your account !", "Your code is: " + result);
+            //await _emailSender.SendEmailAsync(registerationRequestDTO.Email, "Verify your account !", "Your code is: " + result);
 
             AccountDTO user = new AccountDTO()
             {
@@ -222,7 +239,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
                 Username = registerationRequestDTO.UserName,
                 Password = hashedPassword,
                 Status = "Disable",
-                Role = "Customer"
+                Role = "User"
             };
             var userMapper = _mapper.Map<Models.Entity.Account>(user);
             await _accountRepository.CreateAsync(userMapper);
@@ -274,6 +291,35 @@ namespace HealthcareSystem.Backend.Services.AccountService
         public Task<int> getAccountIdByUserID(int userid)
         {
             return _accountRepository.getAccountIdByUserID(userid);
+        }
+
+        public async Task<LoginResponseDTO> loginByGoogle(string email)
+        {
+            var userCheck = await _userRepository.GetUserByEmail(email);
+            if (userCheck == null)
+            {
+                throw new Exception("No User info");
+            }
+            var accountCheck = await GetAccountByID(userCheck.UserId);
+            if (accountCheck == null)
+            {
+                throw new Exception("No User info");
+            }
+            if (accountCheck.Username.StartsWith("user_") == false)
+            {
+                throw new Exception("Account not create by Login Google method");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            var roles = await _userManager.GetRolesAsync(user);
+            var jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
+            var userinfo = _mapper.Map<Models.Domain.UserDomain>(userCheck);
+            LoginResponseDTO loginRequestDto = new LoginResponseDTO()
+            {
+                Token = jwtToken,
+                user = userinfo
+            };
+            return loginRequestDto;
         }
     }
 }

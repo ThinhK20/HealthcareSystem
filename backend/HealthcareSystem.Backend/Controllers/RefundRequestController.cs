@@ -20,7 +20,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpPost("add")]
-        [Authorize(Roles = Roles.UserRole)]
+        [Authorize(Roles = Roles.UserRole + "," + Roles.TestRole)]
         public async Task<IActionResult> CreateNewRefundRequest([FromForm] RefundRequestDTO refundRequestDTO)
         {
             try
@@ -34,7 +34,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("all")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.AccountantRole + "," + Roles.NormalStaffRole +  "," + Roles.CustomerCareRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.AccountantRole + "," + Roles.NormalStaffRole +  "," + Roles.CustomerCareRole + "," + Roles.TestRole)]
         public async Task<ActionResult<List<RefundRequestDomain>>> GetAllRefundRequests()
         {
             try
@@ -75,7 +75,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("accept/{id:int}")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.TestRole)]
         public async Task<ActionResult<RefundRequestDomain>> AcceptRefundRequest([FromRoute(Name = "id")] int refundId)
         {
             try
@@ -89,7 +89,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("reject/{id:int}")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.TestRole)]
         public async Task<ActionResult<RefundRequestDomain>> RejectRefundRequest([FromRoute(Name = "id")] int refundId)
         {
             try
@@ -103,7 +103,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("/pending/{id:int}")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.TestRole)]
         public async Task<ActionResult<RefundRequestDomain>> PendingRefundRequest([FromRoute(Name = "id")] int refundId)
         {
             try
@@ -117,7 +117,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpPut("update")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.UserRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.UserRole + "," + Roles.TestRole)]
 
         public async Task<IActionResult> UpdateRefundRequest([FromForm] RefundRequestDTO refundRequestDTO)
         {

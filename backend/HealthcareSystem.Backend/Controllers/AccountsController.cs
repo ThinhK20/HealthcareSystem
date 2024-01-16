@@ -23,7 +23,7 @@ namespace HealthcareSystem.Backend.Controllers
             _mapper = mapper;
             _userService = userService;
         }
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
         [HttpPost("create-new-staff")]
         public async Task<IActionResult> CreateAccountStaff([FromBody] AccountUserDTO account)
         {
@@ -64,7 +64,7 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(tempAccount);
         }
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
         [HttpPut("edit-account-staff")]
         public async Task<IActionResult> EditUser([FromBody] AccountBaseDTO account)
         {
@@ -87,7 +87,7 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(tempAccount);
         }
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.AccountantRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.AccountantRole + "," + Roles.TestRole)]
         [HttpGet("get-all-account")]
         public async Task<IActionResult> getAccount()
         {
@@ -167,7 +167,7 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(tempAccount);
         }
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
         [HttpDelete("delete/{id:int}")]
         public async Task<IActionResult> DeleteAccountById([FromRoute(Name = "id")] int accountId)
         {
@@ -193,20 +193,7 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(id);
         }
-        [HttpPost("createNewUser")]
-        public async Task<IActionResult> createNewUser([FromBody] UserDTO account)
-        {
-
-            var id = await _userService.CreateUserGoogle(account);
-
-            if (id == null)
-            {
-                return BadRequest("Failed to create user.");
-            }
-
-            return Ok(id);
-        }
-
+        
 
     }
 }

@@ -69,14 +69,7 @@ export const getAccountByUserID = async (selectedUserId) => {
    }
 };
 
-export const createUserGoogle = async (data) => {
-   try {
-      const response = await instance.post("/createNewUser", data);
-      return response.data;
-   } catch (error) {
-      console.error("Error occurred while trying to create new user", error);
-   }
-};
+
 
 export const CreateNewStaff = async (info) => {
    try {

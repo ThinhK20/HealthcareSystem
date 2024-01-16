@@ -8,6 +8,8 @@
         public const string AdminRole = "Admin";
         public const string CustomerCareRole = "Customer Care Staff";
         public const string AccountantRole = "Accountant";
+        public const string TestRole = "Test";
+
 
     }
 }

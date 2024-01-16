@@ -306,7 +306,7 @@ export function Navbar() {
             <div className="hidden gap-2 lg:flex">
                {stateButton ? (
                   <>
-                     <Link to="/register" target="_blank">
+                     <Link to="/register">
                         <Button
                            variant="text"
                            size="sm"
@@ -316,7 +316,7 @@ export function Navbar() {
                            Sign Up
                         </Button>
                      </Link>
-                     <Link to="/login" target="_blank">
+                     <Link to="/login">
                         <Button
                            variant="gradient"
                            size="sm"
@@ -331,7 +331,7 @@ export function Navbar() {
                   <p className="font-serif border-b-2 border-gray-800 mr-10">
                         Hi, {" "} {username}
                   </p>
-                  <Link to="/" target="_blank">
+                  <Link to="/" reloadDocument >
                      <Button
                         variant="gradient"
                         size="sm"
@@ -372,14 +372,14 @@ export function Navbar() {
                   <>
                      <Link
                         to="/register"
-                        target="_blank"
+                     
                         className="mb-2 block"
                      >
                         <Button variant="text" size="sm" fullWidth>
                            Sign Up
                         </Button>
                      </Link>
-                     <Link to="/login" target="_blank" className="mb-2 block">
+                     <Link to="/login" className="mb-2 block">
                         <Button
                            variant="text"
                            size="sm"
@@ -391,7 +391,7 @@ export function Navbar() {
                      </Link>
                   </>
                ) : (
-                  <Link to="/" target="_blank" className="mb-2 block">
+                  <Link to="/" reloadDocument className="mb-2 block">
                      <Button
                         variant="text"
                         size="sm"

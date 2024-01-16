@@ -20,7 +20,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("all")]
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
 
         public async Task<ActionResult<List<InsuranceDomain>>> GetAllInsurances()
         {
@@ -52,7 +52,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("{insuranceId:int}")]
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
 
         public async Task<ActionResult<InsuranceDomain>> GetInsurance([FromRoute] int insuranceId)
         {
@@ -67,7 +67,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpDelete("{insuranceId:int}")]
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
 
         public async Task<ActionResult<InsuranceDomain>> Delete([FromRoute] int insuranceId)
         {
@@ -82,7 +82,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
 
         public async Task<ActionResult<InsuranceDomain>> Create([FromBody] InsuranceDTO data)
         {
@@ -96,7 +96,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpPut]
-        [Authorize(Roles = Roles.AdminRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
 
         public async Task<ActionResult<InsuranceDomain>> Update([FromBody] InsuranceUpdateDTO data)
         {
