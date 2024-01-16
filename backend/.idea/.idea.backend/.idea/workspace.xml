@@ -10,13 +10,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1a8344f-e32d-48c6-984e-08ce5f6cd98e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/aws.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/indexLayout.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/projectSettingsUpdater.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.backend/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/RefundDetailController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/RefundDetailController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Models/Domain/RefundDetailDomain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Models/Domain/RefundDetailDomain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Repositories/RefundDetailRepository/IRefundDetailRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Repositories/RefundDetailRepository/IRefundDetailRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Repositories/RefundDetailRepository/RefundDetailRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Repositories/RefundDetailRepository/RefundDetailRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Services/RefundDetailService/IRefundDetailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Services/RefundDetailService/IRefundDetailService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Services/RefundDetailService/RefundDetailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Services/RefundDetailService/RefundDetailService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HealthcareSystem.Backend/Controllers/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend.Tests/backend.Tests/Controllers/FileControllerTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/backend.Tests/backend.Tests/Controllers/FileControllerTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend.Tests/backend.Tests/backend.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/backend.Tests/backend.Tests/backend.Tests.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend.sln" beforeDir="false" afterPath="$PROJECT_DIR$/backend.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +126,7 @@
       <workItem from="1705218558395" duration="6970000" />
       <workItem from="1705247856819" duration="2486000" />
       <workItem from="1705328146064" duration="10272000" />
-      <workItem from="1705415531771" duration="4765000" />
+      <workItem from="1705415531771" duration="8738000" />
     </task>
     <servers />
   </component>
@@ -132,24 +136,5 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/HealthcareSystem.Backend/Repositories/RefundDetailRepository/RefundDetailRepository.cs</url>
-          <line>21</line>
-          <properties documentPath="D:\Coding\School\DevelopModernIS\HealthcareSystem\backend\HealthcareSystem.Backend\Repositories\RefundDetailRepository\RefundDetailRepository.cs" initialLine="21" containingFunctionPresentation="Method 'CreateRefundDetailAsync'">
-            <startOffsets>
-              <option value="931" />
-            </startOffsets>
-            <endOffsets>
-              <option value="996" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

@@ -10,10 +10,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Services\PaymentServiceTests.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="FakeItEasy" Version="8.1.0" />
         <PackageReference Include="FluentAssertions" Version="7.0.0-alpha.3" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
@@ -28,10 +24,9 @@
         </PackageReference>
     </ItemGroup>
 
-
-
     <ItemGroup>
-      <ProjectReference Include="..\HealthcareSystem.Backend\HealthcareSystem.Backend.csproj" />
+      <ProjectReference Include="..\..\HealthcareSystem.Backend\HealthcareSystem.Backend.csproj" />
     </ItemGroup>
+
 
 </Project>

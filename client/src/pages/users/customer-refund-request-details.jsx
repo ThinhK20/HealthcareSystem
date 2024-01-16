@@ -248,13 +248,13 @@ export default function CustomerRefundRequestDetails() {
                            {refundDetail.insurancePolicy.name}
                         </td>
                         <td class="whitespace-nowrap px-6 py-4">
-                           {refundDetail.insurancePolicy.description}
+                           {refundDetail.description}
                         </td>
                         <td class="whitespace-nowrap px-6 py-4">
-                           {refundDetail.refundFee}
+                           {formatMoney(refundDetail.refundFee)}
                         </td>
                         <td class="whitespace-nowrap px-6 py-4">
-                           {refundDetail.paidFee}
+                           {formatMoney(refundDetail.paidFee)}
                         </td>
                      </tr>
                   ))}

@@ -20,15 +20,18 @@ import { ToastContainer, toast } from "react-toastify";
 import LoadingWrapper from "../../components/loading/loading";
 import { detailPolicy, getAll } from "../../apis/insurancePoliciesApis";
 import { getAllRefundDetailsByRefundIdApi } from "../../apis/refundDetailApis";
+import { formatMoney } from "../../helpers/dataHelper";
 
 function Refund() {
    const maskStyle = {
       maskType: "luminance",
    };
-   const currency = useRef();
+
    const [loading, setLoading] = useState(false);
+   const [currency, setCurrency] = useState();
    const [refundDetails, setRefundDetails] = useState([]);
    const [PackagePolicy, setPackagePolicy] = useState(1);
+   const [Total, setTotal] = useState(0);
    const [price, setPrice] = useState();
    const { id: refundId } = useParams();
 
@@ -41,8 +44,6 @@ function Refund() {
    };
    const handleSubmit = (e) => {
       e.preventDefault();
-
-      console.log(selectedPolicy, currency.current.value);
    };
    const getPolicy = async () => {
       setLoading(true);
@@ -51,7 +52,21 @@ function Refund() {
       setData(dataPackages);
       setLoading(false);
    };
-
+   const handleCal = (e) => {
+      if (e.target.value === "") {
+         setCurrency(0);
+      } else {
+         setCurrency(e.target.value);
+      }
+      console.log(e.target.value);
+      if (price.maxRefundPerExamination == -1) {
+         setTotal(currency * price.payoutPrice);
+      } else if (price.maxRefundPerExamination >= currency) {
+         setTotal(currency * price.payoutPrice);
+      } else {
+         setTotal(price.maxRefundPerExamination * price.payoutPrice);
+      }
+   };
    const getDetail = async () => {
       await detailPolicy(PackagePolicy, selectedPolicy).then((result) => {
          setPrice(result);
@@ -136,24 +151,27 @@ function Refund() {
                                           </div>
                                        </div>
                                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                          <div className="sm:col-span-3">
-                                             <label
-                                                for="countries"
-                                                className="block mb-2 text-sm font-medium text-gray-900 da:text-white"
-                                             >
-                                                Phần trăm được giảm ={" "}
-                                                {price?.payoutPrice}
-                                             </label>
-                                          </div>
-                                          <div className="sm:col-span-3">
-                                             <label
-                                                for="countries"
-                                                className="block mb-2 text-sm font-medium text-gray-900 da:text-white"
-                                             >
-                                                Phần trăm được giảm ={" "}
-                                                {price?.payoutPrice}
-                                             </label>
-                                          </div>
+                                          {price?.payoutPrice > 0 && (
+                                             <>
+                                                <div className="sm:col-span-3">
+                                                   <label
+                                                      for="countries"
+                                                      className="block mb-2 text-sm font-medium text-gray-900 da:text-white"
+                                                   >
+                                                      Percentage reduction ={" "}
+                                                      {price?.payoutPrice}
+                                                   </label>
+                                                </div>
+                                                <div className="sm:col-span-3">
+                                                   <label className="block mb-2 text-sm font-medium text-gray-900 da:text-white">
+                                                      Maximum price reduced ={" "}
+                                                      {
+                                                         price?.maxRefundPerExamination
+                                                      }
+                                                   </label>
+                                                </div>
+                                             </>
+                                          )}
                                        </div>
                                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                           <div className="sm:col-span-3">
@@ -300,7 +318,10 @@ function Refund() {
                                                          id="phone-input"
                                                          className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-0 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 da:bg-gray-700 da:border-s-gray-700  da:border-gray-600 da:placeholder-gray-400 da:text-white da:focus:border-blue-500"
                                                          placeholder="123456789"
-                                                         ref={currency}
+                                                         value={currency}
+                                                         onChange={(e) =>
+                                                            handleCal(e)
+                                                         }
                                                          required
                                                       />
                                                    </div>
@@ -308,6 +329,18 @@ function Refund() {
                                              </div>
                                           </div>
                                        </div>
+                                       {Total > 0 && (
+                                          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                             <div className="sm:col-span-3">
+                                                <label
+                                                   for="countries"
+                                                   className="block mb-2 text-sm font-bold text-[red] text-[20px]"
+                                                >
+                                                   Total = {Total}
+                                                </label>
+                                             </div>
+                                          </div>
+                                       )}
                                     </div>
                                  </div>
 
@@ -375,10 +408,10 @@ function Refund() {
                            {refundDetail.insurancePolicy.description}
                         </td>
                         <td class="whitespace-nowrap px-6 py-4">
-                           {refundDetail.refundFee}
+                           {formatMoney(refundDetail.refundFee)}
                         </td>
                         <td class="whitespace-nowrap px-6 py-4">
-                           {refundDetail.paidFee}
+                           {formatMoney(refundDetail.paidFee)}
                         </td>
                      </tr>
                   ))}

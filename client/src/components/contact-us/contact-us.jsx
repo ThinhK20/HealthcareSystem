@@ -2,8 +2,49 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Typography } from "@material-tailwind/react";
 import { Box, Container, Grid, TextField } from "@mui/material";
+import { useState, useEffect, useRef } from "react";
+import { createInquiry } from "../../apis/customerInquiryApi";
+import { toast } from "react-toastify";
+import LoadingWrapper from "../../components/loading/loading";
 
 export default function ContactUs() {
+   const firstNameRef = useRef();
+   const lastNameRef = useRef();
+   const phoneRef = useRef();
+   const emailRef = useRef();
+   const contentRef = useRef();
+   const currentDate = new Date();
+   const currentYear = currentDate.getFullYear();
+   const currentMonth = currentDate.getMonth() + 1;
+   const currentDay = currentDate.getDate();
+   const [loading, setLoading] = useState(false);
+
+   const handleClick = async (e) => {
+      setLoading(true);
+      e.preventDefault();
+      const data = {
+         fullName: firstNameRef.current.value + " " + lastNameRef.current.value,
+         phone: phoneRef.current.value,
+         email: emailRef.current.value,
+         dateQuestion: currentDate.toLocaleString(),
+         question: contentRef.current.value,
+         status: "Not Solve",
+      };
+      console.log("Submitttttttt: ", data);
+      // const api_create = await createInquiry(data);
+      // console.log(22222222222, api_create);
+
+      setLoading(false);
+
+      toast.success("Your message has been sent !", {
+         position: "top-right",
+         autoClose: 2000,
+         hideProgressBar: false,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+      });
+   };
    return (
       <div className="max-w-6xl mx-auto bg-white my-6 font-sans text-gray-400 rounded-lg">
          <div className="text-center px-6">
@@ -97,18 +138,21 @@ export default function ContactUs() {
                         className="px-2 py-3 bg-white text-[#1A1446] w-full text-sm focus:border-[#011c2b] outline-none"
                         type="text"
                         color="primary"
+                        ref={firstNameRef}
                         placeholder="First Name"
                      ></TextField>
                      <TextField
                         className="px-2 py-3 bg-white text-[#1A1446] w-full text-sm focus:border-[#011c2b] outline-none"
                         type="text"
                         color="primary"
+                        ref={lastNameRef}
                         placeholder="Last Name"
                      ></TextField>
                      <TextField
                         className="px-2 py-3 bg-white text-[#1A1446] w-full text-sm focus:border-[#011c2b] outline-none"
                         type="text"
                         color="primary"
+                        ref={emailRef}
                         placeholder="Email"
                      ></TextField>
                      <TextField
@@ -116,6 +160,7 @@ export default function ContactUs() {
                         type="text"
                         color="primary"
                         placeholder="Phone"
+                        ref={phoneRef}
                      ></TextField>
                      <div className="col-span-2">
                         <TextField
@@ -123,11 +168,13 @@ export default function ContactUs() {
                            type="text"
                            color="primary"
                            placeholder="Write content"
+                           ref={contentRef}
                         ></TextField>
                      </div>
                   </div>
                   <div>
                      <button
+                        onClick={handleClick}
                         type="button"
                         className="mt-12 flex items-center gap-4 justify-center text-sm lg:ml-auto max-lg:w-full rounded px-4 py-2.5 font-semibold bg-[#011c2b] text-white hover:opacity-80 transition-all"
                      >

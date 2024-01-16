@@ -14,10 +14,20 @@ import {
 } from "../../apis/refundRequestApis";
 import { toast } from "react-toastify";
 import { formatMoney } from "../../helpers/dataHelper";
+import { getAllRefundDetailsByRefundIdApi } from "../../apis/refundDetailApis";
 export default function RefundRequestDetails() {
    const [data, setData] = useState();
    const params = useParams();
    const navigate = useNavigate();
+   const [refundDetails, setRefundDetails] = useState([]);
+
+   const getRefundDetails = async () => {
+      const refundId = params.id;
+      const dataRefundDetails = await getAllRefundDetailsByRefundIdApi(
+         refundId
+      );
+      setRefundDetails(dataRefundDetails);
+   };
 
    useEffect(() => {
       getRefundRequestApiById(params.id)
@@ -25,6 +35,8 @@ export default function RefundRequestDetails() {
             setData(res.data);
          })
          .catch((ex) => toast.error(ex));
+
+      getRefundDetails();
    }, []);
 
    const acceptRefundRequest = (id) => {
@@ -140,6 +152,57 @@ export default function RefundRequestDetails() {
                </Typography>
             </div>
          </div>
+         {/* Table */}
+         <table class="min-w-full text-left text-sm font-light my-8">
+            <thead
+               class="border-b bg-white font-medium "
+               style={{ background: "#FFD000" }}
+            >
+               <tr>
+                  <th scope="col" class="px-6 py-4">
+                     Id
+                  </th>
+                  <th scope="col" class="px-6 py-4">
+                     Insurance Policy
+                  </th>
+                  <th scope="col" class="px-6 py-4">
+                     Description
+                  </th>
+                  <th scope="col" class="px-6 py-4">
+                     Refund Fee
+                  </th>
+                  <th scope="col" class="px-6 py-4">
+                     Paid Fee
+                  </th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr class="border-b  ">
+                  <td class="whitespace-nowrap px-6 py-4 font-medium">
+                     Details of Fees
+                  </td>
+               </tr>
+               {refundDetails?.map((refundDetail, index) => (
+                  <tr key={index} class="border-b bg-neutral-100 ">
+                     <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                        {index + 1}
+                     </td>
+                     <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                        {refundDetail.insurancePolicy.name}
+                     </td>
+                     <td class="whitespace-nowrap px-6 py-4">
+                        {refundDetail.description}
+                     </td>
+                     <td class="whitespace-nowrap px-6 py-4">
+                        {formatMoney(refundDetail.refundFee)}
+                     </td>
+                     <td class="whitespace-nowrap px-6 py-4">
+                        {formatMoney(refundDetail.paidFee)}
+                     </td>
+                  </tr>
+               ))}
+            </tbody>
+         </table>
          <div className="flex justify-end w-full gap-4">
             {data?.status !== "Approved" && data?.status !== "Rejected" && (
                <>
