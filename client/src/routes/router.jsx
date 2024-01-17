@@ -21,6 +21,7 @@ import AboutUs from "../pages/users/about-us";
 import InformationCompany from "../pages/users/information-company";
 import InsurancePackage from "../pages/insurancePackage/insurance-package";
 import Refund from "../pages/refund/refund";
+import SocialInsuranceForm from "../pages/general/blog";
 
 export const router = createBrowserRouter([
    {
@@ -94,6 +95,10 @@ export const router = createBrowserRouter([
    {
       path: "/payment/completePayment",
       element: <LayoutRoute element={<ConfirmPayment />}></LayoutRoute>,
+   },
+   {
+      path: "/SocialInsuranceForm",
+      element: <LayoutRoute element={<SocialInsuranceForm />}></LayoutRoute>,
    },
    {
       path: "/about-us",
