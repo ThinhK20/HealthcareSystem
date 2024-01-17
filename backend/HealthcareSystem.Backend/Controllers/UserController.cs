@@ -61,8 +61,9 @@ namespace HealthcareSystem.Backend.Controllers
                 return NotFound(ex.Message);
             }
         }
-
+        
         [HttpGet("customerRequests/{id:int}")]
+        [Authorize(Roles = Roles.TestRole + Roles.AdminRole + Roles.NormalStaffRole)]
         public async Task<IActionResult> GetCustomerRequestById([FromRoute(Name = "id")] int requestId)
         {
             try

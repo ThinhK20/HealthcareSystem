@@ -24,7 +24,7 @@ function RowTableStaffsPayment(props) {
             </td>
             <td className="px-4 py-2">
                 <span className=" text-blue-700 text-sm font-medium px-2 py-0.5 rounded w-[200px] text-center">
-                    {props.item.customerRequest.accountId}
+                    {props.item.customerRequest?.accountId}
                 </span>
             </td>
             <td className="px-4 py-2 text-[15px] text-[black] font-[500]">

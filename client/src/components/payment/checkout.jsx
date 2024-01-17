@@ -8,9 +8,18 @@ function CheckOut() {
 
    const authFetch = axios.create({
       baseURL: "https://localhost:44384/api",
+      headers:{
+         "Authorization": `Bearer ${getCookie("token")}`
+      }
    });
-   const getData = async () => {
-      const data = await authFetch.get("/Payments/GetPaymenOfUser/1");
+   
+   function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+   }
+   const getData = async (accountId) => {
+      const data = await authFetch.get(`/Payments/GetPaymenOfUser/${accountId}`);
       setData(data.data);
       console.log(data.data);
    };
@@ -22,7 +31,8 @@ function CheckOut() {
       window.open(data.data, "_blank", "noreferrer");
    };
    useEffect(() => {
-      getData();
+      const accountId = localStorage.getItem("accountId")
+      getData(accountId);
    }, []);
    return (
       <>

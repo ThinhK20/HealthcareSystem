@@ -201,7 +201,8 @@ namespace HealthcareSystem.Backend.Controllers
             {
                 var data = await _accountService.getInsuranceDetailsByAccountId(accountId);
                 return Ok(data);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

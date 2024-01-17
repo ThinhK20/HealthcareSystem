@@ -1,4 +1,8 @@
 export const AccountType = Object.freeze({
-   Customer: "Customer",
-   Staff: "Staff",
+   User: "User",
+   NormalStaff: "Normal Staff",
+   Admin: "Admin",
+   CustomerCare: "Customer Care Staff",
+   Accountant: "Accountant",
+   Test: "Test"
 });

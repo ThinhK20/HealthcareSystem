@@ -125,7 +125,7 @@ namespace HealthcareSystem.Backend.Repositories
             query.Status = true;
             query.UpdatedDate = updatedDate;
             await UpdateAsync(query);
-            return 1;
+            return (int)query.RequestId;
         }
 
         public async Task<List<Payment>> GetAllPayment(int requestId)
