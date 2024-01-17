@@ -69,12 +69,15 @@ export default function StaffCustomerRequestManagement() {
    }, [searchInput, paginationIndex]);
 
    function filterTableRows(rowsData) {
-      return rowsData?.filter((r) =>
-         r.user.username
-            .toLowerCase()
-            .includes(
-               searchInput.toLowerCase() || r.staff?.username.toLowerCase()
-            )
+      console.log("rowsData: ", rowsData);
+      return rowsData?.filter(
+         (r) =>
+            r?.user?.username
+               ?.toLowerCase()
+               ?.includes(searchInput?.toLowerCase()) ||
+            r?.staff?.username
+               ?.toLowerCase()
+               ?.includes(searchInput?.toLowerCase())
       );
    }
 
@@ -93,15 +96,6 @@ export default function StaffCustomerRequestManagement() {
       setTableRows(() => newRows);
       setTableRowsFilter(() => newRows?.slice(0, ITEMS_PER_PAGE));
    }, [requestsData]);
-
-   useEffect(() => {
-      setTableRowsFilter(() =>
-         filterTableRows(tableRows).slice(
-            paginationIndex.startIndex,
-            paginationIndex.endIndex
-         )
-      );
-   }, [searchInput, paginationIndex]);
 
    function onPageChange(newPage) {
       const startIndex = (newPage - 1) * ITEMS_PER_PAGE;
@@ -129,6 +123,7 @@ export default function StaffCustomerRequestManagement() {
                         <Input
                            onChange={(e) => setSearchInput(e.target.value)}
                            label="Search"
+                           value={searchInput}
                            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                         />
                      </div>

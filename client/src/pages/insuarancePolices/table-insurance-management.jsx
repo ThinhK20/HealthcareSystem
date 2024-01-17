@@ -25,15 +25,12 @@ function TableInsuranceManagement() {
    const handlePageChange = (newPage) => {
       const startIndex = (newPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      if(searchInput.length == 0 ){
+      if (searchInput.length == 0) {
          setData(dataFilter.slice(startIndex, endIndex));
-
-      }
-      else{
+      } else {
          setData(dataAfterFilter.slice(startIndex, endIndex));
-
       }
-      setNewPage(newPage)
+      setNewPage(newPage);
    };
 
    const getData = async () => {
@@ -57,19 +54,16 @@ function TableInsuranceManagement() {
       getData();
    }, []);
    useEffect(() => {
-
       const startIndex = (newPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      console.log("Start: ", startIndex, "End: ", endIndex)
+      console.log("Start: ", startIndex, "End: ", endIndex);
       const newdata = dataFilter.filter(
          (item) =>
             item.name.toLowerCase().includes(searchInput) ||
             item.description.toLowerCase().includes(searchInput)
-      )
-      setData(
-         newdata.slice(startIndex , endIndex)
       );
-      setDataAfterFilter(newdata)
+      setData(newdata.slice(startIndex, endIndex));
+      setDataAfterFilter(newdata);
    }, [searchInput]);
    return (
       <>
@@ -107,7 +101,7 @@ function TableInsuranceManagement() {
                                           scope="col"
                                           className="rounded-tl-lg text-medium text-blue-600 font-medium px-6 py-4"
                                        >
-                                          Insuarance Policy ID
+                                          Insurance Policy ID
                                        </th>
                                        <th
                                           scope="col"
@@ -261,7 +255,11 @@ function TableInsuranceManagement() {
             </section>
             <div className="flex justify-center items-center text-center">
                <Pagination
-                  totalItems={searchInput.length == 0 ? dataFilter.length : dataAfterFilter.length}
+                  totalItems={
+                     searchInput.length == 0
+                        ? dataFilter.length
+                        : dataAfterFilter.length
+                  }
                   itemsPerPage={itemsPerPage}
                   onPageChange={handlePageChange}
                />
