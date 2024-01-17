@@ -297,10 +297,10 @@ export default function EditPackageForm() {
               <Link className="mb-5 " to={`/staffs/package-policy`}>
                     <button
                       type="button"
-                      class=" ml-auto w-full flex items-center justify-center  px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
+                      className=" ml-auto w-full flex items-center justify-center  px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
                     >
                       <svg
-                        class="w-5 h-5 rtl:rotate-180"
+                        className="w-5 h-5 rtl:rotate-180"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -346,10 +346,10 @@ export default function EditPackageForm() {
                         </label>
                         {nameError && (
                           <div
-                            class="pt-2 text-sm text-yellow-800 rounded-lg "
+                            className="pt-2 text-sm text-yellow-800 rounded-lg "
                             role="alert"
                           >
-                            <span class="font-medium">Please check name</span>
+                            <span className="font-medium">Please check name</span>
                           </div>
                         )}
                       </div>
@@ -373,10 +373,10 @@ export default function EditPackageForm() {
                         </label>
                         {descriptionError && (
                           <div
-                            class="pt-2 text-sm text-yellow-800 rounded-lg "
+                            className="pt-2 text-sm text-yellow-800 rounded-lg "
                             role="alert"
                           >
-                            <span class="font-medium">
+                            <span className="font-medium">
                               Please check description
                             </span>
                           </div>
@@ -393,10 +393,10 @@ export default function EditPackageForm() {
                         </button>
                         {listCreateError && (
                           <div
-                            class="pt-2 text-sm text-yellow-800 rounded-lg "
+                            className="pt-2 text-sm text-yellow-800 rounded-lg "
                             role="alert"
                           >
-                            <span class="font-medium">
+                            <span className="font-medium">
                               Please add policy or basic price
                             </span>
                           </div>
@@ -464,20 +464,20 @@ export default function EditPackageForm() {
                             </Select>
                             {policyError && (
                               <div
-                                class="pt-2 text-sm text-yellow-800 rounded-lg "
+                                className="pt-2 text-sm text-yellow-800 rounded-lg "
                                 role="alert"
                               >
-                                <span class="font-medium">
+                                <span className="font-medium">
                                   Please check policy
                                 </span>
                               </div>
                             )}
                             {policyError2 && (
                               <div
-                                class="pt-2 text-sm text-yellow-800 rounded-lg "
+                                className="pt-2 text-sm text-yellow-800 rounded-lg "
                                 role="alert"
                               >
-                                <span class="font-medium">
+                                <span className="font-medium">
                                   Please check policy
                                 </span>
                               </div>
@@ -505,10 +505,10 @@ export default function EditPackageForm() {
                               </label>
                               {payoutError && (
                                 <div
-                                  class="pt-2 text-xs text-yellow-800 rounded-lg "
+                                  className="pt-2 text-xs text-yellow-800 rounded-lg "
                                   role="alert"
                                 >
-                                  <span class="font-medium">
+                                  <span className="font-medium">
                                     Please check payout price
                                   </span>
                                 </div>
@@ -680,10 +680,10 @@ export default function EditPackageForm() {
                               </Select>
                               {genderError && (
                                 <div
-                                  class="pt-2 text-sm text-yellow-800 rounded-lg "
+                                  className="pt-2 text-sm text-yellow-800 rounded-lg "
                                   role="alert"
                                 >
-                                  <span class="font-medium">
+                                  <span className="font-medium">
                                     Please check gender
                                   </span>
                                 </div>
@@ -707,10 +707,10 @@ export default function EditPackageForm() {
                               </label>
                               {fromAgeError && (
                                 <div
-                                  class="pt-2 text-sm text-yellow-800 rounded-lg "
+                                  className="pt-2 text-sm text-yellow-800 rounded-lg "
                                   role="alert"
                                 >
-                                  <span class="font-medium">
+                                  <span className="font-medium">
                                     Please check value
                                   </span>
                                 </div>
@@ -734,10 +734,10 @@ export default function EditPackageForm() {
                               </label>
                               {toAgeError && (
                                 <div
-                                  class="pt-2 text-sm text-yellow-800 rounded-lg "
+                                  className="pt-2 text-sm text-yellow-800 rounded-lg "
                                   role="alert"
                                 >
-                                  <span class="font-medium">
+                                  <span className="font-medium">
                                     Please check value
                                   </span>
                                 </div>
@@ -761,10 +761,10 @@ export default function EditPackageForm() {
                               </label>
                               {priceError && (
                                 <div
-                                  class="pt-2 text-sm text-yellow-800 rounded-lg "
+                                  className="pt-2 text-sm text-yellow-800 rounded-lg "
                                   role="alert"
                                 >
-                                  <span class="font-medium">
+                                  <span className="font-medium">
                                     Please check value
                                   </span>
                                 </div>
@@ -773,10 +773,10 @@ export default function EditPackageForm() {
                           </div>
                           {basicPriceError && (
                             <div
-                              class="pt-2 text-sm text-yellow-800 rounded-lg text-center "
+                              className="pt-2 text-sm text-yellow-800 rounded-lg text-center "
                               role="alert"
                             >
-                              <span class="font-medium">
+                              <span className="font-medium">
                                 Please check value
                               </span>
                             </div>

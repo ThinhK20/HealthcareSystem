@@ -175,6 +175,7 @@ export function Navbar() {
    const [detail, setDetail] = useState();
    const [username, setUsername] = useState();
    const [stateButton, setStateButton] = useState(true);
+   
    function getCookie(name) {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
@@ -200,7 +201,7 @@ export function Navbar() {
       };
 
       Decode();
-   }, []);
+   }, [localStorage.getItem("userId")]);
    const handleHover = (drop, ct) => {
       if (drop == true) {
          setDetail(ct);
@@ -239,7 +240,7 @@ export function Navbar() {
                                  <Link
                                     to={item.path}
                                     key={key}
-                                    class="flex gap-4 items-center text-[16px] min-w-[300px] p-3 z-10  hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg  bg-white "
+                                    className="flex gap-4 items-center text-[16px] min-w-[300px] p-3 z-10  hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg  bg-white "
                                  >
                                     <div className="bg-gray-100 p-3 rounded-lg">
                                        <FontAwesomeIcon icon={item.icon} />

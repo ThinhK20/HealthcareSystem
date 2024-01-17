@@ -21,6 +21,7 @@ import LoadingWrapper from "../../components/loading/loading";
 import { detailPolicy, getAll } from "../../apis/insurancePoliciesApis";
 import { getAllRefundDetailsByRefundIdApi } from "../../apis/refundDetailApis";
 import { formatMoney } from "../../helpers/dataHelper";
+import { getInsurancedetails } from "../../apis/accountApis";
 
 function Refund() {
    const maskStyle = {
@@ -30,7 +31,7 @@ function Refund() {
    const [loading, setLoading] = useState(false);
    const [currency, setCurrency] = useState();
    const [refundDetails, setRefundDetails] = useState([]);
-   const [PackagePolicy, setPackagePolicy] = useState(1);
+   const [packagePolicy, setPackagePolicy] = useState();
    const [Total, setTotal] = useState(0);
    const [price, setPrice] = useState();
    const { id: refundId } = useParams();
@@ -44,6 +45,7 @@ function Refund() {
    };
    const handleSubmit = (e) => {
       e.preventDefault();
+      console.log(100000)
    };
    const getPolicy = async () => {
       setLoading(true);
@@ -53,27 +55,27 @@ function Refund() {
       setLoading(false);
    };
    const handleCal = (e) => {
-      if (e.target.value === "") {
-         setCurrency(0);
-      } else {
-         setCurrency(e.target.value);
-      }
-      console.log(e.target.value);
-      if (price.maxRefundPerExamination == -1) {
-         setTotal(currency * price.payoutPrice);
-      } else if (price.maxRefundPerExamination >= currency) {
-         setTotal(currency * price.payoutPrice);
+      setCurrency(()=>e.target.value)
+      if (e.target.value.toString() === "") {
+         setTotal(0);
+      } 
+      else if (price.maxRefundPerExamination == -1) {
+         setTotal(e.target.value * price.payoutPrice);
+      } else if (price.maxRefundPerExamination >= e.target.value) {
+         setTotal(e.target.value * price.payoutPrice);
       } else {
          setTotal(price.maxRefundPerExamination * price.payoutPrice);
       }
    };
    const getDetail = async () => {
-      await detailPolicy(PackagePolicy, selectedPolicy).then((result) => {
+      await detailPolicy(packagePolicy?.packageid, selectedPolicy).then((result) => {
          setPrice(result);
          console.log(result);
       });
    };
    useEffect(() => {
+      getInsurancedetails(localStorage.getItem("accountId")).then(result=>setPackagePolicy(result.listPackage[0].policyPackage))
+
       getPolicy();
    }, []);
    useEffect(() => {
@@ -89,7 +91,7 @@ function Refund() {
                      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block min-w-full sm:px-6 lg:px-8">
                            <div className="overflow-hidden">
-                              <form>
+                              <form onSubmit={handleSubmit} method="POST">
                                  <div className="space-y-12">
                                     <div className="border-b border-gray-900/10 border-t border-l border-r">
                                        <div className="mt-5">
@@ -115,7 +117,9 @@ function Refund() {
                                                 Current Package:
                                              </label>
                                              <input
+                                                disabled
                                                 id="Packages"
+                                                value={`${packagePolicy?.name}`}
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 da:bg-gray-700 da:border-gray-600 da:placeholder-gray-400 da:text-white da:focus:ring-blue-500 da:focus:border-blue-500"
                                              ></input>
                                           </div>
@@ -279,7 +283,7 @@ function Refund() {
                                                                            height="5.667"
                                                                            x=".933"
                                                                            y="1.433"
-                                                                           color-interpolation-filters="sRGB"
+                                                                           colorInterpolationFilters="sRGB"
                                                                            filterUnits="userSpaceOnUse"
                                                                         >
                                                                            <feFlood
@@ -313,7 +317,10 @@ function Refund() {
                                                    </div>
 
                                                    <div className="relative w-full">
+                                                      {price?.payoutPrice > 0?(
+
                                                       <input
+                                                  
                                                          type="number"
                                                          id="phone-input"
                                                          className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-0 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 da:bg-gray-700 da:border-s-gray-700  da:border-gray-600 da:placeholder-gray-400 da:text-white da:focus:border-blue-500"
@@ -324,6 +331,20 @@ function Refund() {
                                                          }
                                                          required
                                                       />
+                                                      ):(
+                                                         <input
+                                                         disabled
+                                                         type="number"
+                                                         id="phone-input"
+                                                         className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-0 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 da:bg-gray-700 da:border-s-gray-700  da:border-gray-600 da:placeholder-gray-400 da:text-white da:focus:border-blue-500"
+                                                         placeholder="123456789"
+                                                         value={currency}
+                                                         onChange={(e) =>
+                                                            handleCal(e)
+                                                         }
+                                                         required
+                                                      />
+                                                      )}
                                                    </div>
                                                 </div>
                                              </div>
@@ -334,9 +355,9 @@ function Refund() {
                                              <div className="sm:col-span-3">
                                                 <label
                                                    for="countries"
-                                                   className="block mb-2 text-sm font-bold text-[red] text-[20px]"
+                                                   className="block mb-2 text-sm font-bold text-[red] text-[22px]"
                                                 >
-                                                   Total = {Total}
+                                                   Refund Fee = {Total}
                                                 </label>
                                              </div>
                                           </div>
@@ -352,8 +373,7 @@ function Refund() {
                                        Cancel
                                     </button>
                                     <button
-                                       type="button"
-                                       onClick={handleSubmit}
+                                       type="submit"
                                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                     >
                                        Save
@@ -367,50 +387,50 @@ function Refund() {
                </div>
             </section>
             {/* Table */}
-            <table class="min-w-full text-left text-sm font-light">
+            <table className="min-w-full text-left text-sm font-light">
                <thead
-                  class="border-b bg-white font-medium "
+                  className="border-b bg-white font-medium "
                   style={{ background: "#FFD000" }}
                >
                   <tr>
-                     <th scope="col" class="px-6 py-4">
+                     <th scope="col" className="px-6 py-4">
                         Id
                      </th>
-                     <th scope="col" class="px-6 py-4">
+                     <th scope="col" className="px-6 py-4">
                         Insurance Policy
                      </th>
-                     <th scope="col" class="px-6 py-4">
+                     <th scope="col" className="px-6 py-4">
                         Description
                      </th>
-                     <th scope="col" class="px-6 py-4">
+                     <th scope="col" className="px-6 py-4">
                         Refund Fee
                      </th>
-                     <th scope="col" class="px-6 py-4">
+                     <th scope="col" className="px-6 py-4">
                         Paid Fee
                      </th>
                   </tr>
                </thead>
                <tbody>
-                  <tr class="border-b  ">
-                     <td class="whitespace-nowrap px-6 py-4 font-medium">
+                  <tr className="border-b  ">
+                     <td className="whitespace-nowrap px-6 py-4 font-medium">
                         Details of Fees
                      </td>
                   </tr>
                   {refundDetails?.map((refundDetail, index) => (
-                     <tr key={index} class="border-b bg-neutral-100 ">
-                        <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                     <tr key={index} className="border-b bg-neutral-100 ">
+                        <td className="whitespace-nowrap px-6 py-4 font-medium pl-10">
                            {index + 1}
                         </td>
-                        <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                        <td className="whitespace-nowrap px-6 py-4 font-medium pl-10">
                            {refundDetail.insurancePolicy.name}
                         </td>
-                        <td class="whitespace-nowrap px-6 py-4">
+                        <td className="whitespace-nowrap px-6 py-4">
                            {refundDetail.insurancePolicy.description}
                         </td>
-                        <td class="whitespace-nowrap px-6 py-4">
+                        <td className="whitespace-nowrap px-6 py-4">
                            {formatMoney(refundDetail.refundFee)}
                         </td>
-                        <td class="whitespace-nowrap px-6 py-4">
+                        <td className="whitespace-nowrap px-6 py-4">
                            {formatMoney(refundDetail.paidFee)}
                         </td>
                      </tr>

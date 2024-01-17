@@ -210,50 +210,50 @@ export default function CustomerRefundRequestDetails() {
 
          {/* Table */}
          {data?.status !== RefundRequestStatus.Pending && (
-            <table class="min-w-full text-left text-sm font-light">
+            <table className="min-w-full text-left text-sm font-light">
                <thead
-                  class="border-b bg-white font-medium "
+                  className="border-b bg-white font-medium "
                   style={{ background: "#FFD000" }}
                >
                   <tr>
-                     <th scope="col" class="px-6 py-4">
+                     <th scope="col" className="px-6 py-4">
                         Id
                      </th>
-                     <th scope="col" class="px-6 py-4">
+                     <th scope="col" className="px-6 py-4">
                         Insurance Policy
                      </th>
-                     <th scope="col" class="px-6 py-4">
+                     <th scope="col" className="px-6 py-4">
                         Description
                      </th>
-                     <th scope="col" class="px-6 py-4">
+                     <th scope="col" className="px-6 py-4">
                         Refund Fee
                      </th>
-                     <th scope="col" class="px-6 py-4">
+                     <th scope="col" className="px-6 py-4">
                         Paid Fee
                      </th>
                   </tr>
                </thead>
                <tbody>
-                  <tr class="border-b  ">
-                     <td class="whitespace-nowrap px-6 py-4 font-medium">
+                  <tr className="border-b  ">
+                     <td className="whitespace-nowrap px-6 py-4 font-medium">
                         Details of Fees
                      </td>
                   </tr>
                   {refundDetails?.map((refundDetail, index) => (
-                     <tr key={index} class="border-b bg-neutral-100 ">
-                        <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                     <tr key={index} className="border-b bg-neutral-100 ">
+                        <td className="whitespace-nowrap px-6 py-4 font-medium pl-10">
                            {index + 1}
                         </td>
-                        <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                        <td className="whitespace-nowrap px-6 py-4 font-medium pl-10">
                            {refundDetail.insurancePolicy.name}
                         </td>
-                        <td class="whitespace-nowrap px-6 py-4">
+                        <td className="whitespace-nowrap px-6 py-4">
                            {refundDetail.description}
                         </td>
-                        <td class="whitespace-nowrap px-6 py-4">
+                        <td className="whitespace-nowrap px-6 py-4">
                            {formatMoney(refundDetail.refundFee)}
                         </td>
-                        <td class="whitespace-nowrap px-6 py-4">
+                        <td className="whitespace-nowrap px-6 py-4">
                            {formatMoney(refundDetail.paidFee)}
                         </td>
                      </tr>
