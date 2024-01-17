@@ -23,7 +23,10 @@ import {
    faPlusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { getAllCustomerRequestsApi } from "../../apis/customerRequestApis";
+import {
+   getAllCustomerRequestsApi,
+   getAllCustomerRequestsByAccIdApi,
+} from "../../apis/customerRequestApis";
 import { formatMoney } from "../../helpers/dataHelper";
 import Paging from "../../components/pagination/pagination";
 const TABLE_HEAD = [
@@ -49,8 +52,9 @@ export default function CustomerRequestManagement() {
    });
 
    useEffect(() => {
+      const accountId = localStorage.getItem("accountId");
       const source = axios.CancelToken.source();
-      getAllCustomerRequestsApi(source.token)
+      getAllCustomerRequestsByAccIdApi(accountId, source.token)
          .then((res) => {
             setRequestsData(res.data);
          })

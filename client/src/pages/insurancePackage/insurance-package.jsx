@@ -36,95 +36,95 @@ function InsurancePackage() {
                                     Bảo Hiểm Nhân Thọ
                                  </Typography>
                               </div>
-                              <table class="min-w-full text-left text-sm font-light">
+                              <table className="min-w-full text-left text-sm font-light">
                                  <thead
-                                    class="border-b bg-white font-medium dark:border-neutral-500 dark:bg-neutral-600"
+                                    className="border-b bg-white font-medium dark:border-neutral-500 dark:bg-neutral-600"
                                     style={{ background: "#FFD000" }}
                                  >
                                     <tr>
-                                       <th scope="col" class="px-6 py-4">
+                                       <th scope="col" className="px-6 py-4">
                                           Quyền lợi bảo hiểm
                                        </th>
-                                       <th scope="col" class="px-6 py-4">
+                                       <th scope="col" className="px-6 py-4">
                                           Cơ bản
                                        </th>
-                                       <th scope="col" class="px-6 py-4">
+                                       <th scope="col" className="px-6 py-4">
                                           Cao cấp
                                        </th>
-                                       <th scope="col" class="px-6 py-4">
+                                       <th scope="col" className="px-6 py-4">
                                           Toàn diện
                                        </th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <tr class="border-b  dark:border-neutral-500 dark:bg-neutral-700">
-                                       <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                    <tr className="border-b  dark:border-neutral-500 dark:bg-neutral-700">
+                                       <td className="whitespace-nowrap px-6 py-4 font-medium">
                                           1. Chính sách A
                                        </td>
                                     </tr>
-                                    <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
-                                       <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                                    <tr className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
+                                       <td className="whitespace-nowrap px-6 py-4 font-medium pl-10">
                                           Mô tả của chính sách A
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           Hoàn 50%
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           Hoàn 50%
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           Hoàn 50%
                                        </td>
                                     </tr>
-                                    <tr class="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                       <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                                    <tr className="border-b bg-white dark:border-neutral-500 dark:bg-neutral-600">
+                                       <td className="whitespace-nowrap px-6 py-4 font-medium pl-10">
                                           Mức hoàn tối đa
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           120/ ngày
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           120/ ngày
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           120/ ngày
                                        </td>
                                     </tr>
                                  </tbody>
                                  <tbody>
-                                    <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
-                                       <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                    <tr className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
+                                       <td className="whitespace-nowrap px-6 py-4 font-medium">
                                           1. Chính sách A
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4 font-medium"></td>
-                                       <td class="whitespace-nowrap px-6 py-4 font-medium"></td>
-                                       <td class="whitespace-nowrap px-6 py-4 font-medium"></td>
+                                       <td className="whitespace-nowrap px-6 py-4 font-medium"></td>
+                                       <td className="whitespace-nowrap px-6 py-4 font-medium"></td>
+                                       <td className="whitespace-nowrap px-6 py-4 font-medium"></td>
                                     </tr>
-                                    <tr class="border-b dark:border-neutral-500 dark:bg-neutral-700">
-                                       <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                                    <tr className="border-b dark:border-neutral-500 dark:bg-neutral-700">
+                                       <td className="whitespace-nowrap px-6 py-4 font-medium pl-10">
                                           Mô tả của chính sách A
                                        </td>
-                                       <td class="whitespace -nowrap px-6 py-4">
+                                       <td className="whitespace -nowrap px-6 py-4">
                                           Hoàn 50%
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           Hoàn 50%
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           Hoàn 50%
                                        </td>
                                     </tr>
-                                    <tr class="border-b bg-neutral-100 bg-white dark:border-neutral-500 dark:bg-neutral-600">
-                                       <td class="whitespace-nowrap px-6 py-4 font-medium pl-10">
+                                    <tr className="border-b bg-neutral-100 bg-white dark:border-neutral-500 dark:bg-neutral-600">
+                                       <td className="whitespace-nowrap px-6 py-4 font-medium pl-10">
                                           Mức hoàn tối đa
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           120/ ngày
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           120/ ngày
                                        </td>
-                                       <td class="whitespace-nowrap px-6 py-4">
+                                       <td className="whitespace-nowrap px-6 py-4">
                                           120/ ngày
                                        </td>
                                     </tr>

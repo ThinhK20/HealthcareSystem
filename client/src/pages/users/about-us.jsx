@@ -124,7 +124,7 @@ function AboutUs() {
                   </div>
                   <div className="w-full text-center">
                      <img
-                        class="inline-block max-w-full h-auto"
+                        className="inline-block max-w-full h-auto"
                         src="https://www.libertyinsurance.com.vn/sites/libertyvn/files/inline-images/BH%20Liberty_Giai%20Dich%20vu%20TC%20tieu%20bieu%20IDG%202021%2023_EN.png"
                         alt=""
                      />
@@ -138,7 +138,7 @@ function AboutUs() {
                   </div>
                   <div className="w-full text-center">
                      <img
-                        class="inline-block max-w-full h-auto"
+                        className="inline-block max-w-full h-auto"
                         src="https://www.libertyinsurance.com.vn/sites/libertyvn/files/inline-images/EN_1.jpg"
                         alt=""
                      />

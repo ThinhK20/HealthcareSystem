@@ -88,3 +88,11 @@ export const getAccountByAccountId = async (id) => {
       console.error("Error occurred while trying to create new user", error);
    }
 };
+export const getInsurancedetails= async (id) => {
+   try {
+      const response = await instance.get(`/getInsuranceDetailsByAccountId/${id}`);
+      return response.data;
+   } catch (error) {
+      console.error("Error occurred while trying to create new user", error);
+   }
+};

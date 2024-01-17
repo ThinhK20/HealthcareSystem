@@ -1,5 +1,6 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Models.Entity;
 
 namespace HealthcareSystem.Backend.Services.PackagePoliceService
 {
@@ -13,7 +14,7 @@ namespace HealthcareSystem.Backend.Services.PackagePoliceService
         public Task<bool> EditPackage(PackagePolicyEditDTO packagePolicyEdit);
         public Task<bool> InActivePackage(int packageId);
         public Task<bool> ActivePackage(int packageId);
-
+        public Task<PackageDetail> GetPackageDetails(int Packageid, int PolicyId);
 
     }
 }

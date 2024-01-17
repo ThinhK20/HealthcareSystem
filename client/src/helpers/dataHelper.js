@@ -79,7 +79,24 @@ function isObjectNull(obj) {
       }
    }
 }
+function padNumberToEightDigits(number) {
+   // Chuyển số thành chuỗi
+   let numberString = number.toString();
 
+   // Kiểm tra độ dài của chuỗi số
+   if (numberString.length < 8) {
+       // Tính số lượng số 0 cần thêm
+       let numberOfZerosToAdd = 8 - numberString.length;
+
+       // Thêm số 0 phía trước
+       for (let i = 0; i < numberOfZerosToAdd; i++) {
+           numberString = '0' + numberString;
+       }
+   }
+
+   // Trả về chuỗi số với độ dài là 8
+   return numberString;
+}
 export {
    calDiscount,
    formatNum,
@@ -89,4 +106,5 @@ export {
    formatDate,
    viewDiscount,
    isObjectNull,
+   padNumberToEightDigits,
 };

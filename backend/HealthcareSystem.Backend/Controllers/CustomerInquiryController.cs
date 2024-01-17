@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HealthcareSystem.Backend.Controllers
 {
+    [Route("api/inquiry")]
+    [ApiController]
     public class CustomerInquiryController : Controller
     {
         private readonly ICustomerInquiryRepository _customerInquiryRepository;

@@ -1,5 +1,6 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.PolicyPackageRepository;
 
@@ -124,6 +125,13 @@ namespace HealthcareSystem.Backend.Services.PackagePoliceService
             if (policyPackage == null) return false;
             await _policyPackageRepository.Active(policyPackage);
             return true;
+        }
+
+        public async Task<PackageDetail> GetPackageDetails(int Packageid, int PolicyId)
+        {
+            var policy = await _packageDetailRepository.GetByIdAsync(Packageid, PolicyId);
+            if (policy == null) throw new Exception("dont find");
+            return policy;
         }
     }
 }

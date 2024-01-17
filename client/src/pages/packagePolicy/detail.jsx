@@ -56,10 +56,10 @@ export default function PackagePolicyDetails() {
               <Link className="mb-5 " to={`/staffs/package-policy`}>
                 <button
                   type="button"
-                  class=" ml-auto w-full flex items-center justify-center  px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
+                  className=" ml-auto w-full flex items-center justify-center  px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
                 >
                   <svg
-                    class="w-5 h-5 rtl:rotate-180"
+                    className="w-5 h-5 rtl:rotate-180"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"

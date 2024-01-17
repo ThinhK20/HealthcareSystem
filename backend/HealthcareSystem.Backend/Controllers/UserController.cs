@@ -48,7 +48,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("customerRequestsByAccId/{id:int}")]
-        [Authorize(Roles = Roles.CustomerCareRole + "," + Roles.AccountantRole + "," + Roles.NormalStaffRole + "," + Roles.AdminRole)]
+        [Authorize(Roles = Roles.CustomerCareRole + "," + Roles.AccountantRole + "," + Roles.NormalStaffRole + "," + Roles.AdminRole + "," + Roles.UserRole + "," + Roles.TestRole)]
         public async Task<IActionResult> GetAllCustomerRequestsByAccId([FromRoute(Name = "id")] int accountId)
         {
             try

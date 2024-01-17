@@ -198,43 +198,44 @@ const routes = [
 ];
 
 export function Navbar() {
-  const [openNav, setOpenNav] = useState(false);
-  const [currentRole, setCurrentRole] = useState("All");
-  const [detail, setDetail] = useState();
-  const [username, setUsername] = useState();
-  const [stateButton, setStateButton] = useState(true);
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  }
-  useEffect(() => {
-    const Decode = async () => {
-      const token = getCookie("token");
-      if (token === undefined) {
-        setStateButton(true);
-        localStorage.clear();
-      } else {
-        console.log("Logged");
-        const accountId = await getAccountByUserID(
-          localStorage.getItem("userId")
-        );
-        localStorage.setItem("accountId", accountId.data);
-        const info = await getAccountByAccountId(accountId.data);
-        setUsername(localStorage.getItem("username"));
-        setCurrentRole(info.role ? info.role : "All");
-        setStateButton(false);
-      }
-    };
+   const [openNav, setOpenNav] = useState(false);
+   const [currentRole, setCurrentRole] = useState("All");
+   const [detail, setDetail] = useState();
+   const [username, setUsername] = useState();
+   const [stateButton, setStateButton] = useState(true);
+   
+   function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+   }
+   useEffect(() => {
+      const Decode = async () => {
+         const token = getCookie("token")
+         if(token === undefined){
+            setStateButton(true);
+            localStorage.clear()
+         }
+         else{
+            console.log("Logged")
+            const accountId = await getAccountByUserID(localStorage.getItem("userId"));
+            localStorage.setItem("accountId", accountId.data)
+            const info = await getAccountByAccountId(accountId.data);
+            setUsername(localStorage.getItem("username"))
+            setCurrentRole(info.role ? info.role : "All");
+            setStateButton(false);
+         }
+        
+      };
 
-    Decode();
-  }, []);
-  const handleHover = (drop, ct) => {
-    if (drop == true) {
-      setDetail(ct);
-      console.log("CT: ", ct);
-    }
-  };
+      Decode();
+   }, [localStorage.getItem("userId")]);
+   const handleHover = (drop, ct) => {
+      if (drop == true) {
+         setDetail(ct);
+         console.log("CT: ", ct);
+      }
+   };
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 h-full ">

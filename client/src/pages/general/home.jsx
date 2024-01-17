@@ -69,7 +69,7 @@ export default function Home() {
             <div className="w-full flex justify-center items-end py-[50px]">
                <div className="w-[80%]  lg:grid-cols-3 md:grid-cols-1 grid gap-[50px]">
                   {contentPolicy.map((item, key) => (
-                     <div className="flex justify-center">
+                     <div className="flex justify-center ">
                         <ContainerResponsive
                            img={item.img}
                            content={item.content}
