@@ -26,7 +26,7 @@ const routes = [
     role: [AccountType.User, AccountType.Test],
     name: "Request",
     path: "/users/customer-requests",
-    dropdown: true,
+    dropdown: false,
   },
   {
     role: [AccountType.User, AccountType.Test],
@@ -136,7 +136,7 @@ const routes = [
   },
 
   {
-   role: [
+    role: [
       AccountType.NormalStaff,
       AccountType.Test,
       AccountType.Admin,
@@ -161,7 +161,7 @@ const routes = [
     ],
   },
   {
-   role: [
+    role: [
       AccountType.NormalStaff,
       AccountType.Test,
       AccountType.Admin,
@@ -172,7 +172,7 @@ const routes = [
     dropdown: false,
   },
   {
-   role: [
+    role: [
       AccountType.NormalStaff,
       AccountType.Test,
       AccountType.Admin,
@@ -183,13 +183,13 @@ const routes = [
     dropdown: false,
   },
   {
-   role: [
+    role: [
       AccountType.NormalStaff,
       AccountType.Test,
       AccountType.Admin,
       AccountType.Accountant,
       AccountType.User,
-      "All"
+      "All",
     ],
     name: "About us",
     path: "/about-us",
@@ -198,49 +198,51 @@ const routes = [
 ];
 
 export function Navbar() {
-   const [openNav, setOpenNav] = useState(false);
-   const [currentRole, setCurrentRole] = useState("All");
-   const [detail, setDetail] = useState();
-   const [username, setUsername] = useState();
-   const [stateButton, setStateButton] = useState(true);
-   
-   function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-   }
-   useEffect(() => {
-      const Decode = async () => {
-         const token = getCookie("token")
-         if(token === undefined){
-            setStateButton(true);
-            localStorage.clear()
-         }
-         else{
-            console.log("Logged")
-            const accountId = await getAccountByUserID(localStorage.getItem("userId"));
-            localStorage.setItem("accountId", accountId.data)
-            const info = await getAccountByAccountId(accountId.data);
-            setUsername(localStorage.getItem("username"))
-            setCurrentRole(info.role ? info.role : "All");
-            setStateButton(false);
-         }
-        
-      };
+  const [openNav, setOpenNav] = useState(false);
+  const [currentRole, setCurrentRole] = useState("All");
+  const [detail, setDetail] = useState();
+  const [username, setUsername] = useState();
+  const [stateButton, setStateButton] = useState(true);
 
-      Decode();
-   }, [localStorage.getItem("userId")]);
-   const handleHover = (drop, ct) => {
-      if (drop == true) {
-         setDetail(ct);
-         console.log("CT: ", ct);
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  }
+  useEffect(() => {
+    const Decode = async () => {
+      const token = getCookie("token");
+      if (token === undefined) {
+        setStateButton(true);
+        localStorage.clear();
+      } else {
+        console.log("Logged");
+        const accountId = await getAccountByUserID(
+          localStorage.getItem("userId")
+        );
+        localStorage.setItem("accountId", accountId.data);
+        const info = await getAccountByAccountId(accountId.data);
+        setUsername(localStorage.getItem("username"));
+        setCurrentRole(info.role ? info.role : "All");
+        setStateButton(false);
       }
-   };
+    };
+
+    Decode();
+  }, [localStorage.getItem("userId")]);
+  const handleHover = (drop, ct) => {
+    if (drop == true) {
+      setDetail(ct);
+      console.log("CT: ", ct);
+    }
+  };
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 h-full ">
       {routes
-        .filter((item) => item.role.includes(currentRole) || item.role === "All")
+        .filter(
+          (item) => item.role.includes(currentRole) || item.role === "All"
+        )
         .map(({ name, path, dropdown, content }) => (
           <Typography
             key={name}
@@ -257,7 +259,7 @@ export function Navbar() {
               <span className="relative z-10 font-medium"> {name}</span>
               <span className="absolute w-full inset-x-0 bottom-0  h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out group-hover:min-w-full"></span>
             </Link>
-            {
+            {dropdown === true && (
               <div
                 className="w-full transition-[700] hidden absolute hover-to-show  h-full -bottom-4 right-full   z-50 px-4 py-8 pt-20"
                 onMouseEnter={() => setOpenMenu(true)}
@@ -268,7 +270,7 @@ export function Navbar() {
                       <Link
                         to={item.path}
                         key={key}
-                        class="flex gap-4 items-center text-[16px] min-w-[300px] p-3 z-10  hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg  bg-white "
+                        className="flex gap-4 items-center text-[16px] min-w-[300px] p-3 z-10  hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg  bg-white "
                       >
                         <div className="bg-gray-100 p-3 rounded-lg">
                           <FontAwesomeIcon icon={item.icon} />
@@ -279,7 +281,7 @@ export function Navbar() {
                   ))}
                 </div>
               </div>
-            }
+            )}
           </Typography>
         ))}
     </ul>

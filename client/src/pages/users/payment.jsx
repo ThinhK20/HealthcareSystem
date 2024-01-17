@@ -4,9 +4,7 @@ import RowTableUserWaitingPayment from "../../components/user/RowWaitingPayment"
 import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { getPaymentsByAccountID } from "../../apis/paymentApis";
 import LoadingData from "../../components/loading/loadingData";
-import { Input } from "@material-tailwind/react";
 import Paging from "../../components/pagination/pagination";
-import { jwtDecode } from "jwt-decode";
 const CustomersPayment = () => {
   const [filteredPayments, setFilteredPayments] = useState([]);
   const [payments, setPayments] = useState([]);
@@ -75,7 +73,16 @@ const CustomersPayment = () => {
     });
     setFilteredPayments(filteredPayments);
   }, [searchValue, filterByPaymentId, filterByRequestId]);
-
+  useEffect(() => {
+    if (searchValue != ""){
+      setData(filteredPayments)
+    }
+  }, [filteredPayments]);
+  useEffect(() => {
+    if (searchValue == ""){
+      setData(payments.slice(0, 5))
+    }
+  }, [searchValue]);
   return (
     <>
       <div className="w-[100%]">
