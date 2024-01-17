@@ -120,6 +120,7 @@ namespace HealthcareSystem.Backend.Services.PaymentService
         {
             var resultCheck = await _paymentRepository.findPaymentByToken(token);
             if (resultCheck == null) throw new Exception("Error.");
+            if (resultCheck.Status == true) throw new Exception("Payment has been confirmed");
             string tokenPaypal = await _payPalModule.GetToken(_payPalSetting.username, _payPalSetting.password, _payPalSetting.link);
             DateTime updatedDate = DateTime.Now;
             bool result = await _payPalModule.ConfirmPaymentPalpal(token, _payPalSetting.link, tokenPaypal);

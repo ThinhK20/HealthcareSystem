@@ -7,6 +7,7 @@ using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using HealthcareSystem.Backend.Utils;
+using System.Globalization;
 
 namespace HealthcareSystem.Backend.Repositories
 {
@@ -76,9 +77,12 @@ namespace HealthcareSystem.Backend.Repositories
             if (dataRequest.Periodic == "half year") month = 6;
             if (dataRequest.Periodic == "year") month = 12;
             int n = 12 / month;
+            var dateReq = (DateTime)ctm_request.DateRequest;
+            var dateReqString = dateReq.ToString("dd/M/yyyy");
             for (var i = 0; i < n; i++)
             {
-                Payment pay = new Payment
+                string temp = (i+1).DisplayWithSuffix();
+                                Payment pay = new Payment
                 {
                     RequestId = ctm_request.RequestID,
                     CreatedDate = DateTime.Now.AddMonths(i * month),
@@ -89,7 +93,7 @@ namespace HealthcareSystem.Backend.Repositories
                     UpdatedDate = null,
                     LinkCheckOut = null,
                     PaypalEmail = null,
-                    Note = $"Payment {i+1} of {n} for {ctm_request.PolicyPackage.Name}"
+                    Note = $"{temp} payment of {n} payments {ctm_request.PolicyPackage.Name} required on {dateReqString}"
                 };
                 await _paymentService.CreatePayment(pay);
             }
