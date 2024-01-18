@@ -129,6 +129,20 @@ namespace backend.Tests.Controllers
             result.Should().BeOfType(typeof(ActionResult<InsuranceDomain>));
         }
 
+        [Fact]
+        public async Task InsuranceController_Create_ReturnBadRequest()
+        {
+            var fakeInsurance = A.Fake<InsuranceDTO>();
+            InsuranceDTO policy = A.Fake<InsuranceDTO>();
+            InsuranceDTO policyUpdate = null;
 
+            A.CallTo(() => _insuranceRepository.CreateInsurance(policyUpdate)).Returns(Task.FromResult<InsuranceDTO>(policy));
+
+            var controller = GetController();
+            var result = await controller.Create(policyUpdate);
+
+            result.Should().NotBeNull();
+            result.Result.Should().BeOfType<BadRequestObjectResult>();
+        }
     }
 }

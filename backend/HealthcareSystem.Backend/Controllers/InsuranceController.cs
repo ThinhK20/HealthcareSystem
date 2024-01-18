@@ -39,7 +39,8 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
-                Pagination page = new Pagination{
+                Pagination page = new Pagination
+                {
                     PageNumber = pageNumber,
                     PageSize = pageSize
                 };
@@ -88,6 +89,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (data == null) throw new Exception("Input data empty.");
                 return Ok(await _insuranceRepository.CreateInsurance(data));
             }
             catch (Exception ex)

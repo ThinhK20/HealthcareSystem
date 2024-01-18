@@ -1,0 +1,96 @@
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import CustomersPayment from "../pages/users/payment.jsx";
+import { BrowserRouter } from "react-router-dom";
+import "@testing-library/jest-dom";
+import axios from "axios";
+import { getPaymentsByAccountID } from "../apis/paymentApis";
+
+jest.mock("../apis/paymentApis.js");
+
+describe("CustomersPayment", () => {
+   beforeEach(() => {
+      // Reset mocks and clear any previous interactions
+      jest.clearAllMocks();
+   });
+   it("renders without crashing", async () => {
+      render(
+         <BrowserRouter>
+            <CustomersPayment />
+         </BrowserRouter>
+      );
+      // Add assertions based on your component's initial state or rendering logic
+   });
+   it("render all payment when API call succeeds", async () => {
+      const fakeData = [
+         {
+            paymentId: 36,
+            requestId: 13,
+            createdDate: "2024-01-17T19:53:29.6983161",
+            expirationDate: "2024-01-24T19:53:29.6984029",
+            price: 3234.0,
+            status: true,
+            note: "1st payment of 4 payments test edit required on 17/1/2024",
+         },
+         {
+            paymentId: 37,
+            requestId: 13,
+            createdDate: "2024-04-17T19:53:29.7572592",
+            expirationDate: "2024-04-24T19:53:29.7572616",
+            price: 3234.0,
+            status: false,
+            note: "2nd payment of 4 payments test edit required on 17/1/2024",
+         },
+         {
+            paymentId: 38,
+            requestId: 13,
+            createdDate: "2024-07-17T19:53:29.7622826",
+            expirationDate: "2024-07-24T19:53:29.7622853",
+            price: 3234.0,
+            status: false,
+            note: "3rd payment of 4 payments test edit required on 17/1/2024",
+         },
+         {
+            paymentId: 39,
+            requestId: 13,
+            createdDate: "2024-10-17T19:53:29.7647809",
+            expirationDate: "2024-10-24T19:53:29.7647826",
+            price: 3234.0,
+            status: false,
+            note: "4th payment of 4 payments test edit required on 17/1/2024",
+         },
+      ];
+      getPaymentsByAccountID.mockResolvedValue(fakeData);
+
+      render(
+         <BrowserRouter>
+            <CustomersPayment />
+         </BrowserRouter>
+      );
+
+      await waitFor(() => {
+         expect(
+            screen.findByText(
+               "1st payment of 4 payments test edit required on 17/1/2024"
+            )
+         ).toBeInTheDocument();
+         expect(
+            screen.findByText(
+               "2nd payment of 4 payments test edit required on 17/1/2024"
+            )
+         ).toBeInTheDocument();
+         expect(
+            screen.findByText(
+               "3rd payment of 4 payments test edit required on 17/1/2024"
+            )
+         ).toBeInTheDocument();
+         expect(
+            screen.findByText(
+               "4rd payment of 4 payments test edit required on 17/1/2024"
+            )
+         ).toBeInTheDocument();
+         expect(screen.findByText("Completed")).toBeInTheDocument();
+         expect(screen.findByText("$3,234.00")).toBeInTheDocument();
+      });
+   });
+});

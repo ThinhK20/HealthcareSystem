@@ -214,21 +214,66 @@ public class AccountControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType(typeof(OkObjectResult));
     }
-
     [Fact]
-    public async Task AccountController_CreateNewUser_ReturnOk()
+    public async Task AccountController_CreateAccountStaff_NullParameter_ReturnBadRequest()
     {
-        UserDTO account = A.Fake<UserDTO>();
-        UserDTO id = A.Fake<UserDTO>();
-        A.CallTo(() => _userService.CreateUserGoogle(account)).Returns(Task.FromResult(id));
+        // Arrange
+        AccountUserDTO account = null;
 
         // Act
         var controller = GetController();
-        var result = await controller.createNewUser(account);
+        var result = await controller.CreateAccountStaff(account);
 
         // Assert
-        id.Should().NotBeNull();
         result.Should().NotBeNull();
-        result.Should().BeOfType(typeof(OkObjectResult));
+        result.Should().BeOfType<BadRequestResult>();
     }
+    [Fact]
+    public async Task AccountController_CreateAccountStaff_ReturnBadRequest_WhenInvalidRole()
+    {
+        // Arrange
+        var invalidRoleAccount = new AccountUserDTO { /* Set properties with invalid role */ };
+        var controller = GetController();
+
+        // Act
+        var result = await controller.CreateAccountStaff(invalidRoleAccount);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestResult>();
+    }
+
+    [Fact]
+    public async Task AccountController_CreateAccountStaff_ReturnBadRequest_WhenCreateUserFails()
+    {
+        // Arrange
+        var account = new AccountUserDTO { /* Set valid properties */ };
+        A.CallTo(() => _userService.CreateUser(A<UserDTO>._)).Returns(Task.FromResult<UserDTO>(null)); // Simulate createUser failure
+        var controller = GetController();
+
+        // Act
+        var result = await controller.CreateAccountStaff(account);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestResult>();
+    }
+
+    [Fact]
+    public async Task AccountController_CreateAccountStaff_ReturnBadRequest_WhenCreateAccountFails()
+    {
+        // Arrange
+        var account = new AccountUserDTO { /* Set valid properties */ };
+        A.CallTo(() => _accountService.CreateAccountStaff(A<AccountBaseDTO>._, A<string>._)).Returns(Task.FromResult<AccountBaseDTO>(null)); // Simulate createAccountStaff failure
+        var controller = GetController();
+
+        // Act
+        var result = await controller.CreateAccountStaff(account);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<BadRequestResult>();
+    }
+
+
 }

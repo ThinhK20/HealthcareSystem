@@ -98,18 +98,26 @@ function TableInsuranceManagement() {
                                  <thead className="border-b rounded-t-lg text-left">
                                     <tr>
                                        <th
+                                          data-testid="insurance-policy-id-header"
+                                          id="insurance-policy-id-header"
                                           scope="col"
                                           className="rounded-tl-lg text-medium text-blue-600 font-medium px-6 py-4"
                                        >
                                           Insurance Policy ID
                                        </th>
                                        <th
+                                          data-testid="name-header"
+                                          id="name-header"
+                                          htmlFor="name"
                                           scope="col"
                                           className="text-medium text-blue-600 font-medium px-6 py-4"
                                        >
                                           Name
                                        </th>
                                        <th
+                                          data-testid="description-header"
+                                          id="description-header"
+                                          htmlFor="description"
                                           scope="col"
                                           className="text-medium text-blue-600 font-medium px-6 py-4"
                                        >
@@ -145,7 +153,7 @@ function TableInsuranceManagement() {
                                           </td>
                                           <td className="text-large font-normal px-6 py-4 whitespace-nowrap text-right">
                                              <Link
-                                                to={`/insuarancePolices/form`}
+                                                to={`/staffs/insurancePolices/form`}
                                                 state={{
                                                    status: "update",
                                                    id: item.policyID,
