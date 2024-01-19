@@ -89,7 +89,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
-                if (data == null) throw new Exception("Input data empty.");
+                if(data == null) { throw new Exception("error"); }
                 return Ok(await _insuranceRepository.CreateInsurance(data));
             }
             catch (Exception ex)
@@ -104,6 +104,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (data == null) throw new Exception("error");
                 return Ok(await _insuranceRepository.UpdateInsurance(data));
             }
             catch (Exception ex)

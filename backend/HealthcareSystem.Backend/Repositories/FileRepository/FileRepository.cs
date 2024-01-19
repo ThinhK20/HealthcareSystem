@@ -2,6 +2,7 @@
 using CloudinaryDotNet.Actions;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace HealthcareSystem.Backend.Repositories.ImageRepository
 {
@@ -22,8 +23,7 @@ namespace HealthcareSystem.Backend.Repositories.ImageRepository
 
         public async Task<string> UploadFileAsync(FileUploadDTO uploadedFile)
         {
-            try
-            {
+                if (uploadedFile == null) throw new Exception("File null");
                 var file = uploadedFile.File;
                 var uploadResult = new RawUploadResult();
                 if (file.Length > 0)
@@ -38,11 +38,10 @@ namespace HealthcareSystem.Backend.Repositories.ImageRepository
                     }
                 }
                 return uploadResult.Url.ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            
+
+             
+            
         }
     }
 }

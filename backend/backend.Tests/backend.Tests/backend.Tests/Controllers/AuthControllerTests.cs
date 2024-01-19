@@ -56,11 +56,11 @@ public class AuthControllerTests
         RegisterRequestDTO model = A.Fake<RegisterRequestDTO>();
         LoginResponseDTO userLogin = A.Fake<LoginResponseDTO>();
         A.CallTo(() => _accountService.loginByGoogle("fake mail")).Returns(Task.FromResult(userLogin));
-
+        
         // Act
         var controller = GetController();
         var result = await controller.loginByGoogle(model);
-
+        
         // Assert
         userLogin.Should().NotBeNull();
         result.Should().NotBeNull();

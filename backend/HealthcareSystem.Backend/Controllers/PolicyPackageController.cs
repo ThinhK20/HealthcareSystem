@@ -36,6 +36,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (packageId <= 0) return BadRequest();
                 return Ok(await _packagePoliceService.GetPolicyPackageByIdAsync(packageId));
             }
             catch (Exception ex)
@@ -61,6 +62,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if(detailCreate == null) return BadRequest();
                 bool result = await _packagePoliceService.CreateNewPackage(detailCreate);
                 if (result)
                 {
@@ -88,6 +90,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (packagePolicyEdit == null) return BadRequest();
                 bool result = await _packagePoliceService.EditPackage(packagePolicyEdit);
                 if (result)
                 {
@@ -116,6 +119,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (packageId <= 0 )    return BadRequest();
                 bool result = await _packagePoliceService.InActivePackage(packageId);
                 if (result)
                 {
@@ -144,6 +148,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (packageId <= 0) return BadRequest();    
                 bool result = await _packagePoliceService.ActivePackage(packageId);
                 if (result)
                 {

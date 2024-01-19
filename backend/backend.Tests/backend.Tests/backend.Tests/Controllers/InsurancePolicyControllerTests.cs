@@ -181,5 +181,106 @@ public class InsurancePolicyControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType(typeof(ActionResult<InsuarancePolicyCreateDTO>));
     }
+    [Fact]
+    public async Task InsuranePolicyController_DeletePolicy_ReturnBadReq()
+    {
+        var fakePolicy = new InsurancePolicy();
+        int id = 0 ;
 
+        A.CallTo(() => _dbIP.GetAsync(u => u.PolicyID == id, true, null))
+         .Returns(fakePolicy);
+
+        A.CallTo(() => _dbIP.RemoveAsync(fakePolicy)).Returns(Task.CompletedTask);
+
+
+        var controller = new InsuarancePolicyController(_dbIP, _mapper);
+
+        // Act
+        var result = await controller.DeletePolicy(id);
+
+
+        result.Should().NotBeNull();
+        result.Should().BeOfType(typeof(BadRequestResult));
+
+    }
+    [Fact]
+    public async Task InsuranePolicyController_UpdatePolicy_ReturnBadRequest()
+    {
+        var fakePolicy = new InsurancePolicy();
+        var id = 0;
+        var mapper_data = new InsurancePolicy();
+        InsuarancePolicyUpdateDTO policy = A.Fake<InsuarancePolicyUpdateDTO>();
+        InsuarancePolicyUpdateDTO policyUpdate = new InsuarancePolicyUpdateDTO
+        {
+            PolicyID = policy.PolicyID,
+            Name = policy.Name,
+            Description = policy.Description,
+
+        };
+
+        A.CallTo(() => _dbIP.GetAsync(u => u.PolicyID == id, true, null))
+         .Returns(fakePolicy);
+
+
+        A.CallTo(() => _mapper.Map<InsurancePolicy>(policyUpdate)).Returns(mapper_data);
+
+
+        A.CallTo(() => _dbIP.UpdateAsync(mapper_data)).Returns(Task.CompletedTask);
+
+
+        var controller = new InsuarancePolicyController(_dbIP, _mapper);
+
+        // Act
+        var result = await controller.UpdatePolicy(null);
+
+
+        result.Should().NotBeNull();
+        result.Result.Should().BeOfType(typeof(BadRequestResult));
+    }
+    [Fact]
+    public async Task InsuranePolicyController_CreatePolicy_ReturnBadRequset()
+    {
+        var fakePolicy = new InsurancePolicy();
+        int id = 0;
+        var mapper_data = new InsurancePolicy();
+        var api = new InsuarancePolicyCreateDTO();
+
+
+        InsuarancePolicyCreateDTO policy = A.Fake<InsuarancePolicyCreateDTO>();
+        InsuarancePolicyCreateDTO policyUpdate = new InsuarancePolicyCreateDTO
+        {
+            Name = policy.Name,
+            Description = policy.Description,
+
+        };
+
+
+
+        A.CallTo(() => _dbIP.GetLength())
+         .Returns(id);
+
+        id = id + 1;
+
+        InsurancePolicy model = new()
+        {
+
+            Description = policyUpdate.Description,
+            Name = policyUpdate.Name,
+        };
+
+
+        A.CallTo(() => _dbIP.CreateAsync(model)).Returns(Task.CompletedTask);
+
+        A.CallTo(() => _mapper.Map<InsuarancePolicyCreateDTO>(model)).Returns(api);
+
+
+        var controller = new InsuarancePolicyController(_dbIP, _mapper);
+
+        // Act
+        var result = await controller.CreatePolicy(null);
+
+
+        result.Should().NotBeNull();
+        result.Result.Should().BeOfType(typeof(BadRequestResult));
+    }
 }
