@@ -54,10 +54,11 @@ const CustomersPayment = () => {
       //    setFilteredPayments(response);
       //    setData(response.slice(0, 5));
       // });
-
-      setPayments(data.data);
-      setFilteredPayments(data.data);
-      setData(data.data.slice(0, 5));
+      if (data.status === "Success") {
+         setPayments(data.data);
+         setFilteredPayments(data.data);
+         setData(data.data.slice(0, 5));
+      }
    };
 
    useEffect(() => {

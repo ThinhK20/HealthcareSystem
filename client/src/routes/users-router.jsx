@@ -12,7 +12,7 @@ import ProtectLayoutRoute from "../shared/layout/Protect";
 import CheckOut from "../components/payment/checkout";
 import SocialInsuranceForm from "../pages/general/blog";
 import Refund from "../pages/refund/refund";
-
+import InsurancePackage from "../pages/insurancePackage/insurance-package";
 export const UserRoutes = [
    {
       path: "/users/edit-information",
@@ -113,5 +113,9 @@ export const UserRoutes = [
    {
       path: "users/refund",
       element: <LayoutRoute element={<Refund />} allowedRoles={["User"]} />,
+   },
+   {
+      path: "/users/package",
+      element: <LayoutRoute element={<InsurancePackage />} />,
    },
 ];
