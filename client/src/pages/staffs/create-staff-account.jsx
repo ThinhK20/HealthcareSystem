@@ -1,4 +1,5 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
+import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import { CreateNewStaff } from "../../apis/accountApis";
 import LoadingWrapper from "../../components/loading/loading";
@@ -32,7 +33,26 @@ const FormCreateNewStaff = () => {
    const handleFormSubmit = async (e) => {
       e.preventDefault();
       const responseAccount = await CreateNewStaff(formDataAccount);
-      navigateTo("/");
+      if(responseAccount) {
+         toast.success("Create Success", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+         });
+      }
+      else{
+         toast.error("Create Fail", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+         });
+      }
    };
 
    return (

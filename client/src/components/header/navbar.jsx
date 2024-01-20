@@ -221,8 +221,7 @@ export function Navbar() {
                localStorage.getItem("userId")
             );
             localStorage.setItem("accountId", accountId.data);
-            const info = await getAccountByAccountId(accountId.data);
-            localStorage.setItem("Role", info.role);
+
             setUsername(localStorage.getItem("username"));
             setCurrentRole(info.role ? info.role : "All");
             setStateButton(false);
