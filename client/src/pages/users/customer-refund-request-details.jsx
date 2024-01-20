@@ -200,7 +200,11 @@ export default function CustomerRefundRequestDetails() {
                      <Typography variant="h6" color="blue-gray">
                         Total Refund Fee
                      </Typography>
-                     <Typography variant="h6" color="blue-gray">
+                     <Typography
+                        variant="h6"
+                        aria-label="Total-Refund-Fee"
+                        color="blue-gray"
+                     >
                         {formatMoney(data?.totalRefundFee)}
                      </Typography>
                   </>

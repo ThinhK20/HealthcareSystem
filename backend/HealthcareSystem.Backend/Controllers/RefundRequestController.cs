@@ -25,6 +25,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if(refundRequestDTO == null) { return BadRequest(); }
                 return Ok(await _refundRequestService.CreateRefundRequestAsync(refundRequestDTO));
             }
             catch (Exception ex)
@@ -53,6 +54,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (refundId <= 0) { return BadRequest(); }
                 return Ok(await _refundRequestService.GetRefundRequestByIdAsync(refundId));
             }
             catch (Exception ex)
@@ -65,6 +67,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if(accountId <=0) { return BadRequest(); }
                 var result = await _refundRequestService.GetRefundRequestByAccountIdAsync(accountId);
                 return Ok(result.OrderByDescending(rr => rr.DateSend));
             }
@@ -80,6 +83,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (refundId <= 0) {return BadRequest(); }
                 return Ok(await _refundRequestService.AcceptRefundRequestByIdAsync(refundId));
             }
             catch (Exception ex)
@@ -94,6 +98,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (refundId <= 0) {  return BadRequest(); }
                 return Ok(await _refundRequestService.RejectRefundRequestByIdAsync(refundId));
             }
             catch (Exception ex)
@@ -108,6 +113,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (refundId <= 0) { return BadRequest(); }
                 return Ok(await _refundRequestService.PendingRefundRequestByIdAsync(refundId));
             }
             catch (Exception ex)
@@ -123,6 +129,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (refundRequestDTO == null) {  return BadRequest(); }
                 return Ok(await _refundRequestService.UpdateRefundRequestAsync(refundRequestDTO));
             }
             catch (Exception ex)

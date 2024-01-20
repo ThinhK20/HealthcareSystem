@@ -22,6 +22,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (fileUploadDTO == null) { throw new Exception("Null"); }
                 string resultUrl = await _fileRepository.UploadFileAsync(fileUploadDTO);
                 return Ok(resultUrl);
             }

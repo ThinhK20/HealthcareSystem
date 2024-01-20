@@ -77,12 +77,14 @@ export default function CustomerRequestManagement() {
    }, [searchInput, paginationIndex]);
 
    function filterTableRows(rowsData) {
-      return rowsData?.filter((r) =>
-         r.user.username
-            .toLowerCase()
-            .includes(
-               searchInput.toLowerCase() || r.staff?.username.toLowerCase()
-            )
+      return rowsData?.filter(
+         (r) =>
+            r?.user?.username
+               ?.toLowerCase()
+               ?.includes(searchInput.toLowerCase()) ||
+            r?.staff?.username
+               ?.toLowerCase()
+               ?.includes(searchInput.toLowerCase())
       );
    }
 

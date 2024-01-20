@@ -25,15 +25,12 @@ function TableInsuranceManagement() {
    const handlePageChange = (newPage) => {
       const startIndex = (newPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      if(searchInput.length == 0 ){
+      if (searchInput.length == 0) {
          setData(dataFilter.slice(startIndex, endIndex));
-
-      }
-      else{
+      } else {
          setData(dataAfterFilter.slice(startIndex, endIndex));
-
       }
-      setNewPage(newPage)
+      setNewPage(newPage);
    };
 
    const getData = async () => {
@@ -57,19 +54,16 @@ function TableInsuranceManagement() {
       getData();
    }, []);
    useEffect(() => {
-
       const startIndex = (newPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      console.log("Start: ", startIndex, "End: ", endIndex)
+      console.log("Start: ", startIndex, "End: ", endIndex);
       const newdata = dataFilter.filter(
          (item) =>
             item.name.toLowerCase().includes(searchInput) ||
             item.description.toLowerCase().includes(searchInput)
-      )
-      setData(
-         newdata.slice(startIndex , endIndex)
       );
-      setDataAfterFilter(newdata)
+      setData(newdata.slice(startIndex, endIndex));
+      setDataAfterFilter(newdata);
    }, [searchInput]);
    return (
       <>
@@ -78,7 +72,7 @@ function TableInsuranceManagement() {
                <div>
                   <Link
                      type="button"
-                     to={`/insurancePolices/form`}
+                     to={`/staffs/insurancePolices/form`}
                      state={{ status: "create" }}
                      className=" text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                   >
@@ -104,18 +98,26 @@ function TableInsuranceManagement() {
                                  <thead className="border-b rounded-t-lg text-left">
                                     <tr>
                                        <th
+                                          data-testid="insurance-policy-id-header"
+                                          id="insurance-policy-id-header"
                                           scope="col"
                                           className="rounded-tl-lg text-medium text-blue-600 font-medium px-6 py-4"
                                        >
-                                          Insuarance Policy ID
+                                          Insurance Policy ID
                                        </th>
                                        <th
+                                          data-testid="name-header"
+                                          id="name-header"
+                                          htmlFor="name"
                                           scope="col"
                                           className="text-medium text-blue-600 font-medium px-6 py-4"
                                        >
                                           Name
                                        </th>
                                        <th
+                                          data-testid="description-header"
+                                          id="description-header"
+                                          htmlFor="description"
                                           scope="col"
                                           className="text-medium text-blue-600 font-medium px-6 py-4"
                                        >
@@ -151,7 +153,7 @@ function TableInsuranceManagement() {
                                           </td>
                                           <td className="text-large font-normal px-6 py-4 whitespace-nowrap text-right">
                                              <Link
-                                                to={`/insuarancePolices/form`}
+                                                to={`/staffs/insurancePolices/form`}
                                                 state={{
                                                    status: "update",
                                                    id: item.policyID,
@@ -261,7 +263,11 @@ function TableInsuranceManagement() {
             </section>
             <div className="flex justify-center items-center text-center">
                <Pagination
-                  totalItems={searchInput.length == 0 ? dataFilter.length : dataAfterFilter.length}
+                  totalItems={
+                     searchInput.length == 0
+                        ? dataFilter.length
+                        : dataAfterFilter.length
+                  }
                   itemsPerPage={itemsPerPage}
                   onPageChange={handlePageChange}
                />

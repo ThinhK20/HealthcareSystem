@@ -19,17 +19,32 @@ public class FileControllerTests
     public async Task FileController_UploadFile_ReturnOk()
     {
         FileUploadDTO fileUploadDto = A.Fake<FileUploadDTO>();
-        string resultUrl = A.Fake<string>();
+        string resultUrl = "";
         A.CallTo(() => _fileRepository.UploadFileAsync(fileUploadDto)).Returns(Task.FromResult(resultUrl));
-        
+
         // Act
         var controller = new FileController(_fileRepository);
         var result = await controller.UploadFile(fileUploadDto);
-        
+
         // Assert
         resultUrl.Should().NotBeNull();
         result.Should().NotBeNull();
-        result.Should().BeOfType(typeof(OkObjectResult));
+        result.Should().BeOfType(typeof(ActionResult<string>));
     }
-    
+    [Fact]
+    public async Task FileController_UploadFile_BadRequestObjectResult()
+    {
+        FileUploadDTO fileUploadDto = null;
+        string resultUrl = "";
+        A.CallTo(() => _fileRepository.UploadFileAsync(fileUploadDto)).Returns(Task.FromResult(resultUrl));
+
+        // Act
+        var controller = new FileController(_fileRepository);
+        var result = await controller.UploadFile(fileUploadDto);
+
+        result.Should().NotBeNull();
+        result.Result.Should().BeOfType<BadRequestObjectResult>();
+        
+
+    }
 }

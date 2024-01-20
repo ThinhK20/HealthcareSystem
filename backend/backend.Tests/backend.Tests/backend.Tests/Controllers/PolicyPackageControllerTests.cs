@@ -57,7 +57,22 @@ namespace backend.Tests.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType(typeof(OkObjectResult));
         }
+        [Fact]
+        public async Task PolicyPackageController_GetPolicyPackageById_ReturnBadRequest()
+        {
 
+            var packageId = -1;
+            var package = A.Fake<PolicyPackageDomain>();
+            A.CallTo(() => _packagePoliceService.GetPolicyPackageByIdAsync(packageId)).Returns(Task.FromResult(package));
+            var controller = new PolicyPackageController(_packagePoliceService);
+
+
+            var result = await controller.GetPolicyPackageById(packageId);
+
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(BadRequestResult));
+        }
         [Fact]
         public async Task PolicyPackageController_CreateNewPackage_ReturnOk()
         {
@@ -73,7 +88,21 @@ namespace backend.Tests.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType(typeof(OkObjectResult));
         }
+        [Fact]
+        public async Task PolicyPackageController_CreateNewPackage_ReturnBadRequest()
+        {
 
+            PackagePolicyCreateDTO packageCreateDTO =null;
+            A.CallTo(() => _packagePoliceService.CreateNewPackage(packageCreateDTO)).Returns(Task.FromResult(true));
+            var controller = new PolicyPackageController(_packagePoliceService);
+
+
+            var result = await controller.CreateNewPackage(packageCreateDTO);
+
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(BadRequestResult));
+        }
         [Fact]
         public async Task PolicyPackageController_EditPackage_ReturnOk()
         {
@@ -89,7 +118,21 @@ namespace backend.Tests.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType(typeof(OkObjectResult));
         }
+        [Fact]
+        public async Task PolicyPackageController_EditPackage_ReturnBadRequest()
+        {
 
+            PackagePolicyEditDTO packageEditDTO = null;
+            A.CallTo(() => _packagePoliceService.EditPackage(packageEditDTO)).Returns(Task.FromResult(true));
+            var controller = new PolicyPackageController(_packagePoliceService);
+
+
+            var result = await controller.EditPackage(packageEditDTO);
+
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(BadRequestResult));
+        }
         [Fact]
         public async Task PolicyPackageController_InActivePackage_ReturnOk()
         {
@@ -105,7 +148,21 @@ namespace backend.Tests.Controllers
             result.Should().NotBeNull();
             result.Should().BeOfType(typeof(OkObjectResult));
         }
+        [Fact]
+        public async Task PolicyPackageController_InActivePackage_ReturnBadRequest()
+        {
 
+            var packageId = -1;
+            A.CallTo(() => _packagePoliceService.InActivePackage(packageId)).Returns(Task.FromResult(true));
+            var controller = new PolicyPackageController(_packagePoliceService);
+
+
+            var result = await controller.InActivePackage(packageId);
+
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(BadRequestResult));
+        }
         [Fact]
         public async Task PolicyPackageController_ActivePackage_ReturnOk()
         {
@@ -120,6 +177,21 @@ namespace backend.Tests.Controllers
 
             result.Should().NotBeNull();
             result.Should().BeOfType(typeof(OkObjectResult));
+        }
+        [Fact]
+        public async Task PolicyPackageController_ActivePackage_ReturnsBadRequest()
+        {
+
+            var packageId = -1;
+            A.CallTo(() => _packagePoliceService.ActivePackage(packageId)).Returns(Task.FromResult(true));
+            var controller = new PolicyPackageController(_packagePoliceService);
+
+
+            var result = await controller.ActivePackage(packageId);
+
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(BadRequestResult));
         }
     }
 }

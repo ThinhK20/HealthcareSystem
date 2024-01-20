@@ -26,6 +26,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (payment == null) return BadRequest("Dont Find payment");
                 var result = await _paymentRepository.CreatePayment(payment);
                 if (result != null)
                 {
@@ -47,6 +48,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (paymentId <= 0) return BadRequest("Input Invalid");
                 var result = await _paymentRepository.UpdateStatus(paymentId);
                 if (result)
                 {
@@ -68,6 +70,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if(paymentId <=0) return BadRequest("Failed to delete payment.");
                 var result = await _paymentRepository.DeletePaymentByIdAsync(paymentId);
                 if (result)
                 {
@@ -103,6 +106,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (requestID <= 0) return BadRequest("Fail");
                 var payments = await _paymentRepository.GetPaymentByRequestID(requestID);
                 return Ok(payments);
             }
@@ -118,6 +122,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if(paymentId <= 0) return NotFound();
                 var payment = await _paymentRepository.GetPaymentIdAsync(paymentId);
                 if (payment != null)
                 {
@@ -138,6 +143,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (InsureID <= 0) return BadRequest("Invalid Input");
                 var payment = await _insuranceDetailRepository.GetByIdAsync(InsureID);
                 if (payment != null)
                 {
@@ -159,6 +165,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (AccountId <= 0) return BadRequest();
                 var paymentInfo = await _paymentRepository.GetPaymentByUserID(AccountId);
                 return Ok(paymentInfo);
             }
@@ -174,6 +181,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (info == null) return BadRequest();
                 var checkInfo = await _paymentRepository.GetCheckOutLink(info);
                 return Ok(checkInfo);
             }
@@ -189,6 +197,8 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (token == null || PayerID == null) return BadRequest();
+                
                 var test = await _paymentRepository.ConfirmPayment(token, PayerID);
                 if (test == true) return Ok("Done");
                 else return BadRequest("Error");

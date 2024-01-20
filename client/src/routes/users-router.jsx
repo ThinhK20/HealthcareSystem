@@ -8,43 +8,115 @@ import CustomersPayment from "../pages/users/payment";
 import { CustomerRefundRequestManagement } from "../pages/users/customer-refund-requests";
 import CustomerRefundRequestDetails from "../pages/users/customer-refund-request-details";
 import UserRequestDetail from "../pages/users/request-detail";
+import ProtectLayoutRoute from "../shared/layout/Protect";
+import CheckOut from "../components/payment/checkout";
+import SocialInsuranceForm from "../pages/general/blog";
+import Refund from "../pages/refund/refund";
 import InsurancePackage from "../pages/insurancePackage/insurance-package";
 export const UserRoutes = [
    {
       path: "/users/edit-information",
-      element: <LayoutRoute element={<EditInformation />} />,
+      element: (
+         <ProtectLayoutRoute
+            element={<EditInformation />}
+            allowedRoles={["User"]}
+         />
+      ),
    },
    {
       path: "/users/edit-account",
-      element: <LayoutRoute element={<EditAccount />} />,
+      element: (
+         <ProtectLayoutRoute
+            element={<EditAccount />}
+            allowedRoles={["User"]}
+         />
+      ),
    },
    {
       path: "/users/customer-requests",
-      element: <LayoutRoute element={<CustomerRequestManagement />} />,
+      element: (
+         <ProtectLayoutRoute
+            element={<CustomerRequestManagement />}
+            allowedRoles={["User"]}
+         />
+      ),
    },
    {
       path: "/users/refund-requests",
-      element: <LayoutRoute element={<CustomerRefundRequestManagement />} />,
+      element: (
+         <ProtectLayoutRoute
+            element={<CustomerRefundRequestManagement />}
+            allowedRoles={["User"]}
+         />
+      ),
    },
    {
       path: "/users/refund-requests/create",
-      element: <LayoutRoute element={<RefundRequestForm />} />,
+      element: (
+         <ProtectLayoutRoute
+            element={<RefundRequestForm />}
+            allowedRoles={["User"]}
+         />
+      ),
    },
    {
       path: "/users/refund-requests/:id",
-      element: <LayoutRoute element={<CustomerRefundRequestDetails />} />,
+      element: (
+         <ProtectLayoutRoute
+            element={<CustomerRefundRequestDetails />}
+            allowedRoles={["User"]}
+         />
+      ),
    },
    {
       path: "/users/refund-requests/edit/:id",
-      element: <LayoutRoute element={<CustomerRefundRequestDetails />} />,
+      element: (
+         <ProtectLayoutRoute
+            element={<CustomerRefundRequestDetails />}
+            allowedRoles={["User"]}
+         />
+      ),
    },
    {
       path: "/users/customer-requests/create",
-      element: <LayoutRoute element={<CustomerRequestForm />} />,
+      element: (
+         <ProtectLayoutRoute
+            element={<CustomerRequestForm />}
+            allowedRoles={["User"]}
+         />
+      ),
    },
    {
       path: "/users/payment",
-      element: <LayoutRoute element={<CustomersPayment />} />,
+      element: (
+         <ProtectLayoutRoute
+            element={<CustomersPayment />}
+            allowedRoles={["User"]}
+         />
+      ),
+   },
+   {
+      path: "/payment/checkout",
+      element: (
+         <ProtectLayoutRoute element={<CheckOut />} allowedRoles={["User"]} />
+      ),
+   },
+   {
+      path: "users/social-insurance-form",
+      element: (
+         <LayoutRoute
+            element={<SocialInsuranceForm />}
+            allowedRoles={["User"]}
+         />
+      ),
+   },
+   {
+      path: "users/refund",
+      element: <LayoutRoute element={<Refund />} allowedRoles={["User"]} />,
+   },
+   {
+      path: "/users/package",
+      element: <LayoutRoute element={<InsurancePackage />} />,
    },
    {
       path: "/users/package",
