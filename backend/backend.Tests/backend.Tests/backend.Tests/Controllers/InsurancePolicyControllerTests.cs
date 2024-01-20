@@ -182,7 +182,7 @@ public class InsurancePolicyControllerTests
         result.Should().BeOfType(typeof(ActionResult<InsuarancePolicyCreateDTO>));
     }
     [Fact]
-    public async Task InsuranePolicyController_DeletePolicy_ReturnBadReq()
+    public async Task InsuranePolicyController_DeletePolicy_ReturnBadRequest()
     {
         var fakePolicy = new InsurancePolicy();
         int id = 0 ;

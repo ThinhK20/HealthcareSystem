@@ -251,7 +251,7 @@ namespace backend.Tests.Controllers
         public async Task PaymentsController_CheckPayPal_ReturnOK()
         {
           
-            int accountId = -1;
+            int accountId = 1;
             var paymentInfo = new List<PaymentOfUserDTO> { /* Add some fake data for paymentInfo */ };
             A.CallTo(() => _paymentService.GetPaymentByUserID(accountId)).Returns(Task.FromResult(paymentInfo));
 
@@ -262,9 +262,25 @@ namespace backend.Tests.Controllers
 
         
             result.Should().NotBeNull();
-            result.Should().BeOfType(typeof(BadRequestObjectResult));
+            result.Should().BeOfType(typeof(OkObjectResult));
         }
+        [Fact]
+        public async Task PaymentsController_CheckPayPal_ReturnBadRequset()
+        {
 
+            int accountId = -1;
+            var paymentInfo = new List<PaymentOfUserDTO> { /* Add some fake data for paymentInfo */ };
+            A.CallTo(() => _paymentService.GetPaymentByUserID(accountId)).Returns(Task.FromResult(paymentInfo));
+
+            var controller = new PaymentsController(_paymentService, _insuranceDetailRepository);
+
+
+            var result = await controller.CheckPayPal(accountId);
+
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(BadRequestResult));
+        }
         [Fact]
         public async Task PaymentsController_GetLinkCheckOut_ReturnOK()
         {
@@ -276,7 +292,7 @@ namespace backend.Tests.Controllers
             var controller = new PaymentsController(_paymentService, _insuranceDetailRepository);
 
     
-            var result = await controller.CheckPayPal(null);
+            var result = await controller.CheckPayPal(checkPayPalInfoDTO);
 
         
             result.Should().NotBeNull();
