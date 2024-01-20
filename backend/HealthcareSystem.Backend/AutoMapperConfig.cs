@@ -46,7 +46,17 @@ namespace HealthcareSystem.Backend
             // Refund Details
             CreateMap<RefundDetailDomain, RefundDetail>().ReverseMap();
             CreateMap<CreateRefundDetailDTO, RefundDetailDomain>().ReverseMap();
-                
+            CreateMap<CustomerInquiryDTO, CustomerInquiry>().ReverseMap();
+
+            CreateMap<CustomerInquiryResponeDTO, CustomerInquiry>()
+                .ForMember(dest => dest.InquiryID, opt => opt.MapFrom(src => src.InquiryID))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.DateQuestion, opt => opt.MapFrom(src => src.DateQuestion))
+                .ForMember(dest => dest.Question, opt => opt.MapFrom(src => src.Question))
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
+                .ForPath(dest => dest.Account.User.Fullname, opt => opt.MapFrom(src => src.StaffName)).ReverseMap();
 
             CreateMap<InsurancePolicy, InsuarancePolicyDTO>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))

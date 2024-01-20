@@ -8,7 +8,6 @@ namespace HealthcareSystem.Backend.Controllers
 {
     [Route("api/policy-packages/")]
     [ApiController]
-    [Authorize]
     public class PolicyPackageController : ControllerBase
     {
         private readonly IPackagePoliceService _packagePoliceService;
@@ -32,6 +31,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("{id:int}")]
+        
         public async Task<IActionResult> GetPolicyPackageById([FromRoute(Name = "id")] int packageId)
         {
             try

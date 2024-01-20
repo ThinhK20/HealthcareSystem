@@ -192,6 +192,7 @@ export default function Login() {
       document.cookie = `token = ${loginAPI.token};expires = ${time}`;
       localStorage.setItem("userId", userInfo.userId);
       localStorage.setItem("username", usernameRef.current?.value);
+      localStorage.setItem("fullname", userInfo.fullname);
 
       toast.success("Login successfully !", {
         position: "top-right",

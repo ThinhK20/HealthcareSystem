@@ -22,7 +22,7 @@ export default function CreatePackageForm() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const [load, setLoad] = useState(true);
+  const [load, setLoad] = useState(false);
   const [policy, setPolicy] = useState([]);
   const [listPolicy, setListPolicy] = useState([]);
   const [listBasicPrice, setListBasicPrice] = useState([]);
@@ -216,8 +216,10 @@ export default function CreatePackageForm() {
   useEffect(() => {
     async function getData() {
       const temp = await getAllPolicy();
-      console.log(temp);
-      setPolicy(temp);
+      if (temp.status === "Success"){
+        setPolicy(temp.data);
+        setLoad(true)
+      }
     }
     getData();
   }, []);
@@ -391,7 +393,7 @@ export default function CreatePackageForm() {
                                 Material Tailwind Svelte
                               </Option> */}
 
-                              {policy.map((p, index) => {
+                              {policy?.map((p, index) => {
                                 return (
                                   <Option key={index} value={p.policyID}>
                                     {p.name}

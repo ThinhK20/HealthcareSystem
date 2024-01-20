@@ -61,6 +61,7 @@ builder.Services.AddScoped<IEmailVerificationRepository, EmailVerificationReposi
 builder.Services.AddScoped<IPackageDetailRepository, PackageDetailRepository>();
 builder.Services.AddScoped<ITokenRepository, JWTRepository>();
 builder.Services.AddScoped<IRefundDetailRepository, RefundDetailRepository>();
+builder.Services.AddScoped<ICustomerInquiryRepository, CustomerInquiryRepository>();
 
 
 

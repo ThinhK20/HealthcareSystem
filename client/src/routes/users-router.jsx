@@ -8,6 +8,7 @@ import CustomersPayment from "../pages/users/payment";
 import { CustomerRefundRequestManagement } from "../pages/users/customer-refund-requests";
 import CustomerRefundRequestDetails from "../pages/users/customer-refund-request-details";
 import UserRequestDetail from "../pages/users/request-detail";
+import InsurancePackage from "../pages/insurancePackage/insurance-package";
 export const UserRoutes = [
    {
       path: "/users/edit-information",
@@ -44,5 +45,9 @@ export const UserRoutes = [
    {
       path: "/users/payment",
       element: <LayoutRoute element={<CustomersPayment />} />,
+   },
+   {
+      path: "/users/package",
+      element: <LayoutRoute element={<InsurancePackage />} />,
    },
 ];

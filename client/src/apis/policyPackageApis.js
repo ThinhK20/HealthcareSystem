@@ -49,9 +49,16 @@ export const getAllPackageById = async (id) => {
 export const getAllPolicy = async () => {
   try {
     const response = await instance2.get();
-    return response.data;
+    return {
+      status: "Success",
+      data: response.data
+    }
   } catch (error) {
     console.error("Error occurred while fetching account details", error);
+    return {
+      status: "Fail",
+      
+    }
   }
 };
 

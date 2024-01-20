@@ -1,15 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace HealthcareSystem.Backend.Models.Entity
+﻿namespace HealthcareSystem.Backend.Models.DTO
 {
-    public class CustomerInquiry
+    public class CustomerInquiryResponeDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int InquiryID { get; set; }
-
-        public int? StaffId { get; set; }
         public string? FullName { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
@@ -19,7 +12,6 @@ namespace HealthcareSystem.Backend.Models.Entity
         public string? Question { get; set; }
         public string? Status { get; set; }
 
-        public virtual Account Account { get; set; }
-
+        public string? StaffName { get; set; }
     }
 }

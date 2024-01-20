@@ -134,6 +134,11 @@ namespace HealthcareSystem.Backend.Data
                 .WithMany(ip => ip.RefundDetails)
                 .HasForeignKey(rd => rd.PolicyId);
 
+            modelBuilder.Entity<CustomerInquiry>()
+                .HasOne(ci => ci.Account)
+                .WithMany(ac => ac.CustomerInquiries)
+                .HasForeignKey(ci => ci.StaffId);
+
 
         }
     }

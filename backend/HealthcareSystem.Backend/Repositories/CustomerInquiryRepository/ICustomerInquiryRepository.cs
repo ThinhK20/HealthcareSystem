@@ -7,6 +7,8 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
     {
 
         public Task<CustomerInquiryDTO> CreateInquiry(Models.DTO.CustomerInquiryDTO data);
+        public Task<List<CustomerInquiryResponeDTO>> GetAllInquiry();
+        public Task<bool> solveInquiry(InquirySolveDTO data);
 
     }
 }

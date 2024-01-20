@@ -16,6 +16,7 @@ import Statistic from "../components/statistic/statistic";
 import { IndexFunction } from "../pages/staffs";
 import EditInformation from "../pages/staffs/edit-information";
 import EditAccount from "../pages/staffs/edit-account";
+import ViewInquiry from "../pages/staffs/view-inquiry";
 export const StaffRoutes = [
    {
       path: "/staffs",
@@ -82,5 +83,9 @@ export const StaffRoutes = [
    {
       path: "/staffs/statistic",
       element: <LayoutRoute element={<Statistic />}></LayoutRoute>,
+   },
+   {
+      path: "/staffs/inquiry",
+      element: <LayoutRoute element={<ViewInquiry />}></LayoutRoute>,
    },
 ];

@@ -4,6 +4,7 @@ using HealthcareSystem.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthcareSystem.Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240118103234_Add staffid to inquiry")]
+    partial class Addstaffidtoinquiry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +114,7 @@ namespace HealthcareSystem.Backend.Migrations
                     b.Property<string>("Question")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StaffId")
+                    b.Property<int>("StaffId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -545,7 +548,9 @@ namespace HealthcareSystem.Backend.Migrations
                 {
                     b.HasOne("HealthcareSystem.Backend.Models.Entity.Account", "Account")
                         .WithMany("CustomerInquiries")
-                        .HasForeignKey("StaffId");
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Account");
                 });

@@ -22,10 +22,10 @@ namespace HealthcareSystem.Backend.Controllers
      
         }
 
-
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CustomerInquiryDTO model)
         {
+            
             var inquiry = await _customerInquiryRepository.CreateInquiry(model);
             if (inquiry == null)
             {
@@ -33,6 +33,37 @@ namespace HealthcareSystem.Backend.Controllers
             }
 
             return Ok(inquiry);
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+
+            try
+            {
+                var listInquiry = await _customerInquiryRepository.GetAllInquiry();
+
+                return Ok(listInquiry);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("solveInquiry")]
+        public async Task<IActionResult> GetAll([FromBody] InquirySolveDTO inquirySolveDTO)
+        {
+
+            try
+            {
+                var test = await _customerInquiryRepository.solveInquiry(inquirySolveDTO);
+
+                return Ok("Success");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
     }
