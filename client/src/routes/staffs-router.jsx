@@ -66,6 +66,10 @@ export const StaffRoutes = [
     ),
   },
   {
+    path: "/staffs/insurances",
+    element: <LayoutRoute element={<Insurance   allowedRoles={["Normal Staff","Admin"]} />} />,
+  },
+  {
     path: "/staffs/insurances/edit",
     element: <LayoutRoute element={<FormUpdate />}   allowedRoles={["Normal Staff","Admin"]}/>,
   },
@@ -146,8 +150,5 @@ export const StaffRoutes = [
     path: "/insurancePolicies",
     element: <LayoutRoute element={<TableInsuranceManagement   allowedRoles={["Normal Staff","Admin"]} />} />,
   },
-  {
-    path: "/insurances",
-    element: <LayoutRoute element={<Insurance   allowedRoles={["Normal Staff","Admin"]} />} />,
-  },
+  
 ];

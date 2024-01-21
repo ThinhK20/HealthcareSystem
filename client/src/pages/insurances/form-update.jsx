@@ -19,16 +19,19 @@ export default function FormUpdate() {
 
    const handleSubmit = async (e) => {
       e.preventDefault();
+      let startDateTemp = new Date(startDate)
+      console.log(startDateTemp)
       const data_update = {
          insuranceID: id,
          registerPlace: registerPlaceRef.current.value,
          cardOpenDate:
-            startDate.getFullYear() +
+            startDateTemp.getFullYear() +
             "-" +
-            (startDate.getMonth() + 1) +
+            (startDateTemp.getMonth() + 1) +
             "-" +
-            startDate.getDate(),
+            startDateTemp.getDate(),
       };
+      
       console.log("Submitttttttt: ", data_update);
       const api_update = await updateInsurance(data_update);
       console.log(22222222222, api_update);
@@ -42,7 +45,7 @@ export default function FormUpdate() {
          draggable: true,
       });
       setTimeout(() => {
-         navigateTo("/insurances");
+         navigateTo("/staffs/insurances");
       }, 3000);
    };
    useEffect(() => {

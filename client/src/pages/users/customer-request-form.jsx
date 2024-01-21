@@ -43,10 +43,11 @@ export default function CustomerRequestForm() {
    }, []);
 
    const handleSubmit = (e) => {
+      console.log(dataCheck)
       if (dataCheck === false) {
          e.preventDefault();
          toast.warning(
-            "You must enter complete information to register for insurance",
+            "Contact to staffs to fill in information",
             {
                position: "top-right",
                autoClose: 2000,
@@ -56,6 +57,10 @@ export default function CustomerRequestForm() {
                draggable: true,
             }
          );
+         setTimeout(() => {
+            navigate("/information-company")
+         }, 3000);
+         
       } else {
          e.preventDefault();
          const formData = new FormData(e.target);

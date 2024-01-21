@@ -23,7 +23,7 @@ export default function Home() {
       <>
          <div className=" min-h-screen overflow-hidden text-center w-full">
             <Carousel className=" h-[500px]" autoplay loop>
-               {imagesHeader.map((item, key) => (
+               {/* {imagesHeader.map((item, key) => (
                   <div key={key} className="relative h-full w-full">
                      <img
                         src={item}
@@ -55,7 +55,7 @@ export default function Home() {
                         </div>{" "}
                      </div>
                   </div>
-               ))}
+               ))} */}
             </Carousel>
             <div className="w-full flex justify-center">
                <Typography

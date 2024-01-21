@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { formatDate, formatMoney } from "../../helpers/dataHelper";
 import { Button, Typography } from "@material-tailwind/react";
 import {
@@ -10,13 +9,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Chip } from "@material-tailwind/react";
 import { getCustomerRequestByIdApi } from "../../apis/customerRequestApis";
 import { getPaymentsByID } from "../../apis/paymentApis";
+import { Link, useParams } from "react-router-dom";
 const UserRequestDetail = () => {
    const [data, setData] = useState();
    const [dropPayment, SetDropPaymet] = useState(false);
    const [paymentDetail, setPaymentDetail] = useState(null);
-
+   const { id } = useParams();
    useEffect(() => {
-      getCustomerRequestByIdApi(10)
+      getCustomerRequestByIdApi(id)
          .then((result) => {
             setData(result);
             getPaymentsByID(result.requestID)

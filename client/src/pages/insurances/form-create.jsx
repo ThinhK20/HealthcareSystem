@@ -49,7 +49,7 @@ export default function FormCreate() {
          draggable: true,
       });
       setTimeout(() => {
-         navigateTo("/insurances");
+         navigateTo("/staffs/insurances");
       }, 3000);
    };
    useEffect(() => {

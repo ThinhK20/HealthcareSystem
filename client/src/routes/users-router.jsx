@@ -111,6 +111,15 @@ export const UserRoutes = [
       ),
    },
    {
+      path: "users/requests-detail/:id",
+      element: (
+         <LayoutRoute
+            element={<UserRequestDetail />}
+            allowedRoles={["User"]}
+         />
+      ),
+   },
+   {
       path: "users/refund",
       element: <LayoutRoute element={<Refund />} allowedRoles={["User"]} />,
    },

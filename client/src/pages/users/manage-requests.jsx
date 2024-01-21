@@ -320,7 +320,7 @@ export default function CustomerRequestManagement() {
                                     <PencilIcon className="h-4 w-4" />
                                  </IconButton>
                               </Tooltip>
-                              <Link to={`/users/requests-detail`}>
+                              <Link to={`/users/requests-detail/${tableRow.requestID}`}>
                                  <Tooltip title="View details">
                                     <IconButton variant="text">
                                        <FontAwesomeIcon

@@ -48,7 +48,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("customerRequestsByAccId/{id:int}")]
-        [Authorize(Roles = Roles.CustomerCareRole + "," + Roles.AccountantRole + "," + Roles.NormalStaffRole + "," + Roles.AdminRole + "," + Roles.UserRole + "," + Roles.TestRole)]
+        //[Authorize(Roles = Roles.CustomerCareRole + "," + Roles.AccountantRole + "," + Roles.NormalStaffRole + "," + Roles.AdminRole + "," + Roles.UserRole + "," + Roles.TestRole)]
         public async Task<IActionResult> GetAllCustomerRequestsByAccId([FromRoute(Name = "id")] int accountId)
         {
             try
@@ -63,7 +63,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
         
         [HttpGet("customerRequests/{id:int}")]
-        [Authorize(Roles = Roles.TestRole + Roles.AdminRole + Roles.NormalStaffRole)]
+        [Authorize(Roles = Roles.TestRole + "," + Roles.AdminRole + "," + Roles.NormalStaffRole + "," +Roles.UserRole)]
         public async Task<IActionResult> GetCustomerRequestById([FromRoute(Name = "id")] int requestId)
         {
             try
