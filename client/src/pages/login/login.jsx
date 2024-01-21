@@ -205,7 +205,7 @@ export default function Login() {
          setTimeout(() => {
             if (info.role === AccountType.NormalStaff) navigateTo("/staffs");
             else navigateTo("/");
-            navigateTo(0);
+            // navigateTo(0);
          }, 3000);
       }
    };
