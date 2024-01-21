@@ -159,5 +159,22 @@ namespace backend.Tests.Controllers
             result.Should().NotBeNull();
             result.Result.Should().BeOfType<BadRequestObjectResult>();
         }
+
+        [Fact]
+        public async Task InsuranceController_Delete_ReturnBadRequest()
+        {
+            var insuranceId = -1;
+            var fakeInsurance = A.Fake<InsuranceDomain>();
+
+            A.CallTo(() => _insuranceRepository.Delete(insuranceId)).Returns(Task.FromResult(fakeInsurance));
+
+
+
+            var controller = GetController();
+            var result = await controller.Delete(insuranceId);
+
+            result.Should().NotBeNull();
+            result.Result.Should().BeOfType<BadRequestResult>();
+        }
     }
 }

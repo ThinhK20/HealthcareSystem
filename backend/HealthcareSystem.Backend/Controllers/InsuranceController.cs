@@ -74,6 +74,7 @@ namespace HealthcareSystem.Backend.Controllers
         {
             try
             {
+                if (insuranceId <= 0) return BadRequest();
                 return Ok(await _insuranceRepository.Delete(insuranceId));
             }
             catch (Exception ex)

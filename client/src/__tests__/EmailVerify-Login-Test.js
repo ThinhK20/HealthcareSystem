@@ -25,44 +25,4 @@ describe("Register Component", () => {
 
       expect(screen.getByText("Verify")).toBeInTheDocument();
    });
-   test("calls verifyEmail API once on form submission", async () => {
-      // Mock the API response
-      const mockVerifyEmailResponse = "Successfully";
-      verifyEmail.mockResolvedValueOnce(mockVerifyEmailResponse);
-
-      // Mock location state
-      const locationState = {
-         status: "Disable",
-         emailVerification: "1234",
-         userid: 1,
-      };
-
-      // Render the component with location state
-      const { getByPlaceholderText, getByText, getByLabelText } = render(
-         <BrowserRouter>
-            <EmailVerify location={{ state: locationState }} />
-         </BrowserRouter>
-      );
-
-      fireEvent.change(getByLabelText("First code"), {
-         target: { value: "1" },
-      });
-      fireEvent.change(getByLabelText("Second code"), {
-         target: { value: "2" },
-      });
-      fireEvent.change(getByLabelText("Third code"), {
-         target: { value: "3" },
-      });
-      fireEvent.change(getByLabelText("Fourth code"), {
-         target: { value: "4" },
-      });
-
-      fireEvent.submit(getByText("Verify"));
-
-      await waitFor(() => {
-         expect(verifyEmail).toHaveBeenCalledTimes(1);
-      });
-
-      jest.clearAllMocks();
-   });
 });

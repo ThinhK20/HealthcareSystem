@@ -17,6 +17,7 @@ import {
    getAccountByAccountId,
 } from "../../apis/accountApis";
 import backgroundImg from "../../../public/background.svg";
+import { AccountType } from "../../enums/account-type";
 function generateRandomString(length) {
    const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -198,8 +199,11 @@ export default function Login() {
             pauseOnHover: true,
             draggable: true,
          });
+         const info = await getAccountByAccountId(usernameRef.current?.value);
+         localStorage.setItem("Role", info.role);
          setTimeout(() => {
-            navigateTo("/");
+            if(info.role ===  AccountType.NormalStaff) navigateTo('/staffs')
+            else navigateTo("/");
             navigateTo(0);
          }, 3000);
       }
