@@ -17,6 +17,7 @@ import {
    faEye,
    faFilter,
    faPencil,
+   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -298,9 +299,9 @@ export function ManageAccount() {
                                        </Tooltip>
                                     </Link>
                                     <Link
-                                       to={`/users/edit-account/${tableRow.accountId}`}
+                                       to={`/staffs/edit-account/${tableRow.accountId}`}
                                     >
-                                       <Tooltip title="Edit">
+                                       <Tooltip title="Edit Account">
                                           <IconButton variant="text">
                                              <FontAwesomeIcon
                                                 className="h-4 w-4"
@@ -310,9 +311,21 @@ export function ManageAccount() {
                                        </Tooltip>
                                     </Link>
                                     <Link
+                                       to={`/staffs/edit-information/${tableRow.accountId}`}
+                                    >
+                                       <Tooltip title="Edit Information">
+                                          <IconButton variant="text">
+                                             <FontAwesomeIcon
+                                                className="h-4 w-4"
+                                                icon={faUser}
+                                             />
+                                          </IconButton>
+                                       </Tooltip>
+                                    </Link>
+                                    <Link
                                        to={`/staffs/payment?acc=${tableRow.accountId}`}
                                     >
-                                       <Tooltip title="Paymnet">
+                                       <Tooltip title="Payment">
                                           <IconButton variant="text">
                                              <FontAwesomeIcon
                                                 className="h-4 w-4"

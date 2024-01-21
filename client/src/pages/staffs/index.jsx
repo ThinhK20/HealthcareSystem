@@ -3,7 +3,7 @@ import CongratCard from "../../components/card/congratcard";
 
 export function IndexFunction() {
    return (
-      <div className="grid grid-cols-3 w-full m-auto gap-10">
+      <div className="grid lg:grid-cols-3 grid-cols-1  w-full m-auto gap-10">
          <div className="m-auto">
             <CongratCard
                title="Manage Accounts"
