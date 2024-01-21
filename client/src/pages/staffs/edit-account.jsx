@@ -51,7 +51,7 @@ const EditAccount = () => {
       username: "",
       password: "",
       status: "Active",
-      role: "Customer",
+      role: "User",
    });
    const [formDataPUT, setFormDataPUT] = useState({
       accountId: "",
@@ -59,7 +59,7 @@ const EditAccount = () => {
       username: "",
       password: "",
       status: "Active",
-      role: "Customer",
+      role: "User",
    });
 
 
@@ -85,7 +85,7 @@ const EditAccount = () => {
                username: userStaffData?.username || "",
                password: "",
                status: userStaffData?.status || "Active",
-               role: userStaffData?.role || "Customer",
+               role: userStaffData?.role || "User",
             }));
          });
       };

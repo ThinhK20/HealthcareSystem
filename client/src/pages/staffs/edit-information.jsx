@@ -45,7 +45,7 @@ const EditInformation = () => {
   useEffect(() => {
 
     const fetchUserStaffData = async () => {
-      const accountID = await getAccountByUserID(params.id);
+      const accountID = params.id;
       try {
         const userStaffData = await getAccountsInformation(accountID);
         setFormDataAccount({

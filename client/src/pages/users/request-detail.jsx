@@ -10,6 +10,7 @@ import { Chip } from "@material-tailwind/react";
 import { getCustomerRequestByIdApi } from "../../apis/customerRequestApis";
 import { getPaymentsByID } from "../../apis/paymentApis";
 import { Link, useParams } from "react-router-dom";
+import ButtonStepper from "../../components/card/news";
 const UserRequestDetail = () => {
    const [data, setData] = useState();
    const [dropPayment, SetDropPaymet] = useState(false);
@@ -264,7 +265,7 @@ const UserRequestDetail = () => {
                            <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2"></div>
                         </div>
                      </div>
-
+                     <ButtonStepper item={data?.status} />
                      <div className="mt-8 sm:mt-12">
                         <h4 className="text-lg font-semibold text-gray-800 dr:text-gray-200">
                            Thank you!
