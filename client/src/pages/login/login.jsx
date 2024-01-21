@@ -203,7 +203,7 @@ export default function Login() {
          const account = await getAccountByAccountId(info.data);
          localStorage.setItem("Role", account.role);
          setTimeout(() => {
-            if (info.role === AccountType.NormalStaff) navigateTo("/staffs");
+            if (account.role === AccountType.NormalStaff) navigateTo("/staffs");
             else navigateTo("/");
             // navigateTo(0);
          }, 3000);

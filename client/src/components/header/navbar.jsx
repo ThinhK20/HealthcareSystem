@@ -206,7 +206,8 @@ export function Navbar() {
   const [detail, setDetail] = useState();
   const [username, setUsername] = useState();
   const [stateButton, setStateButton] = useState(true);
-  const [length, setLength] = useState();
+  const [arr, setArr] = useState();
+
   useEffect(() => {
     const Decode = async () => {
       const token = getCookie("token");
@@ -232,16 +233,8 @@ export function Navbar() {
 
     Decode();
   }, [localStorage.getItem("userId")]);
-  const handleHover = (drop, ct) => {
-    if (drop == true) {
-      setDetail(ct);
-      setLength(Math.ceil(ct.length / 3));
-      console.log("CT: ", ct);
-    }
-  };
 
 
-  const numberOfClusters = Math.ceil(items.length / 3);
 
   // Function to split items into clusters
   const splitIntoClusters = (arr, chunkSize) => {
@@ -252,13 +245,20 @@ export function Navbar() {
 
     console.log(result, 99999999999999)
     return result;
-
     
   };
 
-  // Split items into clusters
-  const itemClusters = splitIntoClusters(items, 3);
 
+  const handleHover = (drop, ct) => {
+    if (drop == true) {
+      setDetail(ct);
+      setArr(splitIntoClusters(ct, 3));
+      console.log("CT: ", ct);
+    }
+  };
+
+
+  
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 h-full ">
       {routes
@@ -325,21 +325,21 @@ export function Navbar() {
                           <span className="font-[600]">{item.name}</span>
                         </Link>
                     </div> */}
-                    {itemClusters.map((cluster, clusterIndex) => (
-        <div key={clusterIndex} className="flex gap-4">
-          {cluster.map((item, itemIndex) => (
-            <div key={itemIndex} className="items-center text-[16px] min-w-[300px] p-3 z-10 hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg bg-white">
-              <Link to={item.path} className="flex gap-4">
-                <div className="bg-gray-100 p-3 rounded-lg">
-                  {/* Assuming FontAwesomeIcon is imported properly */}
-                  <FontAwesomeIcon icon={item.icon} />
-                </div>
-                <span className="font-[600]">{item.name}</span>
-              </Link>
-            </div>
-          ))}
-        </div>
-      ))}
+                    {arr.map((cluster, clusterIndex) => (
+                  <div key={clusterIndex} className="flex gap-4">
+                    {cluster.map((item, itemIndex) => (
+                      <div key={itemIndex} className="items-center text-[16px] min-w-[300px] p-3 z-10 hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg bg-white">
+                        <Link to={item.path} className="flex gap-4">
+                          <div className="bg-gray-100 p-3 rounded-lg">
+                            {/* Assuming FontAwesomeIcon is imported properly */}
+                            <FontAwesomeIcon icon={item.icon} />
+                          </div>
+                          <span className="font-[600]">{item.name}</span>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                ))}
                   </div>
                     ) : (
                       <Link
