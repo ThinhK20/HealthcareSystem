@@ -207,7 +207,6 @@ export function Navbar() {
   const [username, setUsername] = useState();
   const [stateButton, setStateButton] = useState(true);
   const [arr, setArr] = useState();
-
   useEffect(() => {
     const Decode = async () => {
       const token = getCookie("token");
@@ -239,11 +238,11 @@ export function Navbar() {
   const splitIntoClusters = (arr, chunkSize) => {
     const result = [];
     for (let i = 0; i < arr.length; i += chunkSize) {
-      console.log(222222222, 33333)
       result.push(arr.slice(i, i + chunkSize));
     }
 
-    console.log(result, 99999999999999)
+    console.log(result, 999999)
+
     return result;
     
   };
@@ -252,6 +251,15 @@ export function Navbar() {
   const handleHover = (drop, ct) => {
     if (drop == true) {
       setDetail(ct);
+      if(ct[0].path.includes("/users/package")){
+        const size = ct.length;
+        const chunkSize = Math.ceil(size / 3);
+        console.log("chunk size: ", chunkSize, size)
+        setDetail(ct.slice(0, 1));
+      }
+      else{
+        setDetail(ct);
+      }
       setArr(splitIntoClusters(ct, 3));
       console.log("CT: ", ct);
     }
@@ -299,7 +307,7 @@ export function Navbar() {
                       
                       <div class = "flex flex-row">
                         {arr.map((cluster, clusterIndex) => (
-                      <div key={clusterIndex} className="flex gap-4">
+                      <div key={clusterIndex} className="">
                         {cluster.map((item, itemIndex) => (
                           <div key={itemIndex} className="items-center text-[16px] min-w-[300px] p-3 z-10 hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg bg-white">
                             <Link to={item.path} className="flex gap-4">
