@@ -127,6 +127,7 @@ namespace HealthcareSystem.Backend.Services.PaymentService
             if (result == true)
             {
                 int requestId = await _paymentRepository.UpdatePayPalComplete(token, updatedDate);
+                
                 var listPayment = await _paymentRepository.GetAllPayment(requestId);
                 var listAccept = listPayment.FindAll(x => x.Status == true);
                 if (listAccept.Count == listPayment.Count)
