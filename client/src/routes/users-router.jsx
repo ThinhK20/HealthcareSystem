@@ -119,10 +119,7 @@ export const UserRoutes = [
          />
       ),
    },
-   {
-      path: "users/refund",
-      element: <LayoutRoute element={<Refund />} allowedRoles={["User"]} />,
-   },
+
    {
       path: "/users/package",
       element: <LayoutRoute element={<InsurancePackage />} />,
