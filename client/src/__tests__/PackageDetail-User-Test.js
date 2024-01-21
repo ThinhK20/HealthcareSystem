@@ -91,18 +91,20 @@ jest.mock("../apis/policyPackageApis.js", () => ({
    getAllPackageById: jest.fn(() => fakeData),
 }));
 
+
 describe("PackageDetailUser", () => {
    beforeEach(() => {
       // Reset mocks and clear any previous interactions
       jest.clearAllMocks();
    });
-   it("renders without crashing", async () => {
+   it("renders without data", async () => {
       render(
          <BrowserRouter>
             <InsurancePackage />
          </BrowserRouter>
       );
       // Add assertions based on your component's initial state or rendering logic
+      expect(screen.getByTestId('loading')).toBeInTheDocument();
    });
    it("render all payment when API call succeeds", async () => {
       render(
@@ -112,7 +114,7 @@ describe("PackageDetailUser", () => {
       );
 
       await waitFor(() => {
-         expect(screen.findByText("2. Test2: 1111")).toBeInTheDocument();
+         expect(screen.getByText("2.", {exact:false})).toHaveTextContent('2. Test2: 1111');
          expect(screen.getByText("54%")).toBeInTheDocument();
          expect(screen.getByText("$1,100.00")).toBeInTheDocument();
       });

@@ -23,48 +23,56 @@ import { formatMoney } from "../../helpers/dataHelper";
 
 function InsurancePackage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [data, setData] = useState(null);
-  const [load, setLoad] = useState(false);
+  const [data, setData] = useState({});
+  const [load, setLoad] = useState({});
 
   const initialized = useRef(false);
 
   const getData = async (packageId) => {
     const data = await getAllPackageById(packageId);
+    data.basicPrices.sort((a, b) => {
+      // Compare based on firstValue
+      if (a.gender < b.gender) return -1;
+      if (a.gender > b.gender) return 1;
+
+      // If firstValue is equal, compare based on secondValue
+      if (a.fromAge < b.fromAge) return -1;
+      if (a.fromAge > b.fromAge) return 1;
+
+      // If both firstValue and secondValue are equal
+      return 0;
+    });
     console.log(data);
-    setData(data === undefined ? null : data);
+    setData(data === undefined ? {} : data);
   };
 
   useEffect(() => {
-    if (!initialized.current) {
-      initialized.current = true;
-      const packageId = searchParams.get("packageId");
-      if (packageId != null) {
-        getData(packageId);
-      }
-    }
+    const packageId = searchParams.get("packageId");
+
+    getData(packageId);
   }, []);
 
-  useEffect(() => {
-    if (data !== null) {
-      data.basicPrices.sort((a, b) => {
-        // Compare based on firstValue
-        if (a.gender < b.gender) return -1;
-        if (a.gender > b.gender) return 1;
+  // useEffect(() => {
+  //   if (data !== null) {
+  //     data.basicPrices.sort((a, b) => {
+  //       // Compare based on firstValue
+  //       if (a.gender < b.gender) return -1;
+  //       if (a.gender > b.gender) return 1;
 
-        // If firstValue is equal, compare based on secondValue
-        if (a.fromAge < b.fromAge) return -1;
-        if (a.fromAge > b.fromAge) return 1;
+  //       // If firstValue is equal, compare based on secondValue
+  //       if (a.fromAge < b.fromAge) return -1;
+  //       if (a.fromAge > b.fromAge) return 1;
 
-        // If both firstValue and secondValue are equal
-        return 0;
-      });
-      setLoad(true);
-    }
-  }, [data]);
+  //       // If both firstValue and secondValue are equal
+  //       return 0;
+  //     });
+  //     setLoad(true);
+  //   }
+  // }, [data]);
 
   return (
     <>
-      {load !== false ? (
+      {Object.keys(data).length > 0 ? (
         <div className="container   mx-auto px-4 md:px-6 lg:px-12">
           <section className="mb-20 text-gray-800">
             <div className="block rounded-lg  bg-white">
@@ -78,7 +86,7 @@ function InsurancePackage() {
                           fontWeight={600}
                           className="text-[#1A1446]  w-fit py-[2px]"
                         >
-                          Package {data.name} detail
+                          Package {data?.name} detail
                         </Typography>
                       </div>
                       <table className="min-w-full text-left text-sm font-light shadow-lg">
@@ -208,9 +216,6 @@ function InsurancePackage() {
           <LoadingData></LoadingData>
         </>
       )}
-
-      {/* <ToastContainer />
-         <LoadingWrapper open={loading} /> */}
     </>
   );
 }

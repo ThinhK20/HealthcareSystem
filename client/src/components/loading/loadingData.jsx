@@ -1,7 +1,7 @@
 const LoadingData = () => {
     return (
        <>
-          <div className="w-full h-full">
+          <div className="w-full h-full" data-testid="loading">
              <div className="animate-pulse flex flex-col items-center gap-4 w-full h-full">
                 <div>
                    <div className="w-48 h-6 bg-slate-400 rounded-md"></div>

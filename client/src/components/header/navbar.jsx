@@ -21,6 +21,7 @@ import { getAccounts } from "../../apis/accountApis";
 import { getAccountByUserID } from "../../apis/accountApis";
 import { getAccountByAccountId } from "../../apis/accountApis";
 import { AccountType } from "../../enums/account-type";
+import {getCookie} from "../../helpers/getCookie";
 const routes = [
    {
       role: [AccountType.User, AccountType.Test],
@@ -204,11 +205,7 @@ export function Navbar() {
    const [username, setUsername] = useState();
    const [stateButton, setStateButton] = useState(true);
 
-   function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(";").shift();
-   }
+   
    useEffect(() => {
       const Decode = async () => {
          const token = getCookie("token");
@@ -220,8 +217,11 @@ export function Navbar() {
             const accountId = await getAccountByUserID(
                localStorage.getItem("userId")
             );
+            console.log(accountId)
             localStorage.setItem("accountId", accountId.data);
             const info = await getAccountByAccountId(accountId.data);
+            console.log(info)
+
             localStorage.setItem("Role", info.role);
             setUsername(localStorage.getItem("username"));
             setCurrentRole(info.role ? info.role : "All");
@@ -257,7 +257,7 @@ export function Navbar() {
                      to={path}
                      className="relative z-[100000000] group px-4 py-2 transition-all duration-300 ease-in-out bg-transparent border-b-1 border-transparent hover:border-black"
                   >
-                     <span className="relative z-10 font-medium"> {name}</span>
+                     <span className="relative z-10 font-medium" data-testid = {name.toLowerCase()}> {name}</span>
                      <span className="absolute w-full inset-x-0 bottom-0  h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out group-hover:min-w-full"></span>
                   </Link>
                   {dropdown === true && (
@@ -276,7 +276,7 @@ export function Navbar() {
                                     <div className="bg-gray-100 p-3 rounded-lg">
                                        <FontAwesomeIcon icon={item.icon} />
                                     </div>
-                                    <span className="font-[600]">
+                                    <span className="font-[600]" >
                                        {item.name}
                                     </span>
                                  </Link>
@@ -337,7 +337,7 @@ export function Navbar() {
 
             <div className="hidden gap-2 lg:flex">
                {stateButton ? (
-                  <>
+                  <div className="flex" data-testid="notLogin">
                      <Link to="/register">
                         <Button
                            variant="text"
@@ -357,9 +357,9 @@ export function Navbar() {
                            Login
                         </Button>
                      </Link>
-                  </>
+                  </div>
                ) : (
-                  <>
+                  <div className="flex" data-testid="login">
                      <p className="font-serif border-b-2 border-gray-800 mr-10">
                         Hi, {username}
                      </p>
@@ -379,7 +379,7 @@ export function Navbar() {
                            Log out
                         </Button>
                      </Link>
-                  </>
+                  </div>
                )}
             </div>
 
