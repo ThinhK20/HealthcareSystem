@@ -199,10 +199,11 @@ export default function Login() {
             pauseOnHover: true,
             draggable: true,
          });
-         const info = await getAccountByAccountId(usernameRef.current?.value);
-         localStorage.setItem("Role", info.role);
+         const info = await getAccountByUserID(userInfo.userId);
+         const account = await getAccountByAccountId(info.data);
+         localStorage.setItem("Role", account.role);
          setTimeout(() => {
-            if(info.role ===  AccountType.NormalStaff) navigateTo('/staffs')
+            if (info.role === AccountType.NormalStaff) navigateTo("/staffs");
             else navigateTo("/");
             navigateTo(0);
          }, 3000);
