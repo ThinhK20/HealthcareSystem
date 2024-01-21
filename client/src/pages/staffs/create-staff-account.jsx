@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CreateNewStaff } from "../../apis/accountApis";
 import LoadingWrapper from "../../components/loading/loading";
 import { useNavigate } from "react-router-dom";
+import { AccountType } from "../../enums/account-type";
 const FormCreateNewStaff = () => {
    const navigateTo = useNavigate();
    const [formDataAccount, setFormDataAccount] = useState({
@@ -11,7 +12,7 @@ const FormCreateNewStaff = () => {
       username: "",
       password: "",
       status: "Active",
-      role: "Staff",
+      role: AccountType.User,
       fullname: "",
       email: "",
       cccd: "",
@@ -111,7 +112,7 @@ const FormCreateNewStaff = () => {
                                  className=" block flex-1 border-0 bg-transparent py-1.5 pl-[10px] text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                  placeholder="janesmith"
                                  value={formDataAccount.password}
-                                 onChange={handleInputChangeAccount}
+                                 onChange={e=>handleInputChangeAccount(e)}
                               />
                            </div>
                         </div>
@@ -133,9 +134,10 @@ const FormCreateNewStaff = () => {
                               value={formDataAccount.role}
                               onChange={handleInputChangeAccount}
                            >
-                              <option defaultChecked>Customer</option>
-                              <option>Staff</option>
-                              <option>Security</option>
+                              <option value={AccountType.User} defaultChecked>User</option>
+                              <option value={AccountType.NormalStaff}>Normal Staff</option>
+                              <option value={AccountType.CustomerCare}>Customer Care</option>
+                              <option value={AccountType.Admin}>Admin</option>
                            </select>
                         </div>
                      </div>

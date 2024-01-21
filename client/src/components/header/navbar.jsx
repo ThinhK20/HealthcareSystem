@@ -290,7 +290,6 @@ export function Navbar() {
             {dropdown === true && (
               <div
                 className="w-full transition-[700] hidden absolute hover-to-show  h-full -bottom-4 right-full   z-50 px-4 py-8 pt-20"
-                onMouseEnter={() => setOpenMenu(true)}
               >
                 <div className="flex flex-col  bg-transparent  last:rounded-b-lg">
                   {detail?.map((item, key) => (

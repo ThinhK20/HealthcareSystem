@@ -10,7 +10,7 @@ import CustomerRefundRequestDetails from "../pages/users/customer-refund-request
 import UserRequestDetail from "../pages/users/request-detail";
 import ProtectLayoutRoute from "../shared/layout/Protect";
 import CheckOut from "../components/payment/checkout";
-import SocialInsuranceForm from "../pages/general/blog";
+import SocialInsuranceForm from "../pages/general/insuranceForm";
 import Refund from "../pages/refund/refund";
 import InsurancePackage from "../pages/insurancePackage/insurance-package";
 export const UserRoutes = [
@@ -106,7 +106,7 @@ export const UserRoutes = [
       element: (
          <LayoutRoute
             element={<SocialInsuranceForm />}
-            allowedRoles={["User"]}
+            allowedRoles={["User","Normal Staff"]}
          />
       ),
    },

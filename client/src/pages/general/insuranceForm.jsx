@@ -107,7 +107,9 @@ const SocialInsuranceForm = () => {
               </div>
             </div>
           </div>
-
+          {
+            packagePolicy ? (
+              <>
           <div className="py-6 border-b border-gray-100 da:border-gray-800">
             <div className="w-full md:w-9/12">
               <div className="flex flex-wrap -m-3">
@@ -282,7 +284,7 @@ const SocialInsuranceForm = () => {
                 </div>
                 <div className="w-full p-3 md:w-auto">
                   <img
-                    src="https://i.postimg.cc/bNyr5cJq/pexels-anastasia-shuraeva-5704720.jpg"
+                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
                     alt=""
                     className="object-cover w-24 h-24 rounded-full"
                   />
@@ -291,6 +293,14 @@ const SocialInsuranceForm = () => {
               </div>
             </div>
           </div>
+</>
+            ):(
+              <p>
+              You have not yet signed up for our insurance, please sign up for an insurance plan and come back later
+              </p>
+            )
+          }
+
         </div>
       </div>
     </section>

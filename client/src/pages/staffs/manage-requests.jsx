@@ -291,12 +291,12 @@ export default function StaffCustomerRequestManagement() {
                                  </div>
                               </td>
                               <td className={classes}>
-                                 <Link to={`/staffs/payment`}>
+                                 <Link to={`/staffs/payment?acc=${tableRow?.user?.accountId}`}>
                                     <Tooltip title="View details">
                                        <IconButton variant="text">
                                           <FontAwesomeIcon
                                              className="h-4 w-4"
-                                             icon={faEye}
+                                             icon={faMoneyBill}
                                           />
                                        </IconButton>
                                     </Tooltip>
@@ -309,7 +309,7 @@ export default function StaffCustomerRequestManagement() {
                                        <IconButton variant="text">
                                           <FontAwesomeIcon
                                              className="h-4 w-4"
-                                             icon={faMoneyBill}
+                                             icon={faEye}
                                           />
                                        </IconButton>
                                     </Tooltip>

@@ -340,7 +340,9 @@ namespace HealthcareSystem.Backend.Services.AccountService
         public async Task<object> getInsuranceDetailsByAccountId(int accountId)
         {
             var insuranceData = await _insuranceRepository.GetInsuranceByAccountIdAsync(accountId);
+            if (insuranceData == null) throw new Exception("Dont find account");
             var listPackageOfInsuranceData = await _insuranceDetailRepository.GetDetailByIdAsync(insuranceData.InsuranceID);
+            
             var dataReturn = new 
             {
                 insuranceInfo = insuranceData,
