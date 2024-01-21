@@ -263,7 +263,7 @@ namespace HealthcareSystem.Backend.Services.AccountService
             var insuranceCardData = new InsuranceDTO()
             {
                 AccountId = idAccount.AccountId,
-                CardOpenDate = DateTime.Today.ToString(),
+                CardOpenDate = DateTime.Today.ToString("yyyy-M-d"),
                 RegisterPlace = "Ho Chi Minh"
             };
 

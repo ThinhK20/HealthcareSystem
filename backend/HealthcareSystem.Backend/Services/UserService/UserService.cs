@@ -3,6 +3,8 @@ using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
+using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
+using HealthcareSystem.Backend.Repositories.InsuranceRepository;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,15 +19,17 @@ namespace HealthcareSystem.Backend.Services.UserService
         private readonly IUserRepository _userRepository;
         private readonly IHealthRecordRepository _healthRecordRepository;
         private readonly IFeeAffectRepository _feeAffectRepository;
+        private readonly IInsuranceDetailRepository _insuranceDetailRepository;
+        private readonly IInsuranceRepository _insuranceRepository;
 
-
-        public UserService(ICustomerRequestRepository customerRequestRepository, IUserRepository userRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository)
+        public UserService(ICustomerRequestRepository customerRequestRepository, IUserRepository userRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository, IInsuranceDetailRepository insuranceDetailRepository, IInsuranceRepository insuranceRepository)
         {
             _customerRequestRepository = customerRequestRepository;
             _userRepository = userRepository;
             _healthRecordRepository = healthRecordRepository;
             _feeAffectRepository = feeAffectRepository;
-
+            _insuranceDetailRepository = insuranceDetailRepository;
+            _insuranceRepository = insuranceRepository;
         }
 
         public async Task<CustomerRequestCreateDTO> CreateCustomerRequestAsync(CustomerRequestCreateDTO customerRequest)
@@ -78,7 +82,17 @@ namespace HealthcareSystem.Backend.Services.UserService
 
         public async Task<bool> AcceptCustomerRequest(int Accept, int StaffId)
         {
-            return await _customerRequestRepository.AcceptCustomerRequest(Accept,StaffId);
+            var result = await _customerRequestRepository.AcceptCustomerRequest(Accept,StaffId);
+            var insuranceInfo = await _insuranceRepository.GetInsuranceByAccountIdAsync((int)result.accountId);
+            var insuranceDetail = new InsuranceDetailDomain()
+            {
+                PackageID = result.packageId,
+                InsureID = insuranceInfo.InsuranceID,
+                DateStart = result.acceptAt,
+                DateEnd = null,
+            };
+            await _insuranceDetailRepository.AddInsuranceDatail(insuranceDetail);
+            return true;
         }
         public async Task<bool> RefusedCustomerRequest(int id)
         {

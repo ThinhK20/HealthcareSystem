@@ -63,7 +63,7 @@ namespace HealthcareSystem.Backend.Repositories
         {
             return _mapper.Map<CustomerRequestDomain>(await GetAsync(x => x.RequestID == requestId, true, "Account,Staff,Payment,PolicyPackage"));
         }
-        public async Task<bool> AcceptCustomerRequest(int Accept,int StaffId)
+        public async Task<AcceptCustomerRequestResponeDomain> AcceptCustomerRequest(int Accept,int StaffId)
         {
             var ctm_request = await GetAsync(x => x.RequestID == Accept,true, "PolicyPackage");
             if (ctm_request.Status != "Pending Confirmation") throw new Exception("Accepted");
@@ -98,7 +98,11 @@ namespace HealthcareSystem.Backend.Repositories
                 await _paymentService.CreatePayment(pay);
             }
             await UpdateAsync(ctm_request);
-            return true;
+            
+            return  new AcceptCustomerRequestResponeDomain { 
+                packageId = ctm_request.PackageId,
+                accountId = ctm_request.AccountId
+            };
         }
         public async Task<bool> RefusedCustomerRequest(int id)
         {

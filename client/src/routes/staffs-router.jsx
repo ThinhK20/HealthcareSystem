@@ -68,7 +68,7 @@ export const StaffRoutes = [
   },
   {
     path: "/staffs/insurances",
-    element: <LayoutRoute element={<Insurance   allowedRoles={["Normal Staff","Admin"]} />} />,
+    element: <ProtectLayoutRoute element={<Insurance />} allowedRoles={["Normal Staff","Admin"]}  />,
   },
   {
     path: "/staffs/insurances/edit",

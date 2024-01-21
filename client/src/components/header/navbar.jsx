@@ -236,10 +236,10 @@ export function Navbar() {
 
 
 
-  // Function to split items into clusters
   const splitIntoClusters = (arr, chunkSize) => {
     const result = [];
     for (let i = 0; i < arr.length; i += chunkSize) {
+      console.log(222222222, 33333)
       result.push(arr.slice(i, i + chunkSize));
     }
 
@@ -298,7 +298,21 @@ export function Navbar() {
                     {item.path.includes("/users/package") ? (
                       
                       <div class = "flex flex-row">
-                        
+                        {arr.map((cluster, clusterIndex) => (
+                      <div key={clusterIndex} className="flex gap-4">
+                        {cluster.map((item, itemIndex) => (
+                          <div key={itemIndex} className="items-center text-[16px] min-w-[300px] p-3 z-10 hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg bg-white">
+                            <Link to={item.path} className="flex gap-4">
+                              <div className="bg-gray-100 p-3 rounded-lg">
+                                {/* Assuming FontAwesomeIcon is imported properly */}
+                                <FontAwesomeIcon icon={item.icon} />
+                              </div>
+                              <span className="font-[600]">{item.name}</span>
+                            </Link>
+                          </div>
+                        ))}
+        </div>
+      ))}
                       {/* <div>
 
                         <Link
@@ -324,22 +338,8 @@ export function Navbar() {
                           </div>
                           <span className="font-[600]">{item.name}</span>
                         </Link>
-                    </div> */}
-                    {arr.map((cluster, clusterIndex) => (
-                  <div key={clusterIndex} className="flex gap-4">
-                    {cluster.map((item, itemIndex) => (
-                      <div key={itemIndex} className="items-center text-[16px] min-w-[300px] p-3 z-10 hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg bg-white">
-                        <Link to={item.path} className="flex gap-4">
-                          <div className="bg-gray-100 p-3 rounded-lg">
-                            {/* Assuming FontAwesomeIcon is imported properly */}
-                            <FontAwesomeIcon icon={item.icon} />
-                          </div>
-                          <span className="font-[600]">{item.name}</span>
-                        </Link>
-                      </div>
-                    ))}
-                  </div>
-                ))}
+                    </div>  */}
+                    
                   </div>
                     ) : (
                       <Link
