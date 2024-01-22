@@ -83,7 +83,7 @@ const EditAccount = () => {
           accountId: userStaffData?.accountId || "",
           userId: userStaffData?.userId || "",
           username: userStaffData?.username || "",
-          password: "",
+          password: userStaffData?.password || "",
           status: userStaffData?.status || "Active",
           role: userStaffData?.role || "User",
         }));
