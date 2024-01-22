@@ -50,15 +50,17 @@ namespace HealthcareSystem.Backend.Services.AccountService
         public async Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc,string email)
         {
             var result = await _accountRepository.CreateAccountStaff(acc, email);
-
-            var insuranceCardData = new InsuranceDTO()
+            if(result.Role == "User")
             {
-                AccountId = result.AccountId,
-                CardOpenDate = DateTime.Today.ToString("yyyy-M-d"),
-                RegisterPlace = "Ho Chi Minh"
-            };
+                var insuranceCardData = new InsuranceDTO()
+                {
+                    AccountId = result.AccountId,
+                    CardOpenDate = DateTime.Today.ToString("yyyy-M-d"),
+                    RegisterPlace = "Ho Chi Minh"
+                };
 
-            await _insuranceRepository.CreateInsurance(insuranceCardData);
+                await _insuranceRepository.CreateInsurance(insuranceCardData);
+            }
             return result;
         }
 
