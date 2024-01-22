@@ -251,7 +251,7 @@ const EditAccount = () => {
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Bạn có chắc muốn thay đổi mật khẩu cũ không ?
+            Are you sure you want to change your old password?
             </DialogContentText>
           </DialogContent>
           <DialogActions>

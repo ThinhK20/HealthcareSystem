@@ -70,14 +70,14 @@ const EditAccount = () => {
                updateAccountsPassword(formDataPUT).then((result) => {
                   if (result != null) {
                      setMessage("");
-                     setMessageSuccess("Thay đổi mật khẩu thành công");
+                     setMessageSuccess("Information changed successfully");
                   } else {
-                     setMessage("Thay đổi không thành công");
+                     setMessage("Change information failed");
                   }
                });
             } catch {
                // Xử lý lỗi
-               setMessage("Thay đổi không thành công");
+               setMessage("Change information failed");
             }
          }
       }
@@ -285,7 +285,7 @@ const EditAccount = () => {
                </DialogTitle>
                <DialogContent>
                   <DialogContentText>
-                     Bạn có chắc muốn thay đổi mật khẩu cũ không ?
+                  Are you sure you want to change your old password?
                   </DialogContentText>
                </DialogContent>
                <DialogActions>
