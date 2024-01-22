@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace HealthcareSystem.Backend.Controllers
 {
@@ -26,6 +28,19 @@ namespace HealthcareSystem.Backend.Controllers
             try
             {
                 return Ok(await _userService.CreateCustomerRequestAsync(customerRequest));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("customerRequests/price")]
+        [Authorize(Roles = Roles.UserRole + "," + Roles.TestRole)]
+        public async Task<IActionResult> GetPriceForUser([FromQuery] int accountId,[FromQuery]int packageId, [FromQuery] string periodic)
+        {
+            try
+            {
+                return Ok(await _userService.GetPriceForUser(accountId, packageId, periodic));
             }
             catch (Exception ex)
             {

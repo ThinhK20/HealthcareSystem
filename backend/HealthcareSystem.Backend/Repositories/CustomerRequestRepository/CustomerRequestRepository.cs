@@ -127,5 +127,16 @@ namespace HealthcareSystem.Backend.Repositories
             await UpdateAsync(ctm_request);
             return true;
         }
+
+        public async Task<double> getPriceForUser(int accountId, int packageId, string periodic)
+        {
+            int month = 0;
+            if (periodic == Periodic.Quarter) { month = 3; }
+            if (periodic == Periodic.HalfYear) month = 6;
+            if (periodic == Periodic.Year) month = 12;
+            double price = await _priceCalculate.CalculatePriceByPeriod(accountId, packageId, month);
+            price = price * (12 / month);
+            return price;
+        }
     }
 }
