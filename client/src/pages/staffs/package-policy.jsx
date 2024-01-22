@@ -20,7 +20,7 @@ function PackagePolicy() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [newPage, setNewPage] = useState(0);
+  const [newPage, setNewPage] = useState(1);
 
   const [dataFilter, setDataFilter] = useState([]);
   const [dataAfterFilter, setDataAfterFilter] = useState([]);
@@ -59,9 +59,7 @@ function PackagePolicy() {
 
   };
 
-  useEffect(()=>{
-    console.log(loading)
-  },[loading])
+  
 
   const handleInActive = async (id, index) => {
     setLoading(true);

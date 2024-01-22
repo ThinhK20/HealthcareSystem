@@ -273,18 +273,18 @@ export default function CustomerRequestManagement() {
                               </div>
                            </td>
                          <td className={classes}>
-                              <Link to={`/users/payment`}>
-                                 <Tooltip title="View payment details">
+                              <Link to={`/users/requests-detail/${tableRow.requestID}`}>
+                                 <Tooltip title="View details">
                                     <IconButton variant="text">
                                        <FontAwesomeIcon
                                           className="h-4 w-4"
-                                          icon={faEye}
+                                          icon={faEye }
                                        />
                                     </IconButton>
                                  </Tooltip>
                               </Link>
-                              <Link to={`/users/requests-detail/${tableRow.requestID}`}>
-                                 <Tooltip title="View details">
+                              <Link to={`/users/payment`}>
+                                 <Tooltip title="View payment details">
                                     <IconButton variant="text">
                                        <FontAwesomeIcon
                                           className="h-4 w-4"

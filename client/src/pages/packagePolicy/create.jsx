@@ -216,9 +216,9 @@ export default function CreatePackageForm() {
   useEffect(() => {
     async function getData() {
       const temp = await getAllPolicy();
-      if (temp.status === "Success"){
+      if (temp.status === "Success") {
         setPolicy(temp.data);
-        setLoad(true)
+        setLoad(true);
       }
     }
     getData();
@@ -235,7 +235,8 @@ export default function CreatePackageForm() {
           <div className="relative py-3  sm:mx-auto w-3/4">
             <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
               <div className=" mx-auto">
-              <Link className="mb-5 " to={`/staffs/package-policy`}>
+                <div className="w-fit ml-auto">
+                  <Link className="mb-5 " to={`/staffs/package-policy`}>
                     <button
                       type="button"
                       className=" ml-auto w-full flex items-center justify-center  px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
@@ -257,6 +258,7 @@ export default function CreatePackageForm() {
                       <span>Go back</span>
                     </button>
                   </Link>
+                </div>
                 <div className="flex items-center space-x-5">
                   <div className="block pl-2 font-semibold text-xl self-start text-gray-700">
                     <h2 className="leading-relaxed text-blue-600 text-4xl">
@@ -289,7 +291,9 @@ export default function CreatePackageForm() {
                             className="pt-2 text-sm text-yellow-800 rounded-lg "
                             role="alert"
                           >
-                            <span className="font-medium">Please check name</span>
+                            <span className="font-medium">
+                              Please check name
+                            </span>
                           </div>
                         )}
                       </div>
@@ -472,7 +476,6 @@ export default function CreatePackageForm() {
                                 Max Refund Per Request($)
                               </label>
                             </div>
-                            
                           </div>
                           <div className="flex items-center space-x-4 mt-6">
                             <button
@@ -497,7 +500,6 @@ export default function CreatePackageForm() {
                                   <div className="text-start text-xs font-medium text-gray-500 uppercase">
                                     Max refund per Request
                                   </div>
-                                  
                                 </div>
                                 <div className="hidden sm:block border-b border-gray-200 dr:border-gray-700"></div>
 
@@ -510,11 +512,16 @@ export default function CreatePackageForm() {
                                       <div className="text-start">{`${listName[index]}`}</div>
 
                                       <div className="text-start">
-                                        {Number.parseInt(detail.payoutPrice * 100)}%
+                                        {Number.parseInt(
+                                          detail.payoutPrice * 100
+                                        )}
+                                        %
                                       </div>
 
                                       <div className="text-start">
-                                        {detail.maxRefundPerExamination !== null && detail.maxRefundPerExamination !== -1
+                                        {detail.maxRefundPerExamination !==
+                                          null &&
+                                        detail.maxRefundPerExamination !== -1
                                           ? formatMoney(
                                               detail.maxRefundPerExamination
                                             )

@@ -66,7 +66,7 @@ export default function EditPackageForm() {
     } else {
       setPolicyError(false);
       setPayoutError(false);
-      console.log("No")
+      console.log("No");
       const found = listPolicy.find((policy) => policy.PolicyId === policyId);
       if (found !== undefined) {
         setPolicyError2(true);
@@ -237,8 +237,8 @@ export default function EditPackageForm() {
 
   useEffect(() => {
     if (data != null && policy != null) {
-      console.log(data)
-      console.log(policy)
+      console.log(data);
+      console.log(policy);
 
       setLoad(true);
     }
@@ -305,28 +305,30 @@ export default function EditPackageForm() {
           <div className="relative py-3  sm:mx-auto w-3/4">
             <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
               <div className=" mx-auto">
-                <Link className="mb-5 " to={`/staffs/package-policy`}>
-                  <button
-                    type="button"
-                    className=" ml-auto w-full flex items-center justify-center  px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
-                  >
-                    <svg
-                      className="w-5 h-5 rtl:rotate-180"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
+                <div className="w-fit ml-auto">
+                  <Link className="mb-5 " to={`/staffs/package-policy`}>
+                    <button
+                      type="button"
+                      className=" ml-auto w-full flex items-center justify-center  px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
-                      />
-                    </svg>
-                    <span>Go back</span>
-                  </button>
-                </Link>
+                      <svg
+                        className="w-5 h-5 rtl:rotate-180"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+                        />
+                      </svg>
+                      <span>Go back</span>
+                    </button>
+                  </Link>
+                </div>
                 <div className="flex items-center space-x-5">
                   <div className="block font-semibold text-xl self-start text-gray-700">
                     <h2 className="leading-relaxed text-blue-600 text-4xl">
@@ -402,7 +404,7 @@ export default function EditPackageForm() {
                           onClick={handleEdit}
                           className="bg-blue-500 flex justify-center items-center w-full text-white px-2 py-1.5 rounded-md focus:outline-none"
                         >
-                          Create
+                          Edit
                         </button>
                         {listCreateError && (
                           <div
@@ -586,10 +588,8 @@ export default function EditPackageForm() {
                                     Percent Payout
                                   </div>
                                   <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                                    Max refund
-                                    per examination
+                                    Max refund per examination
                                   </div>
-                                  
                                 </div>
                                 <div className="hidden sm:block border-b border-gray-200 dr:border-gray-700"></div>
 
@@ -607,7 +607,9 @@ export default function EditPackageForm() {
 
                                       <div className="text-start">
                                         {detail.MaxRefundPerExamination !== 0 &&
-                                        detail.MaxRefundPerExamination !== null && detail.MaxRefundPerExamination !== -1
+                                        detail.MaxRefundPerExamination !==
+                                          null &&
+                                        detail.MaxRefundPerExamination !== -1
                                           ? formatMoney(
                                               detail.MaxRefundPerExamination
                                             )

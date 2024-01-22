@@ -8,7 +8,7 @@ import Typography from "@mui/joy/Typography";
 
 export default function OverflowCard(props) {
    return (
-      <div className="hover:opacity-80 border-[2px] border-white hover:border-blue-700 rounded-lg ">
+      <div className="hover:opacity-80 border-[2px] border-white hover:border-blue-700 rounded-lg" onClick={props.onClick}>
          <Card variant="outlined" sx={{ width: 320, height: 240 }}>
             <CardOverflow>
                <AspectRatio ratio="2">

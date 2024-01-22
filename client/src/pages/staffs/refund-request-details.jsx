@@ -57,7 +57,13 @@ export default function RefundRequestDetails() {
       navigate("/staffs/refund-requests");
    };
 
-   console.log("Requast detailll: ", data);
+
+   const getTotalRefundRequest = () => {
+      const total = refundDetails.reduce((acc, curr) => {
+         return acc + curr.refundFee;
+      }, 0);
+      return total;
+   }
 
    return (
       <form className="w-full">
@@ -147,10 +153,20 @@ export default function RefundRequestDetails() {
          <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full px-3 mb-6 md:mb-0 flex justify-between items-center">
                <Typography variant="h6" color="blue-gray">
-                  Total Refund Fee
+                  Expected Refund Fee
                </Typography>
                <Typography variant="h6" color="blue-gray">
                   {formatMoney(data?.totalRefundFee)}
+               </Typography>
+            </div>
+         </div>
+         <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full px-3 mb-6 md:mb-0 flex justify-between items-center">
+               <Typography variant="h6" color="red">
+                  Total Refund Fee
+               </Typography>
+               <Typography variant="h6" color="red">
+                  {formatMoney(getTotalRefundRequest())}
                </Typography>
             </div>
          </div>
@@ -198,7 +214,7 @@ export default function RefundRequestDetails() {
                         {refundDetail.insurancePolicy.name}
                      </td>
                      <td className="whitespace-nowrap px-6 py-4">
-                        {refundDetail.description}
+                        {refundDetail.insurancePolicy.description}
                      </td>
                      <td className="whitespace-nowrap px-6 py-4">
                         {formatMoney(refundDetail.refundFee)}

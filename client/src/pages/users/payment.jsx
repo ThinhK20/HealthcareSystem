@@ -6,7 +6,7 @@ import { getPaymentsByAccountID } from "../../apis/paymentApis";
 import LoadingData from "../../components/loading/loadingData";
 import Paging from "../../components/pagination/pagination";
 const CustomersPayment = () => {
-   const [filteredPayments, setFilteredPayments] = useState([]);
+   const [filteredPayments, setFilteredPayments] = useState(null);
    const [payments, setPayments] = useState([]);
    const [searchValue, setSearchValue] = useState("");
    const [status, setStatus] = useState(1);
@@ -148,7 +148,7 @@ const CustomersPayment = () => {
                         <h5 className="text-2xl mb-5">Wating payment</h5>
 
                         <div className="overflow-x-auto mb-5 shadow-md">
-                           {filteredPayments?.length > 0 ? (
+                           {filteredPayments !== null ? (
                               <table className="w-full text-sm text-left text-gray-500 dtext-gray-400">
                                  <thead className="text-xs text-gray-700 uppercase bg-gray-200 dbg-gray-700 dtext-gray-400">
                                     <tr>
@@ -206,7 +206,7 @@ const CustomersPayment = () => {
 
                         <h5 className="text-2xl mb-5">All payment</h5>
                         <div className="overflow-x-auto shadow-md">
-                           {filteredPayments?.length > 0 ? (
+                           {filteredPayments !== null ? (
                               <table className="w-full text-sm text-left text-gray-500 dtext-gray-400">
                                  <thead className="text-xs text-gray-700 uppercase bg-gray-200 dbg-gray-700 dtext-gray-400">
                                     <tr>

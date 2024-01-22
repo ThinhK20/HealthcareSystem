@@ -33,6 +33,7 @@ const TABLE_HEAD = [
    "User",
    "Hospital Name",
    "Description",
+   "Expect Fee",
    "Refund Fee",
    "Date Send",
    "Date Refund",
@@ -125,7 +126,10 @@ export function CustomerRefundRequestManagement() {
          user: request.insurance?.account,
          hospitalName: request.hoptitalName,
          description: request.description,
-         refundFee: request.totalRefundFee,
+         expectFee: request.totalRefundFee,
+         refundFee: request.refundDetails?.reduce((acc, curr) => {
+            return acc + curr.refundFee;
+         }, 0), 
          dateSend: request.dateSend,
          dateRefund: request.dateRefund,
          status: request.status,
@@ -259,6 +263,15 @@ export function CustomerRefundRequestManagement() {
                                  className="font-normal max-w-xs"
                               >
                                  {tableRow.description}
+                              </Typography>
+                           </td>
+                           <td className={classes}>
+                              <Typography
+                                 variant="small"
+                                 color="blue-gray"
+                                 className="font-normal"
+                              >
+                                 {formatMoney(tableRow.expectFee)}
                               </Typography>
                            </td>
                            <td className={classes}>

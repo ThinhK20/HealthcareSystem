@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Typography,
   Button,
@@ -23,6 +23,14 @@ import { getAccountByAccountId } from "../../apis/accountApis";
 import { AccountType } from "../../enums/account-type";
 import { getCookie } from "../../helpers/getCookie";
 import { getAllPackage } from "../../apis/policyPackageApis";
+import {Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Slide} from "@mui/material"
+
+const Transition = React.forwardRef(function Transition(
+  props,
+  ref,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const routes = [
   {
@@ -207,6 +215,7 @@ export function Navbar() {
   const [username, setUsername] = useState();
   const [stateButton, setStateButton] = useState(true);
   const [arr, setArr] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     const Decode = async () => {
       const token = getCookie("token");
@@ -214,14 +223,11 @@ export function Navbar() {
         setStateButton(true);
         localStorage.clear();
       } else {
-        console.log("Logged");
         const accountId = await getAccountByUserID(
           localStorage.getItem("userId")
         );
-        console.log(accountId);
         localStorage.setItem("accountId", accountId.data);
         const info = await getAccountByAccountId(accountId.data);
-        console.log(info);
 
         localStorage.setItem("Role", info.role);
         setUsername(localStorage.getItem("username"));
@@ -233,40 +239,29 @@ export function Navbar() {
     Decode();
   }, [localStorage.getItem("userId")]);
 
-
-
   const splitIntoClusters = (arr, chunkSize) => {
     const result = [];
     for (let i = 0; i < arr.length; i += chunkSize) {
       result.push(arr.slice(i, i + chunkSize));
     }
 
-    console.log(result, 999999)
-
     return result;
-    
   };
-
 
   const handleHover = (drop, ct) => {
     if (drop == true) {
       setDetail(ct);
-      if(ct[0].path.includes("/users/package")){
+      if (ct[0].path.includes("/users/package")) {
         const size = ct.length;
         const chunkSize = Math.ceil(size / 3);
-        console.log("chunk size: ", chunkSize, size)
         setDetail(ct.slice(0, 1));
-      }
-      else{
+      } else {
         setDetail(ct);
       }
       setArr(splitIntoClusters(ct, 3));
-      console.log("CT: ", ct);
     }
   };
 
-
-  
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 h-full ">
       {routes
@@ -296,31 +291,33 @@ export function Navbar() {
               <span className="absolute w-full inset-x-0 bottom-0  h-1 bg-black transform origin-bottom-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out group-hover:min-w-full"></span>
             </Link>
             {dropdown === true && (
-              <div
-                className="w-full transition-[700] hidden absolute hover-to-show  h-full -bottom-4 right-full   z-50 px-4 py-8 pt-20"
-              >
+              <div className="w-full transition-[700] hidden absolute hover-to-show  h-full -bottom-4 right-full   z-50 px-4 py-8 pt-20">
                 <div className="flex flex-col  bg-transparent  last:rounded-b-lg">
                   {detail?.map((item, key) => (
                     <>
-                    {item.path.includes("/users/package") ? (
-                      
-                      <div class = "flex flex-row">
-                        {arr.map((cluster, clusterIndex) => (
-                      <div key={clusterIndex} className="">
-                        {cluster.map((item, itemIndex) => (
-                          <div key={itemIndex} className="items-center text-[16px] min-w-[300px] p-3 z-10 hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg bg-white">
-                            <Link to={item.path} className="flex gap-4">
-                              <div className="bg-gray-100 p-3 rounded-lg">
-                                {/* Assuming FontAwesomeIcon is imported properly */}
-                                <FontAwesomeIcon icon={item.icon} />
-                              </div>
-                              <span className="font-[600]">{item.name}</span>
-                            </Link>
-                          </div>
-                        ))}
-        </div>
-      ))}
-                      {/* <div>
+                      {item.path.includes("/users/package") ? (
+                        <div class="flex flex-row">
+                          {arr.map((cluster, clusterIndex) => (
+                            <div key={clusterIndex} className="">
+                              {cluster.map((item, itemIndex) => (
+                                <div
+                                  key={itemIndex}
+                                  className="items-center text-[16px] min-w-[300px] p-3 z-10 hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg bg-white"
+                                >
+                                  <Link to={item.path} className="flex gap-4">
+                                    <div className="bg-gray-100 p-3 rounded-lg">
+                                      {/* Assuming FontAwesomeIcon is imported properly */}
+                                      <FontAwesomeIcon icon={item.icon} />
+                                    </div>
+                                    <span className="font-[600]">
+                                      {item.name}
+                                    </span>
+                                  </Link>
+                                </div>
+                              ))}
+                            </div>
+                          ))}
+                          {/* <div>
 
                         <Link
                             to={item.path}
@@ -346,25 +343,19 @@ export function Navbar() {
                           <span className="font-[600]">{item.name}</span>
                         </Link>
                     </div>  */}
-                    
-                  </div>
-                    ) : (
-                      <Link
-                      to={item.path}
-                      key={key}
-                      className="flex gap-4 items-center text-[16px] min-w-[300px] p-3 z-10  hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg  bg-white "
-                    >
-                      <div className="bg-gray-100 p-3 rounded-lg">
-                        <FontAwesomeIcon icon={item.icon} />
-                      </div>
-                      <span className="font-[600]">{item.name}</span>
-                    </Link>
-                    
-                    )
-                  
-                  
-                  }
-
+                        </div>
+                      ) : (
+                        <Link
+                          to={item.path}
+                          key={key}
+                          className="flex gap-4 items-center text-[16px] min-w-[300px] p-3 z-10  hover:bg-gray-200 shadow-lg first:rounded-t-lg last:rounded-b-lg  bg-white "
+                        >
+                          <div className="bg-gray-100 p-3 rounded-lg">
+                            <FontAwesomeIcon icon={item.icon} />
+                          </div>
+                          <span className="font-[600]">{item.name}</span>
+                        </Link>
+                      )}
                     </>
                   ))}
                 </div>
@@ -377,13 +368,14 @@ export function Navbar() {
 
   const getData = async () => {
     const policypackage = await getAllPackage();
-    console.log(policypackage);
     //Insurance Packages
-    const routerContent = policypackage.map((x) => ({
-      name: x.name,
-      path: `/users/package?packageId=${x.packageid}`,
-      icon: faHouse,
-    }));
+    const routerContent = policypackage
+      .filter((x) => x.status === "Active")
+      .map((x) => ({
+        name: x.name,
+        path: `/users/package?packageId=${x.packageid}`,
+        icon: faHouse,
+      }));
     routes[2].content = routerContent;
   };
 
@@ -394,6 +386,12 @@ export function Navbar() {
     );
     getData();
   }, []);
+
+  const [showLogoutDialog, setShowLogoutDialog] = useState();
+
+  function handleClose() {
+    setShowLogoutDialog(false);
+  }
 
   return (
     <div className="p-0 w-full mb-[30px]">
@@ -457,22 +455,40 @@ export function Navbar() {
               <p className="font-serif border-b-2 border-gray-800 mr-10">
                 Hi, {username}
               </p>
-              <Link to="/" reloadDocument>
                 <Button
                   variant="gradient"
                   size="sm"
                   className="hover:bg-[#545455] mr-[100px] lg:w-fit w-full"
                   onClick={() => {
-                    localStorage.clear();
-                    console.log(stateButton, 8888);
-                    document.cookie =
-                      "token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-                    setStateButton(true);
+                   setShowLogoutDialog(true);
                   }}
                 >
                   Log out
-                </Button>
-              </Link>
+                </Button> 
+              <Dialog
+        open={showLogoutDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Log out"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Are you sure you want to log out ? Your action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button  onClick={() => {
+                    localStorage.clear();
+                    document.cookie =
+                      "token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+                    setStateButton(true);
+                    navigate("/login")
+                  }}>Yes</Button>
+          <Button variant="text" onClick={handleClose}>No</Button>
+        </DialogActions>
+      </Dialog>
             </div>
           )}
         </div>
@@ -526,7 +542,7 @@ export function Navbar() {
                   setStateButton(true);
                 }}
               >
-                Log out
+                Log out 
               </Button>
             </Link>
           )}

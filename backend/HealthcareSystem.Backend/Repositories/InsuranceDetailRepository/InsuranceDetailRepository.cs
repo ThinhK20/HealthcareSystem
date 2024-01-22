@@ -68,21 +68,21 @@ namespace HealthcareSystem.Backend.Repositories.InsuranceDetailRepository
             var data = await GetAsync(x => x.InsureID == insuraceID && x.PackageID == packageID);
             if (periodic == Periodic.Quarter)
             {
-                data.DateEnd = data.DateEnd != null ? data.DateEnd.AddMonths(3) : data.DateStart.AddMonths(3);
+                data.DateEnd = data.DateEnd.ToString("yyyy-MM-dd") != "0001-01-01" ? data.DateEnd.AddMonths(3) : data.DateStart.AddMonths(3);
                 data.Status = status;
                 await UpdateAsync(data);
                 return true;
             }
             if (periodic == Periodic.HalfYear)
             {
-                data.DateEnd = data.DateEnd != null ? data.DateEnd.AddMonths(6) : data.DateStart.AddMonths(6);
+                data.DateEnd = data.DateEnd.ToString("yyyy-MM-dd") != "0001-01-01" ? data.DateEnd.AddMonths(6) : data.DateStart.AddMonths(6);
                 data.Status = status;
                 await UpdateAsync(data);
                 return true;
             }
             if (periodic == Periodic.Year)
             {
-                data.DateEnd = data.DateEnd != null ? data.DateEnd.AddMonths(12) : data.DateStart.AddMonths(12);
+                data.DateEnd = data.DateEnd.ToString("yyyy-MM-dd") != "0001-01-01" ? data.DateEnd.AddMonths(12) : data.DateStart.AddMonths(12);
                 data.Status = status;
                 await UpdateAsync(data);
                 return true;

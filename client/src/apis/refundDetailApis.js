@@ -23,3 +23,12 @@ export const getAllRefundDetailsByRefundIdApi = async (refundId) => {
       console.error("Error occurred while trying to get users", error);
    }
 };
+
+export const createRefundDetailApi = async(data) => {
+   try {
+       const response = await instance.post(`/create`, data);
+       return response.data;
+   } catch (error) {
+      console.error("Error: ", error);
+   }
+}

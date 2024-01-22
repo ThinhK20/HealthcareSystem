@@ -78,6 +78,13 @@ export default function CustomerRefundRequestDetails() {
       navigate("/users/refund-requests");
    };
 
+   const getTotalRefundRequest = () => {
+      const total = refundDetails.reduce((acc, curr) => {
+         return acc + curr.refundFee;
+      }, 0);
+      return total;
+   }
+
    return (
       <form className="w-full">
          <div className="flex flex-wrap -mx-3 mb-6 mt-6">
@@ -179,13 +186,14 @@ export default function CustomerRefundRequestDetails() {
                )}
             </div>
          </div>
-
+        
          <div className="flex flex-wrap -mx-3 mb-6">
-            <div className="w-full px-3 mb-6 md:mb-0 flex justify-between items-center">
+            <div className="w-full px-3 mb-6 md:mb-0 flex flex-col gap-2">
                {isEdit ? (
+                 <>
                   <div>
                      <Typography variant="h6" color="blue-gray">
-                        Total Refund Fee
+                        Expected Refund Fee
                      </Typography>
                      <TextField
                         type="number"
@@ -195,18 +203,39 @@ export default function CustomerRefundRequestDetails() {
                         onChange={() => setData(data?.totalRefundFee)}
                      />
                   </div>
+                  <div className="flex flex-wrap -mx-3">
+                        <div className="w-full px-3 md:mb-0 flex justify-between items-center">
+                           <Typography variant="h6" color="red">
+                              Total Refund Fee
+                           </Typography>
+                           <Typography variant="h6" color="red">
+                              {formatMoney(getTotalRefundRequest())}
+                           </Typography>
+                        </div>
+                     </div>
+                 </>
                ) : (
                   <>
-                     <Typography variant="h6" color="blue-gray">
-                        Total Refund Fee
-                     </Typography>
-                     <Typography
-                        variant="h6"
-                        aria-label="Total-Refund-Fee"
-                        color="blue-gray"
-                     >
-                        {formatMoney(data?.totalRefundFee)}
-                     </Typography>
+                     <div className="flex flex-wrap -mx-3">
+                        <div className="w-full px-3 md:mb-0 flex justify-between items-center">
+                           <Typography variant="h6" color="blue-gray">
+                              Expected Refund Fee
+                           </Typography>
+                           <Typography variant="h6" color="blue-gray">
+                              {formatMoney(data?.totalRefundFee)}
+                           </Typography>
+                        </div>
+                     </div>
+                     <div className="flex flex-wrap -mx-3">
+                        <div className="w-full px-3 md:mb-0 flex justify-between items-center">
+                           <Typography variant="h6" color="red">
+                              Total Refund Fee
+                           </Typography>
+                           <Typography variant="h6" color="red">
+                              {formatMoney(getTotalRefundRequest())}
+                           </Typography>
+                        </div>
+                     </div>
                   </>
                )}
             </div>
@@ -252,7 +281,7 @@ export default function CustomerRefundRequestDetails() {
                            {refundDetail.insurancePolicy.name}
                         </td>
                         <td className="whitespace-nowrap px-6 py-4">
-                           {refundDetail.description}
+                           {refundDetail.insurancePolicy.description}
                         </td>
                         <td className="whitespace-nowrap px-6 py-4">
                            {formatMoney(refundDetail.refundFee)}

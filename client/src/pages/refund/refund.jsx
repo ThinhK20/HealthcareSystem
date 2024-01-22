@@ -3,7 +3,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 
 import { Input } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -19,7 +19,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import LoadingWrapper from "../../components/loading/loading";
 import { detailPolicy, getAll } from "../../apis/insurancePoliciesApis";
-import { getAllRefundDetailsByRefundIdApi } from "../../apis/refundDetailApis";
+import { createRefundDetailApi, getAllRefundDetailsByRefundIdApi } from "../../apis/refundDetailApis";
 import { formatMoney } from "../../helpers/dataHelper";
 import { getInsurancedetails } from "../../apis/accountApis";
 import { getRefundRequestApiById } from "../../apis/refundRequestApis";
@@ -28,6 +28,7 @@ function Refund() {
       maskType: "luminance",
    };
    const [loading, setLoading] = useState(false);
+   const navigate = useNavigate();
    const [currency, setCurrency] = useState();
    const [refundDetails, setRefundDetails] = useState([]);
    const [packagePolicy, setPackagePolicy] = useState();
@@ -39,17 +40,33 @@ function Refund() {
    const [data, setData] = useState();
    const onChangePolicy = (event) => {
       event.preventDefault();
-      console.log(event.target.value);
       setSelectedUserPolicy(event.target.value);
    };
-   const handleSubmit = (e) => {
+   const handleSubmit = async(e) => {
       e.preventDefault();
-      console.log(100000)
+      const res = await createRefundDetailApi({
+         refundId: id,
+         policyId: selectedPolicy,
+         description: "",
+         paidFee: currency
+      });
+      if (res) {
+         await getRefundDetails();
+         toast.success("Add successfully.");
+         // e.currentTarget.reset();
+      }
    };
+
+   const getRefundDetails = async () => {
+      const dataRefundDetails = await getAllRefundDetailsByRefundIdApi(
+         id
+      );
+      setRefundDetails(dataRefundDetails);
+   };
+
    const getPolicy = async () => {
       setLoading(true);
       const dataPackages = await getAll();
-      console.log(dataPackages);
       setData(dataPackages);
       setLoading(false);
    };
@@ -69,18 +86,23 @@ function Refund() {
    const getDetail = async () => {
       await detailPolicy(packagePolicy?.packageid, selectedPolicy).then((result) => {
          setPrice(result);
-         console.log(result);
       });
    };
    useEffect(() => {
-      const account = getRefundRequestApiById(id).accountId;
-      getInsurancedetails(account).then(result=>setPackagePolicy(result.listPackage[0].policyPackage))
+      getRefundRequestApiById(id).then((account) => {
+         const accountId = account.data.insurance?.accountId;
+         getInsurancedetails(accountId).then(result=> {
+            setPackagePolicy(result.listPackage[0].policyPackage);
+         })
+      })
+      getRefundDetails();
 
       getPolicy();
    }, []);
    useEffect(() => {
       getDetail();
    }, [selectedPolicy]);
+
 
    return (
       <>
@@ -101,7 +123,7 @@ function Refund() {
                                                 fontWeight={600}
                                                 className="text-[#1A1446]  w-fit py-[20px]  text-center w-full "
                                              >
-                                                Form điền thông tin X
+                                                Create refund policy detail
                                              </Typography>
                                           </div>
                                        </div>
@@ -139,7 +161,7 @@ function Refund() {
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 da:bg-gray-700 da:border-gray-600 da:placeholder-gray-400 da:text-white da:focus:ring-blue-500 da:focus:border-blue-500"
                                              >
                                                 <option selected>
-                                                   Choose a country
+                                                   Choose a policy
                                                 </option>
 
                                                 {data?.map((item) => (
@@ -368,6 +390,7 @@ function Refund() {
                                  <div className="mt-6 flex items-center justify-end gap-x-6 justify-center pb-5">
                                     <button
                                        type="button"
+                                       onClick={() => navigate(`/staffs/refund-requests/${id}`)}
                                        className="text-sm font-semibold leading-6 text-gray-900"
                                     >
                                        Cancel
