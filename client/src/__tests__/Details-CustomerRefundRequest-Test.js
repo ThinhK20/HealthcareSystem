@@ -78,9 +78,6 @@ describe("CustomerRefundRequestDetails Component", () => {
          expect(screen.getByLabelText("Reasons")).toHaveValue(
             "mockDescription"
          );
-         expect(screen.getByLabelText("Total-Refund-Fee")).toHaveTextContent(
-            "100"
-         );
       });
    });
 

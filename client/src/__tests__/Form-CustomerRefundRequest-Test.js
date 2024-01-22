@@ -65,9 +65,7 @@ describe("CustomerRequestForm", () => {
 
       // Assert on the success message or navigation
       expect(
-         await screen.findByText(
-            "You must enter complete information to register for insurance"
-         )
+         await screen.findByText("Contact to staffs to fill in information")
       ).toBeInTheDocument();
    });
 
