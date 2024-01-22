@@ -23,7 +23,7 @@ namespace HealthcareSystem.Backend.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole + "," + Roles.NormalStaffRole + "," + Roles.AccountantRole)]
         public async Task<ActionResult<IEnumerable<InsuarancePolicyDTO>>> GetAllPolicy()
         {
             try
@@ -39,7 +39,7 @@ namespace HealthcareSystem.Backend.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole )]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
 
         public async Task<ActionResult<InsuarancePolicyDTO>> GetOnePolicy(int id)
         {
@@ -128,7 +128,7 @@ namespace HealthcareSystem.Backend.Controllers
 
 
         [HttpPut]
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole )]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
 
         public async Task<ActionResult<InsuarancePolicyUpdateDTO>> UpdatePolicy([FromBody] InsuarancePolicyUpdateDTO data)
         {

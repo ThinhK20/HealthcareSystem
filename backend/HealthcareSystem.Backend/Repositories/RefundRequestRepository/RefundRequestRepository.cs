@@ -6,6 +6,7 @@ using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 using HealthcareSystem.Backend.Repositories.ImageRepository;
+using HealthcareSystem.Backend.Repositories.RefundDetailRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
@@ -14,10 +15,12 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
     {
         private readonly IMapper _mapper;
         private readonly IFileRepository _fileRepository;
-        public RefundRequestRepository(ApplicationDbContext context, IMapper mapper, IFileRepository fileRepository) : base(context)
+        private readonly IRefundDetailRepository _refundDetailRepository;
+        public RefundRequestRepository(ApplicationDbContext context, IMapper mapper, IFileRepository fileRepository, IRefundDetailRepository refundDetailRepository) : base(context)
         {
             _mapper = mapper;
             _fileRepository = fileRepository;
+            _refundDetailRepository = refundDetailRepository;
         }
 
         public async Task<RefundRequestDTO> CreateRefundRequestAsync(RefundRequestDTO refundRequestDTO)
@@ -57,21 +60,33 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
         public async Task<List<RefundRequestDomain>> GetAllRefundRequestsAsync()
         {
             var entities = await GetAllAsync(tracked: false, includeProperites: "Insurance,Insurance.Account");
-            return entities.Select(t => _mapper.Map<RefundRequestDomain>(t)).ToList();
+            var result = entities.Select(t => _mapper.Map<RefundRequestDomain>(t)).ToList();
+            var refundDetails = await _refundDetailRepository.GetAllRefundDetailsAsync();
+            result.ForEach(async (refundDomain) =>
+            {
+                refundDomain.RefundDetails = refundDetails.Where(x => x.RefundID.ToString() == refundDomain.RefundID.ToString()).ToList();
+            });
+            return result;
         }
 
         public async Task<List<RefundRequestDomain>> GetRefundRequestByAccountIdAsync(int accountId)
         {
 
-            var refundRequests = await GetAllAsync(tracked: false, includeProperites: "Insurance,Insurance.Account");
-            return refundRequests.Where(rr => rr.Insurance!.AccountId == accountId).Select(rr => _mapper.Map<RefundRequestDomain>(rr)).ToList();
-
+            var entities = await GetAllAsync(tracked: false, includeProperites: "Insurance,Insurance.Account");
+            var result = entities.Where(rr => rr.Insurance!.AccountId == accountId).Select(rr => _mapper.Map<RefundRequestDomain>(rr)).ToList();
+            var refundDetails = await _refundDetailRepository.GetAllRefundDetailsAsync();
+            result.ForEach(async (refundDomain) =>
+            {
+                refundDomain.RefundDetails = refundDetails.Where(x => x.RefundID.ToString() == refundDomain.RefundID.ToString()).ToList();
+            });
+            return result;
         }
 
         public async Task<bool> AcceptRefundRequestByIdAsync(int refundId)
         {
             var refundRequest = await GetAsync(rq => rq.RefundID == refundId);
             refundRequest.Status = RefundRequestStatus.Approved;
+            refundRequest.DateRefund = DateTime.Now;
             await UpdateAsync(refundRequest);
             return true;
         }
@@ -80,6 +95,7 @@ namespace HealthcareSystem.Backend.Repositories.RefundRequestRepository
         {
             var refundRequest = await GetAsync(rq => rq.RefundID == refundId);
             refundRequest.Status = RefundRequestStatus.Rejected;
+            refundRequest.DateRefund = DateTime.Now;
             await UpdateAsync(refundRequest);
             return true;
         }

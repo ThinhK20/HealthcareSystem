@@ -8,6 +8,7 @@ using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 using HealthcareSystem.Backend.Repositories.InsuranceRepository;
 using HealthcareSystem.Backend.Repositories.PackageDetailRepository;
 using HealthcareSystem.Backend.Repositories.PolicyPackageRepository;
+using HealthcareSystem.Backend.Repositories.RefundDetailRepository;
 using HealthcareSystem.Backend.Repositories.RefundRequestRepository;
 using HealthcareSystem.Backend.Repositories.Token;
 using HealthcareSystem.Backend.Services.AccountService;
@@ -15,6 +16,7 @@ using HealthcareSystem.Backend.Services.EmailService;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using HealthcareSystem.Backend.Services.PackagePoliceService;
 using HealthcareSystem.Backend.Services.PaymentService;
+using HealthcareSystem.Backend.Services.RefundDetailService;
 using HealthcareSystem.Backend.Services.RefundRequestService;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,8 +24,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using HealthcareSystem.Backend.Repositories.RefundDetailRepository;
-using HealthcareSystem.Backend.Services.RefundDetailService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,12 +32,12 @@ builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalMSSQL")!);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Cloud")!);
 });
 
 builder.Services.AddDbContext<AuthContext>(option =>
 {
-    option.UseSqlServer(builder.Configuration.GetConnectionString("LocalMSSQL"));
+    option.UseSqlServer(builder.Configuration.GetConnectionString("Cloud"));
 });
 
 

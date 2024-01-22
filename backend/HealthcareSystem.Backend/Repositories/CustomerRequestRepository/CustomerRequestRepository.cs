@@ -7,7 +7,6 @@ using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
 using HealthcareSystem.Backend.Services.InsuranceDetalService;
 using HealthcareSystem.Backend.Utils;
-using System.Globalization;
 
 namespace HealthcareSystem.Backend.Repositories
 {
@@ -18,8 +17,8 @@ namespace HealthcareSystem.Backend.Repositories
         private readonly IPaymentRepository _paymentService;
         private readonly IInsuranceDetailService _invoiceDetailService;
         private readonly PriceCalculateModule _priceCalculate;
-        
-        public CustomerRequestRepository(IMapper mapper, ApplicationDbContext applicationContext, IPaymentRepository paymentService, IInsuranceDetailService invoiceDetailService, IUserRepository userRepository, IBasicPriceRepository basicPriceRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository): base(applicationContext)
+
+        public CustomerRequestRepository(IMapper mapper, ApplicationDbContext applicationContext, IPaymentRepository paymentService, IInsuranceDetailService invoiceDetailService, IUserRepository userRepository, IBasicPriceRepository basicPriceRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository) : base(applicationContext)
         {
             _mapper = mapper;
             _applicationContext = applicationContext;
@@ -69,7 +68,7 @@ namespace HealthcareSystem.Backend.Repositories
         }
         public async Task<AcceptCustomerRequestResponeDomain> AcceptCustomerRequest(int Accept,int StaffId)
         {
-            var ctm_request = await GetAsync(x => x.RequestID == Accept,true, "PolicyPackage");
+            var ctm_request = await GetAsync(x => x.RequestID == Accept, true, "PolicyPackage");
             if (ctm_request.Status != "Pending Confirmation") throw new Exception("Accepted");
             if (ctm_request == null) throw new Exception("Request NULL");
             ctm_request.Status = "Pending Transfer";
@@ -85,15 +84,15 @@ namespace HealthcareSystem.Backend.Repositories
             var dateReqString = dateReq.ToString("dd/M/yyyy");
             for (var i = 0; i < n; i++)
             {
-                string temp = (i+1).DisplayWithSuffix();
-                                Payment pay = new Payment
+                string temp = (i + 1).DisplayWithSuffix();
+                Payment pay = new Payment
                 {
                     RequestId = ctm_request.RequestID,
                     CreatedDate = DateTime.Now.AddMonths(i * month),
                     ExpirationDate = DateTime.Now.AddMonths(i * month).AddDays(7),
                     ExpirationPaypal = null,
                     Status = false,
-                    Price = ctm_request.Price / n ,
+                    Price = ctm_request.Price / n,
                     UpdatedDate = null,
                     LinkCheckOut = null,
                     PaypalEmail = null,
@@ -102,18 +101,20 @@ namespace HealthcareSystem.Backend.Repositories
                 await _paymentService.CreatePayment(pay);
             }
             await UpdateAsync(ctm_request);
-            
-            return  new AcceptCustomerRequestResponeDomain { 
+
+            return new AcceptCustomerRequestResponeDomain
+            {
                 packageId = ctm_request.PackageId,
                 accountId = ctm_request.AccountId,
                 acceptAt = ctm_request.DateAccept
             };
         }
-        public async Task<bool> RefusedCustomerRequest(int id)
+        public async Task<bool> RefusedCustomerRequest(int id, int staffId)
         {
             var ctm_request = await GetAsync(x => x.RequestID == id);
             if (ctm_request == null) throw new Exception("Not Found Request ID");
             ctm_request.Status = "Refused";
+            ctm_request.StaffId = staffId;
             await UpdateAsync(ctm_request);
             return true;
 

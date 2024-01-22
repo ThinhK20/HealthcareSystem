@@ -147,6 +147,8 @@ export function CustomerRefundRequestManagement() {
       });
    }
 
+   console.log("New rows: ", filterTableRows);
+
    return (
       <Card className="h-full w-full">
          <CardHeader floated={false} shadow={false} className="rounded-none">

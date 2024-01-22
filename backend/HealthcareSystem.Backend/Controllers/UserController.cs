@@ -48,7 +48,7 @@ namespace HealthcareSystem.Backend.Controllers
             }
         }
         [HttpGet("customerRequests")]
-        [Authorize(Roles = Roles.CustomerCareRole + "," + Roles.TestRole+ "," + Roles.AccountantRole + "," + Roles.NormalStaffRole + "," + Roles.AdminRole)]
+        [Authorize(Roles = Roles.CustomerCareRole + "," + Roles.TestRole + "," + Roles.AccountantRole + "," + Roles.NormalStaffRole + "," + Roles.AdminRole)]
         public async Task<IActionResult> GetAllCustomerRequests()
         {
             try
@@ -76,9 +76,9 @@ namespace HealthcareSystem.Backend.Controllers
                 return NotFound(ex.Message);
             }
         }
-        
+
         [HttpGet("customerRequests/{id:int}")]
-        [Authorize(Roles = Roles.TestRole + "," + Roles.AdminRole + "," + Roles.NormalStaffRole + "," +Roles.UserRole)]
+        [Authorize(Roles = Roles.TestRole + "," + Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.UserRole)]
         public async Task<IActionResult> GetCustomerRequestById([FromRoute(Name = "id")] int requestId)
         {
             try
@@ -103,13 +103,13 @@ namespace HealthcareSystem.Backend.Controllers
                 return NotFound(ex.Message);
             }
         }
-        [HttpPost("RefusedRequest/{id:int}")]
+        [HttpPost("RefusedRequest")]
         [Authorize(Roles = Roles.AdminRole + "," + Roles.NormalStaffRole + "," + Roles.TestRole)]
-        public async Task<IActionResult> RefusedRequest([FromRoute(Name = "id")] int requestID)
+        public async Task<IActionResult> RefusedRequest([FromQuery] int requestID, [FromQuery] int staffid)
         {
             try
             {
-                return Ok(await _userService.RefusedCustomerRequest(requestID));
+                return Ok(await _userService.RefusedCustomerRequest(requestID, staffid));
             }
             catch (Exception ex)
             {

@@ -16,11 +16,9 @@ export default function Statistic() {
    const accountTypes = useMemo(() => {
       if (!accounts || accounts.length === 0) return null;
       const customerAccounts = accounts.filter(
-         (a) => a.role === AccountType.Customer
+         (a) => a.role === AccountType.User
       );
-      const staffAccounts = accounts.filter(
-         (a) => a.role === AccountType.Staff
-      );
+      const staffAccounts = accounts.filter((a) => a.role !== AccountType.User);
 
       return {
          customers: customerAccounts,
@@ -93,6 +91,8 @@ export default function Statistic() {
          })
          .catch((err) => toast.error(err));
    }, []);
+
+   console.log("Customer staffs: ", accountTypes);
 
    return (
       <div>

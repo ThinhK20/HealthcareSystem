@@ -47,14 +47,24 @@ namespace HealthcareSystem.Backend.Services.AccountService
         {
             return await _accountRepository.GetAccountsByPage(pageSize, pageNumber);
         }
-        public Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc,string email)
+        public async Task<AccountBaseDTO> CreateAccountStaff(AccountBaseDTO acc,string email)
         {
-            return _accountRepository.CreateAccountStaff(acc, email);
+            var result = await _accountRepository.CreateAccountStaff(acc, email);
+
+            var insuranceCardData = new InsuranceDTO()
+            {
+                AccountId = result.AccountId,
+                CardOpenDate = DateTime.Today.ToString("yyyy-M-d"),
+                RegisterPlace = "Ho Chi Minh"
+            };
+
+            await _insuranceRepository.CreateInsurance(insuranceCardData);
+            return result;
         }
 
-        public Task<AccountBaseDTO> GetAccountByID(int id)
+        public async Task<AccountBaseDTO> GetAccountByID(int id)
         {
-            return _accountRepository.GetAccountByID(id);
+            return await _accountRepository.GetAccountByID(id);
         }
 
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)

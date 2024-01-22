@@ -119,7 +119,6 @@ export const UserRoutes = [
          />
       ),
    },
-
    {
       path: "/users/package",
       element: <LayoutRoute element={<InsurancePackage />} />,
