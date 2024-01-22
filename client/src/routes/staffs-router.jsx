@@ -20,6 +20,7 @@ import Insurance from "../pages/insurances/insurance";
 import FormUpdate from "../pages/insurances/form-update";
 import FormCreate from "../pages/insurances/form-create";
 import ProtectLayoutRoute from "../shared/layout/Protect";
+import Refund from "../pages/refund/refund";
 export const StaffRoutes = [
   {
     path: "/staffs",
@@ -151,5 +152,8 @@ export const StaffRoutes = [
     path: "/insurancePolicies",
     element: <ProtectLayoutRoute element={<TableInsuranceManagement   allowedRoles={["Normal Staff","Admin"]} />} />,
   },
-  
+  {
+    path: "staffs/refund/:id",
+    element: <ProtectLayoutRoute element={<Refund />}  allowedRoles={["Normal Staff","Admin"]}/>,
+ },
 ];

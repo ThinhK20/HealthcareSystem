@@ -166,7 +166,7 @@ export function ManageAccount() {
                      </Typography>
                      <Typography color="gray" className="mt-1 font-normal">
                         There are a total of <strong>{accounts?.length}</strong>{" "}
-                        customers in the system, and here are the details:
+                        accounts in the system, and here are the details:
                      </Typography>
                   </div>
 

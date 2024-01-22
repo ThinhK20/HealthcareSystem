@@ -22,19 +22,18 @@ import { detailPolicy, getAll } from "../../apis/insurancePoliciesApis";
 import { getAllRefundDetailsByRefundIdApi } from "../../apis/refundDetailApis";
 import { formatMoney } from "../../helpers/dataHelper";
 import { getInsurancedetails } from "../../apis/accountApis";
-
+import { getRefundRequestApiById } from "../../apis/refundRequestApis";
 function Refund() {
    const maskStyle = {
       maskType: "luminance",
    };
-
    const [loading, setLoading] = useState(false);
    const [currency, setCurrency] = useState();
    const [refundDetails, setRefundDetails] = useState([]);
    const [packagePolicy, setPackagePolicy] = useState();
    const [Total, setTotal] = useState(0);
    const [price, setPrice] = useState();
-   const { id: refundId } = useParams();
+   const { id } = useParams();
 
    const [selectedPolicy, setSelectedUserPolicy] = useState();
    const [data, setData] = useState();
@@ -74,7 +73,8 @@ function Refund() {
       });
    };
    useEffect(() => {
-      getInsurancedetails(localStorage.getItem("accountId")).then(result=>setPackagePolicy(result.listPackage[0].policyPackage))
+      const account = getRefundRequestApiById(id).accountId;
+      getInsurancedetails(account).then(result=>setPackagePolicy(result.listPackage[0].policyPackage))
 
       getPolicy();
    }, []);
