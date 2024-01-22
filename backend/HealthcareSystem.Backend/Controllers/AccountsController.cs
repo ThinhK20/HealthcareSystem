@@ -64,7 +64,7 @@ namespace HealthcareSystem.Backend.Controllers
 
             return Ok(tempAccount);
         }
-        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole)]
+        [Authorize(Roles = Roles.AdminRole + "," + Roles.TestRole+","+Roles.UserRole+","+Roles.NormalStaffRole)]
         [HttpPut("edit-account-staff")]
         public async Task<IActionResult> EditUser([FromBody] AccountBaseDTO account)
         {

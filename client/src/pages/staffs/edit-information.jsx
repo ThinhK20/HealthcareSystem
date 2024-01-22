@@ -36,10 +36,10 @@ const EditInformation = () => {
     // Sending the first POST request
     try {
       await editAccountsInformation(formDataAccount);
-      setMessageSuccess("Thay đổi thông tin thành công");
+      setMessageSuccess("Information changed successfully");
       setMessage("");
     } catch {
-      setMessage("Thay đổi thông tin thất bại");
+      setMessage("Change information failed");
     }
   };
   useEffect(() => {

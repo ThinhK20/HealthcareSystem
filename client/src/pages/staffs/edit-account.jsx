@@ -83,7 +83,7 @@ const EditAccount = () => {
           accountId: userStaffData?.accountId || "",
           userId: userStaffData?.userId || "",
           username: userStaffData?.username || "",
-          password: "",
+          password: userStaffData?.password || "",
           status: userStaffData?.status || "Active",
           role: userStaffData?.role || "User",
         }));
@@ -251,7 +251,7 @@ const EditAccount = () => {
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Bạn có chắc muốn thay đổi mật khẩu cũ không ?
+            Are you sure you want to change your old password?
             </DialogContentText>
           </DialogContent>
           <DialogActions>

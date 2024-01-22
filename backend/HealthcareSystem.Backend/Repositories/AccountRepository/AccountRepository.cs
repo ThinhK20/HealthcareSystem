@@ -85,7 +85,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             bool checkExist = await checkUserExist(acc.Username);
             if (checkExist != true)
             {
-                throw new Exception("Username exist");
+                throw new Exception("Username dont exist");
             }
             var temp = await GetAsync(x => x.AccountId == acc.AccountId && x.Status != AccountStatus.Deleted);
             temp.Password = acc.Password;
