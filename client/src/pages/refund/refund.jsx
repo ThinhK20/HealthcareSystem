@@ -189,12 +189,20 @@ function Refund() {
                                                    </label>
                                                 </div>
                                                 <div className="sm:col-span-3">
-                                                   <label className="block mb-2 text-sm font-medium text-gray-900 da:text-white">
-                                                      Maximum price reduced ={" "}
-                                                      {
-                                                         price?.maxRefundPerExamination
-                                                      }
-                                                   </label>
+                                                {price?.maxRefundPerExamination != -1 ? (
+                                    <>
+                                      <label className="block mb-2 text-sm font-medium text-gray-900 da:text-white">
+                                        Maximum price reduced ={" "}
+                                        {price?.maxRefundPerExamination}
+                                      </label>
+                                    </>
+                                  ) : (
+                                    <>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 da:text-white">
+                                  Maximum price reduced : <strong>Unlimited</strong>
+                                      </label>
+                                    </>
+                                  )}
                                                 </div>
                                              </>
                                           )}
