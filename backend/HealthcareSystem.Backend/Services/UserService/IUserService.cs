@@ -24,6 +24,6 @@ namespace HealthcareSystem.Backend.Services.UserService
 
         public Task<UserDTO> GetUserByEmail(string email);
 
-
+        public Task<double> GetPriceForUser(int accountId, int packageId, string periodic);
     }
 }

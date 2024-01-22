@@ -1,8 +1,19 @@
-﻿using HealthcareSystem.Backend.Models.Domain;
+﻿using Azure.Core;
+using HealthcareSystem.Backend.Enums;
+using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Repositories;
+using HealthcareSystem.Backend.Repositories.AccountRepository;
 using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 using HealthcareSystem.Backend.Repositories.InsuranceRepository;
+using HealthcareSystem.Backend.Repositories.PolicyPackageRepository;
+using HealthcareSystem.Backend.Services.PackagePoliceService;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HealthcareSystem.Backend.Services.UserService
 {
@@ -14,8 +25,10 @@ namespace HealthcareSystem.Backend.Services.UserService
         private readonly IFeeAffectRepository _feeAffectRepository;
         private readonly IInsuranceDetailRepository _insuranceDetailRepository;
         private readonly IInsuranceRepository _insuranceRepository;
+        private readonly IAccountRepository _accountRepository;
+        private readonly IPolicyPackageRepository _policyPackageRepository;
 
-        public UserService(ICustomerRequestRepository customerRequestRepository, IUserRepository userRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository, IInsuranceDetailRepository insuranceDetailRepository, IInsuranceRepository insuranceRepository)
+        public UserService(ICustomerRequestRepository customerRequestRepository, IUserRepository userRepository, IHealthRecordRepository healthRecordRepository, IFeeAffectRepository feeAffectRepository, IInsuranceDetailRepository insuranceDetailRepository, IInsuranceRepository insuranceRepository, IAccountRepository accountRepository, IPolicyPackageRepository policyPackageRepository)
         {
             _customerRequestRepository = customerRequestRepository;
             _userRepository = userRepository;
@@ -23,6 +36,8 @@ namespace HealthcareSystem.Backend.Services.UserService
             _feeAffectRepository = feeAffectRepository;
             _insuranceDetailRepository = insuranceDetailRepository;
             _insuranceRepository = insuranceRepository;
+            _accountRepository = accountRepository;
+            _policyPackageRepository = policyPackageRepository;
         }
 
         public async Task<CustomerRequestCreateDTO> CreateCustomerRequestAsync(CustomerRequestCreateDTO customerRequest)
@@ -124,6 +139,22 @@ namespace HealthcareSystem.Backend.Services.UserService
         public async Task<UserDTO> GetUserByEmail(string email)
         {
             return await _userRepository.GetUserByEmail(email);
+        }
+
+        public async Task<double> GetPriceForUser(int accountId, int packageId, string periodic)
+        {
+            var accountInfo = await _accountRepository.GetAccountByID(accountId);
+            if (accountInfo == null)
+            {
+                throw new Exception("No account");
+            }
+            var packageInfo = await _policyPackageRepository.GetPolicyPackageByIdAsync(packageId);
+            if (accountInfo == null)
+            {
+                throw new Exception("No package");
+            }
+            if (periodic != Periodic.Quarter && periodic != Periodic.HalfYear && periodic != Periodic.Year) throw new Exception("No support");
+            return await _customerRequestRepository.getPriceForUser(accountId, packageId, periodic);
         }
     }
 }
