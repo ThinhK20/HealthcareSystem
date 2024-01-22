@@ -13,6 +13,8 @@ import {
    getCustomerRequestByIdApi,
    refuseRequest,
 } from "../../apis/customerRequestApis";
+import { RequestStatus } from "../../enums/refund-request-status";
+
 import { getPaymentsByID } from "../../apis/paymentApis";
 import ButtonStepper from "../../components/card/news";
 const StaffRequestDetail = () => {
@@ -41,10 +43,12 @@ const StaffRequestDetail = () => {
          });
    }, [reset]);
    const handleAccept = () => {
-      accecptRequest(id, 1).then(handleReset);
+      const staffId = localStorage.getItem("accountId");
+      accecptRequest(id, staffId).then(handleReset);
    };
    const handRefused = () => {
-      refuseRequest(id).then(handleReset);
+      const staffId = localStorage.getItem("accountId");
+      refuseRequest(id, staffId).then(handleReset);
    };
    // const handComplete = () => {
    //   axios
@@ -78,22 +82,21 @@ const StaffRequestDetail = () => {
                               Customer Request #{data?.requestID}
                            </h2>
                            <div className=" text-gray-500 flex mt-3 justify-center">
-                              Status:{" "}
-                              <span className="font-[600] ml-3">
-                                 <Chip
+                              <span className="mt-1 flex items-center gap-2 text-gray-500 " >
+                              Status:
+                              <Chip
                                     size="sm"
                                     variant="ghost"
+                                  
                                     value={data?.status}
                                     color={
-                                       data?.status === "Pending Transfer"
-                                          ? "blue"
-                                          : data?.status ===
-                                            "Pending Confirmation"
-                                          ? "amber"
-                                          : "green"
+                                       data?.status === RequestStatus.Confirmation
+                                       ? "amber" 
+                                       : data?.status === RequestStatus.Transfer ? "blue" : 
+                                       data?.status === RequestStatus.Completed ? "purple" : "red"
                                     }
                                  />
-                              </span>
+                           </span>
                            </div>
                            <div className="mt-4 not-italic text-gray-800 dr:text-gray-200"></div>
                         </div>

@@ -7,4 +7,5 @@ export const RequestStatus = Object.freeze({
    Confirmation: "Pending Confirmation",
    Transfer: "Pending Transfer",
    Completed: "Completed",
+   Refused: "Refused"
 });

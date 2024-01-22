@@ -19,13 +19,13 @@ export default function EditPackageForm() {
   const navigateTo = useNavigate();
   const params = useParams();
 
-  const [data, setData] = useState({});
+  const [data, setData] = useState(null);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const [load, setLoad] = useState(true);
-  const [policy, setPolicy] = useState([]);
+  const [load, setLoad] = useState(false);
+  const [policy, setPolicy] = useState(null);
   const [listPolicy, setListPolicy] = useState([]);
   const [listBasicPrice, setListBasicPrice] = useState([]);
 
@@ -66,12 +66,12 @@ export default function EditPackageForm() {
     } else {
       setPolicyError(false);
       setPayoutError(false);
-
+      console.log("No")
       const found = listPolicy.find((policy) => policy.PolicyId === policyId);
       if (found !== undefined) {
         setPolicyError2(true);
       } else {
-        let f = policy.find((p) => p.policyID === policyId);
+        let f = policy.data.find((p) => p.policyID === policyId);
         let name = f.name;
         setPolicyError2(false);
         let newElement = {
@@ -79,9 +79,9 @@ export default function EditPackageForm() {
           PolicyId: policyId,
           PayoutPrice: payoutPrice / 100,
           MaxRefundPerExamination:
-            maxRefundPerExamination === 0 ? null : maxRefundPerExamination,
-          MaxRefundPerDay: maxRefundPerDay === 0 ? null : maxRefundPerDay,
-          MaxRefundPeYear: maxRefundPeYear === 0 ? null : maxRefundPeYear,
+            maxRefundPerExamination === 0 ? -1 : maxRefundPerExamination,
+          MaxRefundPerDay: maxRefundPerDay === 0 ? -1 : maxRefundPerDay,
+          MaxRefundPeYear: maxRefundPeYear === 0 ? -1 : maxRefundPeYear,
         };
         setListPolicy((oldArray) => [...oldArray, newElement]);
         setListName((oldArray) => [...oldArray, name]);
@@ -235,55 +235,66 @@ export default function EditPackageForm() {
     getData2();
   }, []);
 
+  useEffect(() => {
+    if (data != null && policy != null) {
+      console.log(data)
+      console.log(policy)
+
+      setLoad(true);
+    }
+  }, [data, policy]);
+
   //   useEffect(() => {
   //     console.log(listPolicy);
   //   }, [listPolicy]);
 
   useEffect(() => {
-    if (Object.keys(data).length > 0) {
-      console.log(data);
-      const temp = data.packageDetails.map((element) => ({
-        PackageID: element.packageID,
-        PolicyId: element.policyID,
-        PayoutPrice: element.payoutPrice,
-        MaxRefundPerExamination:
-          element.maxRefundPerExamination === 0
-            ? null
-            : element.maxRefundPerExamination,
-        MaxRefundPerDay:
-          element.maxRefundPerDay === 0 ? null : element.maxRefundPerDay,
-        MaxRefundPeYear:
-          element.maxRefundPeYear === 0 ? null : element.maxRefundPeYear,
-      }));
-      console.log(temp);
-      setListPolicy(temp);
-      const temp2 = data.basicPrices.map((element) => ({
-        PackageID: data.packageid,
-        FromAge: element.fromAge,
-        ToAge: element.toAge,
-        Gender: element.gender,
-        Price: element.price,
-      }));
-      console.log("AAAA", temp2);
-      temp2.sort((a, b) => {
-        // Compare based on firstValue
-        if (a.Gender < b.Gender) return -1;
-        if (a.Gender > b.Gender) return 1;
+    if (data != null) {
+      if (Object.keys(data).length > 0) {
+        console.log(data);
+        const temp = data.packageDetails.map((element) => ({
+          PackageID: element.packageID,
+          PolicyId: element.policyID,
+          PayoutPrice: element.payoutPrice,
+          MaxRefundPerExamination:
+            element.maxRefundPerExamination === 0
+              ? null
+              : element.maxRefundPerExamination,
+          MaxRefundPerDay:
+            element.maxRefundPerDay === 0 ? null : element.maxRefundPerDay,
+          MaxRefundPeYear:
+            element.maxRefundPeYear === 0 ? null : element.maxRefundPeYear,
+        }));
+        console.log(temp);
+        setListPolicy(temp);
+        const temp2 = data.basicPrices.map((element) => ({
+          PackageID: data.packageid,
+          FromAge: element.fromAge,
+          ToAge: element.toAge,
+          Gender: element.gender,
+          Price: element.price,
+        }));
+        console.log("AAAA", temp2);
+        temp2.sort((a, b) => {
+          // Compare based on firstValue
+          if (a.Gender < b.Gender) return -1;
+          if (a.Gender > b.Gender) return 1;
 
-        // If firstValue is equal, compare based on secondValue
-        if (a.FromAge < b.FromAge) return -1;
-        if (a.FromAge > b.FromAge) return 1;
+          // If firstValue is equal, compare based on secondValue
+          if (a.FromAge < b.FromAge) return -1;
+          if (a.FromAge > b.FromAge) return 1;
 
-        // If both firstValue and secondValue are equal
-        return 0;
-      });
-      console.log("BBBBB", temp2);
+          // If both firstValue and secondValue are equal
+          return 0;
+        });
+        console.log("BBBBB", temp2);
 
-      setListBasicPrice(temp2);
-      let name = data.packageDetails.map((x) => x.insurancePolicy.name);
-      setListName(name);
-      setName(data.name);
-      setDescription(data.description);
+        setListBasicPrice(temp2);
+        let name = data.packageDetails.map((x) => x.insurancePolicy.name);
+        setListName(name);
+        setName(data.name);
+        setDescription(data.description);
+      }
     }
   }, [data]);
 
@@ -294,28 +305,28 @@ export default function EditPackageForm() {
           <div className="relative py-3  sm:mx-auto w-3/4">
             <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
               <div className=" mx-auto">
-              <Link className="mb-5 " to={`/staffs/package-policy`}>
-                    <button
-                      type="button"
-                      className=" ml-auto w-full flex items-center justify-center  px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
+                <Link className="mb-5 " to={`/staffs/package-policy`}>
+                  <button
+                    type="button"
+                    className=" ml-auto w-full flex items-center justify-center  px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto "
+                  >
+                    <svg
+                      className="w-5 h-5 rtl:rotate-180"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
                     >
-                      <svg
-                        className="w-5 h-5 rtl:rotate-180"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
-                        />
-                      </svg>
-                      <span>Go back</span>
-                    </button>
-                  </Link>
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+                      />
+                    </svg>
+                    <span>Go back</span>
+                  </button>
+                </Link>
                 <div className="flex items-center space-x-5">
                   <div className="block font-semibold text-xl self-start text-gray-700">
                     <h2 className="leading-relaxed text-blue-600 text-4xl">
@@ -349,7 +360,9 @@ export default function EditPackageForm() {
                             className="pt-2 text-sm text-yellow-800 rounded-lg "
                             role="alert"
                           >
-                            <span className="font-medium">Please check name</span>
+                            <span className="font-medium">
+                              Please check name
+                            </span>
                           </div>
                         )}
                       </div>
@@ -438,23 +451,7 @@ export default function EditPackageForm() {
                                 setPolicyId(e);
                               }}
                             >
-                              {/* <Option key={1} value="HTML">
-                                Material Tailwind HTML
-                              </Option>
-                              <Option key={2} value="React">
-                                Material Tailwind React
-                              </Option>
-                              <Option key={3} value="Vue">
-                                Material Tailwind Vue
-                              </Option>
-                              <Option key={4} value="Angular">
-                                Material Tailwind Angular
-                              </Option>
-                              <Option key={5} value="Svelte">
-                                Material Tailwind Svelte
-                              </Option> */}
-
-                              {policy.map((p, index) => {
+                              {policy.data.map((p, index) => {
                                 return (
                                   <Option key={index} value={p.policyID}>
                                     {p.name}
@@ -581,7 +578,7 @@ export default function EditPackageForm() {
                             <h2 className="mt-4">List Policy</h2>
                             <div className="transition-max-height duration-1000 ease-in-out overflow-hidden ">
                               <div className="border border-gray-200 p-4 rounded-lg space-y-4 dr:border-gray-700">
-                                <div className="hidden sm:grid sm:grid-cols-5 w-11/12">
+                                <div className="hidden sm:grid sm:grid-cols-3 w-11/12">
                                   <div className="text-start text-xs font-medium text-gray-500 uppercase">
                                     Name
                                   </div>
@@ -590,19 +587,9 @@ export default function EditPackageForm() {
                                   </div>
                                   <div className="text-start text-xs font-medium text-gray-500 uppercase">
                                     Max refund
-                                    <br />
                                     per examination
                                   </div>
-                                  <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                                    Max refund
-                                    <br />
-                                    per day
-                                  </div>
-                                  <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                                    Max refund
-                                    <br />
-                                    per year
-                                  </div>
+                                  
                                 </div>
                                 <div className="hidden sm:block border-b border-gray-200 dr:border-gray-700"></div>
 
@@ -610,7 +597,7 @@ export default function EditPackageForm() {
                                   <div className="flex">
                                     <div
                                       key={detail.PolicyId}
-                                      className="sm:grid sm:grid-cols-5 w-11/12"
+                                      className="sm:grid sm:grid-cols-3 w-11/12"
                                     >
                                       <div className="text-start">{`${listName[index]}`}</div>
 
@@ -620,24 +607,10 @@ export default function EditPackageForm() {
 
                                       <div className="text-start">
                                         {detail.MaxRefundPerExamination !== 0 &&
-                                        detail.MaxRefundPerExamination !== null
+                                        detail.MaxRefundPerExamination !== null && detail.MaxRefundPerExamination !== -1
                                           ? formatMoney(
                                               detail.MaxRefundPerExamination
                                             )
-                                          : "No limit"}
-                                      </div>
-
-                                      <div className="text-start">
-                                        {detail.MaxRefundPerDay !== 0 &&
-                                        detail.MaxRefundPerDay !== null
-                                          ? formatMoney(detail.MaxRefundPerDay)
-                                          : "No limit"}
-                                      </div>
-
-                                      <div className="text-start">
-                                        {detail.MaxRefundPeYear !== 0 &&
-                                        detail.MaxRefundPeYear !== null
-                                          ? formatMoney(detail.MaxRefundPeYear)
                                           : "No limit"}
                                       </div>
                                     </div>

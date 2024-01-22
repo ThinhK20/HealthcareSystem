@@ -54,10 +54,10 @@ export const accecptRequest = async (requestID, staff) => {
       console.error("Error occurred while fetching account details", error);
    }
 };
-export const refuseRequest = async (requestID) => {
+export const refuseRequest = async (requestID, staff) => {
    try {
       const response = await instance.post(
-         `/users/RefusedRequest/${requestID}`
+         `/users/RefusedRequest?requestID=${requestID}&staffid=${staff}`
       );
       return response.data;
    } catch (error) {

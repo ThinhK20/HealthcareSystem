@@ -39,7 +39,7 @@ namespace HealthcareSystem.Backend.Services.PackagePoliceService
         {
             foreach (var item in detailCreate.packageDetailCreates)
             {
-                if (item.PayoutPrice > 1 || item.MaxRefundPerDay <= 0 || item.MaxRefundPerYear <= 0 || item.MaxRefundPerExamination <= 0)
+                if (item.PayoutPrice > 1 || item.MaxRefundPerDay < -1 || item.MaxRefundPerYear < -1 || item.MaxRefundPerExamination < -1)
                 {
                     return false;
                 }
@@ -83,7 +83,7 @@ namespace HealthcareSystem.Backend.Services.PackagePoliceService
         {
             foreach (var item in packagePolicyEdit.PackageDetails)
             {
-                if (item.PayoutPrice > 1 || item.MaxRefundPerDay <= 0 || item.MaxRefundPeYear <= 0 || item.MaxRefundPerExamination <= 0)
+                if (item.PayoutPrice > 1 || item.MaxRefundPerDay < -1 || item.MaxRefundPeYear < -1 || item.MaxRefundPerExamination < -1)
                 {
                     return false;
                 }

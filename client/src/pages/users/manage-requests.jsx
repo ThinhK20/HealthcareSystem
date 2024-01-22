@@ -29,6 +29,8 @@ import {
 } from "../../apis/customerRequestApis";
 import { formatMoney } from "../../helpers/dataHelper";
 import Paging from "../../components/pagination/pagination";
+import { RequestStatus } from "../../enums/refund-request-status";
+
 const TABLE_HEAD = [
    "Request Id",
    "User",
@@ -36,7 +38,6 @@ const TABLE_HEAD = [
    "Price",
    "Insurance",
    "Status",
-   "Payment",
    "",
 ];
 
@@ -263,50 +264,17 @@ export default function CustomerRequestManagement() {
                                     variant="ghost"
                                     value={tableRow.status}
                                     color={
-                                       tableRow.status === "Pending Transfer"
-                                          ? "green"
-                                          : "amber"
+                                       tableRow.status === RequestStatus.Confirmation
+                                       ? "amber" 
+                                       : tableRow.status === RequestStatus.Transfer ? "blue" : 
+                                       tableRow.status === RequestStatus.Completed ? "purple" : "red"
                                     }
                                  />
                               </div>
                            </td>
-                           <td className={classes}>
-                              <div className="flex items-center gap-3">
-                                 <div className="h-9 w-12 rounded-md border border-blue-gray-50 p-1">
-                                    <Avatar
-                                       src={
-                                          "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
-                                          // : "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/mastercard.png"
-                                       }
-                                       size="sm"
-                                       alt={"Visa"}
-                                       variant="square"
-                                       className="h-full w-full object-contain p-1"
-                                    />
-                                 </div>
-                                 <div className="flex flex-col">
-                                    <Typography
-                                       variant="small"
-                                       color="blue-gray"
-                                       className="font-normal capitalize"
-                                    >
-                                       {/* {account.split("-").join(" ")}{" "}
-                                          {accountNumber} */}
-                                       Visa 1234
-                                    </Typography>
-                                    <Typography
-                                       variant="small"
-                                       color="blue-gray"
-                                       className="font-normal opacity-70"
-                                    >
-                                       {"06/2025"}
-                                    </Typography>
-                                 </div>
-                              </div>
-                           </td>
-                           <td className={classes}>
+                         <td className={classes}>
                               <Link to={`/users/payment`}>
-                                 <Tooltip title="View details">
+                                 <Tooltip title="View payment details">
                                     <IconButton variant="text">
                                        <FontAwesomeIcon
                                           className="h-4 w-4"
@@ -315,11 +283,6 @@ export default function CustomerRequestManagement() {
                                     </IconButton>
                                  </Tooltip>
                               </Link>
-                              <Tooltip title="Edit">
-                                 <IconButton variant="text">
-                                    <PencilIcon className="h-4 w-4" />
-                                 </IconButton>
-                              </Tooltip>
                               <Link to={`/users/requests-detail/${tableRow.requestID}`}>
                                  <Tooltip title="View details">
                                     <IconButton variant="text">

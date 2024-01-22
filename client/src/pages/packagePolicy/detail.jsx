@@ -143,7 +143,7 @@ export default function PackagePolicyDetails() {
               </h3>
               <div className="transition-max-height duration-1000 ease-in-out overflow-hidden mt-1 ">
                 <div className="border border-gray-200 p-4 rounded-lg space-y-4 dr:border-gray-700">
-                  <div className="hidden sm:grid sm:grid-cols-6">
+                  <div className="hidden sm:grid sm:grid-cols-4">
                     <div className="text-start text-xs font-medium text-gray-500 uppercase">
                       Index
                     </div>
@@ -154,31 +154,22 @@ export default function PackagePolicyDetails() {
                       Percent Payout(%)
                     </div>
                     <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                      Max refund per examination
+                      Max refund per request
                     </div>
-                    <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                      Max refund
-                      <br />
-                      per day
-                    </div>
-                    <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                      Max refund
-                      <br />
-                      per year
-                    </div>
+                    
                   </div>
                   <div className="hidden sm:block border-b border-gray-200 dr:border-gray-700"></div>
 
                   {data?.packageDetails?.map((detail, index) => (
                     <div
                       key={detail.policyID}
-                      className="sm:grid sm:grid-cols-6"
+                      className="sm:grid sm:grid-cols-4"
                     >
                       <div className="text-start">{`${index + 1}`}</div>
                       <div className="text-start">{`${detail.insurancePolicy.name}`}</div>
 
                       <div className="text-start">
-                        {detail.payoutPrice * 100}%
+                        {Number.parseInt(detail.payoutPrice * 100)}%
                       </div>
 
                       <div className="text-start">
@@ -187,17 +178,7 @@ export default function PackagePolicyDetails() {
                           : "No limit"}
                       </div>
 
-                      <div className="text-start">
-                        {detail.maxRefundPerDay !== 0
-                          ? formatMoney(detail.maxRefundPerDay)
-                          : "No limit"}
-                      </div>
-
-                      <div className="text-start">
-                        {detail.maxRefundPeYear !== 0
-                          ? formatMoney(detail.maxRefundPeYear)
-                          : "No limit"}
-                      </div>
+                      
                     </div>
                   ))}
                 </div>

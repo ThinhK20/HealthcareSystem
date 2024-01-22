@@ -64,7 +64,6 @@ export default function CustomerRequestForm() {
       } else {
          e.preventDefault();
          const formData = new FormData(e.target);
-         console.log(new Date());
          const submitData = {
             accountId: localStorage.getItem("accountId"),
             packageId: selectedPolicyPackage.packageid,

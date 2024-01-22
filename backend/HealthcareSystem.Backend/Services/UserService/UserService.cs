@@ -90,6 +90,7 @@ namespace HealthcareSystem.Backend.Services.UserService
                 InsureID = insuranceInfo.InsuranceID,
                 DateStart = result.acceptAt,
                 DateEnd = null,
+                Status = "Not active"
             };
             await _insuranceDetailRepository.AddInsuranceDatail(insuranceDetail);
             return true;

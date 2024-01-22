@@ -9,6 +9,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using HealthcareSystem.Backend.Models.PayPal;
 using Newtonsoft.Json.Linq;
 using CloudinaryDotNet.Actions;
+using HealthcareSystem.Backend.Repositories.InsuranceRepository;
+using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 
 namespace HealthcareSystem.Backend.Services.PaymentService
 {
@@ -20,8 +22,9 @@ namespace HealthcareSystem.Backend.Services.PaymentService
         private readonly IConfiguration _configuration;
         private readonly PayPalSettingDomain _payPalSetting;
         private readonly ICustomerRequestRepository _customerRequestRepository;
-
-        public PaymentService(IConfiguration configuration, IPaymentRepository paymentRepository, IUserService userService, ICustomerRequestRepository customerRequestRepository)
+        private readonly IInsuranceRepository _insuranceRepository;
+        private readonly IInsuranceDetailRepository _insuranceDetailRepository;
+        public PaymentService(IConfiguration configuration, IPaymentRepository paymentRepository, IUserService userService, ICustomerRequestRepository customerRequestRepository, IInsuranceRepository insuranceRepository, IInsuranceDetailRepository insuranceDetailRepository)
         {
             _configuration = configuration;
             _paymentRepository = paymentRepository;
@@ -29,7 +32,8 @@ namespace HealthcareSystem.Backend.Services.PaymentService
             _payPalModule = new PayPalModule();
             _payPalSetting = _configuration.GetSection("PayPal").Get<PayPalSettingDomain>()!;
             _customerRequestRepository = customerRequestRepository;
-
+            _insuranceRepository = insuranceRepository;
+            _insuranceDetailRepository = insuranceDetailRepository;
         }
         public async Task<bool> CreatePayment(PaymentCreateDTO payment)
         {
@@ -127,7 +131,9 @@ namespace HealthcareSystem.Backend.Services.PaymentService
             if (result == true)
             {
                 int requestId = await _paymentRepository.UpdatePayPalComplete(token, updatedDate);
-                
+                var customerRequestInfo = await _customerRequestRepository.GetCustomerRequestByIdAsync((int)resultCheck.RequestId);
+                var insuranceInfo = await _insuranceRepository.GetInsuranceByAccountIdAsync(customerRequestInfo.AccountId);
+                await _insuranceDetailRepository.UpdateStatusBy2Id(insuranceInfo.InsuranceID, customerRequestInfo.PackageId, customerRequestInfo.Periodic, "Active");
                 var listPayment = await _paymentRepository.GetAllPayment(requestId);
                 var listAccept = listPayment.FindAll(x => x.Status == true);
                 if (listAccept.Count == listPayment.Count)

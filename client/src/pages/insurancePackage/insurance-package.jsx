@@ -52,6 +52,12 @@ function InsurancePackage() {
     getData(packageId);
   }, []);
 
+  useEffect(() => {
+    const packageId = searchParams.get("packageId");
+
+    getData(packageId);
+  }, [searchParams.get("packageId")]);
+
   // useEffect(() => {
   //   if (data !== null) {
   //     data.basicPrices.sort((a, b) => {
@@ -122,7 +128,7 @@ function InsurancePackage() {
                                     Percent refund
                                   </td>
                                   <td className="whitespace-nowrap px-6 py-4 font-medium pl-10">
-                                    {detail.payoutPrice * 100}%
+                                    {Number.parseInt(detail.payoutPrice * 100)}%
                                   </td>
                                 </tr>
                                 <tr className="border-b bg-white ">

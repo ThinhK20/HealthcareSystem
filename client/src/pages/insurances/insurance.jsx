@@ -22,7 +22,7 @@ function Insurance() {
 
    const [dataFilter, setDataFilter] = useState([]);
    const [dataAfterFilter, setDataAfterFilter] = useState([]);
-   const itemsPerPage = 1;
+   const itemsPerPage = 5;
    const handlePageChange = (newPage) => {
       const startIndex = (newPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;

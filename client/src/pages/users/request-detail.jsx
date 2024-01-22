@@ -11,6 +11,8 @@ import { getCustomerRequestByIdApi } from "../../apis/customerRequestApis";
 import { getPaymentsByID } from "../../apis/paymentApis";
 import { Link, useParams } from "react-router-dom";
 import ButtonStepper from "../../components/card/news";
+import { RequestStatus } from "../../enums/refund-request-status";
+
 const UserRequestDetail = () => {
    const [data, setData] = useState();
    const [dropPayment, SetDropPaymet] = useState(false);
@@ -84,11 +86,20 @@ const UserRequestDetail = () => {
                            <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 dr:text-gray-200">
                               Customer Request #{data?.requestID}
                            </h2>
-                           <span className="mt-1 block text-gray-500">
-                              Status:{" "}
-                              <span className="font-[600] text-[#274f66]">
-                                 {data?.status}
-                              </span>
+                           <span className="mt-1 flex items-center gap-2 text-gray-500 inline-block" >
+                              Status:
+                              <Chip
+                                    size="sm"
+                                    variant="ghost"
+                                  
+                                    value={data?.status}
+                                    color={
+                                       data?.status === RequestStatus.Confirmation
+                                       ? "amber" 
+                                       : data?.status === RequestStatus.Transfer ? "blue" : 
+                                       data?.status === RequestStatus.Completed ? "purple" : "red"
+                                    }
+                                 />
                            </span>
                            <div className="mt-4 not-italic text-gray-800 dr:text-gray-200"></div>
                         </div>

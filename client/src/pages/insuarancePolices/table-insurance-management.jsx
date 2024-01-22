@@ -21,7 +21,7 @@ function TableInsuranceManagement() {
    const [dataFilter, setDataFilter] = useState([]);
    const [dataAfterFilter, setDataAfterFilter] = useState([]);
 
-   const itemsPerPage = 1;
+   const itemsPerPage = 5;
    const handlePageChange = (newPage) => {
       const startIndex = (newPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
@@ -36,16 +36,13 @@ function TableInsuranceManagement() {
    const getData = async () => {
       setLoading(true);
       const data = await getAll();
-      console.log(11111111, data.data);
-      setData(data.slice(0, itemsPerPage));
+      setData(data?.slice(0, itemsPerPage));
       setDataFilter(data);
       setLoading(false);
    };
    const handleDelete = async (index) => {
       setConfirm(0);
-      console.log(index);
       const api = await deletePolicy(index);
-      console.log(11111111, api);
       const updatedData = data.filter((item) => item.policyID !== index);
       toast.success("Deleted successfully !");
       setData(updatedData);
@@ -130,7 +127,7 @@ function TableInsuranceManagement() {
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    {data.map((item, index) => (
+                                    {data?.map((item, index) => (
                                        <tr
                                           key={index}
                                           className={
@@ -265,8 +262,8 @@ function TableInsuranceManagement() {
                <Pagination
                   totalItems={
                      searchInput.length == 0
-                        ? dataFilter.length
-                        : dataAfterFilter.length
+                        ? dataFilter?.length
+                        : dataAfterFilter?.length
                   }
                   itemsPerPage={itemsPerPage}
                   onPageChange={handlePageChange}

@@ -6,7 +6,7 @@ import {
    Link,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link as RouterLink } from "react-router-dom";
 import {
    acceptRefundRequestApiById,
    getRefundRequestApiById,
@@ -56,6 +56,8 @@ export default function RefundRequestDetails() {
    const backToManagement = () => {
       navigate("/staffs/refund-requests");
    };
+
+   console.log("Requast detailll: ", data);
 
    return (
       <form className="w-full">
@@ -151,6 +153,11 @@ export default function RefundRequestDetails() {
                   {formatMoney(data?.totalRefundFee)}
                </Typography>
             </div>
+         </div>
+         <div>
+         <RouterLink to={`/staffs/refund/${data?.refundID}`} class="bg-blue-300 hover:bg-blue-400 text-gray-800  py-2 px-4 rounded inline-flex items-center">
+            <span>Create refund details</span>
+            </RouterLink>
          </div>
          {/* Table */}
          <table className="min-w-full text-left text-sm font-light my-8">

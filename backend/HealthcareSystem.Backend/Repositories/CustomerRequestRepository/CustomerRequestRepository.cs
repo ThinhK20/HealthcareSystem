@@ -63,6 +63,10 @@ namespace HealthcareSystem.Backend.Repositories
         {
             return _mapper.Map<CustomerRequestDomain>(await GetAsync(x => x.RequestID == requestId, true, "Account,Staff,Payment,PolicyPackage"));
         }
+        public async Task<CustomerRequestDomain> GetCustomerRequestByAccountIdAsync(int accountId)
+        {
+            return _mapper.Map<CustomerRequestDomain>(await GetAsync(x => x.AccountId == accountId));
+        }
         public async Task<AcceptCustomerRequestResponeDomain> AcceptCustomerRequest(int Accept,int StaffId)
         {
             var ctm_request = await GetAsync(x => x.RequestID == Accept,true, "PolicyPackage");

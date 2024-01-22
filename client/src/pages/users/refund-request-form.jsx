@@ -14,19 +14,25 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { createNewRefundRequestApi } from "../../apis/refundRequestApis.js";
 import LoadingWrapper from "../../components/loading/loading.jsx";
+import { useNavigate  } from 'react-router-dom';
+import { getInsurancedetails } from "../../apis/accountApis.js";
 export default function RefundRequestForm() {
    const [attachFile, setAttachFile] = useState();
    const [errorMsg, setErrorMsg] = useState("");
    const [isSaving, setIsSaving] = useState(false);
    const [loading, setLoading] = useState(false);
+   const navigate = useNavigate();
 
-   function onSubmit(e) {
+
+   
+
+   async function onSubmit(e) {
       e.preventDefault();
       setErrorMsg("");
-
+      const insureData = await getInsurancedetails(localStorage.getItem("accountId"));
       const formData = new FormData(e.target);
       const submitData = {
-         insureId: "1",
+         insureId: insureData?.insuranceInfo?.insuranceID,
          hoptitalName: formData.get("hoptitalName"),
          hoptitalDescription: formData.get("hoptitalDescription"),
          file: attachFile,
@@ -50,9 +56,10 @@ export default function RefundRequestForm() {
             toast.success("Submit a refund request successfully !");
             e.target.reset();
             setIsSaving(false);
+            navigate("/users/refund-requests")
          })
-         .catch(() => {
-            toast.error("Something wrong here. Please try again.");
+         .catch((err) => {
+            toast.error(err?.response?.data);
             setIsSaving(false);
          });
    }

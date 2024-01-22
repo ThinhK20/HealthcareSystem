@@ -170,12 +170,22 @@ namespace HealthcareSystem.Backend.Services.AccountService
             var checkUser = getList.FirstOrDefault(u => u.Username == loginRequestDTO.UserName);
             var userinfo = await _userRepository.GetUserByAccount(checkUser.AccountId);
 
+            var insuranceCardData = new InsuranceDTO()
+            {
+                AccountId = checkUser.AccountId,
+                CardOpenDate = DateTime.Today.ToString("yyyy-M-d"),
+                RegisterPlace = "Ho Chi Minh"
+            };
+
+            await _insuranceRepository.CreateInsurance(insuranceCardData);
 
             LoginResponseDTO loginRequestDto = new LoginResponseDTO()
             {
                 Token = jwtToken,
                 user = userinfo
             };
+
+
             return loginRequestDto;
 
         }

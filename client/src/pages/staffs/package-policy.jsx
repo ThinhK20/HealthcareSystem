@@ -12,18 +12,63 @@ import {
   InActivePackage,
   ActivePackage,
 } from "../../apis/policyPackageApis";
-
+import LoadingWrapper from "../../components/loading/loading";
+import { Input } from "@material-tailwind/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import Pagination from "../../components/pagination/pagination";
 function PackagePolicy() {
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [newPage, setNewPage] = useState(0);
+
+  const [dataFilter, setDataFilter] = useState([]);
+  const [dataAfterFilter, setDataAfterFilter] = useState([]);
+  const itemsPerPage = 5;
+  const handlePageChange = (newPage) => {
+    const startIndex = (newPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    if (searchInput.length == 0) {
+       setData(dataFilter.slice(startIndex, endIndex));
+    } else {
+       setData(dataAfterFilter.slice(startIndex, endIndex));
+    }
+    setNewPage(newPage);
+ };
+ useEffect(() => {
+  const startIndex = (newPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  console.log("Start: ", startIndex, "End: ", endIndex);
+  const newdata = dataFilter.filter(
+     (item) =>
+        item.name.toLowerCase().includes(searchInput) ||
+        item.description.toLowerCase().includes(searchInput)
+  );
+  setData(newdata.slice(startIndex, endIndex));
+  setDataAfterFilter(newdata);
+}, [searchInput]);
+
 
   const getData = async () => {
+    setLoading(true);
     const data = await getAllPackage();
-    console.log(data);
-    setData(data);
+    console.log(data, 99999999);
+    setData(data.slice(0, itemsPerPage));
+    setDataFilter(data);
+    setLoading(false);
+
   };
 
+  useEffect(()=>{
+    console.log(loading)
+  },[loading])
+
   const handleInActive = async (id, index) => {
+    setLoading(true);
+
     const temp = await InActivePackage(id);
+    setLoading(false);
+
     if (temp.status == "Success") {
       toast.success("InActive success", {
         position: "top-right",
@@ -48,7 +93,11 @@ function PackagePolicy() {
     }
   };
   const handleActive = async (id, index) => {
+    setLoading(true);
+
     const temp = await ActivePackage(id);
+    setLoading(false);
+
     if (temp.status == "Success") {
       toast.success("Active success", {
         position: "top-right",
@@ -86,7 +135,9 @@ function PackagePolicy() {
   return (
     <>
       <div className="container my-12 py-12 mx-auto px-4 md:px-6 lg:px-12">
-        <Link
+      <div className="flex justify-between">
+               <div>
+               <Link
           type="button"
           to={`/staffs/package-policy/create`}
           state={{ status: "create" }}
@@ -94,6 +145,16 @@ function PackagePolicy() {
         >
           <FontAwesomeIcon icon={faPlus} /> New
         </Link>
+               </div>
+               <div className="w-full max-w-[24rem]">
+                  <Input
+                     onChange={(e) => setSearchInput(e.target.value)}
+                     label="Search by Name or Description"
+                     icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                  />
+               </div>
+            </div>
+       
 
         <section className="mb-20 text-gray-800">
           <div className="block rounded-lg shadow-lg bg-white">
@@ -210,7 +271,19 @@ function PackagePolicy() {
             </div>
           </div>
         </section>
+        <div className="flex justify-center items-center text-center">
+               <Pagination
+                  totalItems={
+                     searchInput.length == 0
+                        ? dataFilter.length
+                        : dataAfterFilter.length
+                  }
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={handlePageChange}
+               />
+            </div>
       </div>
+      <LoadingWrapper open={loading} />
     </>
   );
 }

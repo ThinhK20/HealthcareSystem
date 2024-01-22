@@ -76,9 +76,9 @@ export default function CreatePackageForm() {
           policyId: policyId,
           payoutPrice: payoutPrice / 100,
           maxRefundPerExamination:
-            maxRefundPerExamination === 0 ? null : maxRefundPerExamination,
-          maxRefundPerDay: maxRefundPerDay === 0 ? null : maxRefundPerDay,
-          maxRefundPerYear: maxRefundPerYear === 0 ? null : maxRefundPerYear,
+            maxRefundPerExamination === 0 ? -1 : maxRefundPerExamination,
+          maxRefundPerDay: maxRefundPerDay === 0 ? -1 : maxRefundPerDay,
+          maxRefundPerYear: maxRefundPerYear === 0 ? -1 : maxRefundPerYear,
         };
         setListPolicy((oldArray) => [...oldArray, newElement]);
         setListName((oldArray) => [...oldArray, name]);
@@ -469,43 +469,10 @@ export default function CreatePackageForm() {
                                 htmlFor="exam"
                                 className="peer-focus:font-medium absolute text-sm text-gray-500 da:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:da:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                               >
-                                Max Refund Per Examination($)
+                                Max Refund Per Request($)
                               </label>
                             </div>
-                            <div className="relative z-0 w-full group mr-3">
-                              <input
-                                type="number"
-                                name="day"
-                                id="day"
-                                className="block pt-6 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none da:text-white da:border-gray-600 da:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                onChange={(e) => {
-                                  setMaxRefundPerDay(Number(e.target.value));
-                                }}
-                              />
-                              <label
-                                htmlFor="day"
-                                className="peer-focus:font-medium absolute text-sm text-gray-500 da:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:da:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                              >
-                                Max Refund Per Day($)
-                              </label>
-                            </div>
-                            <div className="relative z-0 w-full group mr-3">
-                              <input
-                                type="number"
-                                name="year"
-                                id="year"
-                                className="block pt-6 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none da:text-white da:border-gray-600 da:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                onChange={(e) => {
-                                  setMaxRefundPerYear(Number(e.target.value));
-                                }}
-                              />
-                              <label
-                                htmlFor="year"
-                                className="peer-focus:font-medium absolute text-sm text-gray-500 da:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:da:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                              >
-                                Max Refund Per Year($)
-                              </label>
-                            </div>
+                            
                           </div>
                           <div className="flex items-center space-x-4 mt-6">
                             <button
@@ -520,7 +487,7 @@ export default function CreatePackageForm() {
                             <h2 className="mt-4">List Policy</h2>
                             <div className="transition-max-height duration-1000 ease-in-out overflow-hidden ">
                               <div className="border border-gray-200 p-4 rounded-lg space-y-4 dr:border-gray-700">
-                                <div className="hidden sm:grid sm:grid-cols-5 w-11/12">
+                                <div className="hidden sm:grid sm:grid-cols-3 w-11/12">
                                   <div className="text-start text-xs font-medium text-gray-500 uppercase">
                                     Name
                                   </div>
@@ -528,20 +495,9 @@ export default function CreatePackageForm() {
                                     Percent Payout
                                   </div>
                                   <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                                    Max refund
-                                    <br />
-                                    per examination
+                                    Max refund per Request
                                   </div>
-                                  <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                                    Max refund
-                                    <br />
-                                    per day
-                                  </div>
-                                  <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                                    Max refund
-                                    <br />
-                                    per year
-                                  </div>
+                                  
                                 </div>
                                 <div className="hidden sm:block border-b border-gray-200 dr:border-gray-700"></div>
 
@@ -549,31 +505,19 @@ export default function CreatePackageForm() {
                                   <div className="flex">
                                     <div
                                       key={detail.policyID}
-                                      className="sm:grid sm:grid-cols-5 w-11/12"
+                                      className="sm:grid sm:grid-cols-3 w-11/12"
                                     >
                                       <div className="text-start">{`${listName[index]}`}</div>
 
                                       <div className="text-start">
-                                        {detail.payoutPrice * 100}%
+                                        {Number.parseInt(detail.payoutPrice * 100)}%
                                       </div>
 
                                       <div className="text-start">
-                                        {detail.maxRefundPerExamination !== null
+                                        {detail.maxRefundPerExamination !== null && detail.maxRefundPerExamination !== -1
                                           ? formatMoney(
                                               detail.maxRefundPerExamination
                                             )
-                                          : "No limit"}
-                                      </div>
-
-                                      <div className="text-start">
-                                        {detail.maxRefundPerDay !== null
-                                          ? formatMoney(detail.maxRefundPerDay)
-                                          : "No limit"}
-                                      </div>
-
-                                      <div className="text-start">
-                                        {detail.maxRefundPerYear !== null
-                                          ? formatMoney(detail.maxRefundPerYear)
                                           : "No limit"}
                                       </div>
                                     </div>

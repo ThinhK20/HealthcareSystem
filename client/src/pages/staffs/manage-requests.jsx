@@ -22,6 +22,9 @@ import { formatMoney } from "../../helpers/dataHelper";
 import LoadingData from "../../components/loading/loadingData";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Paging from "../../components/pagination/pagination";
+import { RequestStatus } from "../../enums/refund-request-status";
+
+
 const TABLE_HEAD = [
    "Request Id",
    "User",
@@ -29,7 +32,6 @@ const TABLE_HEAD = [
    "Price",
    "Insurance",
    "Status",
-   "Payment",
    "",
 ];
 
@@ -69,7 +71,6 @@ export default function StaffCustomerRequestManagement() {
    }, [searchInput, paginationIndex]);
 
    function filterTableRows(rowsData) {
-      console.log("rowsData: ", rowsData);
       return rowsData?.filter(
          (r) =>
             r?.user?.username
@@ -105,6 +106,8 @@ export default function StaffCustomerRequestManagement() {
          endIndex,
       }));
    }
+
+   console.log("Dataadasd: ", tableRowsFilter);
 
    return (
       <Card className="h-full w-full">
@@ -249,50 +252,17 @@ export default function StaffCustomerRequestManagement() {
                                        variant="ghost"
                                        value={tableRow.status}
                                        color={
-                                          tableRow.status === "Pending Transfer"
-                                             ? "green"
-                                             : "amber"
+                                          tableRow.status === RequestStatus.Confirmation
+                                             ? "amber" 
+                                             : tableRow.status === RequestStatus.Transfer ? "blue" : 
+                                             tableRow.status === RequestStatus.Completed ? "purple" : "red"
                                        }
                                     />
                                  </div>
                               </td>
                               <td className={classes}>
-                                 <div className="flex items-center gap-3">
-                                    <div className="h-9 w-12 rounded-md border border-blue-gray-50 p-1">
-                                       <Avatar
-                                          src={
-                                             "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
-                                             // : "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/mastercard.png"
-                                          }
-                                          size="sm"
-                                          alt={"Visa"}
-                                          variant="square"
-                                          className="h-full w-full object-contain p-1"
-                                       />
-                                    </div>
-                                    <div className="flex flex-col">
-                                       <Typography
-                                          variant="small"
-                                          color="blue-gray"
-                                          className="font-normal capitalize"
-                                       >
-                                          {/* {account.split("-").join(" ")}{" "}
-                                     {accountNumber} */}
-                                          Visa 1234
-                                       </Typography>
-                                       <Typography
-                                          variant="small"
-                                          color="blue-gray"
-                                          className="font-normal opacity-70"
-                                       >
-                                          {"06/2025"}
-                                       </Typography>
-                                    </div>
-                                 </div>
-                              </td>
-                              <td className={classes}>
                                  <Link to={`/staffs/payment?acc=${tableRow?.user?.accountId}`}>
-                                    <Tooltip title="View details">
+                                    <Tooltip title="View payment details">
                                        <IconButton variant="text">
                                           <FontAwesomeIcon
                                              className="h-4 w-4"
