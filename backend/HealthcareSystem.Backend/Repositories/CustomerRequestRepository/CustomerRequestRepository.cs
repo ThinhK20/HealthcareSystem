@@ -139,5 +139,7 @@ namespace HealthcareSystem.Backend.Repositories
             price = price * (12 / month);
             return price;
         }
+
+        
     }
 }
