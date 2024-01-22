@@ -22,5 +22,12 @@ namespace HealthcareSystem.Backend.Repositories
             var ListFeeAffects = FeeAffects.Select(t => _mapper.Map<FeeAffectDomain>(t)).ToList();
             return ListFeeAffects;
         }
+
+        public async Task<FeeAffectDomain> GetById(int id)
+        {
+            var FeeAffect = await GetAsync(x=> x.FeeAffectId == id);
+            if (FeeAffect == null) throw new Exception("No found");
+            return _mapper.Map<FeeAffectDomain>(FeeAffect);
+        }
     }
 }

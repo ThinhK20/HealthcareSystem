@@ -21,6 +21,7 @@ namespace HealthcareSystem.Backend
 
             CreateMap<Models.Domain.CustomerRequestDomain, Models.DTO.CustomerRequestCreateDTO>().ReverseMap();
             CreateMap<Models.Domain.CustomerRequestDomain, Models.DTO.CustomerRequestCreateDTO>().ReverseMap();
+            CreateMap<Models.Domain.HealthRecordDomain, Models.Entity.HealthRecord>().ReverseMap();
 
             CreateMap<Models.Domain.PackageDetailDomain, Models.Entity.PackageDetail>().ReverseMap();
 

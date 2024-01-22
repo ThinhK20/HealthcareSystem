@@ -2,6 +2,7 @@
 using HealthcareSystem.Backend.Enums;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.AccountRepository;
 using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
@@ -155,6 +156,52 @@ namespace HealthcareSystem.Backend.Services.UserService
             }
             if (periodic != Periodic.Quarter && periodic != Periodic.HalfYear && periodic != Periodic.Year) throw new Exception("No support");
             return await _customerRequestRepository.getPriceForUser(accountId, packageId, periodic);
+        }
+
+        public async Task<List<HealthRecordDomain>> GetHealthRecords(int userId)
+        {
+            var userInfo = await _userRepository.GetUserInfoForPriceByIdAsync(userId);
+            if (userInfo == null)
+            {
+                throw new Exception("userInfo");
+            }
+            var listHr = await _healthRecordRepository.GetListHR(userId);
+
+            return listHr;
+        }
+
+        public async Task<bool> addnewHr(List<HealthRecordDTO> data)
+        {
+            if (data.Count == 0 || data == null) throw new Exception("No data");
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (i > 0 && data[i].UserID != data[i - 1].UserID) throw new Exception("No support");
+                var userinfo = await _userRepository.GetUserInfoForPriceByIdAsync(data[i].UserID);
+                if (userinfo == null) throw new Exception("No user");
+
+                var feeAffect = await _feeAffectRepository.GetById(data[i].FeeAffectID);
+                if (feeAffect == null) throw new Exception("No found fee affect");
+            }
+            var phase = await _healthRecordRepository.GetMaxPhaseHealthRecord(data[0].UserID) + 1;
+            for (int i = 0; i < data.Count; i++)
+            {
+                HealthRecord healthRecord = new HealthRecord()
+                {
+                    UserID = data[i].UserID,
+                    IndexRecord = i + 1,
+                    Description = data[i].Description,
+                    FeeAffectID = data[i].FeeAffectID,
+                    Phase = phase,
+                    RecordDate = data[i].RecordDate,
+                };
+                await _healthRecordRepository.InsertData(healthRecord);
+            }
+            return true;
+        }
+
+        public async Task<List<FeeAffectDomain>> getAllFeeAffect()
+        {
+            return await _feeAffectRepository.GetAll();
         }
     }
 }

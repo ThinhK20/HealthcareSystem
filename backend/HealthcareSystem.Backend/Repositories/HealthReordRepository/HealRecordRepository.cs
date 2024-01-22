@@ -2,8 +2,10 @@
 using Azure.Core;
 using HealthcareSystem.Backend.Data;
 using HealthcareSystem.Backend.Models.Domain;
+using HealthcareSystem.Backend.Models.DTO;
 using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories.GenericRepository;
+using System.Collections.Generic;
 
 namespace HealthcareSystem.Backend.Repositories
 {
@@ -37,12 +39,25 @@ namespace HealthcareSystem.Backend.Repositories
             return countFeeAffect;
         }
 
+        public async Task<List<HealthRecordDomain>> GetListHR(int UserId)
+        {
+            var listHr = await GetAllAsync(x => x.UserID == UserId);
+            
+            return _mapper.Map<List<HealthRecordDomain>>(listHr);
+        }
+
         public async Task<int> GetMaxPhaseHealthRecord(int UserId)
         {
             var healthRecords = await GetAllAsync(x => x.UserID == UserId);
             if (healthRecords.Count == 0) return 0;
             int maxPhase = (int)healthRecords.Max(h => h.Phase);
             return maxPhase;
+        }
+
+        public async Task<bool> InsertData(HealthRecord data)
+        {
+            await CreateAsync(data);
+            return true;
         }
     }
 }

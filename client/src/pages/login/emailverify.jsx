@@ -24,7 +24,7 @@ export default function EmailVerify() {
          },
       };
       console.log(66666666);
-      if (status == "Disable") {
+      if (status == "Disable" || status == "Active") {
          const stringInput =
             String(inputone.current.value) +
             String(inputtwo.current.value) +

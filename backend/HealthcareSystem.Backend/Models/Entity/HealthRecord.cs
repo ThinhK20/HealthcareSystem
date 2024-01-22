@@ -12,12 +12,13 @@ namespace HealthcareSystem.Backend.Models.Entity
         [Key]
         [Column(Order = 1)]
         public int IndexRecord { get; set; }
-
+        [Key]
+        [Column(Order = 2)]
+        public int? Phase { get; set; }
 
         public string? Description { get; set; }
 
         public DateTime? RecordDate { get; set; }
-        public int? Phase { get; set; }
 
         public int FeeAffectID { get; set; }
 

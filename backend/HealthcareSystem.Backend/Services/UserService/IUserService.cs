@@ -1,5 +1,6 @@
 ﻿using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
+using HealthcareSystem.Backend.Models.Entity;
 
 namespace HealthcareSystem.Backend.Services.UserService
 {
@@ -25,5 +26,11 @@ namespace HealthcareSystem.Backend.Services.UserService
         public Task<UserDTO> GetUserByEmail(string email);
 
         public Task<double> GetPriceForUser(int accountId, int packageId, string periodic);
+
+        public Task<List<HealthRecordDomain>> GetHealthRecords(int userId);
+
+        public Task<bool> addnewHr(List<HealthRecordDTO> data);
+
+        public Task<List<FeeAffectDomain>> getAllFeeAffect();
     }
 }

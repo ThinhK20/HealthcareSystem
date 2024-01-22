@@ -7,5 +7,6 @@ namespace HealthcareSystem.Backend.Repositories
     public interface IFeeAffectRepository: IRepository<FeeAffect>
     {
         public Task<List<FeeAffectDomain>> GetAll();
+        public Task<FeeAffectDomain> GetById(int id);
     }
 }

@@ -29,7 +29,7 @@ namespace HealthcareSystem.Backend.Data
                 .HasKey(x => new { x.PolicyID, x.PackageID });
 
             modelBuilder.Entity<HealthRecord>()
-                .HasKey(x => new { x.UserID, x.IndexRecord });
+                .HasKey(x => new { x.UserID, x.IndexRecord, x.Phase });
 
             modelBuilder.Entity<BasicPrice>()
                 .HasKey(x => new { x.PackageID, x.IndexId });

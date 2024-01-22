@@ -169,5 +169,44 @@ namespace HealthcareSystem.Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("HealthRecords")]
+        public async Task<IActionResult> GetHealthRecords([FromQuery] int userId)
+        {
+            try
+            {
+                var result = await _userService.GetHealthRecords(userId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("addnewHR")]
+        public async Task<IActionResult> GetHealthRecords([FromBody] List<HealthRecordDTO> data)
+        {
+            try
+            {
+                var result = await _userService.addnewHr(data);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("getAllFeeAffect")]
+        public async Task<IActionResult> getAllFeeAffect()
+        {
+            try
+            {
+                var result = await _userService.getAllFeeAffect();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

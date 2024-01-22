@@ -21,6 +21,8 @@ import FormUpdate from "../pages/insurances/form-update";
 import FormCreate from "../pages/insurances/form-create";
 import ProtectLayoutRoute from "../shared/layout/Protect";
 import Refund from "../pages/refund/refund";
+import HealthRecords from "../pages/staffs/HealthRecords";
+import AddnewHR from "../pages/healthRecords/addnew";
 export const StaffRoutes = [
   {
     path: "/staffs",
@@ -136,6 +138,18 @@ export const StaffRoutes = [
     path: "/staffs/package-policy/create",
     element: (
       <ProtectLayoutRoute element={<CreatePackageForm />}   allowedRoles={["Normal Staff","Admin"]} />
+    ),
+  },
+  {
+    path: "/staffs/HealthRecord",
+    element: (
+      <ProtectLayoutRoute element={<HealthRecords />}   allowedRoles={["Normal Staff","Admin"]} />
+    ),
+  },
+  {
+    path: "/staffs/AddNewHealthRecord",
+    element: (
+      <ProtectLayoutRoute element={<AddnewHR />}   allowedRoles={["Normal Staff","Admin"]} />
     ),
   },
   {

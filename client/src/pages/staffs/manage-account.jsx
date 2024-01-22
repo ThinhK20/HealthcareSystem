@@ -18,6 +18,7 @@ import {
    faFilter,
    faPencil,
    faUser,
+   faFile
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -318,6 +319,18 @@ export function ManageAccount() {
                                              <FontAwesomeIcon
                                                 className="h-4 w-4"
                                                 icon={faUser}
+                                             />
+                                          </IconButton>
+                                       </Tooltip>
+                                    </Link>
+                                    <Link
+                                       to={`/staffs/HealthRecord?id=${tableRow.userId}`}
+                                    >
+                                       <Tooltip title="View Health Record">
+                                          <IconButton variant="text">
+                                             <FontAwesomeIcon
+                                                className="h-4 w-4"
+                                                icon={faFile}
                                              />
                                           </IconButton>
                                        </Tooltip>

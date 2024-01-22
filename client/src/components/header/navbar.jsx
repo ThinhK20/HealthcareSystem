@@ -58,7 +58,7 @@ const routes = [
     ],
   },
   {
-    role: [AccountType.User, AccountType.Test],
+    role: [AccountType.User, AccountType.Test,"All",],
     name: "Insurance Packages",
     // path: "/users/refund-requests",
     dropdown: true,

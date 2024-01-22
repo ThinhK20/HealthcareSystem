@@ -173,7 +173,7 @@ export default function PackagePolicyDetails() {
                       </div>
 
                       <div className="text-start">
-                        {detail.maxRefundPerExamination !== 0
+                        {detail.maxRefundPerExamination !== 0 && detail.maxRefundPerExamination !== -1
                           ? formatMoney(detail.maxRefundPerExamination)
                           : "No limit"}
                       </div>

@@ -64,3 +64,47 @@ export const refuseRequest = async (requestID, staff) => {
       console.error("Error occurred while fetching account details", error);
    }
 };
+
+export const getPrice = async (accountId, packageId, Periodic) => {
+   try {
+      const response = await instance.get(
+         `/users/customerRequests/price?accountId=${accountId}&packageId=${packageId}&periodic=${Periodic}`
+      );
+      return response.data;
+   } catch (error) {
+      console.error("Error occurred while fetching account details", error);
+   }
+};
+
+export const getListHealthRecord = async (userId) => {
+   try {
+      const response = await instance.get(
+         `/users/HealthRecords?userId=${userId}`
+      );
+      return response.data;
+   } catch (error) {
+      console.error("Error occurred while fetching account details", error);
+   }
+};
+
+export const getListFeeAffects = async () => {
+   try {
+      const response = await instance.get(
+         `/users/getAllFeeAffect`
+      );
+      return response.data;
+   } catch (error) {
+      console.error("Error occurred while fetching account details", error);
+   }
+};
+
+export const addnewHR = async (data) => {
+   try {
+      const response = await instance.post(
+         `/users/addnewHR`, data
+      );
+      return response.data;
+   } catch (error) {
+      console.error("Error occurred while fetching account details", error);
+   }
+};
