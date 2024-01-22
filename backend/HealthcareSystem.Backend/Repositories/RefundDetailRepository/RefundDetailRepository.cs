@@ -18,7 +18,13 @@ public class RefundDetailRepository : Repository<RefundDetail>, IRefundDetailRep
     {
         var existedRefundDetail = await GetAsync(x =>
             x.RefundID == refundDetailDomain.RefundID && x.PolicyId == refundDetailDomain.PolicyId);
-        if (existedRefundDetail != null) throw new BadHttpRequestException("Refund detail already existed.");
+        if (existedRefundDetail != null)
+        {
+            existedRefundDetail.PaidFee = refundDetailDomain.PaidFee;
+            existedRefundDetail.RefundFee = refundDetailDomain.RefundFee;
+            await UpdateAsync(existedRefundDetail);
+            return refundDetailDomain;
+        }
 
         RefundDetail createRefundDetailEntity = new()
         {
@@ -28,7 +34,7 @@ public class RefundDetailRepository : Repository<RefundDetail>, IRefundDetailRep
             PaidFee = refundDetailDomain.PaidFee,
             RefundFee = refundDetailDomain.RefundFee
         };
-        
+
         await CreateAsync(_mapper.Map<RefundDetail>(createRefundDetailEntity));
         return refundDetailDomain;
     }
@@ -43,14 +49,14 @@ public class RefundDetailRepository : Repository<RefundDetail>, IRefundDetailRep
     {
         var refundDetails = await GetAllAsync(x => x.RefundID == refundId, tracked: false,
             includeProperites: "InsurancePolicy,RefundRequest");
-        
+
         return refundDetails.Select(x => _mapper.Map<RefundDetailDomain>(x)).ToList();
     }
 
     public async Task<RefundDetailDomain> GetRefundDetailAsync(int refundDetailId)
     {
-        var refundDetail = await GetAsync(x => x.RefundDetailID == refundDetailId, tracked:false, includeProperties:"InsurancePolicy,RefundRequest");
+        var refundDetail = await GetAsync(x => x.RefundDetailID == refundDetailId, tracked: false, includeProperties: "InsurancePolicy,RefundRequest");
         return _mapper.Map<RefundDetailDomain>(refundDetail);
     }
-    
+
 }

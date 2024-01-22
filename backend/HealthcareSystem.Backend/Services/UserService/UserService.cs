@@ -1,15 +1,8 @@
-﻿using Azure.Core;
-using HealthcareSystem.Backend.Models.Domain;
+﻿using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
-using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Repositories;
 using HealthcareSystem.Backend.Repositories.InsuranceDetailRepository;
 using HealthcareSystem.Backend.Repositories.InsuranceRepository;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HealthcareSystem.Backend.Services.UserService
 {
@@ -55,10 +48,10 @@ namespace HealthcareSystem.Backend.Services.UserService
 
         public async Task<double> GetFeesIncrease(int UserID)
         {
-            var listIdAffect =  await _healthRecordRepository.GetListFeeAffectId(UserID);
+            var listIdAffect = await _healthRecordRepository.GetListFeeAffectId(UserID);
             var listFeeAffect = await _feeAffectRepository.GetAll();
             double increasePercent = 0;
-            foreach(var id in listIdAffect)
+            foreach (var id in listIdAffect)
             {
                 var temp = listFeeAffect.Find(x => x.FeeAffectId == id.Key);
                 if (temp == null) throw new Exception("Error. Please check key in database.");
@@ -82,7 +75,7 @@ namespace HealthcareSystem.Backend.Services.UserService
 
         public async Task<bool> AcceptCustomerRequest(int Accept, int StaffId)
         {
-            var result = await _customerRequestRepository.AcceptCustomerRequest(Accept,StaffId);
+            var result = await _customerRequestRepository.AcceptCustomerRequest(Accept, StaffId);
             var insuranceInfo = await _insuranceRepository.GetInsuranceByAccountIdAsync((int)result.accountId);
             var insuranceDetail = new InsuranceDetailDomain()
             {
@@ -95,9 +88,9 @@ namespace HealthcareSystem.Backend.Services.UserService
             await _insuranceDetailRepository.AddInsuranceDatail(insuranceDetail);
             return true;
         }
-        public async Task<bool> RefusedCustomerRequest(int id)
+        public async Task<bool> RefusedCustomerRequest(int id, int staffId)
         {
-            return await _customerRequestRepository.RefusedCustomerRequest(id);
+            return await _customerRequestRepository.RefusedCustomerRequest(id, staffId);
         }
         public async Task<bool> CompleteCustomerRequest(int id)
         {
@@ -106,7 +99,7 @@ namespace HealthcareSystem.Backend.Services.UserService
 
         public async Task<UserDTO> CreateUser(UserDTO user)
         {
-           return await _userRepository.CreateUser(user);
+            return await _userRepository.CreateUser(user);
         }
 
         public async Task<UserGoogleDTO> checkEmailByGoogleLogin(UserDTO user)
@@ -117,12 +110,12 @@ namespace HealthcareSystem.Backend.Services.UserService
 
         public async Task<UserDTO> UpdateUser(UserDTO user)
         {
-          return await _userRepository.UpdateUser(user);
+            return await _userRepository.UpdateUser(user);
         }
 
         public Task<UserDomain> GetUserByAccount(int AccountId)
         {
-          return _userRepository.GetUserByAccount(AccountId);
+            return _userRepository.GetUserByAccount(AccountId);
         }
         public Task<List<UserDTO>> GetAllUsers()
         {

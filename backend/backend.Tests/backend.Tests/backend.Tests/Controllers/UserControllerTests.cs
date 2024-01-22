@@ -1,16 +1,11 @@
 using AutoMapper;
-using Azure;
 using FakeItEasy;
 using FluentAssertions;
 using HealthcareSystem.Backend.Controllers;
 using HealthcareSystem.Backend.Models.Domain;
 using HealthcareSystem.Backend.Models.DTO;
-using HealthcareSystem.Backend.Models.Entity;
 using HealthcareSystem.Backend.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
-using Xunit;
 
 namespace backend.Tests.Controllers;
 
@@ -131,12 +126,13 @@ public class UserControllerTests
         var customerRequests = A.Fake<List<CustomerRequestDomain>>();
 
         const int requestID = 1;
+        const int staffID = 1;
 
-        A.CallTo(() => _userService.RefusedCustomerRequest(requestID)).Returns(Task.FromResult(true));
+        A.CallTo(() => _userService.RefusedCustomerRequest(requestID, staffID)).Returns(Task.FromResult(true));
 
         //Act
         var controller = GetController();
-        var result = await controller.RefusedRequest(requestID);
+        var result = await controller.RefusedRequest(requestID, staffID);
 
         // Assert
         result.Should().NotBeNull();
@@ -316,14 +312,14 @@ public class UserControllerTests
         // Arrange
 
         int requestID = 1;
+        int staffID = 1;
 
 
-
-        A.CallTo(() => _userService.RefusedCustomerRequest(requestID)).ThrowsAsync(new Exception("Some error message"));
+        A.CallTo(() => _userService.RefusedCustomerRequest(requestID, staffID)).ThrowsAsync(new Exception("Some error message"));
 
         // Act
         var controller = GetController();
-        var result = await controller.RefusedRequest(requestID);
+        var result = await controller.RefusedRequest(requestID, staffID);
 
         // Assert
         result.Should().NotBeNull();

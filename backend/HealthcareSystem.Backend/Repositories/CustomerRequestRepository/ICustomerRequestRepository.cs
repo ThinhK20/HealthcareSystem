@@ -14,6 +14,6 @@ namespace HealthcareSystem.Backend.Repositories
 
         public Task<AcceptCustomerRequestResponeDomain> AcceptCustomerRequest(int Accept, int StaffId);
         public Task<bool> CompleteCustomerRequest(int id);
-        public Task<bool> RefusedCustomerRequest(int id);
+        public Task<bool> RefusedCustomerRequest(int id, int staffId);
     }
 }
