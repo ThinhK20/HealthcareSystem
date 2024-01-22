@@ -32,7 +32,7 @@ const EditAccount = () => {
 
   const handleClickOpen = () => {
     setFormDataPUT(() => ({
-      accountId: formDataAccount.accountId,
+      accountId: formDataAccount?.accountId ,
       userId: formDataAccount.userId,
       username: formDataAccount.username,
       password: formDataAccount.password,

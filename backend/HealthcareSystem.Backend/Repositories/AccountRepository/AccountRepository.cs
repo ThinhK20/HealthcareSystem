@@ -94,6 +94,7 @@ namespace HealthcareSystem.Backend.Repositories.AccountRepository
             await _userManager.RemoveFromRolesAsync(user, roles.ToList());
             await _userManager.AddToRolesAsync(user, new List<string> { acc.Role });
             Models.Entity.Account account = temp;
+            account.Role = acc.Role;
             await UpdateAsync(account);
             return acc;
         }
